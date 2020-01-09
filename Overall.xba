@@ -33,6 +33,10 @@ dim threePointArray(2) as double
 
 dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 dim bground as double
+dim bg007 as double
+dim additionalBGValue as double 	rem к каждому последующему значению фона в таблице добавляется рандомно небольшое значение, так, чем больше значение точки, тем боьше будет (немного) значение
+rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
+rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -222,6 +226,8 @@ sub insertParametersToTemplate(bdName as string)
 	findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
+	&apos;findAndRename(&quot;$007bg&quot;, Format(randValue(11, 0.5), &quot;0.0&quot;)) rem ФОН НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
+	bg007 = Format(randValue(11, 0.5), &quot;0.0&quot;)
 end sub	
 rem---------------------------------------------------------------------------------------------------------
 function randValue(num as double, otklonenie as double)
@@ -245,7 +251,11 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	avaragePointsRndArray = ar	
 end function
 rem---------------------------------------------------------------------------------------------------------
+&apos;sub makeAdditionalBGValue
+&apos;end sub
+rem---------------------------------------------------------------------------------------------------------
 sub insertToTemplateStep(i)  &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i as integer, percentOtk as double, bground as double)
+		if i = 1 then additionalBGValue = 0
 		dim src_name as string
 		dim bd as new DUnit
 		dim BDtype as string 
@@ -261,6 +271,7 @@ sub insertToTemplateStep(i)  &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&ap
 			
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника
+			&apos;msgbox sourceDistanceArray(cont_point, prefix, bd.bdType)(1)
 				
 			rem TODO сделать через select case
 			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
@@ -273,8 +284,13 @@ sub insertToTemplateStep(i)  &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&ap
 			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
 				
 			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
+			
 			if AbsoluteValue(cont_point, prefix)&lt;0.001 then 
-				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), bground) rem фон
+				if bd.getType = &quot;gamma007&quot; then
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
+				else
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), bground)
+				end if		
 			else	
 				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
 			end if
@@ -300,7 +316,7 @@ rem-----------------------------------------------------------------------------
 function FacilityError(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
-	case &quot;gamma&quot;, &quot;gamma-Gy&quot;
+	case &quot;gamma&quot;, &quot;gamma-Gy&quot;, &quot;gamma007&quot;
 		if AbsoluteValue(point, prefix)&lt;1 then
 			FacilityError = 5
 		else

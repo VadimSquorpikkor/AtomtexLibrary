@@ -118,16 +118,15 @@ Public Function setSerial(serial As string)
    _serial = serial
 End Function
 
-Public Function getType As string &apos;то же самое, но с нормальным именем
-   getType = _BDType
-End Function
-
 Public Function measUnit As string
    measUnit = _measUnit
 End Function
 
 Public Function BDType As string
    BDType = _BDType
+End Function
+Public Function getType As string
+   getType = _BDType
 End Function
 
 Public Function pointCount As integer
