@@ -40,8 +40,8 @@ Sub AT6130_Dialog_Show
 	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.02 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
-	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130.png&quot;
-	oDialog6130.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;blackcat.png&quot;
+	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
+	oDialog6130.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;6130\blackcat.png&quot;
 	oOption6130pp  = oDialog6130.getControl(&quot;is6130pp&quot;)
 	oOption6130cps = oDialog6130.getControl(&quot;is6130cps&quot;)
 	oOption6130bq  = oDialog6130.getControl(&quot;is6130bq&quot;)
@@ -87,12 +87,12 @@ sub setButtonEnabled
 		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
 	end if
 	if oOption6130c.State = true then
-		oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130c.png&quot;
+		oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130c.png&quot;
 		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
 		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
 		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
 	end if	
-	if oOption6130c.State = false then oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130.png&quot;
+	if oOption6130c.State = false then oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
 	if oDialog6130.getControl(&quot;is6130pp&quot;).state then
 		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
 		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)

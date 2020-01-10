@@ -254,11 +254,80 @@ rem-----------------------------------------------------------------------------
 &apos;sub makeAdditionalBGValue
 &apos;end sub
 rem---------------------------------------------------------------------------------------------------------
-sub insertToTemplateStep(i)  &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i as integer, percentOtk as double, bground as double)
-		if i = 1 then additionalBGValue = 0
+sub templateStep(i as integer, strokeEnd as string)&apos;&apos;&apos;&apos;&apos; НЕ ИСПОЛЬЗУЕТСЯ
+		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
 		dim src_name as string
 		dim bd as new DUnit
 		dim BDtype as string 
+		&apos;msgbox _BDList.item(i).count
+		bd = _BDList.item(i)
+		BDtype = bd.BDType
+		dim j as integer
+		for j=0 to bd.pointList.count-1
+			src_name = bd.getPointTextList.item(j+1)
+			m_point = bd.valueList.item(j+1)
+			cont_point = bd.pointList.item(j+1)
+			prefix =  bd.pointTextList.item(j+1)
+			threePointArray = avaragePointsRndArray(m_point, percentOtk)
+			
+			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
+			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника
+			&apos;msgbox sourceDistanceArray(cont_point, prefix, bd.bdType)(1)
+				
+			rem TODO сделать через select case
+			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
+			if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if m_point &lt; 100 and m_point &gt;= 1 then MyFormat = &quot;0.0&quot;
+			if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
+				
+			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), MyFormat)) rem измерение 1
+			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), MyFormat)) rem измерение 2
+			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), MyFormat)) rem измерение 3
+				
+			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
+			
+			if AbsoluteValue(cont_point, prefix)&lt;0.001 then 
+				if bd.getType = &quot;gamma007&quot; then
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
+				else
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bground)
+				end if		
+			else	
+				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;---&quot;) 
+			end if
+				
+			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, MyFormat)) rem среднее по трем измерениям
+		
+			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, MyFormat)) rem активность источника
+			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
+			
+			dim percent as integer
+			
+			percent = FacilityError(m_point, BDType, prefix)
+				
+			dim pogr_point as double
+			pogr_point = RelativeError(m_point, cont_point)
+			MyFormat = &quot;0.00&quot;
+			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+		next j
+		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertToTemplateStep(i)
+	templateStep(i, &quot;&quot;)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertToTemplateStepDoted(i)
+	templateStep(i, &quot;.&quot;)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertToTemplateStep_OLD(i)  &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i as integer, percentOtk as double, bground as double)
+		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
+		dim src_name as string
+		dim bd as new DUnit
+		dim BDtype as string 
+		&apos;msgbox _BDList.item(i).count
 		bd = _BDList.item(i)
 		BDtype = bd.BDType
 		dim j as integer
