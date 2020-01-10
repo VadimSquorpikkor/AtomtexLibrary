@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D_1121" dlg:left="27" dlg:top="12" dlg:width="276" dlg:height="188" dlg:closeable="true" dlg:moveable="true" dlg:title="Протокол поверки 1121/1123">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D_1121" dlg:left="27" dlg:top="12" dlg:width="276" dlg:height="188" dlg:closeable="true" dlg:moveable="true" dlg:title="1103М / 1121 / 1123 - Протокол поверки и сертификат">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:font-height="11"/>
   <dlg:style dlg:style-id="1" dlg:font-height="12"/>

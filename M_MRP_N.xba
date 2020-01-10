@@ -18,8 +18,9 @@ Sub MRP920_Dialog_Show
 	oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
+	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp.png&quot;
 	
-	oDialogMRP.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.03&quot;	
+	oDialogMRP.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.04 &quot;	
 	
 	oActivityCombo = oDialogMRP.getControl(&quot;SourceCombo&quot;)
 	Overall.initializeActivityCombo(oActivityCombo)

@@ -101,7 +101,7 @@ sub insertRecordsToTemplate
 	Overall.saveCurentBDValue(layoutPosition)  &apos;(oDialogG224, layoutPosition, BDList)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
-	path = Overall.PathForProtocol(&quot;bdkg224&quot;, calibName, techName)
+	path = Overall.PathForProtocol(&quot;bdkg224\bdkg224&quot;, calibName, techName)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertParametersToTemplate(calibName, techName)
