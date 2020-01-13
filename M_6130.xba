@@ -37,7 +37,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.02 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.03 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -136,9 +136,9 @@ sub addNewBD
 	if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
 	if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;))
 	if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
-	if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
-	if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
-	if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array())
+	if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
+	if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
+	if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array())
 	
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state then
 		dim list as new Collection
@@ -300,7 +300,7 @@ sub insertRecordsToTemplate
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
 		Overall.insertToTemplateStep(i)
-		Overall.insertBetaToTemplateStep(i)
+		insertBetaToTemplateStep(i)
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
@@ -314,4 +314,46 @@ sub insertRecordsToTemplate
 	msgbox &quot;Готово!&quot;
 end sub
 
+sub insertBetaToTemplateStep(i)
+	dim bd as new DUnit 
+	bd = BDList.item(i)
+	dim j as integer
+	for j=0 to bd.getBetaValues.count-1
+		m_point = bd.getBetaValues.item(j+1)
+		
+
+		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
+		cont_point = Activity.get_activity_Sr(bd.getBetaSources.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
+		threePointArray = avaragePointsRndArray(m_point, percentOtk)
+		
+		findAndRename((&quot;β&quot; + i + &quot;-3&quot; + j), bd.getBetaSources.item(j+1)) rem название источника
+		findAndRename((&quot;β&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
+				
+		rem TODO сделать через select case
+		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
+		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
+				
+		findAndRename((&quot;β&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		findAndRename((&quot;β&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		findAndRename((&quot;β&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+				
+		if cont_point&lt;150 then 
+			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
+		else	
+			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
+		end if
+				
+		findAndRename((&quot;β&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+				
+		dim percent as integer
+		percent = 6
+			
+		dim pogr_point as double
+		pogr_point = RelativeError(m_point, cont_point)
+		MyFormat = &quot;0.00&quot;
+		findAndRename((&quot;β&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
+		findAndRename((&quot;β&quot; + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+	next j
+	&apos;findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
+end sub
 </script:module>

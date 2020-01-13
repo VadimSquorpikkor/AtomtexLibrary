@@ -38,7 +38,7 @@ Sub AT1125_Dialog_Show
 	mainImage = oDialog1125.Model.getByName(&quot;1125Logo&quot;)
 	mainImage.ImageURL = sertPath &amp; &quot;1125/1125_wide.png&quot;
 
-	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.0 &quot;, 8, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.0 &quot;, isComboCollection, BDList)
 
 	oOption1125 = oDialog1125.getControl(&quot;is1125&quot;)
 	oOption1125A = oDialog1125.getControl(&quot;is1125A&quot;)

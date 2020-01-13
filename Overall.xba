@@ -37,6 +37,8 @@ dim bg007 as double
 dim additionalBGValue as double 	rem к каждому последующему значению фона в таблице добавляется рандомно небольшое значение, так, чем больше значение точки, тем боьше будет (немного) значение
 rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
+
+dim oDateField1 as object
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -142,7 +144,7 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	_oDialog.getControl(&quot;addButton&quot;).setEnable(false)
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version as string, pointCount as integer, isComboCollection as Collection, BDList as Collection)
+sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version as string, isComboCollection as Collection, BDList as Collection)
 	_BDList = BDList
 	_isComboCollection = isComboCollection
 	_oDialog = oDialog
@@ -173,12 +175,17 @@ function rightDecimalAccuracy(nStep as double) rem сколько знаков �
 	if nStep = 0.1 	 then rightDecimalAccuracy = 1
 	if nStep &gt;= 1 	 then rightDecimalAccuracy = 0
 end function
-rem-------метод из 1117_N упрощен------------------------------------------------------------------------------------
+rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
 	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName rem &quot;БДКГ-22&quot;
 	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
 	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 end sub
+rem---------------------------------------------------------------------------------------------------------
+&apos;sub makeLayoutFromBDWithBeta(bd as new DUnit)
+&apos;	
+&apos;	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
+&apos;end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as string)
 	dim i as integer
@@ -340,45 +347,7 @@ function FacilityError(point as double, BDType as string, prefix as string)
 	end select
 end function
 rem---------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStep(i)
-	dim bd as new DUnit 
-	bd = _BDList.item(i)
-	dim j as integer
-	for j=0 to bd.getBetaValues.count-1
-		m_point = bd.getBetaValues.item(j+1)
-		cont_point = bd.getBetaPoints.item(j+1)
-		threePointArray = avaragePointsRndArray(m_point, percentOtk)
-			
-		findAndRename((&quot;β&quot; + i + &quot;-3&quot; + j), bd.getBetaSources.item(j+1)) rem название источника
-		findAndRename((&quot;β&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
-				
-		rem TODO сделать через select case
-		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
-		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
-				
-		findAndRename((&quot;β&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
-		findAndRename((&quot;β&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
-		findAndRename((&quot;β&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
-				
-		if cont_point&lt;150 then 
-			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
-		else	
-			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
-		end if
-				
-		findAndRename((&quot;β&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
-				
-		dim percent as integer
-		percent = 6
-			
-		dim pogr_point as double
-		pogr_point = RelativeError(m_point, cont_point)
-		MyFormat = &quot;0.00&quot;
-		findAndRename((&quot;β&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((&quot;β&quot; + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
-	next j
-	&apos;findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
-end sub
+
 rem---------------------------------------------------------------------------------------------------------
 function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	_oListBox.selectItemPos( layoutPosition-1, True )

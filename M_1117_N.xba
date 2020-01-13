@@ -12,6 +12,8 @@ dim maxCheckedCount as integer
 dim rusItems1, engItems1, rusItems2, engItems2 as variant
 dim protocolType as String
 dim measLimitsArray(11) as double rem 6 типов, каждого по два (min, max) = 12
+
+dim emptyArray(6) as string rem сделать общим, есть другие БД, которые ссылаются на этот массив
 rem=======================================================================================
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
