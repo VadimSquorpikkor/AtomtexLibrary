@@ -7,6 +7,7 @@ dim oDialog1117 as object
 dim typeText as object						rem название типа БД
 dim BDList as new Collection 				rem коллекция блоков детектирования
 dim emptyArray(6) as string rem сделать общим, есть другие БД, которые ссылаются на этот массив
+dim measLimitsArray(11) as double rem 6 типов, каждого по два (min, max) = 12
 
 dim Overall as new Overall
 dim Facility as new Facility
@@ -18,7 +19,7 @@ dim oOptionButtonSe as object
 
 dim checkedCount as integer
 
-dim layoutPosition as integer
+dim layoutPosition as integer &apos;в отличии от других классов, здесь layoutPosition -- это фиксированная позиция каждого блока, совпадает с номером соответствующего чекбокса (т.е. при выборе только бдкг-11 layoutPosition будет равен 5 (только один номер позиции))
 rem---------------------------------------------------------------------------------------------------------
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
@@ -30,6 +31,7 @@ Sub at1117m_Dialog_Show
 	initialize1117 rem ЗАГРУЗКА БД
 	
 	checkedCount = 0
+	layoutPosition = 0
 	
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
@@ -97,6 +99,13 @@ sub makeBetaLayout(bd as new DUnit) &apos;TODO  ОБЪЕДИНИТЬ С ТАКИ
 	bd.setPointList(pointList)
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub dataChanged
+	rem ЕСЛИ ТЕКУЩИЙ ВЫБРАННЫЙ БД (ЕСЛИ ВООБЩЕ ЕСТЬ КАКОЙ-НИБУДЬ БД) ЭТО БЕТА, ТОГДА ПРИ СМЕНЕ ДАТЫ ПЕРЕСЧИТЫВАЕТСЯ АКТИВНОСТЬ ДЛЯ БЕТЫ И ПЕРЕРИСОВЫВАЕТСЯ ЛЭЙАУТ	
+	if layoutPosition&lt;&gt;0 then 
+		if BDList.item(layoutPosition).getType = &quot;beta&quot; then makeBetaLayout(BDList.item(layoutPosition))
+	end if	
+end sub
+rem---------------------------------------------------------------------------------------------------------
 function makeLayout(bd as new DUnit)
  	oDialog1117.getControl(&quot;typeLabel&quot;).text =  bd.getName
  	if bd.getType = &quot;beta&quot; then
@@ -105,11 +114,17 @@ function makeLayout(bd as new DUnit)
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
  	end if
+ 	for i=1 to bd.getPointList.count
+		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = true rem скрыть все ненужные
+		oDialog1117.getControl(&quot;Label&quot; + i).Visible = true
+	next i
 	for i=bd.getPointList.count+1 to 9
 		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = false rem скрыть все ненужные
 		oDialog1117.getControl(&quot;Label&quot; + i).Visible = false
 	next i
-	
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub clearLayout
 	if checkedCount = 0 then
 		for i=1 to 9
 			oDialog1117.getControl(&quot;ValueField&quot; + i).text = &quot;&quot; rem скрыть все ненужные
@@ -117,7 +132,7 @@ function makeLayout(bd as new DUnit)
 		next i
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = &quot;Нет БД&quot; 
 	end if
-end function
+end sub
 rem---------------------------------------------------------------------------------------------------------
 sub checkBoxListener(oEvent As Object)
 	Dim oCheckbox As Object
@@ -134,17 +149,275 @@ sub checkBoxListener(oEvent As Object)
     	BDList.item(position).isPrintable = oCheckbox.State rem при клике на чекбокс устанавливаю в переменную объекта БД значение из чБокса -- true или false  	
     	n = 1
     end if
+    
+    if checkedCount = 0 then
+    	makeLayout(BDList.item(position)) &apos;ЕСЛИ ПЕРЕД ТЕМ, КАК СЧИТАТЬ СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО БЫЛО РАВНО 0, ЭТО ЗНАЧИТ ДОБАВЛЯЕТСЯ САМЫЙ ПЕРВЫЙ БД -- РИСУЕМ ЕГО ЛЭЙАУТ
+    	layoutPosition = position
+    end if	
     if oCheckbox.State = 1 then
     	checkedCount = checkedCount + n &apos;checkedCount -- ЭТО КОЛИЧЕСТВО БД, ОТМЕЧЕННЫХ ЧЕКБОКСАМИ
     else 	
     	checkedCount = checkedCount - n
     end if
-    if checkedCount = 1 OR checkedCount = 0 then makeLayout(BDList.item(position))
+    if checkedCount = 0 then clearLayout &apos;ЕСЛИ ПОСЛЕ ТОГО, КАК ПОСЧИТАЛИ, СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО = 0, ЭТО ЗНАЧИТ БЫЛ УДАЛЕН САМЫЙ ПОСЛЕДНИЙ БД -- ОБНУЛЯЕМ ЛЭЙАУТ
+    if position &lt; layoutPosition then
+    	Overall.saveCurentBDValue(layoutPosition)
+    	makeLayout(BDList.item(position)) &apos;
+    	layoutPosition = position 
+    end if	
+    setButtonVisibility
+    &apos;msgbox layoutPosition
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub setVisibility
-	&apos;if checkedCount
+function limitComparator(min as double, max as double, position as integer)
+	&apos;msgbox &quot;LC&quot; + min + &quot;, &quot; + max 
+	if measLimitsArray(position)=0   OR measLimitsArray(position) &gt; min   then measLimitsArray(position) = min
+	if measLimitsArray(position+1)=0 OR measLimitsArray(position+1) &lt; max then measLimitsArray(position+1) = max	
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub calculateMeasLimitsArray(min as double, max as double, bdType as string) rem TODO вообще-то можно в параметре передавать не свойства, а сразу объект класса DUnit
+	&apos;msgbox &quot;&quot;+min+&quot; &quot;+max+&quot; &quot;+bdType
+	select case bdType
+	case &quot;gamma&quot;
+		limitComparator(min, max, 0)
+	case &quot;alpha&quot;
+		limitComparator(min, max, 2)
+	case &quot;beta&quot;
+		limitComparator(min, max, 4)
+	case &quot;n-PP&quot;
+		limitComparator(min, max, 6)
+	case &quot;n-MD&quot;
+		limitComparator(min, max, 8)
+	case &quot;gamma-Gy&quot;
+		limitComparator(min, max, 10)
+	&apos;case &quot;gamma007&quot;
+	&apos;	limitComparator(min, max, 11)	
+	end select	
 end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertMeasLimits
+	findAndRename(&quot;$g_min&quot;,   rightPrefixAndNumber(0))
+	findAndRename(&quot;$g_max&quot;,   rightPrefixAndNumber(1))
+	findAndRename(&quot;$a_min&quot;,   rightPrefixAndNumber(2))
+	findAndRename(&quot;$a_max&quot;,   rightPrefixAndNumber(3))
+	findAndRename(&quot;$b_min&quot;,   rightPrefixAndNumber(4))
+	findAndRename(&quot;$b_max&quot;,   rightPrefixAndNumber(5))
+	findAndRename(&quot;$ppn_min&quot;, rightPrefixAndNumber(6))
+	findAndRename(&quot;$ppn_max&quot;, rightPrefixAndNumber(7))
+	findAndRename(&quot;$mdn_min&quot;, rightPrefixAndNumber(8))
+	findAndRename(&quot;$mdn_max&quot;, rightPrefixAndNumber(9))
+	findAndRename(&quot;$k_min&quot;,   rightPrefixAndNumber(10))
+	findAndRename(&quot;$k_max&quot;,   rightPrefixAndNumber(11))
+end sub
+rem---------------------------------------------------------------------------------------------------------
+function rightPrefixAndNumber(n as integer) as string
+	dim p as double
+	p = measLimitsArray(n)
+	&apos;msgbox &quot;n-&quot;+n+&quot;:&quot;+&quot; = &quot;+p
+	select case n
+	case 0 rem ------------ gamma min -------------
+		if p &lt; 0.6  then rightPrefixAndNumber = &quot;&quot; + p*1000 + &quot; н&quot;
+		if p &lt; 1000 AND p &gt;= 0.6 then rightPrefixAndNumber = &quot;&quot; + p + &quot; мк&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; м&quot;
+	case 1 rem ------------ gamma max -------------
+		if p &lt; 1000 then rightPrefixAndNumber = &quot;&quot; + p + &quot; м&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; &quot;
+	case 2 rem ------------ alpha min -------------
+		rightPrefixAndNumber = Format(p, MyFormat)
+	case 3 rem ------------ alpha max -------------
+		if p = 10 then
+			findAndRename(&quot;$a_max_E&quot;, 5)
+			rightPrefixAndNumber = &quot;&quot;
+		end if	
+		if p = 100 then
+			findAndRename(&quot;$a_max_E&quot;, 6)
+			rightPrefixAndNumber = &quot;&quot;
+		else
+			findAndRename(&quot;$a_max_E&quot;, 4)
+			rightPrefixAndNumber = p
+		end if	
+	case 4 rem ------------ beta min -------------
+		rightPrefixAndNumber = &quot;&quot; + p
+	case 5 rem ------------ beta max -------------
+		if p = 100 then
+			findAndRename(&quot;$b_max_E&quot;, 6)
+			rightPrefixAndNumber = &quot;&quot;
+		else
+			findAndRename(&quot;$b_max_E&quot;, 5)
+			rightPrefixAndNumber = p/10
+		end if
+	case 6 rem ------------ n-pp min -------------
+		&apos;msgbox &quot;6pp: &quot;+p
+		rightPrefixAndNumber = &quot;&quot; + p
+	case 7 rem ------------ n-pp max -------------
+		if p = 10000 then
+			findAndRename(&quot;$n_max_E&quot;, 4)
+			rightPrefixAndNumber = &quot;&quot;
+		else
+			findAndRename(&quot;$n_max_E&quot;, 4)
+			rightPrefixAndNumber = p
+		end if
+	case 8 rem ------------ n-md min -------------
+		rightPrefixAndNumber = &quot;&quot; + p
+	case 9 rem ------------ n-md max -------------
+		rightPrefixAndNumber = &quot;&quot; + p
+	case 10 rem ------------ gamma-Gy min -------------
+		if p &lt; 0.6  then rightPrefixAndNumber = &quot;&quot; + p*1000 + &quot; н&quot;
+		if p &lt; 1000 AND p &gt;= 0.6 then rightPrefixAndNumber = &quot;&quot; + p + &quot; мк&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; м&quot;
+	case 11 rem ------------ gamma-Gy max -------------
+		if p &lt; 1000 then rightPrefixAndNumber = &quot;&quot; + p + &quot; м&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; &quot;	
+	end select
+end function
+rem---------------------------------------------------------------------------------------------------------
+function setButtonVisibility
+	dim hasNext as boolean
+	dim hasPrev as boolean
+	hasNext = false
+	hasPrev = false
+	for i=layoutPosition+1 to BDList.count
+		if BDList.item(i).isPrintable then hasNext = true
+		oDialog1117.getControl(&quot;nextButton&quot;).setEnable(hasNext)
+		oDialog1117.getControl(&quot;doneButton&quot;).setEnable(NOT hasNext)
+	next i
+	for i=1 to layoutPosition-1
+		if BDList.item(i).isPrintable then hasPrev = true
+		oDialog1117.getControl(&quot;prevButton&quot;).setEnable(hasPrev)
+	next i
+	if layoutPosition = 1 then oDialog1117.getControl(&quot;prevButton&quot;).setEnable(hasPrev)
+end function 
+rem---------------------------------------------------------------------------------------------------------
+private function nextChecked
+	Overall.saveCurentBDValue(layoutPosition)
+	count = layoutPosition+1
+	while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
+		count = count + 1
+	wend
+	layoutPosition = count
+	makeLayout(BDList.item(layoutPosition))
+	setButtonVisibility
+end function
+rem---------------------------------------------------------------------------------------------------------
+function prevChecked
+	Overall.saveCurentBDValue(layoutPosition)
+	count = layoutPosition-1
+	while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
+		count = count - 1
+	wend
+	layoutPosition = count
+	makeLayout(BDList.item(layoutPosition))
+	setButtonVisibility
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub insertDataToTemplate
+	Overall.saveCurentBDValue(layoutPosition)
+	dim strokeForSaving as string
+	strokeForSaving = &quot;&quot;	
+	dim path as string
+	path = Overall.PathForProtocol(&quot;1117\1117&quot;, calibName, techName)
+
+	dim facilities as new Facility rem ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
+	MyFormat = &quot;0.0&quot;
+	OpenTemplate(sertPath &amp; path)
+	
+	Overall.insertParametersToTemplate(calibName, techName)
+
+	serial = oDialog1117.getControl(&quot;bdSerial&quot;).Text
+	findAndRename(&quot;$serial&quot;, serial)
+	findAndRename(&quot;$b_bg&quot;, Format(randValue(13, 2), &quot;0.0&quot;))
+	findAndRename(&quot;$s_bg&quot;, Format(randValue(0.005, 0.005), &quot;0.00&quot;))
+	findAndRename(&quot;$b2_bg&quot;, Format(randValue(17, 2), &quot;0.0&quot;))
+	
+	for i=1 to BDList.count
+		if BDList.item(i).isPrintable then
+			bd = BDList.item(i)
+			calculateMeasLimitsArray(bd.minLimit, bd.maxLimit, bd.getType)
+			strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
+			facilities.addTypeAndLimits(bd.BDType, bd.minLimit, bd.maxLimit)		
+			
+			if bd.BdName=&quot;БДКН-01&quot; then	neutron_01(i, bd)
+			if bd.BdName=&quot;БДКН-03&quot; then	neutron_03(i, bd)
+			
+			if BDList.item(i).getType = &quot;beta&quot; then
+				Overall.insertBetaToTemplateStep(i, oDateFieldModel)
+			else
+				Overall.insertToTemplateStep(i)
+			end if	
+		else
+			deleteTable(&quot;tlim&quot; + (i-1))
+			deleteTable(&quot;tp&quot; + (i))
+			deleteTable(&quot;t&quot; + i)	
+		end if
+
+	next i	
+
+	rem удалить ненужные диапазоны----------------------------------
+	dim f() as boolean
+	f = facilities.RadTypeArray
+	for i=0 to 5
+		&apos;if f(i) = false then deleteTable(&quot;tml&quot; + i)	
+	next i
+	rem удалить ненужные поверочные установки-----------------------
+	dim f2() as boolean
+	f2 = facilities.FacTypeArray
+	for i=0 to 5
+		if f2(i) = false then deleteTable(&quot;tf&quot; + i)	
+	next i
+	rem удалить ненужные пределы измерений--------------------------
+	for i=0 to 5 rem нет смысла проверять обе точки, не может одна из точек равняться 0, а другая числу
+		if measLimitsArray(i*2)=0 then deleteTable(&quot;tml&quot; + i)
+	next i
+	rem ------------------------------------------------------------
+	insertMeasLimits
+	strokeForSaving = &quot;1117 M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	CopyVariableToClipboard(strokeForSaving)
+	msgbox &quot;Готово!&quot;
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub neutron_01(i as integer, bd as BUnit)
+	dim point_br_array(3) as double
+	dim point_fio_array(3) as double
+	point_br_array = Array(0.6, 0.6, 0.863, 0.957)
+	point_fio_array = Array(5.9, 57, 235, 1019)
+	dim fon, p1, p2, p3 as double
+	fon = bd.valueList.item(1)	rem фон
+	dim point as double
+	
+		for n = 1 to 4
+			point = bd.valueList.item(n+1)
+			p1 = (point-fon)*point_br_array(n-1)
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+			p3 = 1.1 * sqr(p2 * p2 + 5*5)
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+			
+		next n
+end sub
+rem---------------------------------------------------------------------------------------------------------
+rem TODO объединить методы neutron_03 и neutron_01
+sub neutron_03(i as integer, bd as BUnit)
+	dim point_br_array(3) as double
+	dim point_fio_array(3) as double
+	point_br_array = Array(0.866, 0.866, 0.957, 0.991)
+	point_fio_array = Array(8.3, 80, 331, 1434)
+	dim fon, p1, p2, p3 as double
+	fon = bd.valueList.item(1)	rem фон
+	dim point as double
+		
+		for n = 1 to 4
+			point = bd.valueList.item(n+1)
+			p1 = (point-fon)*point_br_array(n-1)	
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+			p3 = 1.1 * sqr(p2 * p2 + 5*5)
+			findAndRename((&quot;$&quot; + (i-1) + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+			
+		next n
+end sub
+rem---------------------------------------------------------------------------------------------------------
 
 
 

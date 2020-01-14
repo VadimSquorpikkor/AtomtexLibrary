@@ -297,10 +297,10 @@ sub insertRecordsToTemplate
 		deleteTable(&quot;b&quot; + k)
 	next k
 	
-	for i=1 to BDList.count
-		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
-		Overall.insertToTemplateStep(i)
+		for i=1 to BDList.count
 		insertBetaToTemplateStep(i)
+		Overall.insertToTemplateStep(i)
+		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
@@ -313,7 +313,7 @@ sub insertRecordsToTemplate
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
-
+rem---------------------------------------------------------------------------------------------------------
 sub insertBetaToTemplateStep(i)
 	dim bd as new DUnit 
 	bd = BDList.item(i)

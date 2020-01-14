@@ -45,8 +45,6 @@ public const BETA_0661_BQ as double  = 247
 public const CS_137_HALF_LIFE as double = 365.25 * 30.17
 public const SR_90_HALF_LIFE as double = 365.25 * 28.796 &apos;Стронций-90
 &apos;-------------------------------------------------------------
-private daysLeft as integer
-&apos;-------------------------------------------------------------
 function get_activity(src as double, mdate)
 	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,10,13)
 	get_activity = src * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
@@ -77,6 +75,7 @@ end function
 &apos;-------------------------------------------------------------
 function get_activity_Sr(src as string, mdate)
 	dim activity_0 as double
+	dim daysLeft as double
 	
 	select case src
 	case &quot;0660&quot;

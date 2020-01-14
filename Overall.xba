@@ -38,7 +38,7 @@ dim additionalBGValue as double 	rem к каждому последующему 
 rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 
-dim oDateField1 as object
+dim oDateFieldModel as object
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -269,7 +269,7 @@ sub templateStep(i as integer, strokeEnd as string)&apos;&apos;&apos;&apos;&apos
 		bd = _BDList.item(i)
 		BDtype = bd.BDType
 		dim j as integer
-		for j=0 to bd.pointList.count-1
+		for j=0 to bd.getPointList.count-1
 			src_name = bd.getPointTextList.item(j+1)
 			m_point = bd.valueList.item(j+1)
 			cont_point = bd.pointList.item(j+1)
@@ -323,6 +323,49 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertBetaToTemplateStep(i, oDateFieldModel as object)
+	dim bd as new DUnit 
+	bd = _BDList.item(i)
+	dim j as integer
+	for j=0 to bd.getPointTextList.count-1
+		m_point = bd.getValueList.item(j+1)
+
+		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
+		cont_point = Activity.get_activity_Sr(bd.getPointTextList.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
+		threePointArray = avaragePointsRndArray(m_point, percentOtk)
+		
+		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), bd.getPointTextList.item(j+1)) rem название источника
+	
+		if cont_point&lt;500  then findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
+		if cont_point&gt;=500 then findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
+				
+		rem TODO сделать через select case
+		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
+		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
+				
+		findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+				
+		if cont_point&lt;150 then 
+			findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
+		else	
+			findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
+		end if
+				
+		findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+				
+		dim percent as integer
+		percent = 6
+			
+		dim pogr_point as double
+		pogr_point = RelativeError(m_point, cont_point)
+		MyFormat = &quot;0.00&quot;
+		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
+		findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+	next j
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function FacilityError(point as double, BDType as string, prefix as string)
