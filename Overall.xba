@@ -476,6 +476,8 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_beta&quot;, Facility.getFacilityText(&quot;beta&quot;))
 	findAndRename(&quot;$facility_13+11rus&quot;, Facility.getFacilityText(&quot;130+110&quot;))
 	findAndRename(&quot;$facility_13+11eng&quot;, Facility.getFacilityText(&quot;130+110eng&quot;))
+	findAndRename(&quot;$facility_src_cs_rus&quot;, Facility.getFacilityText(&quot;sourse_cs_rus&quot;))
+	findAndRename(&quot;$facility_src_cs_eng&quot;, Facility.getFacilityText(&quot;sourse_cs_eng&quot;))
 	
 	findAndRename(&quot;$eng_facility_110&quot;, Facility.getFacilityText(&quot;110_eng&quot;))
 	findAndRename(&quot;$eng_facility_130&quot;, Facility.getFacilityText(&quot;130_eng&quot;))

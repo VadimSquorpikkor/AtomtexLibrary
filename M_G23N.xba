@@ -258,6 +258,7 @@ sub insertRecordsToTemplate
 	end if
 	
 	OpenTemplate(sertPath &amp; &quot;bdkg22-23\&quot; &amp; path)
+	Overall.insertFacilitiesText
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	dim threePointArray(2) as double
 	dim bground as double

@@ -56,14 +56,14 @@
    <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.dataChanged?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:datefield>
   <dlg:radiogroup>
-   <dlg:radio dlg:id="isProtocol" dlg:tab-index="59" dlg:left="125" dlg:top="103" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
-   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="60" dlg:left="125" dlg:top="114" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
-   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="61" dlg:left="125" dlg:top="124" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
+   <dlg:radio dlg:id="isProtocol" dlg:tab-index="59" dlg:left="121" dlg:top="103" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
+   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="60" dlg:left="121" dlg:top="114" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
+   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="61" dlg:left="121" dlg:top="124" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="54" dlg:left="28" dlg:top="148" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:align="center" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="56" dlg:left="113" dlg:top="148" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:align="center" dlg:spin="true"/>
   <dlg:text dlg:style-id="2" dlg:id="typeLabel" dlg:tab-index="39" dlg:left="128" dlg:top="170" dlg:width="80" dlg:height="20" dlg:page="1" dlg:value="нет БД" dlg:align="center"/>
-  <dlg:img dlg:style-id="3" dlg:id="1117Logo" dlg:tab-index="48" dlg:left="8" dlg:top="4" dlg:width="200" dlg:height="90" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/1117.png"/>
+  <dlg:img dlg:style-id="3" dlg:id="1117Logo" dlg:tab-index="48" dlg:left="1" dlg:top="2" dlg:width="213" dlg:height="99" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/1117.png"/>
   <dlg:checkbox dlg:id="CheckBox1" dlg:tab-index="9" dlg:left="11" dlg:top="179" dlg:width="32" dlg:height="10" dlg:value="БДКГ-01" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>

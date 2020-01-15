@@ -18,7 +18,7 @@ Sub MRP920_Dialog_Show
 	oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
-	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp.png&quot;
+	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;
 	
 	oDialogMRP.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.04 &quot;	
 	
@@ -83,9 +83,10 @@ sub insertRecordsToTemplate
 	bd_serial  = makeSRKNumber(oDialogMRP.getControl(&quot;bdSerial&quot;).value)
 	dim bgAverage, srcAverage, sensitivity, activity as double
 	activity = oDialogMRP.getControl(&quot;ActivityField&quot;).value
-	path = &quot;mrp920.odt&quot;
+	path = &quot;mrp\mrp920.odt&quot;
 	
 	OpenTemplate(sertPath &amp; path)
+	Overall.insertFacilitiesText
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	percentOtk = 7 rem %
 

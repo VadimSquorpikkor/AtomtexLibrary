@@ -2,6 +2,8 @@
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="M_1117_N" script:language="StarBasic">REM  *****  BASIC  *****
 
+rem СТАРЫЙ КЛАСС. НЕ МСПОЛЬЗУЕТСЯ
+
 dim oDialog1117 as object
 
 dim typeText as object						rem название типа БД
@@ -18,7 +20,7 @@ rem=============================================================================
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117_N )
-	oDialog1117.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;1117.png&quot;
+	oDialog1117.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	typeText = oDialog1117.getControl(&quot;type_text&quot;)
 	oDialogMain.endexecute()  
 	
@@ -401,18 +403,18 @@ sub insertRecordsToTemplate
 	dim path as string
 	dim calibName, techName, mainType as string
 	if protocolType = &quot;protRus&quot; then
-		path = &quot;1117.odt&quot;
+		path = &quot;old\1117.odt&quot;
 	end if
 	if protocolType = &quot;sertRus&quot; then
 		calibName = rusItems1(ComboItemPosition(oDialog1117.getControl(&quot;ComboBox1&quot;)))
 		techName  = rusItems2(ComboItemPosition(oDialog1117.getControl(&quot;ComboBox2&quot;)))
-		path = &quot;1117_sr.odt&quot;
+		path = &quot;old\1117_sr.odt&quot;
 		mainType = &quot;Дозиметр-радиометр МКС-AT1117М&quot;		
 	end if
 	if protocolType = &quot;sertEng&quot; then
 		calibName = engItems1(ComboItemPosition(oDialog1117.getControl(&quot;ComboBox1&quot;)))
 		techName  = engItems2(ComboItemPosition(oDialog1117.getControl(&quot;ComboBox2&quot;)))
-		path = &quot;1117_se.odt&quot;		
+		path = &quot;old\1117_se.odt&quot;		
 	end if
 
 	dim bd as new DUnit

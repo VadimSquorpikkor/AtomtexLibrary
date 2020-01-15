@@ -24,7 +24,7 @@ rem-----------------------------------------------------------------------------
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
-	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117.png&quot;
+	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
 	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.00 &quot;, isComboCollection, BDList)
 		
@@ -332,6 +332,7 @@ sub insertDataToTemplate
 	OpenTemplate(sertPath &amp; path)
 	
 	Overall.insertParametersToTemplate(calibName, techName)
+	Overall.insertFacilitiesText
 
 	serial = oDialog1117.getControl(&quot;bdSerial&quot;).Text
 	findAndRename(&quot;$serial&quot;, serial)
@@ -360,15 +361,8 @@ sub insertDataToTemplate
 			deleteTable(&quot;tp&quot; + (i))
 			deleteTable(&quot;t&quot; + i)	
 		end if
-
 	next i	
 
-	rem удалить ненужные диапазоны----------------------------------
-	&apos;dim f() as boolean
-	&apos;f = facilities.RadTypeArray
-	&apos;for i=0 to 5
-		&apos;if f(i) = false then deleteTable(&quot;tml&quot; + i)	
-	&apos;next i
 	rem удалить ненужные поверочные установки-----------------------
 	dim f2() as boolean
 	f2 = facilities.FacTypeArray
@@ -399,16 +393,15 @@ sub neutron_01(i as integer, bd as BUnit)
 	fon = bd.valueList.item(1)	rem фон
 	dim point as double
 	
-		for n = 1 to 4
-			point = bd.valueList.item(n+1)
-			p1 = (point-fon)*point_br_array(n-1)
-			findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
-			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-			findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
-			p3 = 1.1 * sqr(p2 * p2 + 5*5)
-			findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
-			
-		next n
+	for n = 1 to 4
+		point = bd.valueList.item(n+1)
+		p1 = (point-fon)*point_br_array(n-1)
+		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+		p3 = 1.1 * sqr(p2 * p2 + 5*5)
+		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+	next n
 end sub
 rem---------------------------------------------------------------------------------------------------------
 rem TODO объединить методы neutron_03 и neutron_01
@@ -421,16 +414,15 @@ sub neutron_03(i as integer, bd as BUnit)
 	fon = bd.valueList.item(1)	rem фон
 	dim point as double
 		
-		for n = 1 to 4
-			point = bd.valueList.item(n+1)
-			p1 = (point-fon)*point_br_array(n-1)	
-			findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
-			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-			findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
-			p3 = 1.1 * sqr(p2 * p2 + 5*5)
-			findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
-			
-		next n
+	for n = 1 to 4
+		point = bd.valueList.item(n+1)
+		p1 = (point-fon)*point_br_array(n-1)	
+		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+		p3 = 1.1 * sqr(p2 * p2 + 5*5)
+		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+	next n
 end sub
 rem---------------------------------------------------------------------------------------------------------
 
