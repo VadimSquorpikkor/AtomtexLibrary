@@ -106,6 +106,14 @@ function getDateSlash(DateFieldModel) &apos;YYYYMMDD
 	year = dnum \ 10000
 	getDateSlash = insertZero(day) &amp;&quot;/&quot;&amp; insertZero(month) &amp;&quot;/&quot;&amp; year
 end function
+&apos;--------------------------------------------------------------------	
+function insertZero(number)
+	if number &gt; 9 then
+		insertZero = number
+	else 
+		insertZero = &quot;0&quot;&amp;number
+	end if
+end function
 rem-------------------------------------------------------------------------
 Sub CopyVariableToClipboard(text as string)
 dim document   as object

@@ -38,7 +38,7 @@ Sub AT1125_Dialog_Show
 	mainImage = oDialog1125.Model.getByName(&quot;1125Logo&quot;)
 	mainImage.ImageURL = sertPath &amp; &quot;1125/1125_wide.png&quot;
 
-	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.0 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.1 &quot;, isComboCollection, BDList)
 
 	oOption1125 = oDialog1125.getControl(&quot;is1125&quot;)
 	oOption1125A = oDialog1125.getControl(&quot;is1125A&quot;)
@@ -87,6 +87,7 @@ sub makeBetaLayout(bd as new DUnit)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub calculateUA(bd as new DUnit)
+	dim stroke as string
 	dim pointList as new collection
 	dim myFormat as string
 	dim point as double
@@ -101,11 +102,13 @@ sub calculateUA(bd as new DUnit)
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 1
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 0
 		end if
-		oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat) &amp; &quot; &quot;
+		oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot; &apos; &amp; &quot; (№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot;) &quot;
 		oDialog1125.getControl(&quot;uaField&quot; + i).value = Format(point, myFormat) rem ЕСЛИ ЕСЛИ БЫ НУЖНО БЫЛО СОХРАНЕНИЕ, ТОГДА getValueList.item(i)
 		pointList.add(point)
+		stroke = stroke + &quot;№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot; &quot;
 	next i
 	bd.setPointList(pointList)
+	oDialog1125.getControl(&quot;SourseText&quot;).text = stroke
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayout1125
@@ -131,7 +134,7 @@ sub initializeBD
 	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;&quot;,			Array(58.3,727,6300,62100,186000),	emptyArray,									 &quot;alpha&quot;,		Array(2.4,100))
 	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;&quot;,			Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),	 &quot;beta&quot;,		Array(6,100))
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;Зв/ч&quot;,		Array(0.7,7,70,0.7,7,20),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),			 &quot;gamma&quot;,		Array(0.1,30))
-	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;),						 &quot;gamma-Src&quot;,	Array(0,0))
+	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;3663&quot;),						 &quot;gamma-Src&quot;,	Array(0,0))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
@@ -170,6 +173,7 @@ sub enableUA(visibility as boolean)
 		oDialog1125.getControl(&quot;uaLabel&quot; + i).setEnable(visibility)		
 	next i
 	oDialog1125.getControl(&quot;uaLabel&quot;).setEnable(visibility)
+	oDialog1125.getControl(&quot;SourseText&quot;).setEnable(visibility)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 &apos;Зачем я заморачивался с созданием метода setBZ и setSM, а не подвязал все три чекбокса к одному методу setVisibility?

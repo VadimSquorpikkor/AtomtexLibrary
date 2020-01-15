@@ -7,7 +7,7 @@ dim oDialog1117 as object
 dim typeText as object						rem название типа БД
 dim BDList as new Collection 				rem коллекция блоков детектирования
 dim emptyArray(6) as string rem сделать общим, есть другие БД, которые ссылаются на этот массив
-dim measLimitsArray(11) as double rem 6 типов, каждого по два (min, max) = 12
+dim measLimitsArray(13) as double rem 7 типов, каждого по два (min, max) = 14
 
 dim Overall as new Overall
 dim Facility as new Facility
@@ -53,7 +53,7 @@ sub initialize1117							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md n
 	rem-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;&quot;,		Array(78.3,743,6300,62100),				emptyArray,										&quot;alpha&quot;,	Array(0.1,10))	rem №12
 	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;&quot;,		Array(74.4,630,5140,35600),				emptyArray,										&quot;alpha&quot;,	Array(0.05,5))
-	addBDtoCollection(&quot;БДПБ-01&quot;,	&quot;&quot;,		Array(96,228,5591,51010,370350),		Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),		&quot;beta&quot;,		Array(1,50))  &apos; для беты 	Array(96,228,5591,51010,370350) НЕ ИСПОЛЬЗУЕТСЯ
+	addBDtoCollection(&quot;БДПБ-01&quot;,	&quot;&quot;,		Array(96,228,5591,51010,370350),		Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),		&quot;beta&quot;,		Array(1,50))  &apos; для беты 	Array(96,228,5591,51010,370350) -- НЕ ИСПОЛЬЗУЕТСЯ
 	addBDtoCollection(&quot;БДПБ-02&quot;,	&quot;&quot;,		Array(14.2,74.4,514,6290,56800),		Array(&quot;0663&quot;,&quot;0664&quot;,&quot;0665&quot;,&quot;0666&quot;,&quot;0667&quot;),		&quot;beta&quot;,		Array(0.5,15))
 	rem-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БОИ-1&quot;,		&quot;Зв/ч&quot;,	Array(20,70,0.7,7), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10))	rem №16
@@ -178,36 +178,38 @@ rem-----------------------------------------------------------------------------
 sub calculateMeasLimitsArray(min as double, max as double, bdType as string) rem TODO вообще-то можно в параметре передавать не свойства, а сразу объект класса DUnit
 	&apos;msgbox &quot;&quot;+min+&quot; &quot;+max+&quot; &quot;+bdType
 	select case bdType
-	case &quot;gamma&quot;
+	case &quot;gamma&quot; 	&apos;АМБИЕНТНЫЙ ЭКВИВАЛЕНТ
 		limitComparator(min, max, 0)
-	case &quot;alpha&quot;
+	case &quot;alpha&quot;	&apos;АЛЬФА
 		limitComparator(min, max, 2)
-	case &quot;beta&quot;
+	case &quot;beta&quot;		&apos;БЕТА
 		limitComparator(min, max, 4)
-	case &quot;n-PP&quot;
+	case &quot;n-PP&quot;		&apos;НЕЙТРОН ПО ПЛОТНОСТИ ПОТОКА
 		limitComparator(min, max, 6)
-	case &quot;n-MD&quot;
+	case &quot;n-MD&quot;		&apos;НЕЙТРОН ПО МОЩНОСТИ ДОЗЫ
 		limitComparator(min, max, 8)
-	case &quot;gamma-Gy&quot;
+	case &quot;gamma-Gy&quot;	&apos;КЕРМА В ВОЗДУХЕ
 		limitComparator(min, max, 10)
-	&apos;case &quot;gamma007&quot;
-	&apos;	limitComparator(min, max, 11)	
+	case &quot;gamma007&quot;	&apos;НАПРАВЛЕННЫЙ ЭКВИВАЛЕНТ
+		limitComparator(min, max, 12)	
 	end select	
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertMeasLimits
-	findAndRename(&quot;$g_min&quot;,   rightPrefixAndNumber(0))
-	findAndRename(&quot;$g_max&quot;,   rightPrefixAndNumber(1))
-	findAndRename(&quot;$a_min&quot;,   rightPrefixAndNumber(2))
-	findAndRename(&quot;$a_max&quot;,   rightPrefixAndNumber(3))
-	findAndRename(&quot;$b_min&quot;,   rightPrefixAndNumber(4))
-	findAndRename(&quot;$b_max&quot;,   rightPrefixAndNumber(5))
-	findAndRename(&quot;$ppn_min&quot;, rightPrefixAndNumber(6))
-	findAndRename(&quot;$ppn_max&quot;, rightPrefixAndNumber(7))
-	findAndRename(&quot;$mdn_min&quot;, rightPrefixAndNumber(8))
-	findAndRename(&quot;$mdn_max&quot;, rightPrefixAndNumber(9))
-	findAndRename(&quot;$k_min&quot;,   rightPrefixAndNumber(10))
-	findAndRename(&quot;$k_max&quot;,   rightPrefixAndNumber(11))
+	findAndRename(&quot;$g_min&quot;,   	rightPrefixAndNumber(0))
+	findAndRename(&quot;$g_max&quot;,   	rightPrefixAndNumber(1))
+	findAndRename(&quot;$a_min&quot;,   	rightPrefixAndNumber(2))
+	findAndRename(&quot;$a_max&quot;,   	rightPrefixAndNumber(3))
+	findAndRename(&quot;$b_min&quot;,   	rightPrefixAndNumber(4))
+	findAndRename(&quot;$b_max&quot;,   	rightPrefixAndNumber(5))
+	findAndRename(&quot;$ppn_min&quot;, 	rightPrefixAndNumber(6))
+	findAndRename(&quot;$ppn_max&quot;, 	rightPrefixAndNumber(7))
+	findAndRename(&quot;$mdn_min&quot;, 	rightPrefixAndNumber(8))
+	findAndRename(&quot;$mdn_max&quot;, 	rightPrefixAndNumber(9))
+	findAndRename(&quot;$k_min&quot;,   	rightPrefixAndNumber(10))
+	findAndRename(&quot;$k_max&quot;,		rightPrefixAndNumber(11))
+	findAndRename(&quot;$g007_min&quot;,  rightPrefixAndNumber(12))
+	findAndRename(&quot;$g007_max&quot;,  rightPrefixAndNumber(13))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function rightPrefixAndNumber(n as integer) as string
@@ -267,7 +269,15 @@ function rightPrefixAndNumber(n as integer) as string
 		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; м&quot;
 	case 11 rem ------------ gamma-Gy max -------------
 		if p &lt; 1000 then rightPrefixAndNumber = &quot;&quot; + p + &quot; м&quot;
-		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; &quot;	
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; &quot;
+	case 12 rem ------------ gamma007 min -------------
+		if p &lt; 0.6  then rightPrefixAndNumber = &quot;&quot; + p*1000 + &quot; н&quot;
+		if p &lt; 1000 AND p &gt;= 0.6 then rightPrefixAndNumber = &quot;&quot; + p + &quot; мк&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; м&quot;
+	case 13 rem ------------ gamma007 max -------------
+		if p &lt; 0.6  then rightPrefixAndNumber = &quot;&quot; + p*1000 + &quot; н&quot;
+		if p &lt; 1000 AND p &gt;= 0.6 then rightPrefixAndNumber = &quot;&quot; + p + &quot; мк&quot;
+		if p &gt;= 1000 then rightPrefixAndNumber = &quot;&quot; + p/1000 + &quot; м&quot;		
 	end select
 end function
 rem---------------------------------------------------------------------------------------------------------
@@ -333,6 +343,7 @@ sub insertDataToTemplate
 		if BDList.item(i).isPrintable then
 			bd = BDList.item(i)
 			calculateMeasLimitsArray(bd.minLimit, bd.maxLimit, bd.getType)
+			&apos;msgbox &quot;&quot;+bd.minLimit+bd.maxLimit+bd.getType
 			strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
 			facilities.addTypeAndLimits(bd.BDType, bd.minLimit, bd.maxLimit)		
 			
@@ -353,11 +364,11 @@ sub insertDataToTemplate
 	next i	
 
 	rem удалить ненужные диапазоны----------------------------------
-	dim f() as boolean
-	f = facilities.RadTypeArray
-	for i=0 to 5
+	&apos;dim f() as boolean
+	&apos;f = facilities.RadTypeArray
+	&apos;for i=0 to 5
 		&apos;if f(i) = false then deleteTable(&quot;tml&quot; + i)	
-	next i
+	&apos;next i
 	rem удалить ненужные поверочные установки-----------------------
 	dim f2() as boolean
 	f2 = facilities.FacTypeArray
@@ -365,13 +376,17 @@ sub insertDataToTemplate
 		if f2(i) = false then deleteTable(&quot;tf&quot; + i)	
 	next i
 	rem удалить ненужные пределы измерений--------------------------
-	for i=0 to 5 rem нет смысла проверять обе точки, не может одна из точек равняться 0, а другая числу
+	for i=0 to 6 rem нет смысла проверять обе точки, не может одна из точек равняться 0, а другая числу
 		if measLimitsArray(i*2)=0 then deleteTable(&quot;tml&quot; + i)
 	next i
 	rem ------------------------------------------------------------
 	insertMeasLimits
-	strokeForSaving = &quot;1117 M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	strokeForSaving = &quot;1117M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	CopyVariableToClipboard(strokeForSaving)
+	rem сброс массива пределов измерений для возможного следующего протокола иначе с каждым последующим выводом протокола пределы будут накапливаться
+	for i=0 to uBound(measLimitsArray)
+		measLimitsArray(i) = 0
+	next i
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -387,11 +402,11 @@ sub neutron_01(i as integer, bd as BUnit)
 		for n = 1 to 4
 			point = bd.valueList.item(n+1)
 			p1 = (point-fon)*point_br_array(n-1)
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
 			p3 = 1.1 * sqr(p2 * p2 + 5*5)
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
 			
 		next n
 end sub
@@ -409,11 +424,11 @@ sub neutron_03(i as integer, bd as BUnit)
 		for n = 1 to 4
 			point = bd.valueList.item(n+1)
 			p1 = (point-fon)*point_br_array(n-1)	
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 			p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
 			p3 = 1.1 * sqr(p2 * p2 + 5*5)
-			findAndRename((&quot;$&quot; + (i-1) + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
 			
 		next n
 end sub

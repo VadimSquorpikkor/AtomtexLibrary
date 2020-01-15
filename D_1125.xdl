@@ -101,20 +101,21 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:textfield dlg:style-id="5" dlg:id="bdSerial" dlg:tab-index="74" dlg:left="91" dlg:top="4" dlg:width="38" dlg:height="18" dlg:value="1234"/>
-  <dlg:text dlg:style-id="4" dlg:id="Label14" dlg:tab-index="84" dlg:left="198" dlg:top="214" dlg:width="11" dlg:height="34" dlg:value="γ" dlg:align="center"/>
+  <dlg:text dlg:style-id="4" dlg:id="Label14" dlg:tab-index="84" dlg:left="200" dlg:top="214" dlg:width="11" dlg:height="34" dlg:value="γ" dlg:align="center"/>
   <dlg:text dlg:id="Label15" dlg:tab-index="85" dlg:left="56" dlg:top="4" dlg:width="34" dlg:height="17" dlg:value="Серийный номер: " dlg:align="right" dlg:multiline="true"/>
-  <dlg:numericfield dlg:id="uaField1" dlg:tab-index="76" dlg:left="165" dlg:top="208" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField2" dlg:tab-index="77" dlg:left="165" dlg:top="219" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField3" dlg:tab-index="78" dlg:left="165" dlg:top="230" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField4" dlg:tab-index="79" dlg:left="165" dlg:top="241" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:text dlg:id="uaLabel1" dlg:tab-index="80" dlg:left="135" dlg:top="210" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel2" dlg:tab-index="81" dlg:left="135" dlg:top="221" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel3" dlg:tab-index="82" dlg:left="135" dlg:top="232" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel4" dlg:tab-index="83" dlg:left="135" dlg:top="243" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:numericfield dlg:id="uaField1" dlg:tab-index="76" dlg:left="167" dlg:top="208" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField2" dlg:tab-index="77" dlg:left="167" dlg:top="219" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField3" dlg:tab-index="78" dlg:left="167" dlg:top="230" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField4" dlg:tab-index="79" dlg:left="167" dlg:top="241" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:text dlg:id="uaLabel1" dlg:tab-index="80" dlg:left="137" dlg:top="210" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="uaLabel2" dlg:tab-index="81" dlg:left="137" dlg:top="221" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="uaLabel3" dlg:tab-index="82" dlg:left="137" dlg:top="232" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="uaLabel4" dlg:tab-index="83" dlg:left="137" dlg:top="243" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:style-id="5" dlg:id="uaLabel" dlg:tab-index="75" dlg:left="139" dlg:top="164" dlg:width="72" dlg:height="40" dlg:value="Удельная активность" dlg:align="center" dlg:multiline="true"/>
   <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="86" dlg:left="136" dlg:top="156" dlg:width="78" dlg:height="126"/>
   <dlg:checkbox dlg:style-id="1" dlg:id="isMarin" dlg:tab-index="87" dlg:left="13" dlg:top="141" dlg:width="118" dlg:height="12" dlg:value="Уд. активность с сосудом Маринелли" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.setSM?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
+  <dlg:text dlg:id="SourseText" dlg:tab-index="88" dlg:left="139" dlg:top="259" dlg:width="72" dlg:height="18" dlg:align="center" dlg:multiline="true"/>
  </dlg:bulletinboard>
 </dlg:window>
