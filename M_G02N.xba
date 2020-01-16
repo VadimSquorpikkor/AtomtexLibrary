@@ -34,7 +34,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.20 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.21 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -53,6 +53,7 @@ Sub G02N_Dialog_Show
 	oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
 	oDialogG02N.getControl(&quot;serialLabel&quot;).Text = &quot;S/N&quot;
 	oDialogG02N.getControl(&quot;typeLabel&quot;).visible = false
+	oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
 	
 	oOptionBDKG02 = oDialogG02N.Model.getByName(&quot;isBDKG-02&quot;)
 	oOptionBDKG204 = oDialogG02N.Model.getByName(&quot;isBDKG-204&quot;)
@@ -143,7 +144,7 @@ sub addNewBD
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
 			enableLastTreeFields(true, false, false)
-			oDialogG02N.getControl(&quot;typeLabel&quot;).text = &quot;БДКГ-204&quot;
+			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДКГ-204&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)
 		end if
 		if oOptionBDKG02.state then
@@ -151,7 +152,7 @@ sub addNewBD
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
 			enableLastTreeFields(false, false, false)
-			oDialogG02N.getControl(&quot;typeLabel&quot;).text = &quot;БДКГ-02&quot;
+			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДКГ-02&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(true)						
 		end if
 		if oOptionBDMG.state then
@@ -159,7 +160,7 @@ sub addNewBD
 			enableBDMG(true)
 			oDialogG02N.getControl(&quot;addButton&quot;).setEnable(false)
 			enableLastTreeFields(true, true, true)
-			oDialogG02N.getControl(&quot;typeLabel&quot;).text = &quot;БДМГ-2343&quot;
+			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДМГ-2343&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
 		end if	
 	end if
@@ -249,13 +250,13 @@ function setButtonVisibility
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = true		
-		oDialogG02N.getControl(&quot;typeLabel&quot;).visible = false
+		oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
 	end if
 	if BDList.count &lt;&gt; 0 then
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = false
-		oDialogG02N.getControl(&quot;typeLabel&quot;).visible = true
+		oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = true
 	end if
 end function
 rem---------------------------------------------------------------------------------------------------------

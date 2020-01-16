@@ -104,6 +104,7 @@ sub insertRecordsToTemplate
 	path = Overall.PathForProtocol(&quot;bdkg224\bdkg224&quot;, calibName, techName)
 
 	OpenTemplate(sertPath &amp; path)
+	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate(calibName, techName)
 	dim bd as new DUnit
 	
