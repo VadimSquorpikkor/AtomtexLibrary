@@ -14,8 +14,8 @@
   <dlg:button dlg:id="CommandButton6" dlg:tab-index="7" dlg:left="40" dlg:top="124" dlg:width="70" dlg:height="16" dlg:value="МКС-АТ6130">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.AT6130_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButton7" dlg:tab-index="9" dlg:disabled="true" dlg:left="40" dlg:top="156" dlg:width="70" dlg:height="16" dlg:value="БДКН">
-   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_bdkn.bdkn_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
+  <dlg:button dlg:id="CommandButton7" dlg:tab-index="9" dlg:left="40" dlg:top="156" dlg:width="70" dlg:height="16" dlg:value="БДКН" dlg:checked="true">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.BDKN_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="CommandButton8" dlg:tab-index="11" dlg:left="17" dlg:top="177" dlg:width="44" dlg:height="10" dlg:value="Sort Columns">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.ModuleMain.sortColumns?language=Basic&amp;location=application" script:language="Script"/>

@@ -3,7 +3,8 @@
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="Activity" script:language="StarBasic">REM  *****  BASIC  *****
 
 &apos; 	╔═══════════════════════════════════════════════════════════════╗
-&apos;	║			АКТИВНОСТЬ ИСТОЧНИКОВ								║█
+&apos;	║																║█
+&apos;	║		АКТИВНОСТЬ ИСТОЧНИКОВ									║█
 &apos;	║	_________________________________________________________	║█
 &apos;	║																║█
 &apos;	║	Методы расчета, константы начальных значений фктивностей, 	║█
@@ -134,6 +135,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 70 	then ar = Array(&quot;043&quot;,&quot;114&quot;)
 				if point = 200 	then ar = Array(&quot;043&quot;,&quot;67.7&quot;)
 		case &quot;&quot;
+				if point = 0.35	then ar = Array(&quot;163&quot;,&quot;329.8&quot;)
 				if point = 0.5 	then ar = Array(&quot;163&quot;,&quot;276.9&quot;)
 				if point = 0.7 	then ar = Array(&quot;163&quot;,&quot;235&quot;)
 				if point = 7 	then ar = Array(&quot;163&quot;,&quot;76&quot;)

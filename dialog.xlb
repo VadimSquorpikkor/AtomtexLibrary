@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE library:library PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "library.dtd">
 <library:library xmlns:library="http://openoffice.org/2000/library" library:name="AtomtexLibrary" library:readonly="false" library:passwordprotected="false">
- <library:element library:name="D_bdkn"/>
+ <library:element library:name="Dialog1"/>
  <library:element library:name="D_G02N"/>
  <library:element library:name="DialogMain"/>
  <library:element library:name="D_1117_N"/>
@@ -15,4 +15,6 @@
  <library:element library:name="D224"/>
  <library:element library:name="D_1125"/>
  <library:element library:name="D_1117M"/>
+ <library:element library:name="Dialog2"/>
+ <library:element library:name="D_BDKN"/>
 </library:library>

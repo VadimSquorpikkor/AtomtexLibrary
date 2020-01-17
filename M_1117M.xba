@@ -375,7 +375,7 @@ sub insertDataToTemplate
 	next i
 	rem ------------------------------------------------------------
 	insertMeasLimits
-	strokeForSaving = &quot;1117M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	strokeForSaving = &quot;1117 M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	rem сброс массива пределов измерений для возможного следующего протокола иначе с каждым последующим выводом протокола пределы будут накапливаться
 	for i=0 to uBound(measLimitsArray)

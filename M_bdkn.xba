@@ -1,107 +1,182 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="M_bdkn" script:language="StarBasic">REM  *****  BASIC  *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="M_BDKN" script:language="StarBasic">REM  *****  BASIC  *****
 
+rem---------------------------------------------------------------------------------------------------------
+dim Overall as new Overall
 dim oDialogBDKN as object
 dim oDateFieldModel as object
-dim RangeData
-dim gstop as boolean 
+dim oListBox as object
+dim oOptionButtonPr as object
+dim oOptionButtonSr as object
+dim oOptionButtonSe as object
+dim oOption02 as object
+dim oOption04 as object
+dim oOption05 as object
+dim BDList as new Collection
+dim layoutPosition as integer
+dim maxBDCount as integer
+dim path, calibName, techName as string
+rem---------------------------------------------------------------------------------------------------------
+Sub BDKN_Dialog_Show
+	maxBDCount = 10
 
-Sub bdkn_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
-	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_bdkn )
-	oDateFieldModel = oDialogBDKN.Model.getByName(&quot;DateField1&quot;)
-	oDialogBDKN.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;bdkn.png&quot;
-   
-	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
-	oDateFieldModel.Date = cDateToIso(Now)
+	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
+	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.0 &quot;, oListBox, 5)
+	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+	&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
+
+	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)	
+	oOption04 = oDialogBDKN.getControl(&quot;is04&quot;)
+	oOption05 = oDialogBDKN.getControl(&quot;is05&quot;)
+
+	isComboCollection.add(oOption02)
+	isComboCollection.add(oOption04)
+	isComboCollection.add(oOption05)
+	oOption02.State = 0
+	
+	for i=1 to 5
+		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
+		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
+	next i
+
 	oDialogMain.endexecute()   
-	
-	oDialogBDKN.visible = true
-  	do until gstop       
-        wait (1000)
- 	loop
-	oDialogBDKN.visible = false
-
+	oDialogBDKN.Execute()
 End Sub
-
-sub closedialog
-	gstop = true
+rem---------------------------------------------------------------------------------------------------------
+sub setButtonEnabled
+	oDialogBDKN.getControl(&quot;addButton&quot;).setEnable(true)
+	if oOption1103.state then
+		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
+	else
+		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
+	end if	
 end sub
+rem---------------------------------------------------------------------------------------------------------
+sub addNewBD
+	dim bdName as string
+	dim nCount as integer
+	dim bd as new DUnit
 
-sub makeSertEn
-	RangeData = FillArrayFromSelection()
-    MyFormat = &quot;0.0&quot;
-    OpenTemplate(sertPath &amp; &quot;template_bdkn02_ser_EN.odt&quot;)
-	findAndRename(&quot;$bd_num$&quot;, RangeData(0,0))
-	findAndRename(&quot;$k1$&quot;, Format(RangeData(6,2), MyFormat)
-    findAndRename(&quot;$k2$&quot;, Format(RangeData(6,3), MyFormat)
-    findAndRename(&quot;$k3$&quot;, Format(RangeData(6,4), MyFormat)
-    findAndRename(&quot;$k4$&quot;, Format(RangeData(6,5), MyFormat)
-    findAndRename(&quot;$k5$&quot;, Format(RangeData(14,5), MyFormat)
-    findAndRename(&quot;$date$&quot;, getDate(oDateFieldModel))
-end sub
+	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
+	&apos;if oOption1103.state then bd.addData(&quot;AT1103M&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;)	,					&quot;gamma007&quot;,	Array(0.05,0.1))
+	&apos;if oOption1121.state then bd.addData(&quot;AT1121&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
+	&apos;if oOption1123.state then bd.addData(&quot;AT1123&quot;, 	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
 
-sub makeProtRus
-	RangeData = FillArrayFromSelection()
-    MyFormat = &quot;0.0&quot;
-    OpenTemplate(sertPath &amp; &quot;template_bdkn02_prot_RU.odt&quot;)
+	if oOption1103.state then
+		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;1121\1103_bg.png&quot;
+	else
+		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
+	end if	
+
+	for i=1 to bd.getPointList.count
+		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(true)
+		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(true)
+	next i
 	
-	findAndRename(&quot;$k1$&quot;, Format(RangeData(5,1), MyFormat)
-    findAndRename(&quot;$k2$&quot;, Format(RangeData(5,2), MyFormat)
-    findAndRename(&quot;$k3$&quot;, Format(RangeData(5,3), MyFormat)
-    findAndRename(&quot;$k4$&quot;, Format(RangeData(5,4), MyFormat)
-    findAndRename(&quot;$k5$&quot;, Format(RangeData(5,5), MyFormat)
-    
-    
-	findAndRename(&quot;$k6$&quot;, Format(RangeData(6,2), MyFormat)
-    findAndRename(&quot;$k7$&quot;, Format(RangeData(6,3), MyFormat)
-    findAndRename(&quot;$k8$&quot;, Format(RangeData(6,4), MyFormat)
-    findAndRename(&quot;$k9$&quot;, Format(RangeData(6,5), MyFormat)
-    
-	findAndRename(&quot;$k10$&quot;, Format(RangeData(7,2), MyFormat)
-    findAndRename(&quot;$k11$&quot;, Format(RangeData(7,3), MyFormat)
-    findAndRename(&quot;$k12$&quot;, Format(RangeData(7,4), MyFormat)
-    findAndRename(&quot;$k13$&quot;, Format(RangeData(7,5), MyFormat)
-    
-	findAndRename(&quot;$k14$&quot;, Format(RangeData(8,2), MyFormat)
-    findAndRename(&quot;$k15$&quot;, Format(RangeData(8,3), MyFormat)
-    findAndRename(&quot;$k16$&quot;, Format(RangeData(8,4), MyFormat)
-    findAndRename(&quot;$k17$&quot;, Format(RangeData(8,5), MyFormat)
-
-    findAndRename(&quot;$srk_num$&quot;, oDialogBDKN.Model.getByName(&quot;TextField1&quot;).Text)
-    findAndRename(&quot;$bd_num$&quot;, oDialogBDKN.Model.getByName(&quot;TextField2&quot;).Text)
-    
-end sub
-
-sub makeProt01Rus
-	RangeData = FillArrayFromSelection()
-    MyFormat = &quot;0.0&quot;
-    OpenTemplate(sertPath &amp; &quot;template_bdkn_01.odt&quot;)
+	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(true)
+	bd.setSerial(oDialogBDKN.getControl(&quot;bdSerial&quot;).text)
 	
-	findAndRename(&quot;$k1$&quot;, Format(RangeData(5,1), MyFormat)
-    findAndRename(&quot;$k2$&quot;, Format(RangeData(5,2), MyFormat)
-    findAndRename(&quot;$k3$&quot;, Format(RangeData(5,3), MyFormat)
-    findAndRename(&quot;$k4$&quot;, Format(RangeData(5,4), MyFormat)
-    findAndRename(&quot;$k5$&quot;, Format(RangeData(5,5), MyFormat)
-    
-    
-	findAndRename(&quot;$k6$&quot;, Format(RangeData(6,2), MyFormat)
-    findAndRename(&quot;$k7$&quot;, Format(RangeData(6,3), MyFormat)
-    findAndRename(&quot;$k8$&quot;, Format(RangeData(6,4), MyFormat)
-    findAndRename(&quot;$k9$&quot;, Format(RangeData(6,5), MyFormat)
-    
-	findAndRename(&quot;$k10$&quot;, Format(RangeData(7,2), MyFormat)
-    findAndRename(&quot;$k11$&quot;, Format(RangeData(7,3), MyFormat)
-    findAndRename(&quot;$k12$&quot;, Format(RangeData(7,4), MyFormat)
-    findAndRename(&quot;$k13$&quot;, Format(RangeData(7,5), MyFormat)
-    
-	findAndRename(&quot;$k14$&quot;, Format(RangeData(8,2), MyFormat)
-    findAndRename(&quot;$k15$&quot;, Format(RangeData(8,3), MyFormat)
-    findAndRename(&quot;$k16$&quot;, Format(RangeData(8,4), MyFormat)
-    findAndRename(&quot;$k17$&quot;, Format(RangeData(8,5), MyFormat)
-
-    findAndRename(&quot;$num$&quot;, oDialogBDKN.Model.getByName(&quot;TextField3&quot;).Text)
-   
+	nCount = oListBox.getItemCount()
+	oListBox.addItem( bd.getSerial, nCount )
+	BDList.add(bd)
+	&apos;Overall.increment(oDialog1121.getControl(&quot;bdSerial&quot;))
+	oDialogBDKN.getControl(&quot;bdSerial&quot;).value = oDialogBDKN.getControl(&quot;bdSerial&quot;).value + 1
+	makeLayoutFromBD(BDList.item(1)) &apos;BDList.count
+	layoutPosition = 1 &apos;BDList.count
+	setButtonVisibility
 end sub
+rem---------------------------------------------------------------------------------------------------------
+sub removeLastBD
+	if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
+	oListBox.removeItems(oListBox.getItemCount()-1, 1 )
+	BDList.remove(BDList.count)
+	if oListBox.getItemCount()=0 then
+		oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(false)
+		for i=1 to 9
+			oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
+			oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
+		next i
+	else 
+		makeLayoutFromBD(BDList.item(BDList.count))
+	end if
+	setButtonVisibility
+end Sub
+rem---------------------------------------------------------------------------------------------------------
+function listBoxListener
+	Dim selectPos As Integer
+	saveCurentBDValue(layoutPosition)
+	selectPos = oListBox.getSelectedItemPos()
+	layoutPosition = selectPos + 1
+	makeLayoutFromBD(BDList.item(layoutPosition))
+	setButtonVisibility
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub makeLayoutFromBD(bd as new DUnit)
+	Overall.makeLayoutFromBD(bd)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub saveCurentBDValue(num as integer)
+	dim newValues as new Collection
+	for i=1 to BDList.item(num).valueList.count
+		newValues.add(oDialogBDKN.getControl(&quot;ValueField&quot; + i).Value)
+	next i
+	BDList.item(num).setValueList(newValues)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub showNextBD
+	saveCurentBDValue(layoutPosition)
+	layoutPosition = layoutPosition + 1
+	setButtonVisibility	
+	makeLayoutFromBD(BDList.item(layoutPosition))
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub showPrevBD
+	saveCurentBDValue(layoutPosition)
+	layoutPosition = layoutPosition - 1
+	setButtonVisibility
+	makeLayoutFromBD(BDList.item(layoutPosition))
+end sub
+rem---------------------------------------------------------------------------------------------------------
+function setButtonVisibility
+	Overall.setButtonVisibility(layoutPosition)
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub insertRecordsToTemplate
+	saveCurentBDValue(layoutPosition)
+	dim strokeForSaving as string
+	strokeForSaving = &quot;&quot;	
+	
+	if oOption1103.state  then
+		path = Overall.PathForProtocol(&quot;1121\1103&quot;, calibName, techName)
+	else
+		path = Overall.PathForProtocol(&quot;1121\1121&quot;, calibName, techName)
+	end if	
+		
+	OpenTemplate(sertPath &amp; path)
+	Overall.insertFacilitiesText
+	Overall.insertParametersToTemplate (calibName, techName)
+	dim bd as new DUnit
+	
+	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+		deleteTable(&quot;t&quot; + (k))
+	next k
+	
+	for i=1 to BDList.count
+		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
+		Overall.insertToTemplateStep(i) &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i, percentOtk, bground)
+	next i
+	
+	findAndRename(&quot;$type&quot;, BDList.item(1).getName)
+	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
+	if oOption02.state then strokeForSaving = &quot;БДКН-02 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	if oOption04.state then strokeForSaving = &quot;БДКН-04 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	if oOption05.state then strokeForSaving = &quot;БДКН-05 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	CopyVariableToClipboard(strokeForSaving)
+	msgbox &quot;Готово!&quot;
+end sub
+rem---------------------------------------------------------------------------------------------------------
+
 </script:module>
