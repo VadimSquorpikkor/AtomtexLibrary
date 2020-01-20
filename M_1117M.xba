@@ -26,7 +26,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.00 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.01 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
@@ -134,6 +134,14 @@ sub clearLayout
 	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub setColorIfChecked(checkBox as object)
+	if checkBox.state then
+		checkBox.textColor = RGB(200, 0, 0)
+	else 	
+		checkBox.textColor = RGB(0, 0 , 0)
+	end if	
+end sub
+rem---------------------------------------------------------------------------------------------------------
 sub checkBoxListener(oEvent As Object)
 	Dim oCheckbox As Object
     oCheckbox = oEvent.source.model
@@ -149,6 +157,7 @@ sub checkBoxListener(oEvent As Object)
     	BDList.item(position).isPrintable = oCheckbox.State rem при клике на чекбокс устанавливаю в переменную объекта БД значение из чБокса -- true или false  	
     	n = 1
     end if
+    setColorIfChecked(oCheckbox)
     
     if checkedCount = 0 then
     	makeLayout(BDList.item(position)) &apos;ЕСЛИ ПЕРЕД ТЕМ, КАК СЧИТАТЬ СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО БЫЛО РАВНО 0, ЭТО ЗНАЧИТ ДОБАВЛЯЕТСЯ САМЫЙ ПЕРВЫЙ БД -- РИСУЕМ ЕГО ЛЭЙАУТ
