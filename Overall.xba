@@ -259,6 +259,12 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;sub makeAdditionalBGValue
 &apos;end sub
+function getFormat(num as double)
+	if m_point &lt; 0.1 and m_point &gt; 0  then getFormat = &quot;0.000&quot;
+	if m_point &lt; 1 and m_point &gt;= 0.1 then getFormat = &quot;0.00&quot;
+	if m_point &lt; 100 and m_point &gt;= 1 then getFormat = &quot;0.0&quot;
+	if m_point &gt;= 100 				  then getFormat = &quot;0&quot;
+end function
 rem---------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)&apos;&apos;&apos;&apos;&apos; НЕ ИСПОЛЬЗУЕТСЯ
 		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
@@ -287,6 +293,10 @@ sub templateStep(i as integer, strokeEnd as string)&apos;&apos;&apos;&apos;&apos
 			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), MyFormat)) rem измерение 1
 			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), MyFormat)) rem измерение 2
 			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), MyFormat)) rem измерение 3
+			
+			&apos;findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), getFormat(threePointArray(0)))) rem измерение 1
+			&apos;findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), getFormat(threePointArray(1))) rem измерение 2
+			&apos;findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), getFormat(threePointArray(2))) rem измерение 3
 				
 			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
 			
@@ -399,6 +409,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 		_oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
 		_oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
 		_oDialog.getControl(&quot;doneButton&quot;).setEnable(false)
+		_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
 		_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;S/N&quot;
 		_oListBox.setEnable(false)
 		for i=1 to _isComboCollection.count

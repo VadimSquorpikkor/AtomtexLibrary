@@ -42,17 +42,17 @@ Sub BDKN_Dialog_Show
 		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
 	next i
 
+	oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_all.png&quot;
+
 	oDialogMain.endexecute()   
 	oDialogBDKN.Execute()
 End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
 	oDialogBDKN.getControl(&quot;addButton&quot;).setEnable(true)
-	if oOption1103.state then
-		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
-	else
-		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
-	end if	
+	if oOption02.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn02.png&quot;
+	if oOption04.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn04.png&quot;	
+	if oOption05.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn05.png&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -61,15 +61,9 @@ sub addNewBD
 	dim bd as new DUnit
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	&apos;if oOption1103.state then bd.addData(&quot;AT1103M&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;)	,					&quot;gamma007&quot;,	Array(0.05,0.1))
-	&apos;if oOption1121.state then bd.addData(&quot;AT1121&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
-	&apos;if oOption1123.state then bd.addData(&quot;AT1123&quot;, 	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
-
-	if oOption1103.state then
-		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;1121\1103_bg.png&quot;
-	else
-		oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
-	end if	
+	if oOption02.state then bd.addData(&quot;БДКН-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000))
+	if oOption04.state then bd.addData(&quot;БДКН-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10))
+	if oOption05.state then bd.addData(&quot;БДКН-05&quot;,	&quot;&quot;,	Array(0.16, 40, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0,0))
 
 	for i=1 to bd.getPointList.count
 		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(true)
@@ -77,16 +71,31 @@ sub addNewBD
 	next i
 	
 	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(true)
-	bd.setSerial(oDialogBDKN.getControl(&quot;bdSerial&quot;).text)
 	
+	bdName = oDialogBDKN.getControl(&quot;srkNum&quot;).text &amp; &quot;.&quot; &amp; oDialogBDKN.getControl(&quot;bdNum&quot;).text
+	oDialogBDKN.getControl(&quot;fullNum&quot;).text = oDialogBDKN.getControl(&quot;srkNum&quot;).text + &quot;.&quot; + Left(oDialogBDKN.getControl(&quot;bdNum&quot;).text, 1) + &quot;00&quot;
+	bd.setSerial(bdName)
+	&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.getControl(&quot;bdType&quot;).text = BDList.item()
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
+	increment
+	
 	&apos;Overall.increment(oDialog1121.getControl(&quot;bdSerial&quot;))
-	oDialogBDKN.getControl(&quot;bdSerial&quot;).value = oDialogBDKN.getControl(&quot;bdSerial&quot;).value + 1
+	&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.getControl(&quot;bdSerial&quot;).value = oDialogBDKN.getControl(&quot;bdSerial&quot;).value + 1
 	makeLayoutFromBD(BDList.item(1)) &apos;BDList.count
 	layoutPosition = 1 &apos;BDList.count
 	setButtonVisibility
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub increment as string
+	dim inc as string
+	dim value as integer
+	value = oDialogBDKN.getControl(&quot;bdNum&quot;).text
+	if value &lt; 9 then inc = (&quot;00&quot; &amp; (value + 1))
+	if value &lt; 99 and value &gt; 8 then inc = &quot;0&quot; &amp; (value + 1)
+	if value &gt; 98 then inc = &quot;&quot; &amp; (value + 1)
+	oDialogBDKN.getControl(&quot;bdNum&quot;).text = inc
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
@@ -95,7 +104,7 @@ sub removeLastBD
 	BDList.remove(BDList.count)
 	if oListBox.getItemCount()=0 then
 		oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(false)
-		for i=1 to 9
+		for i=1 to 5
 			oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
 			oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
 		next i
@@ -142,35 +151,46 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function setButtonVisibility
 	Overall.setButtonVisibility(layoutPosition)
+	if BDList.count = 0 then
+		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_all.png&quot;
+		oOption02.State = 0
+		oOption04.State = 0
+		oOption05.State = 0
+		oDialogBDKN.getControl(&quot;addButton&quot;).setEnable(false)
+	end if	
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
-	
-	if oOption1103.state  then
-		path = Overall.PathForProtocol(&quot;1121\1103&quot;, calibName, techName)
-	else
-		path = Overall.PathForProtocol(&quot;1121\1121&quot;, calibName, techName)
-	end if	
+		
+	if oOption02.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn02&quot;, calibName, techName)
+	if oOption04.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn04&quot;, calibName, techName)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate (calibName, techName)
 	dim bd as new DUnit
+	dim bdkn as new NUnit
+	dim threePointArray(2) as double
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot; + (k))
 	next k
 	
 	for i=1 to BDList.count
+		bd = BDList.item(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
-		Overall.insertToTemplateStep(i) &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i, percentOtk, bground)
+		
+		if bd.BdName=&quot;БДКН-02&quot; then	bdkn.neutron_02_ToTemplateStep(i, bd)
+		if bd.BdName=&quot;БДКН-04&quot; then	bdkn.neutron_04_ToTemplateStep(i, bd)	
+		
+		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
 	next i
 	
 	findAndRename(&quot;$type&quot;, BDList.item(1).getName)
-	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
+	findAndRename(&quot;$serial&quot;, oDialogBDKN.getControl(&quot;fullNum&quot;).text)
 	if oOption02.state then strokeForSaving = &quot;БДКН-02 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	if oOption04.state then strokeForSaving = &quot;БДКН-04 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	if oOption05.state then strokeForSaving = &quot;БДКН-05 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;

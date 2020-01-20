@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="NUnit" script:language="StarBasic">REM  *****  BASIC  *****
+
+Option Compatible
+Option ClassModule
+Option Explicit
+
+dim Overall as new Overall 
+
+sub neutron_01_ToTemplateStep(i as integer, bd as BUnit)
+	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.957), Array(5.9, 57, 235, 1019), 5)
+end sub
+
+sub neutron_02_ToTemplateStep(i as integer, bd as BUnit)
+	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.957), Array(5.9, 57, 235, 1019), 5)
+end sub
+
+sub neutron_03_ToTemplateStep(i as integer, bd as BUnit)
+	neutron(i, bd, Array(0.866, 0.866, 0.957, 0.991), Array(8.3, 80, 331, 1434), 7)
+end sub
+
+sub neutron_04_ToTemplateStep(i as integer, bd as BUnit)
+	neutron(i, bd, Array(0.866, 0.866, 0.957, 0.991), Array(8.3, 80, 331, 1434), 7)
+end sub
+
+sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
+	
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_array as variant, percent as double)
+	dim j, n as integer
+ 	dim m_point, point, fon, p1, p2, p3 as double
+ 	dim MyFormat as string
+	dim threePointArray(2) as double
+	
+	for j=0 to bd.getPointList.count-1		
+		m_point = bd.valueList.item(j+1)
+		threePointArray = Overall.avaragePointsRndArray(m_point, OverAll.percentOtk)
+			
+		if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
+		if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+		if m_point &lt; 100 and m_point &gt;= 1 then MyFormat = &quot;0.0&quot;	
+		if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
+					
+		findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+			
+		findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+	next j
+		
+	fon = bd.valueList.item(1)	rem фон		
+	for n = 1 to 4
+		point = bd.valueList.item(n+1)
+		p1 = (point-fon)*point_br_array(n-1)
+		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, &quot;0.00&quot;))
+		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, &quot;0.00&quot;))
+		p3 = 1.1 * sqr(p2 * p2 + percent*percent)
+		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, &quot;0.00&quot;))
+	next n
+
+end sub
+
+</script:module>

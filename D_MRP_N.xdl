@@ -21,13 +21,13 @@
   <dlg:text dlg:id="Label11" dlg:tab-index="27" dlg:left="108" dlg:top="23" dlg:width="35" dlg:height="8" dlg:value="Номер МРП"/>
   <dlg:text dlg:id="Label12" dlg:tab-index="28" dlg:left="108" dlg:top="35" dlg:width="35" dlg:height="8" dlg:value="Номер БД"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:style-id="0" dlg:id="isBDKG11" dlg:tab-index="24" dlg:left="29" dlg:top="11" dlg:width="38" dlg:height="10" dlg:value="БДКГ-11/1">
+   <dlg:radio dlg:style-id="0" dlg:id="isBDKG11" dlg:tab-index="24" dlg:left="11" dlg:top="11" dlg:width="38" dlg:height="10" dlg:value="БДКГ-11/1">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_MRP_N.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="isBDKG19" dlg:tab-index="25" dlg:left="29" dlg:top="23" dlg:width="38" dlg:height="10" dlg:value="БДКГ-19">
+   <dlg:radio dlg:style-id="0" dlg:id="isBDKG19" dlg:tab-index="25" dlg:left="11" dlg:top="23" dlg:width="38" dlg:height="10" dlg:value="БДКГ-19">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_MRP_N.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="isBDKG35" dlg:tab-index="26" dlg:left="29" dlg:top="35" dlg:width="38" dlg:height="10" dlg:value="БДКГ-35">
+   <dlg:radio dlg:style-id="0" dlg:id="isBDKG35" dlg:tab-index="26" dlg:left="11" dlg:top="35" dlg:width="38" dlg:height="10" dlg:value="БДКГ-35">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_MRP_N.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
   </dlg:radiogroup>
