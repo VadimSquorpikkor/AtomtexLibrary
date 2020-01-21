@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.0 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.1 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
 
@@ -50,9 +50,18 @@ End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
 	oDialogBDKN.getControl(&quot;addButton&quot;).setEnable(true)
-	if oOption02.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn02.png&quot;
-	if oOption04.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn04.png&quot;	
-	if oOption05.state then oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn05.png&quot;
+	if oOption02.state then
+		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn02.png&quot;
+		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(true)
+	end if	
+	if oOption04.state then
+		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn04.png&quot;	
+		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(true)
+	end if	
+	if oOption05.state then
+		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn05.png&quot;
+		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(false)
+	end if 	
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -167,16 +176,18 @@ sub insertRecordsToTemplate
 		
 	if oOption02.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn02&quot;, calibName, techName)
 	if oOption04.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn04&quot;, calibName, techName)
+	if oOption05.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn05&quot;, calibName, techName)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate (calibName, techName)
 	dim bd as new DUnit
 	dim bdkn as new NUnit
-	dim threePointArray(2) as double
+&apos;&apos;&apos;&apos;&apos;&apos;	dim threePointArray(2) as double
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot; + (k))
+		deleteTable(&quot;tf&quot; + (k))
 	next k
 	
 	for i=1 to BDList.count
@@ -185,11 +196,12 @@ sub insertRecordsToTemplate
 		
 		if bd.BdName=&quot;БДКН-02&quot; then	bdkn.neutron_02_ToTemplateStep(i, bd)
 		if bd.BdName=&quot;БДКН-04&quot; then	bdkn.neutron_04_ToTemplateStep(i, bd)	
+		if bd.BdName=&quot;БДКН-05&quot; then	bdkn.neutron_05_ToTemplateStep(i, bd)
 		
 		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
 	next i
 	
-	findAndRename(&quot;$type&quot;, BDList.item(1).getName)
+	&apos;&apos;&apos;&apos;&apos;&apos;findAndRename(&quot;$type&quot;, BDList.item(1).getName)
 	findAndRename(&quot;$serial&quot;, oDialogBDKN.getControl(&quot;fullNum&quot;).text)
 	if oOption02.state then strokeForSaving = &quot;БДКН-02 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	if oOption04.state then strokeForSaving = &quot;БДКН-04 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;

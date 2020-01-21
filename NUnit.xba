@@ -25,7 +25,28 @@ sub neutron_04_ToTemplateStep(i as integer, bd as BUnit)
 end sub
 
 sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
+	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
+	dim m_point, p1, p2, p3 as double
+	dim j as integer
+	p1 = bd.valueList.item(1)
+	p2 = bd.valueList.item(2)
+	p3 = bd.valueList.item(3)
 	
+	rem Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
+	threePointArray_1 = Overall.avaragePointsRndArray(p1, 25) &apos;OverAll.percentOtk)
+	threePointArray_2 = Overall.avaragePointsRndArray(p2, 10) &apos;OverAll.percentOtk)
+	threePointArray_3 = Overall.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
+	
+	for j=0 to bd.getPointList.count-1
+		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
+		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), Format(threePointArray_2(j), &quot;0&quot;)) rem рандом 2
+		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
+	next j		
+	
+	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0&quot;)) rem среднее по трем измерениям 1
+	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
+	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
+
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_array as variant, percent as double)
