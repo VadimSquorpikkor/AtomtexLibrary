@@ -9,12 +9,16 @@ dim oDateFieldModel as object
 dim oNumericFieldModel as object
 dim oNumericFieldModelAll as object
 dim oListBox as object
+
 dim oOptionButtonPr as object
 dim oOptionButtonSr as object
 dim oOptionButtonSe as object
+
 dim oOptionBDKG02 as object
 dim oOptionBDKG204 as object
 dim oOptionBDMG as object
+dim oOptionBDKG11 as object
+
 dim BDList as new Collection
 dim mainCount as integer
 dim layoutPosition as integer
@@ -34,7 +38,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.21 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.22 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -55,12 +59,14 @@ Sub G02N_Dialog_Show
 	oDialogG02N.getControl(&quot;typeLabel&quot;).visible = false
 	oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
 	
-	oOptionBDKG02 = oDialogG02N.Model.getByName(&quot;isBDKG-02&quot;)
+	oOptionBDKG02  = oDialogG02N.Model.getByName(&quot;isBDKG-02&quot;)
 	oOptionBDKG204 = oDialogG02N.Model.getByName(&quot;isBDKG-204&quot;)
-	oOptionBDMG = oDialogG02N.Model.getByName(&quot;isBDMG&quot;)
-	oOptionBDKG02.State = 0
+	oOptionBDMG    = oDialogG02N.Model.getByName(&quot;isBDMG&quot;)
+	oOptionBDKG11  = oDialogG02N.Model.getByName(&quot;isBDKG-11&quot;)
+	oOptionBDKG02.State  = 0
 	oOptionBDKG204.State = 0
-	oOptionBDMG.State = 0
+	oOptionBDMG.State    = 0
+	oOptionBDKG11.State  = 0
 	
 	oListBox.setEnable(false)
 	
@@ -112,10 +118,16 @@ sub comboChanged
 	oNumericFieldModelAll.value = get_activity(act_all, oDateFieldModel)
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub enableLastTreeFields(visibility1 as boolean, visibility2 as boolean, visibility3 as boolean)
+sub enableLastTreeFields(visibility1 as boolean, visibility2 as boolean, visibility3 as boolean, visibility4 as boolean)
+	oDialogG02N.getControl(&quot;ValueField6&quot;).visible = visibility4
+	oDialogG02N.getControl(&quot;ValueField7&quot;).visible = visibility4
+	oDialogG02N.getControl(&quot;ValueField8&quot;).visible = visibility4
 	oDialogG02N.getControl(&quot;ValueField9&quot;).visible = visibility1
 	oDialogG02N.getControl(&quot;ValueField10&quot;).visible = visibility2
 	oDialogG02N.getControl(&quot;ValueField11&quot;).visible = visibility3
+	oDialogG02N.getControl(&quot;Label6&quot;).visible = visibility4
+	oDialogG02N.getControl(&quot;Label7&quot;).visible = visibility4
+	oDialogG02N.getControl(&quot;Label8&quot;).visible = visibility4
 	oDialogG02N.getControl(&quot;Label9&quot;).visible = visibility1
 	oDialogG02N.getControl(&quot;Label10&quot;).visible = visibility2
 	oDialogG02N.getControl(&quot;Label11&quot;).visible = visibility3
@@ -143,7 +155,7 @@ sub addNewBD
 			if BDList.count &lt;&gt; maxBDCount then oDialogG02N.getControl(&quot;addButton&quot;).setEnable(true)
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
-			enableLastTreeFields(true, false, false)
+			enableLastTreeFields(true, false, false, true)
 			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДКГ-204&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)
 		end if
@@ -151,7 +163,7 @@ sub addNewBD
 			if BDList.count &lt;&gt; maxBDCount then oDialogG02N.getControl(&quot;addButton&quot;).setEnable(true)
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
-			enableLastTreeFields(false, false, false)
+			enableLastTreeFields(false, false, false, true)
 			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДКГ-02&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(true)						
 		end if
@@ -159,8 +171,16 @@ sub addNewBD
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = false
 			enableBDMG(true)
 			oDialogG02N.getControl(&quot;addButton&quot;).setEnable(false)
-			enableLastTreeFields(true, true, true)
+			enableLastTreeFields(true, true, true, true)
 			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДМГ-2343&quot;
+			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
+		end if
+		if oOptionBDKG11.state then
+			if BDList.count &lt;&gt; maxBDCount then oDialogG02N.getControl(&quot;addButton&quot;).setEnable(true)
+			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
+			enableBDMG(false)
+			enableLastTreeFields(false, false, false, false)
+			oDialogG02N.getControl(&quot;bdTypeLabel&quot;).text = &quot;БДКГ-11/1&quot;
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
 		end if	
 	end if
@@ -175,6 +195,7 @@ sub addNewBD
 	if oOptionBDKG02.state  then bd.addData(bdName , &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if oOptionBDKG204.state then bd.addData(bdName , &quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if oOptionBDMG.state 	then bd.addData(bdName , &quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG11.state  then bd.addData(bdName , &quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma&quot;, Array(0.01, 0.1)) 
 	bd.setSerial(bdName)
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bdName, nCount )
@@ -250,12 +271,14 @@ function setButtonVisibility
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = true		
+		oDialogG02N.getControl(&quot;isBDKG-11&quot;).visible = true
 		oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
 	end if
 	if BDList.count &lt;&gt; 0 then
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = false
+		oDialogG02N.getControl(&quot;isBDKG-11&quot;).visible = false
 		oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = true
 	end if
 end function
@@ -266,9 +289,10 @@ sub insertRecordsToTemplate
 	strokeForSaving = &quot;&quot;	
 	dim path as string
 	
-	if oOptionBDKG02.state  then path = Overall.PathForProtocol(&quot;bdkg02\bdkg02&quot;, calibName, techName)
+	if oOptionBDKG02.state   then path = Overall.PathForProtocol(&quot;bdkg02\bdkg02&quot;, calibName, techName)
 	if oOptionBDKG204.state  then path = Overall.PathForProtocol(&quot;bdkg204\bdkg204&quot;, calibName, techName)
-	if oOptionBDMG.state  then path = Overall.PathForProtocol(&quot;bdmg2343\bdmg2343&quot;, calibName, techName)
+	if oOptionBDMG.state     then path = Overall.PathForProtocol(&quot;bdmg2343\bdmg2343&quot;, calibName, techName)
+	if oOptionBDKG11.state   then path = Overall.PathForProtocol(&quot;bdkg11_1\bdkg11_1&quot;, calibName, techName)
 
 	dim bd as new DUnit
 		
