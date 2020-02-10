@@ -17,40 +17,54 @@ dim oOptionButtonPr as object
 dim oOptionButtonSr as object
 dim oOptionButtonSe as object
 
-dim oOptionBDKG224 as object
+dim is2503 as object
+dim is2503A as object
+
 dim BDList as new Collection
 dim layoutPosition as integer
 
 dim maxBDCount as integer
 dim isComboCollection as new Collection
 dim path, calibName, techName as string
+
+dim pointCount as integer
+dim measurementPerPoint as integer &apos;кол-во измерений для каждой точки которое будет в форме (а не в таблице)
 rem---------------------------------------------------------------------------------------------------------
-Sub G224_Dialog_Show
+Sub G2503_Dialog_Show
 	maxBDCount = 12
+	pointCount = 3
+	measurementPerPoint = 3
+	
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog2503 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D2503 )
-	oListBox = oDialogG2503.getControl(&quot;bdListBox&quot;)
+	oListBox = oDialog2503.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.0 &quot;, oListBox, 4)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.0 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
-	
-	&apos;oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
-	&apos;oOptionBDKG224.State = 1
-	&apos;isComboCollection.add(oOptionBDKG224)
-	oDialogG2503.getControl(&quot;addButton&quot;).setEnable(true)
 
-	&apos;oDialogG224.getControl(&quot;isBDKG224&quot;).setVisible(false)&apos;&apos;&apos;&apos;&apos;&apos;ЭТО НЕСТАНДАРТНАЯ ОПЕРАЦИЯ В ДРУГИХ МЕТОДАХ НЕ БУДЕТ
+	dim i as integer
+	for i=1 to pointCount
+		for j=1 to measurementPerPoint
+			oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+			oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
+		next j
+	next i
+
+	is2503  = oDialog2503.Model.getByName(&quot;is2503&quot;)
+	is2503A = oDialog2503.Model.getByName(&quot;is2503A&quot;)
+
+	oDialog2503.getControl(&quot;addButton&quot;).setEnable(false)
 		
 	oDialogMain.endexecute()   
-	oDialogG2503.Execute()
+	oDialog2503.Execute()
 End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
-	oDialogG224.getControl(&quot;addButton&quot;).setEnable(true)
+	oDialog2503.getControl(&quot;addButton&quot;).setEnable(true)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub incValue
-	Overall.increment(oDialogG224.getControl(&quot;bdSerial&quot;))
+	Overall.increment(oDialog2503.getControl(&quot;bdSerial&quot;))
 end sub	
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -58,22 +72,40 @@ sub addNewBD
 	dim nCount as integer
 	dim bd as new DUnit
 
-	for i=1 to 8
-		oDialogG224.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	next i
+	if layoutPosition = 0 then
+		if is2503.state then
+			for i=1 to 3 &apos;точки
+				for j=1 to 3 &apos;кол-во измерений в точке
+					oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+				next j					
+			next i
+		end if
+		if is2503A.state then
+			for i=1 to 2
+				for j=1 to 3 &apos;кол-во измерений в точке
+					oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+				next j
+			next i
+			for j=1 to 3 &apos;кол-во измерений в точке
+				oDialog2503.getControl(&quot;ValueField&quot; + 3 + &quot;-&quot; + j).setEnable(false)
+			next j
+			
+		end if
+	end if
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
-	if oOptionBDKG224.state then bd.addData(&quot;БДКГ-224&quot; , 	&quot;Зв/ч&quot;, Array(0.06,0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0.1,10000)) rem TODO уточнить границы
 	
-	oDialogG224.getControl(&quot;removeButton&quot;).setEnable(true)
-	bd.setSerial(oDialogG224.getControl(&quot;bdSerial&quot;).text)
+	if is2503.state then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3,3), &quot;Зв/ч&quot;, Array(4,80,400),	  	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	
+	oDialog2503.getControl(&quot;removeButton&quot;).setEnable(true)
+	bd.setSerial(oDialog2503.getControl(&quot;bdSerial&quot;).text)
 	
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
-	Overall.increment(oDialogG224.getControl(&quot;bdSerial&quot;))
-	Overall.makeLayoutFromBD(BDList.item(1))
+	Overall.increment(oDialog2503.getControl(&quot;bdSerial&quot;))
+	Overall.makeLayoutFromBD(BDList.item(1))&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
 	layoutPosition = 1
 	Overall.setButtonVisibility(layoutPosition)
 end sub

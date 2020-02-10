@@ -187,6 +187,7 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 		
+	rem TODO сериал нужно записывать через setSerial, а в bdMame записывать тип БД (&quot;БДКГ-02&quot; например)	
 	oDialogG02N.getControl(&quot;removeButton&quot;).setEnable(true)
 	bdName = oDialogG02N.getControl(&quot;TextFieldSRK&quot;).text &amp; &quot;.&quot; &amp; oDialogG02N.getControl(&quot;TextFieldNUM&quot;).text
 	oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text = oDialogG02N.getControl(&quot;TextFieldSRK&quot;).text + &quot;.&quot; + Left(oDialogG02N.getControl(&quot;TextFieldNUM&quot;).text, 1) + &quot;00&quot;

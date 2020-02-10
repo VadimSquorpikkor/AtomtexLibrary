@@ -16,7 +16,7 @@ private _measLimit(1) as double
 private _measMinLimit as double
 private _measMaxLimit as double
 private _isPrintable as boolean
-private _measuredValue as new Collection
+private _measuredValue as new Collection &apos;0.71, 6.9, 75
 private _pointCount as integer
 private _emptyCollection as new Collection
 private _relativeError as new Collection
@@ -26,6 +26,7 @@ private _serial as string
 private _betaSources as new Collection
 private _betaValues as new Collection
 private _betaPoints as new Collection
+private _measuredMultiValue as new Collection &apos;(0.71, 0.69, 0.75) (7.2, 6.8, 7.0) (69, 71, 71) 
 &apos;private _sourceNameList as new Collection
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
@@ -34,6 +35,34 @@ Private Sub Class_Initialize()
 End Sub
 
 Private Sub Class_Terminate()
+end sub
+
+rem отличие от addData заключается в единственном -- у каждой точки меряется не одно значение (measuredValue), а несколько, соответственно вместо коллекции значений используется коллекция коллекции (2-мерный массив типа) 
+public sub addDataWithMultiPoint(ByVal BDname as string, ByVal multiMeasCount as variant, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
+	dim arr(0) as double
+	dim ar2(0) as double
+	dim ar3(1) as double
+	dim ar4(0) as double
+	_BDname = BDname
+	_measUnit = measUnit
+	_BDType = BDType
+	arr = pointValue
+	ar2 = pointText
+	ar3 = measLimit
+	ar4 = multiMeasCount &apos;3 3 3 
+	_measMinLimit = ar3(0)
+	_measMaxLimit = ar3(1)
+	dim i as integer
+	dim j as integer
+	for i=0 to uBound(arr)
+		_pointValue.add(arr(i))
+		_pointText.add(ar2(i))
+		for j=1 to ar4(i) &apos;от 0 до количества измерений для данной точки -- берется в массиве multiMeasCount
+			&apos;msgbox &quot;&quot; + arr(i) + &quot; &quot; + ar4(i)
+			_measuredMultiValue.add(arr(i))
+		next j	
+	next i
+	_pointCount = uBound(arr)+1
 end sub
 
 public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal betaSources as variant)
@@ -46,6 +75,14 @@ public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVa
 		_betaValues.add(0)
 	next i
 end sub
+
+
+rem BDname -- &quot;БДКГ-02&quot;
+rem measUnit -- &quot;Зв/ч&quot;
+rem pointValue -- контрольные точки: Array(0.07,0.7,7,70,0.7,7,70,0.7,7)
+rem pointText -- текст перед ед. измерения, а также множитель для точек (&quot;мк&quot;, &quot;м&quot;...)
+rem BDType -- тип измер (альфа/бета и т.д.)
+rem measLimit -- предел измерений (для гаммы -- от(мк) - до(м)) 
 
 REM --- CLASS METHODS
 Public Sub addData(ByVal BDname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
