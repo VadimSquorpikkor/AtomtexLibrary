@@ -52,8 +52,10 @@ Sub G2503_Dialog_Show
 
 	is2503  = oDialog2503.Model.getByName(&quot;is2503&quot;)
 	is2503A = oDialog2503.Model.getByName(&quot;is2503A&quot;)
+	is2503.state = 1
 
-	oDialog2503.getControl(&quot;addButton&quot;).setEnable(false)
+	oDialog2503.getControl(&quot;addButton&quot;).setEnable(true)
+	
 		
 	oDialogMain.endexecute()   
 	oDialog2503.Execute()
@@ -96,7 +98,8 @@ sub addNewBD
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
 	
-	if is2503.state then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3,3), &quot;Зв/ч&quot;, Array(4,80,400),	  	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if is2503.state  then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3,3), &quot;Зв/ч&quot;, Array(4,80,400),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if is2503A.state then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3),   &quot;Зв/ч&quot;, Array(4,80),	  	Array(&quot;м&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	
 	oDialog2503.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog2503.getControl(&quot;bdSerial&quot;).text)
@@ -105,18 +108,34 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	Overall.increment(oDialog2503.getControl(&quot;bdSerial&quot;))
-	Overall.makeLayoutFromBD(BDList.item(1))&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
+	Overall.makeLayoutFromMultiBD(BDList.item(1))
 	layoutPosition = 1
 	Overall.setButtonVisibility(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	Overall.removeLastBD(layoutPosition, BDList, oDialogG224, oListBox, isComboCollection, maxBDCount)
+	if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
+	oListBox.removeItems(oListBox.getItemCount()-1, 1 )
+	BDList.remove(BDList.count)
+	if oListBox.getItemCount()=0 then
+		oDialog2503.getControl(&quot;removeButton&quot;).setEnable(false)
+		dim i as integer
+		for i=1 to pointCount
+			for j=1 to measurementPerPoint
+				oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+				oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
+			next j
+		next i
+	else
+		Overall.makeLayoutFromMultiBD(BDList.item(BDList.count)) 
+		&apos;makeLayoutFromBD(BDList.item(BDList.count))
+	end if
+	Overall.setButtonVisibility(layoutPosition)
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
 	Dim selectPos As Integer
-	Overall.saveCurentBDValue(layoutPosition)
+	Overall.saveCurentMultiBDValue(layoutPosition)
 	selectPos = oListBox.getSelectedItemPos()
 	layoutPosition = selectPos + 1
 	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
@@ -124,11 +143,17 @@ function listBoxListener
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
-	Overall.showNextBD(layoutPosition)
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	layoutPosition = layoutPosition + 1
+	setButtonVisibility	
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
-	Overall.showPrevBD(layoutPosition)
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	layoutPosition = layoutPosition - 1
+	setButtonVisibility
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate

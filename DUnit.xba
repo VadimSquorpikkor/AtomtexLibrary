@@ -49,18 +49,22 @@ public sub addDataWithMultiPoint(ByVal BDname as string, ByVal multiMeasCount as
 	arr = pointValue
 	ar2 = pointText
 	ar3 = measLimit
-	ar4 = multiMeasCount &apos;3 3 3 
+	ar4 = multiMeasCount &apos;Array(3, 3, 3) 
 	_measMinLimit = ar3(0)
 	_measMaxLimit = ar3(1)
 	dim i as integer
 	dim j as integer
 	for i=0 to uBound(arr)
+		dim ar5 as new Collection
 		_pointValue.add(arr(i))
 		_pointText.add(ar2(i))
+		
 		for j=1 to ar4(i) &apos;от 0 до количества измерений для данной точки -- берется в массиве multiMeasCount
 			&apos;msgbox &quot;&quot; + arr(i) + &quot; &quot; + ar4(i)
-			_measuredMultiValue.add(arr(i))
-		next j	
+			&apos;msgbox &quot;&quot; + arr(i)
+			ar5.add(arr(i))
+		next j
+		_measuredMultiValue.add(ar5)	
 	next i
 	_pointCount = uBound(arr)+1
 end sub
@@ -137,6 +141,13 @@ end function
 public function setBetaValues(betaValues as Collection)
 	_betaValues = betaValues
 end function
+
+public function getMultiValueList as Collection  &apos;(0.71, 0.69, 0.75) (7.2, 6.8, 7.0) (69, 71, 71)
+	getMultiValueList = _measuredMultiValue
+end function
+
+
+
 
 Public Function BDName As string
    BDName = _BDName

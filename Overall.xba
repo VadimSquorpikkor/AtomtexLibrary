@@ -185,6 +185,36 @@ sub makeLayoutFromBD(bd as new DUnit)
 	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub makeLayoutFromMultiBD(bd as new DUnit)
+	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName rem &quot;БДКГ-22&quot;
+	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
+	dim i as integer
+	dim j as integer
+	dim point, nStep, value as double
+	dim MyFormat as string
+	dim mValues as new Collection
+	for i=1 to bd.getMultiValueList.count rem СДЕСЬ ИМЕННО VALUE А НЕ POINT -- ТАК НЕ НАДО БУДЕТ ДУМАТЬ КАК СОХРАНИТЬ ЗНАЧЕНИЯ ИЛИ КАК ПРОВЕРЯТЬ -1 ИЛИ НОВОЕ ЗНАЧЕНИЕ 
+		&apos;msgbox &quot;MultiValueList.count - &quot; + bd.getMultiValueList.count
+		&apos;mValues = bd.getMultiValueList.item(i)
+		point = bd.pointList.item(i)
+		nStep = rightStep(point)
+		&apos;for j=1 to mValues
+		for j=1 to bd.getMultiValueList.item(i).count
+			value = bd.getMultiValueList.item(i).item(j)
+	
+			if point &lt; 0.1 and point &gt; 0  then MyFormat = &quot;0.000&quot;
+			if point &lt; 1 and point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if point &lt; 100 and point &gt;= 1 then MyFormat = &quot;0.0&quot;
+			if point &gt;= 100               then MyFormat = &quot;0&quot;
+		
+			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = value
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).valueStep = nStep
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(nStep)
+			_oDialog.getControl(&quot;labelField&quot; + i).Text = Format(point, MyFormat) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
+		next j
+	next i
+end sub
+rem---------------------------------------------------------------------------------------------------------
 &apos;sub makeLayoutFromBDWithBeta(bd as new DUnit)
 &apos;	
 &apos;	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
@@ -441,6 +471,16 @@ sub saveCurentBDValue(num as integer)
 	dim newValues as new Collection
 	dim i as integer
 	for i=1 to _BDList.item(num).valueList.count
+		newValues.add(_oDialog.getControl(&quot;ValueField&quot; + i).Value)
+	next i
+	_BDList.item(num).setValueList(newValues)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub saveCurentMultiBDValue(num as integer)
+	&apos;msgbox &quot;saving: &quot; + num + &quot; &quot; + _BDList.count
+	dim newValues as new Collection
+	dim i as integer
+	for i=1 to _BDList.item(num).getMultiValueList.count &apos;valueList.count&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
 		newValues.add(_oDialog.getControl(&quot;ValueField&quot; + i).Value)
 	next i
 	_BDList.item(num).setValueList(newValues)
