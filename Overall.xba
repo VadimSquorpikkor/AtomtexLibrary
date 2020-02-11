@@ -299,7 +299,7 @@ function getFormat(num as double)
 	if m_point &gt;= 100 				  then getFormat = &quot;0&quot;
 end function
 rem---------------------------------------------------------------------------------------------------------
-sub templateStep(i as integer, strokeEnd as string)&apos;&apos;&apos;&apos;&apos; НЕ ИСПОЛЬЗУЕТСЯ?
+sub templateStep(i as integer, strokeEnd as string)
 		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
 		dim src_name as string
 		dim bd as new DUnit
@@ -478,12 +478,17 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentMultiBDValue(num as integer)
 	&apos;msgbox &quot;saving: &quot; + num + &quot; &quot; + _BDList.count
-	dim newValues as new Collection
+	dim pointList as new Collection &apos;pointList = ((measList),(measList),(measList))
 	dim i as integer
+	dim j as integer
 	for i=1 to _BDList.item(num).getMultiValueList.count &apos;valueList.count&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
-		newValues.add(_oDialog.getControl(&quot;ValueField&quot; + i).Value)
+		dim measList as new Collection
+		for j=1 to _BDList.item(num).getMultiValueList.item(i).count
+			measList.add(_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).Value)
+		next j
+		pointList.add(measList)
 	next i
-	_BDList.item(num).setValueList(newValues)
+	_BDList.item(num).setMultiValueList(pointList)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBDBetaValues(num as integer)

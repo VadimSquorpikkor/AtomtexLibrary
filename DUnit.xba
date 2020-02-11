@@ -146,6 +146,10 @@ public function getMultiValueList as Collection  &apos;(0.71, 0.69, 0.75) (7.2, 
 	getMultiValueList = _measuredMultiValue
 end function
 
+public function setMultiValueList(pointList as Collection)
+	_measuredMultiValue = pointList
+end function
+
 
 
 

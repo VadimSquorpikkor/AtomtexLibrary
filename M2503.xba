@@ -2,11 +2,13 @@
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="M2503" script:language="StarBasic">REM  *****  BASIC  *****
 
-REM  *****  BASIC  *****
-rem 	╔══════════════════════════════════════════╗
-rem		║	Класс для 2503	 		               ║█
-rem		╚══════════════════════════════════════════╝█
-rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
+rem 	╔═══════════════════════════════════════════════════════════╗
+rem		║	Класс для 2503					 		              	║█
+rem		║	В таблице показания прибора и среднее записывается		║█
+rem		║	БЕЗ вычета фона, а уже следующие расчеты погрешностей	║█
+rem		║	расчитываются с учетом вычета фона						║█
+rem		╚═══════════════════════════════════════════════════════════╝█
+rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
 rem---------------------------------------------------------------------------------------------------------
 dim Overall as new Overall
 dim oDialog2503 as object
@@ -29,6 +31,26 @@ dim path, calibName, techName as string
 
 dim pointCount as integer
 dim measurementPerPoint as integer &apos;кол-во измерений для каждой точки которое будет в форме (а не в таблице)
+
+dim from1 as object
+dim to1 as object
+dim from2 as object
+dim to2 as object
+dim from3 as object
+dim to3 as object
+
+dim bgList(8)  as double &apos;сгенерированные значения фона
+dim devList(8) as double &apos;показания прибора (с фоном)
+dim resList(8) as double &apos;результаты измерения с учетом вычета фона
+dim sum1, sum2, sum3 as double
+
+dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
+
+dim macroWindow as object
+
+dim bgFields as new Collection
+dim devFields as new Collection
+dim resFields as new Collection
 rem---------------------------------------------------------------------------------------------------------
 Sub G2503_Dialog_Show
 	maxBDCount = 12
@@ -56,7 +78,37 @@ Sub G2503_Dialog_Show
 
 	oDialog2503.getControl(&quot;addButton&quot;).setEnable(true)
 	
-		
+	from1 = oDialog2503.Model.getByName(&quot;from1&quot;)
+	to1 = oDialog2503.Model.getByName(&quot;to1&quot;)
+	from2 = oDialog2503.Model.getByName(&quot;from2&quot;)
+	to2 = oDialog2503.Model.getByName(&quot;to2&quot;)
+	from3 = oDialog2503.Model.getByName(&quot;from3&quot;)
+	to3 = oDialog2503.Model.getByName(&quot;to3&quot;)
+
+	&apos;msgbox oDialog2503.Model.getByName(&quot;D2503&quot;).text&apos;getSize.Height
+
+	from1.valueStep = 0.01
+	to1.valueStep   = 0.01
+	from2.valueStep = 0.01
+	to2.valueStep   = 0.01
+	from3.valueStep = 0.01
+	to3.valueStep   = 0.01
+	
+&apos;═══════════════════════════════════════════════════════════════════╗
+&apos;		ПАРАМЕТРЫ ГЕНЕРАЦИИ ФОНА И ПЕРВОЙ ТОЧКИ -- 0.80 мкЗв/ч		║█
+&apos;																	║█
+&apos;				ФОН:											&apos;	║█
+			from1.value = 0.05									&apos;	║█
+			to1.value   = 0.18									&apos;	║█		
+&apos;				ПОКАЗАНИЯ ПРИБОРА:								&apos;	║█
+			from2.value = 0.5									&apos;	║█
+			to2.value   = 1.1									&apos;	║█
+&apos;				ИЗМЕРЕНИЕ С УЧЕТОМ ВЫЧЕТА ФОНА:					&apos;	║█
+			from3.value = 0.8									&apos;	║█
+			to3.value   = 0.9									&apos;	║█
+&apos;																	║█
+&apos;═══════════════════════════════════════════════════════════════════╝█
+&apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 	oDialogMain.endexecute()   
 	oDialog2503.Execute()
 End Sub
@@ -110,6 +162,14 @@ sub addNewBD
 	Overall.increment(oDialog2503.getControl(&quot;bdSerial&quot;))
 	Overall.makeLayoutFromMultiBD(BDList.item(1))
 	layoutPosition = 1
+	
+	
+	for i=1 to 8
+		bgFields.add(oDialog2503.getControl(&quot;bgField&quot; + i))
+		devFields.add(oDialog2503.getControl(&quot;devField&quot; + i))
+		resFields.add(oDialog2503.getControl(&quot;resField&quot; + i))
+	next i
+	
 	Overall.setButtonVisibility(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -145,22 +205,29 @@ rem-----------------------------------------------------------------------------
 sub showNextBD
 	Overall.saveCurentMultiBDValue(layoutPosition)
 	layoutPosition = layoutPosition + 1
-	setButtonVisibility	
+	Overall.setButtonVisibility(layoutPosition)	
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
 	Overall.saveCurentMultiBDValue(layoutPosition)
 	layoutPosition = layoutPosition - 1
-	setButtonVisibility
+	Overall.setButtonVisibility(layoutPosition)
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
-	Overall.saveCurentBDValue(layoutPosition)  &apos;(oDialogG224, layoutPosition, BDList)
+	fromNum1 = from1.value
+	fromNum2 = from2.value
+	fromNum3 = from3.value
+	toNum1   = to1.value 
+	toNum2   = to2.value
+	toNum3   = to3.value
+
+	Overall.saveCurentMultiBDValue(layoutPosition)  &apos;(oDialogG224, layoutPosition, BDList)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
-	path = Overall.PathForProtocol(&quot;bdkg224\bdkg224&quot;, calibName, techName)
+	path = Overall.PathForProtocol(&quot;2503\2503&quot;, calibName, techName)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -173,13 +240,198 @@ sub insertRecordsToTemplate
 	
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
-		Overall.insertToTemplateStep(i) &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i, percentOtk, bground)
+		templateMultiStep(i, &quot;&quot;)
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if oOptionBDKG224.state then strokeForSaving = &quot;БДКГ-224 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
+	&apos;&apos;&apos;&apos;if oOptionBDKG224.state then strokeForSaving = &quot;2503 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub startGenerator()
+	dim k as integer
+	k = 0
+	dim isDone as boolean
+	isDone = false
+	dim result(8) as double
+	
+	do 
+		sum1 = 0
+		sum2 = 0
+		sum3 = 0
+		dim value1, value2, value3 as double
+		
+		for i=0 to 7
+			value1 = randValueFromTo(fromNum1, toNum1)
+			bgList(i) = value1
+			sum1 = sum1 + value1
+		
+			value2 = randValueFromTo(fromNum2, toNum2)
+			devList(i) = value2
+			sum2 = sum2 + value2
+			result(i) = value2
+		next i
+
+		for i=0 to 7
+			value3 = result(i) - sum1/8
+			resList(i) = value3
+			sum3 = sum3 + value3
+		next i
+	
+		k = k + 1
+		if sum3/8 &gt;= fromNum3 AND sum3/8 &lt;= toNum3 then isDone = true
+	loop while NOT isDone
+	
+	rem вывод значений на форму
+	for n = 1 to 8
+		bgFields.item(n).value  = bgList(n-1)
+		devFields.item(n).value = devList(n-1)
+		resFields.item(n).value = resList(n-1)
+	next n
+	oDialog2503.getControl(&quot;count&quot;).text = k
+	oDialog2503.getControl(&quot;bgFieldAverage&quot;).text = Format(sum1/8, &quot;0.00&quot;)
+	oDialog2503.getControl(&quot;devFieldAverage&quot;).text = Format(sum2/8, &quot;0.00&quot;)
+	oDialog2503.getControl(&quot;resFieldAverage&quot;).text = Format(sum3/8, &quot;0.00&quot;)
+	
+end sub
+rem---------------------------------------------------------------------------------------------------------
+function randValueFromTo(fromNum as double, toNum as double)
+	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
+function avarageFivePointsRndArray(coll as Collection, o_percent as double)
+	&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
+	dim deviation as double
+	dim p4 as double
+	dim p5 as double
+	dim point as double
+	point = (coll.item(1) + coll.item(2) + coll.item(3))/3
+	dim ar(5) as double 
+	deviation = o_percent/100*point
+	p4 = Overall.randValue(point, deviation)
+	p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
+	ar(0) = coll.item(1)
+	ar(1) = coll.item(2)
+	ar(2) = coll.item(3)
+	ar(3) = p4
+	ar(4) = p5
+	&apos;msgbox &quot;&quot; + ar(0) + &quot; &quot; + ar(1) + &quot; &quot; + ar(2) + &quot; &quot; + ar(3) + &quot; &quot; + ar(4)
+	avarageFivePointsRndArray = ar	
+end function
+rem---------------------------------------------------------------------------------------------------------
+function avgSqrt(Array as variant, avg as double)
+	dim nValue as integer
+	dim arr(0) as double
+	dim average as double
+	&apos;arr = fivePointsArray
+	nValue = uBound(Array)
+	average = avg
+	dim sum as double
+	sum = 0
+	
+	for i=0 to nValue
+		sum = sum + (Array(i) - average)*(Array(i) - average)
+	next i
+	msgbox sum
+	&apos;msgbox &quot;&quot; + sum &apos;sqr(9 + average) &apos;sum/(nValue * (nValue - 1)))*(1/average)*100
+	avgSqrt = sqr(sum/(nValue * (nValue - 1)))*(1/average)*100
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub templateMultiStep(i as integer, strokeEnd as string)
+	dim src_name as string
+	dim bd as new DUnit
+	dim BDtype as string 
+	bd = BDList.item(i)
+	BDtype = bd.BDType
+	dim j as integer
+	
+	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
+	percentOtk = 7 rem %
+		
+	startGenerator
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+	
+	
+	
+	for k = 0 to 7
+		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
+	next k	
+		
+	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(1)) rem расстояние до источника	
+		
+	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
+		
+		dim MyFormat as string
+		dim pogr_point, avgSqrtRes as double
+		cont_point = bd.pointList.item(j)
+		prefix =  bd.pointTextList.item(j)
+	
+		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
+		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
+		
+		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
+		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j), percentOtk)
+		
+		&apos;&apos;&apos;&apos;&apos;&apos;&apos;А ЗАЧЕМ? 4 мЭв - фон? капля в море&apos;&apos;&apos;&apos;&apos;&apos;&apos;fivePointsArraySubstrBG(5) as double 
+				
+		for m=0 to 4
+			m_point = fivePointArray(m)
+			
+			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
+			if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if m_point &lt; 100 and m_point &gt;= 1 then MyFormat = &quot;0.0&quot;
+			if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
+				
+			findAndRename((&quot;$&quot; + i + &quot;-m&quot; + j + m + strokeEnd), Format(fivePointArray(m), MyFormat))
+		next m
+		
+		&apos;СРЕДНЕЕ БЕЗ УЧЕТА ФОНА
+		dim avg as double
+		avg = 0
+		for p=0 to 4
+			avg = avg + fivePointArray(p)
+		next p
+		avg = avg/5
+		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
+		
+		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
+		pogr_point = RelativeError(avg, cont_point)
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(pogr_point, &quot;0.00&quot;))
+		
+		&apos;СРЕДНЕ КВАДРАТИЧНОЕ ЧТО-ТО ТАМ
+		msgbox avg
+		avgSqrtRes = avgSqrt(fivePointArray, avg)
+		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+		
+		
+	next j
+	findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)	
+
+			
+
+&apos;				
+&apos;			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, MyFormat)) rem среднее по трем измерениям
+&apos;		
+
+&apos;			
+&apos;			dim percent as integer
+&apos;			percent = FacilityError(m_point, BDType, prefix)
+&apos;				
+&apos;			dim pogr_point as double
+&apos;			pogr_point = RelativeError(m_point, cont_point)
+&apos;			MyFormat = &quot;0.00&quot;
+&apos;			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
+&apos;			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+
+
+
+
 end sub
 
 </script:module>

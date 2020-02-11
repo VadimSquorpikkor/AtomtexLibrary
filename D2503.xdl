@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D2503" dlg:left="23" dlg:top="22" dlg:width="289" dlg:height="225" dlg:closeable="true" dlg:moveable="true">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D2503" dlg:left="23" dlg:top="22" dlg:width="289" dlg:height="308" dlg:closeable="true" dlg:moveable="true" dlg:title="111">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:font-height="12"/>
   <dlg:style dlg:style-id="1" dlg:font-height="15"/>
   <dlg:style dlg:style-id="2" dlg:font-height="11"/>
   <dlg:style dlg:style-id="3" dlg:font-height="8"/>
   <dlg:style dlg:style-id="4" dlg:font-height="24"/>
+  <dlg:style dlg:style-id="5" dlg:font-height="16"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="11" dlg:left="10" dlg:top="69" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
@@ -33,7 +34,7 @@
   <dlg:numericfield dlg:id="ValueField3-1" dlg:tab-index="36" dlg:left="201" dlg:top="156" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField3-2" dlg:tab-index="37" dlg:left="230" dlg:top="156" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField3-3" dlg:tab-index="38" dlg:left="258" dlg:top="157" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="39" dlg:left="167" dlg:top="5" dlg:width="71" dlg:height="81">
+  <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="39" dlg:left="167" dlg:top="5" dlg:width="86" dlg:height="81">
    <dlg:title dlg:value="Параметры генератора"/>
   </dlg:titledbox>
   <dlg:text dlg:style-id="1" dlg:id="Label3" dlg:tab-index="46" dlg:left="198" dlg:top="13" dlg:width="10" dlg:height="14" dlg:value="÷" dlg:align="center"/>
@@ -72,21 +73,55 @@
   <dlg:button dlg:id="doneButton" dlg:tab-index="15" dlg:left="241" dlg:top="196" dlg:width="30" dlg:height="14" dlg:value="Готово">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="27" dlg:left="240" dlg:top="11" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
+  <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="27" dlg:left="253" dlg:top="9" dlg:width="32" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="0" dlg:id="typeLabel" dlg:tab-index="7" dlg:left="196" dlg:top="91" dlg:width="66" dlg:height="10" dlg:value="TYPE" dlg:align="center"/>
   <dlg:text dlg:style-id="4" dlg:id="serialLabel" dlg:tab-index="12" dlg:left="190" dlg:top="101" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
   <dlg:textfield dlg:style-id="0" dlg:id="bdSerial" dlg:tab-index="28" dlg:left="107" dlg:top="13" dlg:width="40" dlg:height="14" dlg:align="center" dlg:maxlength="3" dlg:value="777"/>
   <dlg:button dlg:id="plusButton" dlg:tab-index="29" dlg:left="150" dlg:top="14" dlg:width="11" dlg:height="11" dlg:value="+">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.incValue?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:numericfield dlg:id="from1" dlg:tab-index="40" dlg:left="172" dlg:top="18" dlg:width="25" dlg:height="10" dlg:value="0.05" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="from2" dlg:tab-index="41" dlg:left="172" dlg:top="45" dlg:width="25" dlg:height="10" dlg:value="0.5" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="from3" dlg:tab-index="42" dlg:left="172" dlg:top="70" dlg:width="25" dlg:height="10" dlg:value="0.8" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="to1" dlg:tab-index="43" dlg:left="209" dlg:top="18" dlg:width="25" dlg:height="10" dlg:value="0.18" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="to2" dlg:tab-index="44" dlg:left="209" dlg:top="45" dlg:width="25" dlg:height="10" dlg:value="1.1" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="to3" dlg:tab-index="45" dlg:left="209" dlg:top="70" dlg:width="25" dlg:height="10" dlg:value="0.9" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="from1" dlg:tab-index="40" dlg:left="172" dlg:top="18" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="from2" dlg:tab-index="41" dlg:left="172" dlg:top="45" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="from3" dlg:tab-index="42" dlg:left="172" dlg:top="70" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="to1" dlg:tab-index="43" dlg:left="209" dlg:top="18" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="to2" dlg:tab-index="44" dlg:left="209" dlg:top="45" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="to3" dlg:tab-index="45" dlg:left="209" dlg:top="70" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:text dlg:id="labelField1" dlg:tab-index="21" dlg:left="170" dlg:top="133" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="labelField2" dlg:tab-index="22" dlg:left="170" dlg:top="145" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="labelField3" dlg:tab-index="23" dlg:left="170" dlg:top="157" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:style-id="5" dlg:id="count" dlg:tab-index="49" dlg:left="234" dlg:top="17" dlg:width="17" dlg:height="16" dlg:value="0" dlg:align="center"/>
+  <dlg:text dlg:id="Label1" dlg:tab-index="50" dlg:left="94" dlg:top="250" dlg:width="27" dlg:height="8" dlg:value="ПРИБОР" dlg:align="center"/>
+  <dlg:text dlg:id="Label2" dlg:tab-index="51" dlg:left="87" dlg:top="277" dlg:width="40" dlg:height="8" dlg:value="С ВЫЧ ФОНА" dlg:align="center"/>
+  <dlg:numericfield dlg:id="bgField1" dlg:tab-index="55" dlg:left="40" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField2" dlg:tab-index="56" dlg:left="62" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField3" dlg:tab-index="57" dlg:left="84" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField4" dlg:tab-index="58" dlg:left="106" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField5" dlg:tab-index="59" dlg:left="127" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField6" dlg:tab-index="60" dlg:left="149" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField7" dlg:tab-index="61" dlg:left="171" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="bgField8" dlg:tab-index="62" dlg:left="193" dlg:top="235" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField1" dlg:tab-index="63" dlg:left="40" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField2" dlg:tab-index="64" dlg:left="62" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField3" dlg:tab-index="65" dlg:left="84" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField4" dlg:tab-index="66" dlg:left="106" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField5" dlg:tab-index="67" dlg:left="127" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField6" dlg:tab-index="68" dlg:left="149" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField7" dlg:tab-index="69" dlg:left="171" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="devField8" dlg:tab-index="70" dlg:left="193" dlg:top="262" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField1" dlg:tab-index="71" dlg:left="40" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField2" dlg:tab-index="72" dlg:left="62" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField3" dlg:tab-index="73" dlg:left="84" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField4" dlg:tab-index="74" dlg:left="106" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField5" dlg:tab-index="75" dlg:left="127" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField6" dlg:tab-index="76" dlg:left="149" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField7" dlg:tab-index="77" dlg:left="171" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:numericfield dlg:id="resField8" dlg:tab-index="78" dlg:left="193" dlg:top="289" dlg:width="20" dlg:height="10"/>
+  <dlg:text dlg:id="bgFieldAverage" dlg:tab-index="52" dlg:left="218" dlg:top="234" dlg:width="27" dlg:height="8" dlg:value="---" dlg:align="center"/>
+  <dlg:text dlg:id="devFieldAverage" dlg:tab-index="53" dlg:left="218" dlg:top="263" dlg:width="27" dlg:height="8" dlg:value="---" dlg:align="center"/>
+  <dlg:text dlg:id="resFieldAverage" dlg:tab-index="54" dlg:left="218" dlg:top="289" dlg:width="27" dlg:height="8" dlg:value="---" dlg:align="center"/>
+  <dlg:text dlg:id="Label6" dlg:tab-index="79" dlg:left="94" dlg:top="225" dlg:width="27" dlg:height="8" dlg:value="ФОН" dlg:align="center"/>
+  <dlg:titledbox dlg:id="FrameControl4" dlg:tab-index="80" dlg:left="34" dlg:top="220" dlg:width="218" dlg:height="83">
+   <dlg:title dlg:value="Генератор"/>
+  </dlg:titledbox>
  </dlg:bulletinboard>
 </dlg:window>
