@@ -171,6 +171,13 @@ function rightStep(d as double) rem расчет правильного Step-а
 	if d&lt;=1     and d&gt;0.1   then rightStep = 0.01
 	if d&lt;=0.1   and d&gt;0.01  then rightStep = 0.001
 end function
+rem---------------------------------------------------------------------------------------------------------
+function rightStep2503(d as double) rem расчет правильного Step-а 
+	if 				d&gt;100	then rightStep2503 = 1
+	if d&lt;=100	and d&gt;10	then rightStep2503 = 0.1
+	if d&lt;=10    and d&gt;0.1   then rightStep2503 = 0.01
+	if d&lt;=0.1				then rightStep2503 = 0.001
+end function
 rem-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightDecimalAccuracy(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
 	if nStep = 0.001 then rightDecimalAccuracy = 3
@@ -194,19 +201,19 @@ sub makeLayoutFromMultiBD(bd as new DUnit)
 	dim MyFormat as string
 	dim mValues as new Collection
 	for i=1 to bd.getMultiValueList.count rem СДЕСЬ ИМЕННО VALUE А НЕ POINT -- ТАК НЕ НАДО БУДЕТ ДУМАТЬ КАК СОХРАНИТЬ ЗНАЧЕНИЯ ИЛИ КАК ПРОВЕРЯТЬ -1 ИЛИ НОВОЕ ЗНАЧЕНИЕ 
-		&apos;msgbox &quot;MultiValueList.count - &quot; + bd.getMultiValueList.count
-		&apos;mValues = bd.getMultiValueList.item(i)
+
 		point = bd.pointList.item(i)
-		nStep = rightStep(point)
-		&apos;for j=1 to mValues
+		
+		nStep = rightStep2503(point)
+		
 		for j=1 to bd.getMultiValueList.item(i).count
 			value = bd.getMultiValueList.item(i).item(j)
 	
-			if point &lt; 0.1 and point &gt; 0  then MyFormat = &quot;0.000&quot;
-			if point &lt; 1 and point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
-			if point &lt; 100 and point &gt;= 1 then MyFormat = &quot;0.0&quot;
-			if point &gt;= 100               then MyFormat = &quot;0&quot;
-		
+			if point &lt; 0.1 and point &gt; 0	then MyFormat = &quot;0.000&quot;
+			if point &lt; 10  and point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if point &lt; 100 and point &gt;= 10	then MyFormat = &quot;0.0&quot;
+			if point &gt;= 100               	then MyFormat = &quot;0&quot;
+			
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = value
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).valueStep = nStep
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(nStep)
@@ -416,9 +423,9 @@ function FacilityError(point as double, BDType as string, prefix as string)
 	select case BDType
 	case &quot;gamma&quot;, &quot;gamma-Gy&quot;, &quot;gamma007&quot;
 		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = 5
+			FacilityError = 5 rem 110
 		else
-			FacilityError = 4
+			FacilityError = 4 rem 130
 		end if
 	case &quot;n-PP&quot;
 			FacilityError = 5 rem `140

@@ -151,7 +151,7 @@ sub addNewBD
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
 	
 	if is2503.state  then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3,3), &quot;Зв/ч&quot;, Array(4,80,400),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if is2503A.state then bd.addDataWithMultiPoint(&quot;2503&quot;, Array(3,3),   &quot;Зв/ч&quot;, Array(4,80),	  	Array(&quot;м&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if is2503A.state then bd.addDataWithMultiPoint(&quot;2503A&quot;, Array(3,3),  &quot;Зв/ч&quot;, Array(4,80),	  	Array(&quot;м&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	
 	oDialog2503.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog2503.getControl(&quot;bdSerial&quot;).text)
@@ -290,7 +290,7 @@ sub startGenerator()
 		resFields.item(n).value = resList(n-1)
 	next n
 	oDialog2503.getControl(&quot;count&quot;).text = k
-	oDialog2503.getControl(&quot;bgFieldAverage&quot;).text = Format(sum1/8, &quot;0.00&quot;)
+	oDialog2503.getControl(&quot;bgFieldAverage&quot;).text =  Format(sum1/8, &quot;0.00&quot;)
 	oDialog2503.getControl(&quot;devFieldAverage&quot;).text = Format(sum2/8, &quot;0.00&quot;)
 	oDialog2503.getControl(&quot;resFieldAverage&quot;).text = Format(sum3/8, &quot;0.00&quot;)
 	
@@ -300,8 +300,36 @@ function randValueFromTo(fromNum as double, toNum as double)
 	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
 end function
 rem---------------------------------------------------------------------------------------------------------
+Function round(num as single,dec as integer)
+Round = Int(num * 10 ^ dec + 0.6) / 10 ^ dec
+End Function
+rem---------------------------------------------------------------------------------------------------------
+function max(one as double, two as double)
+	if one &gt; two then
+		max = one
+	else
+		max = two
+	end if
+end function
+rem---------------------------------------------------------------------------------------------------------
+function min(one as double, two as double)
+	if one &gt; two then
+		min = two
+	else
+		min = one
+	end if
+end function
+rem---------------------------------------------------------------------------------------------------------
+function minimumAndMaximum(one as double, two as double, three as double)
+	&apos;TODO СДЕЛАТЬ -- НА ВХОД ПОДАВАТЬ КОЛЛЕКЦИЮ ИЗ ЛЮБОГО КОЛЛИЧЕСТВА ЭЛЕМЕНТОВ
+	dim ar(1) as double
+	ar(0) = min(min(one, two), three)
+	ar(1) = max(max(one, two), three)
+	minimumAndMaximum = ar
+end function
+rem---------------------------------------------------------------------------------------------------------
 &apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
-function avarageFivePointsRndArray(coll as Collection, o_percent as double)
+function avarageFivePointsRndArray(coll as Collection)
 	&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
 	dim deviation as double
 	dim p4 as double
@@ -309,14 +337,28 @@ function avarageFivePointsRndArray(coll as Collection, o_percent as double)
 	dim point as double
 	point = (coll.item(1) + coll.item(2) + coll.item(3))/3
 	dim ar(5) as double 
-	deviation = o_percent/100*point
-	p4 = Overall.randValue(point, deviation)
+	
+	&apos;смысл такой -- отклонение от среднего не константа, а среднее из 
+	dim maximum as double
+	dim minimum as double
+	
+	maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
+	minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
+
+	p4 = minimum + rnd()*((point - minimum)*2)
+
+	&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ
+	dim accuracy as integer
+	accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
+	&apos;msgbox &quot;accuracy - &quot; + accuracy
+	p4 = round(p4, accuracy)
+	
 	p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
-	ar(0) = coll.item(1)
+	ar(4) = coll.item(1)
 	ar(1) = coll.item(2)
 	ar(2) = coll.item(3)
 	ar(3) = p4
-	ar(4) = p5
+	ar(0) = p5
 	&apos;msgbox &quot;&quot; + ar(0) + &quot; &quot; + ar(1) + &quot; &quot; + ar(2) + &quot; &quot; + ar(3) + &quot; &quot; + ar(4)
 	avarageFivePointsRndArray = ar	
 end function
@@ -325,50 +367,104 @@ function avgSqrt(Array as variant, avg as double)
 	dim nValue as integer
 	dim arr(0) as double
 	dim average as double
-	&apos;arr = fivePointsArray
 	nValue = uBound(Array)
+	&apos;msgbox nValue
 	average = avg
 	dim sum as double
 	sum = 0
 	
-	for i=0 to nValue
+	for i=0 to nValue - 1
 		sum = sum + (Array(i) - average)*(Array(i) - average)
 	next i
-	msgbox sum
-	&apos;msgbox &quot;&quot; + sum &apos;sqr(9 + average) &apos;sum/(nValue * (nValue - 1)))*(1/average)*100
-	avgSqrt = sqr(sum/(nValue * (nValue - 1)))*(1/average)*100
+	dim n as integer
+	n = nValue * (nValue - 1)
+	
+	avgSqrt = 1/average*sqr(sum/n)*100
+end function
+rem---------------------------------------------------------------------------------------------------------
+function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
+	&apos;msgbox &quot;aSqrt - &quot; + avgSqrtRes + &quot;perc - &quot; + facilityPercent + &quot;relError - &quot; + relativeErr
+	sSigma = sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
+end function
+rem---------------------------------------------------------------------------------------------------------
+function ConfLimit(koef as double, sSigmaRes as double)
+	ConfLimit = koef * sSigmaRes
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub templateMultiStep(i as integer, strokeEnd as string)
 	dim src_name as string
+	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
 	dim bd as new DUnit
 	dim BDtype as string 
 	bd = BDList.item(i)
-	BDtype = bd.BDType
+	BDtype = bd.getType
 	dim j as integer
+	dim facilityPercent as integer
 	
-	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
-	percentOtk = 7 rem %
-		
+
+
+
+
+	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
 	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
 	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
-	
-	
 	
 	for k = 0 to 7
 		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
 		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
 	next k	
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(1)) rem расстояние до источника	
+
+		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
+		relativeErr = RelativeError(sum3/8, 0.8)
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
+		
+		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+		avgSqrtRes = avgSqrt(resList, sum3/8)
+		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+
+		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
+		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
+		
+		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		&apos;msgbox &quot;sSigmaRes - &quot; + sSigmaRes
+		
+		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+		dovGranica = ConfLimit(2, sSigmaRes)
+		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
+
+
+	
+
+
+
+
+
+
+
 		
 	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
-		
+
+
+	&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
+
+	dim deviceCountZero as double
+	dim deviceCountDone as double
+	dim deviceCountRes  as double
+	
+	deviceCountDone = (bd.getMultiValueList.item(2).item(1) + bd.getMultiValueList.item(1).item(2) + bd.getMultiValueList.item(1).item(3)) / 3 / 20
+	findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
+
+		&apos;-----------------ЗАПОЛНЕНИЕ
 		dim MyFormat as string
-		dim pogr_point, avgSqrtRes as double
+		
 		cont_point = bd.pointList.item(j)
 		prefix =  bd.pointTextList.item(j)
 	
@@ -376,7 +472,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
-		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j), percentOtk)
+		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
 		
 		&apos;&apos;&apos;&apos;&apos;&apos;&apos;А ЗАЧЕМ? 4 мЭв - фон? капля в море&apos;&apos;&apos;&apos;&apos;&apos;&apos;fivePointsArraySubstrBG(5) as double 
 				
@@ -384,12 +480,15 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 			m_point = fivePointArray(m)
 			
 			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
-			if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
-			if m_point &lt; 100 and m_point &gt;= 1 then MyFormat = &quot;0.0&quot;
+			if m_point &lt; 10 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if m_point &lt; 100 and m_point &gt;= 10 then MyFormat = &quot;0.0&quot;
 			if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
 				
 			findAndRename((&quot;$&quot; + i + &quot;-m&quot; + j + m + strokeEnd), Format(fivePointArray(m), MyFormat))
 		next m
+		
+		
+			
 		
 		&apos;СРЕДНЕЕ БЕЗ УЧЕТА ФОНА
 		dim avg as double
@@ -398,36 +497,40 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 			avg = avg + fivePointArray(p)
 		next p
 		avg = avg/5
+			if avg &lt; 0.1 and avg &gt; 0  	then MyFormat = &quot;0.000&quot;
+			if avg &lt; 10  and avg &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if avg &lt; 100 and avg &gt;= 10 	then MyFormat = &quot;0.0&quot;
+			if avg &gt;= 100 				then MyFormat = &quot;0&quot;
 		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
 		
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
-		pogr_point = RelativeError(avg, cont_point)
-		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(pogr_point, &quot;0.00&quot;))
+		relativeErr = RelativeError(avg, cont_point)
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
-		&apos;СРЕДНЕ КВАДРАТИЧНОЕ ЧТО-ТО ТАМ
-		msgbox avg
+		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
 		avgSqrtRes = avgSqrt(fivePointArray, avg)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+
+		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
+		facilityPercent = Overall.FacilityError(cont_point, BDType, prefix)
+		
+		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		
+		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+		dovGranica = ConfLimit(2, sSigmaRes)
+		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + j + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
+		
+		
+		
 		
 		
 	next j
 	findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)	
 
+		
+		
 			
-
-&apos;				
-&apos;			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, MyFormat)) rem среднее по трем измерениям
-&apos;		
-
-&apos;			
-&apos;			dim percent as integer
-&apos;			percent = FacilityError(m_point, BDType, prefix)
-&apos;				
-&apos;			dim pogr_point as double
-&apos;			pogr_point = RelativeError(m_point, cont_point)
-&apos;			MyFormat = &quot;0.00&quot;
-&apos;			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
-&apos;			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
 
 
 
