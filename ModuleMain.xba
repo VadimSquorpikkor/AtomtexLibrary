@@ -11,9 +11,9 @@ Sub MainDialog_Show
 	rem user_name = &quot;Krechko_AI&quot;
 	rem user_name = &quot;Tarasenko_VV&quot;  	
 	rem user_name = &quot;Kurbatova&quot;
-	user_name = &quot;Serikov_VA&quot;
+	rem user_name = &quot;Serikov_VA&quot;
 	rem user_name = &quot;Rusakevich_AV&quot;
-	rem user_name = &quot;Squorpikkor&quot;
+	user_name = &quot;Squorpikkor&quot;
 	rem user_name = &quot;Leshkevich_SV&quot;
 	sertPath = &quot;file:///c:\Users\&quot; + user_name + &quot;\AppData\Roaming\OpenOffice\4\user\basic\AtomtexLibrary\sert_template\&quot;
 	rem sertPath = &quot;file:///C:\Users\Public\Documents\AtomtexLibrary\sert_template\&quot;
@@ -95,5 +95,21 @@ Dim LocFileName as String
 	LocFileName = FileNameoutofPath(sPath, Separator)
 	DirectoryNameoutofPath = RTrimStr(sPath, Separator &amp; LocFileName)
 End Function
+
+sub generateMath
+	OpenTemplate(sertPath &amp; &quot;math.odt&quot;)
+	dim a, b, c, d, fst, sec as integer
+	for i=1 to 80
+		a=int(rnd()*7+2) 
+		b=int(rnd()*7+1)	
+		c=int(rnd()*(a-1)+1)	
+		d=int(rnd()*(8-b) +(b+1))
+	
+		fst=a*10+b
+		sec=c*10+d
+	
+		findAndRename(&quot;$math&quot;+i+&quot;$&quot;, &quot;&quot;+fst+&quot; – &quot;+sec+&quot; = &quot;)
+	next i
+end sub
 
 </script:module>
