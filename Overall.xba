@@ -440,8 +440,6 @@ function FacilityError(point as double, BDType as string, prefix as string)
 	end select
 end function
 rem---------------------------------------------------------------------------------------------------------
-
-rem---------------------------------------------------------------------------------------------------------
 function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	_oListBox.selectItemPos( layoutPosition-1, True )
 	dim i as integer
@@ -471,6 +469,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 	if layoutPosition = 1 then _oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
 	if _BDList.count = _maxBDCount then _oDialog.getControl(&quot;addButton&quot;).setEnable(false)
 	if _BDList.count = 0 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
+	if _BDList.count = _maxBDCount-1 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)

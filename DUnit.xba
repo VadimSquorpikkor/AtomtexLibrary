@@ -27,6 +27,7 @@ private _betaSources as new Collection
 private _betaValues as new Collection
 private _betaPoints as new Collection
 private _measuredMultiValue as new Collection &apos;(0.71, 0.69, 0.75) (7.2, 6.8, 7.0) (69, 71, 71) 
+private _dose as double
 &apos;private _sourceNameList as new Collection
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
@@ -67,6 +68,7 @@ public sub addDataWithMultiPoint(ByVal BDname as string, ByVal multiMeasCount as
 		_measuredMultiValue.add(ar5)	
 	next i
 	_pointCount = uBound(arr)+1
+	_dose = 0 
 end sub
 
 public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal betaSources as variant)
@@ -149,6 +151,17 @@ end function
 public function setMultiValueList(pointList as Collection)
 	_measuredMultiValue = pointList
 end function
+
+public function setDose(dose as double)
+	_dose = dose
+end function
+
+public function getDose()
+	getDose = _dose
+end function
+
+
+
 
 
 

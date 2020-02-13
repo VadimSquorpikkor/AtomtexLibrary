@@ -11,9 +11,9 @@ Sub MainDialog_Show
 	rem user_name = &quot;Krechko_AI&quot;
 	rem user_name = &quot;Tarasenko_VV&quot;  	
 	rem user_name = &quot;Kurbatova&quot;
-	rem user_name = &quot;Serikov_VA&quot;
+	user_name = &quot;Serikov_VA&quot;
 	rem user_name = &quot;Rusakevich_AV&quot;
-	user_name = &quot;Squorpikkor&quot;
+	rem user_name = &quot;Squorpikkor&quot;
 	rem user_name = &quot;Leshkevich_SV&quot;
 	sertPath = &quot;file:///c:\Users\&quot; + user_name + &quot;\AppData\Roaming\OpenOffice\4\user\basic\AtomtexLibrary\sert_template\&quot;
 	rem sertPath = &quot;file:///C:\Users\Public\Documents\AtomtexLibrary\sert_template\&quot;
@@ -26,7 +26,7 @@ Sub MainDialog_Show
 &apos;	msgbox olib.getLibraryLinkUrl(&quot;AtomtexLibrary&quot;)
 	
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.55&quot;	
+	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.57&quot;	
    	oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    	oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	oDialogMain.Execute()
