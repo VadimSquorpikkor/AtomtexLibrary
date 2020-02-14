@@ -8,10 +8,10 @@ rem-------------------------------------------------------------------------
 Sub MainDialog_Show
 	dim user_name as String
 
-	rem user_name = &quot;Krechko_AI&quot;
+	user_name = &quot;Krechko_AI&quot;
 	rem user_name = &quot;Tarasenko_VV&quot;  	
 	rem user_name = &quot;Kurbatova&quot;
-	user_name = &quot;Serikov_VA&quot;
+	rem user_name = &quot;Serikov_VA&quot;
 	rem user_name = &quot;Rusakevich_AV&quot;
 	rem user_name = &quot;Squorpikkor&quot;
 	rem user_name = &quot;Leshkevich_SV&quot;

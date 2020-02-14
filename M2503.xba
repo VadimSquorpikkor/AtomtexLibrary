@@ -61,7 +61,7 @@ Sub G2503_Dialog_Show
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, pointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -159,11 +159,11 @@ sub addNewBD
 	Overall.makeLayoutFromMultiBD(BDList.item(1))
 	layoutPosition = 1
 	
-	for i=1 to 8
-		bgFields.add(oDialog2503.getControl(&quot;bgField&quot; + i))
-		devFields.add(oDialog2503.getControl(&quot;devField&quot; + i))
-		resFields.add(oDialog2503.getControl(&quot;resField&quot; + i))
-	next i
+	&apos;for i=1 to 8
+	&apos;	bgFields.add(oDialog2503.getControl(&quot;bgField&quot; + i))
+	&apos;	devFields.add(oDialog2503.getControl(&quot;devField&quot; + i))
+	&apos;	resFields.add(oDialog2503.getControl(&quot;resField&quot; + i))
+	&apos;next i
 	
 	setButtonVisibility(layoutPosition)
 end sub
@@ -173,6 +173,9 @@ sub setButtonVisibility(layoutPosition as integer)
 	if BDList.count = 0 then
 		oDialog2503.getControl(&quot;is2503&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;is2503A&quot;).setEnable(true)
+		for i=1 to 3
+			oDialog2503.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
+		next i 
 	end if
 	if BDList.count &lt;&gt; 0 then
 		oDialog2503.getControl(&quot;is2503&quot;).setEnable(false)
@@ -241,7 +244,8 @@ sub insertRecordsToTemplate
 	BDList.item(layoutPosition).setDose(doseField.value)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
-	path = Overall.PathForProtocol(&quot;2503\2503&quot;, calibName, techName)
+	if is2503.state  then path = Overall.PathForProtocol(&quot;2503\2503&quot;, calibName, techName)
+	if is2503A.state then path = Overall.PathForProtocol(&quot;2503\2503a&quot;, calibName, techName)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
