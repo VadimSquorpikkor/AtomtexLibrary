@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="M3509" script:language="StarBasic">REM  *****  BASIC  *****
+
+rem 	╔═══════════════════════════════════════════════════════════╗
+rem		║	Класс для 3509					 		              	║█
+rem		║	В таблице показания прибора и среднее записывается		║█
+rem		║	БЕЗ вычета фона, а уже следующие расчеты погрешностей	║█
+rem		║	расчитываются с учетом вычета фона						║█
+rem		╚═══════════════════════════════════════════════════════════╝█
+rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
+rem---------------------------------------------------------------------------------------------------------
+dim Overall as new Overall
+dim oDialog3509 as object
+dim oDateFieldModel as object
+dim oListBox as object
+
+dim oOptionButtonPr as object
+dim oOptionButtonSr as object
+dim oOptionButtonSe as object
+
+dim is3509 as object
+dim is3509A as object
+
+dim BDList as new Collection
+dim layoutPosition as integer
+
+dim maxBDCount as integer
+dim isComboCollection as new Collection
+dim path, calibName, techName as string
+
+dim pointCount as integer
+dim measurementPerPoint as integer &apos;кол-во измерений для каждой точки которое будет в форме (а не в таблице)
+
+dim from1 as object
+dim to1 as object
+dim from2 as object
+dim to2 as object
+dim from3 as object
+dim to3 as object
+
+dim bgList(8)  as double &apos;сгенерированные значения фона
+dim devList(8) as double &apos;показания прибора (с фоном)
+dim resList(8) as double &apos;результаты измерения с учетом вычета фона
+dim sum1, sum2, sum3 as double
+
+dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
+
+dim macroWindow as object
+
+dim doseField as object
+rem---------------------------------------------------------------------------------------------------------
+Sub G3509_Dialog_Show
+	maxBDCount = 12
+	pointCount = 3
+	measurementPerPoint = 3
+	
+	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+	oDialog3509 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D3509 )
+	oListBox = oDialog3509.getControl(&quot;bdListBox&quot;)
+	
+	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
+
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.00 &quot;, oListBox, pointCount)
+	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+
+	dim i as integer
+	for i=1 to pointCount
+		for j=1 to measurementPerPoint
+			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
+		next j
+	next i
+
+	doseField = oDialog3509.getControl(&quot;devCountZero&quot;)
+	oDialog3509.Model.getByName(&quot;devCountZero&quot;).valueStep = 0.1
+
+	is3509  = oDialog3509.Model.getByName(&quot;is3509&quot;)
+	is3509A = oDialog3509.Model.getByName(&quot;is3509A&quot;)
+	is3509.state = 1
+
+	oDialog3509.getControl(&quot;addButton&quot;).setEnable(true)
+	
+	from1 = oDialog3509.Model.getByName(&quot;from1&quot;)
+	to1 = oDialog3509.Model.getByName(&quot;to1&quot;)
+	from2 = oDialog3509.Model.getByName(&quot;from2&quot;)
+	to2 = oDialog3509.Model.getByName(&quot;to2&quot;)
+	from3 = oDialog3509.Model.getByName(&quot;from3&quot;)
+	to3 = oDialog3509.Model.getByName(&quot;to3&quot;)
+
+	from1.valueStep = 0.01
+	to1.valueStep   = 0.01
+	from2.valueStep = 0.01
+	to2.valueStep   = 0.01
+	from3.valueStep = 0.01
+	to3.valueStep   = 0.01
+	
+&apos;═══════════════════════════════════════════════════════════════════╗
+&apos;		ПАРАМЕТРЫ ГЕНЕРАЦИИ ФОНА И ПЕРВОЙ ТОЧКИ -- 0.80 мкЗв/ч		║█
+&apos;																	║█
+&apos;				ФОН:											&apos;	║█
+			from1.value = 0.05									&apos;	║█
+			to1.value   = 0.18									&apos;	║█		
+&apos;				ПОКАЗАНИЯ ПРИБОРА:								&apos;	║█
+			from2.value = 0.5									&apos;	║█
+			to2.value   = 1.1									&apos;	║█
+&apos;				ИЗМЕРЕНИЕ С УЧЕТОМ ВЫЧЕТА ФОНА:					&apos;	║█
+			from3.value = 0.8									&apos;	║█
+			to3.value   = 0.9									&apos;	║█
+&apos;																	║█
+&apos;═══════════════════════════════════════════════════════════════════╝█
+&apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+	oDialogMain.endexecute()   
+	oDialog3509.Execute()
+End Sub
+rem---------------------------------------------------------------------------------------------------------
+sub setButtonEnabled
+	oDialog3509.getControl(&quot;addButton&quot;).setEnable(true)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub addNewBD
+	dim bdName as string
+	dim nCount as integer
+	dim bd as new DUnit
+
+	if layoutPosition = 0 then
+		if is3509.state then
+			for i=1 to 3 &apos;точки
+				for j=1 to 3 &apos;кол-во измерений в точке
+					oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+				next j					
+			next i
+		end if
+		if is3509A.state then
+			for i=1 to 2
+				for j=1 to 3 &apos;кол-во измерений в точке
+					oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+				next j
+			next i
+			for j=1 to 3 &apos;кол-во измерений в точке
+				oDialog3509.getControl(&quot;ValueField&quot; + 3 + &quot;-&quot; + j).setEnable(false)
+			next j
+			
+		end if
+	end if
+	
+	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
+	
+	if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;, Array(3,3,3), &quot;Зв/ч&quot;, Array(4,800,4),	Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;, Array(3,3),  &quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	
+	oDialog3509.getControl(&quot;removeButton&quot;).setEnable(true)
+	bd.setSerial(oDialog3509.getControl(&quot;bdSerial&quot;).text)
+	
+	nCount = oListBox.getItemCount()
+	oListBox.addItem( bd.getSerial, nCount )
+	BDList.add(bd)
+	Overall.increment(oDialog3509.getControl(&quot;bdSerial&quot;))
+	Overall.makeLayoutFromMultiBD(BDList.item(1))
+	layoutPosition = 1
+	
+	&apos;for i=1 to 8
+	&apos;	bgFields.add(oDialog3509.getControl(&quot;bgField&quot; + i))
+	&apos;	devFields.add(oDialog3509.getControl(&quot;devField&quot; + i))
+	&apos;	resFields.add(oDialog3509.getControl(&quot;resField&quot; + i))
+	&apos;next i
+	
+	setButtonVisibility(layoutPosition)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub setButtonVisibility(layoutPosition as integer)
+	Overall.setButtonVisibility(layoutPosition)
+	if BDList.count = 0 then
+		oDialog3509.getControl(&quot;is3509&quot;).setEnable(true)
+		oDialog3509.getControl(&quot;is3509A&quot;).setEnable(true)
+		for i=1 to 3
+			oDialog3509.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
+		next i 
+	end if
+	if BDList.count &lt;&gt; 0 then
+		oDialog3509.getControl(&quot;is3509&quot;).setEnable(false)
+		oDialog3509.getControl(&quot;is3509A&quot;).setEnable(false)
+	end if
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub removeLastBD
+	if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
+	oListBox.removeItems(oListBox.getItemCount()-1, 1 )
+	BDList.remove(BDList.count)
+	if oListBox.getItemCount()=0 then
+		oDialog3509.getControl(&quot;removeButton&quot;).setEnable(false)
+		dim i as integer
+		for i=1 to pointCount
+			for j=1 to measurementPerPoint
+				oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+				oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
+			next j
+		next i
+	else
+		Overall.makeLayoutFromMultiBD(BDList.item(BDList.count))
+		doseField.value = BDList.item(layoutPosition).getDose
+	end if
+	setButtonVisibility(layoutPosition)
+end Sub
+rem---------------------------------------------------------------------------------------------------------
+function listBoxListener
+	Dim selectPos As Integer
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	BDList.item(layoutPosition).setDose(doseField.value)
+	selectPos = oListBox.getSelectedItemPos()
+	layoutPosition = selectPos + 1
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
+	doseField.value = BDList.item(layoutPosition).getDose
+	setButtonVisibility(layoutPosition)
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub showNextBD
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	BDList.item(layoutPosition).setDose(doseField.value)
+	layoutPosition = layoutPosition + 1
+	setButtonVisibility(layoutPosition)
+	doseField.value = BDList.item(layoutPosition).getDose	
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub showPrevBD
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	BDList.item(layoutPosition).setDose(doseField.value)
+	layoutPosition = layoutPosition - 1
+	setButtonVisibility(layoutPosition)
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
+	doseField.value = BDList.item(layoutPosition).getDose
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertRecordsToTemplate
+	fromNum1 = from1.value
+	fromNum2 = from2.value
+	fromNum3 = from3.value
+	toNum1   = to1.value 
+	toNum2   = to2.value
+	toNum3   = to3.value
+
+	Overall.saveCurentMultiBDValue(layoutPosition)
+	BDList.item(layoutPosition).setDose(doseField.value)
+	dim strokeForSaving as string
+	strokeForSaving = &quot;&quot;
+	if is3509.state  then path = Overall.PathForProtocol(&quot;3509\3509&quot;, calibName, techName)
+	if is3509A.state then path = Overall.PathForProtocol(&quot;3509\3509a&quot;, calibName, techName)
+
+	OpenTemplate(sertPath &amp; path)
+	Overall.insertFacilitiesText
+	Overall.insertParametersToTemplate(calibName, techName)
+	dim bd as new DUnit
+	
+	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+		deleteTable(&quot;t&quot;  + (k))
+	next k
+	&apos;почему-то если делаю удаление таблиц в одном цикле -- падает весь офис
+	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+		deleteTable(&quot;s&quot;  + (k))
+	next k
+	
+	for i=1 to BDList.count
+		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
+		templateMultiStep(i, &quot;&quot;)
+	next i
+	
+	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
+	if is3509.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509&quot;
+	if is3509A.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509A&quot;
+	CopyVariableToClipboard(strokeForSaving)
+	msgbox &quot;Готово!&quot;
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub startGenerator()
+	dim k as integer
+	k = 0
+	dim isDone as boolean
+	isDone = false
+	dim result(8) as double
+	
+	do 
+		sum1 = 0
+		sum2 = 0
+		sum3 = 0
+		dim value1, value2, value3 as double
+		
+		for i=0 to 7
+			value1 = randValueFromTo(fromNum1, toNum1)
+			bgList(i) = value1
+			sum1 = sum1 + value1
+		
+			value2 = randValueFromTo(fromNum2, toNum2)
+			devList(i) = value2
+			sum2 = sum2 + value2
+			result(i) = value2
+		next i
+
+		for i=0 to 7
+			value3 = result(i) - sum1/8
+			resList(i) = value3
+			sum3 = sum3 + value3
+		next i
+	
+		k = k + 1
+		if sum3/8 &gt;= fromNum3 AND sum3/8 &lt;= toNum3 then isDone = true
+	loop while NOT isDone
+	
+	oDialog3509.getControl(&quot;count&quot;).text = k
+end sub
+rem---------------------------------------------------------------------------------------------------------
+&apos;рандом от числа -- до числа
+function randValueFromTo(fromNum as double, toNum as double)
+	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
+end function
+rem---------------------------------------------------------------------------------------------------------
+Function round(num as single,dec as integer)
+	Round = Int(num * 10 ^ dec + 0.6) / 10 ^ dec
+End Function
+rem---------------------------------------------------------------------------------------------------------
+function max(one as double, two as double)
+	if one &gt; two then
+		max = one
+	else
+		max = two
+	end if
+end function
+rem---------------------------------------------------------------------------------------------------------
+function min(one as double, two as double)
+	if one &gt; two then
+		min = two
+	else
+		min = one
+	end if
+end function
+rem---------------------------------------------------------------------------------------------------------
+function minimumAndMaximum(one as double, two as double, three as double)
+	&apos;TODO СДЕЛАТЬ -- НА ВХОД ПОДАВАТЬ КОЛЛЕКЦИЮ ИЗ ЛЮБОГО КОЛЛИЧЕСТВА ЭЛЕМЕНТОВ
+	dim ar(1) as double
+	ar(0) = min(min(one, two), three)
+	ar(1) = max(max(one, two), three)
+	minimumAndMaximum = ar
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
+function avarageFivePointsRndArray(coll as Collection)
+	&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
+	dim deviation as double
+	dim p4 as double
+	dim p5 as double
+	dim point as double
+	point = (coll.item(1) + coll.item(2) + coll.item(3))/3
+	dim ar(5) as double 
+	
+	&apos;смысл такой -- процент отклонения от среднего не константа:
+	&apos;берём разницу между максимальным значением и минимальным минус минимальное
+	&apos;тогда четвертое значение рандомно выбирается из этого диапазона (минус минимальное нужно для того, чтобы пятое значение было не меньше минимального)
+	&apos;таким образом разброс значений никогда не будет выходить за границы макс и мин значений входящих трёх значений, т.е. процент отклонения считается автоматически на основании входных данных
+	dim maximum as double
+	dim minimum as double
+	maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
+	minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
+	p4 = minimum + rnd()*((point - minimum)*2)
+
+	&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
+	dim accuracy as integer
+	accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
+	p4 = round(p4, accuracy)
+	
+	p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
+	ar(3) = coll.item(1)
+	ar(1) = coll.item(2)
+	ar(2) = coll.item(3)
+	ar(0) = p4
+	ar(4) = p5
+	&apos;СГЕНЕРИРОВАННЫЕ ЧИСЛА СТАВЛЮ В НАЧАЛО И КОНЕЦ (0), (4)
+	avarageFivePointsRndArray = ar	
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+function avgSqrt(Array as variant, avg as double)
+	dim nValue as integer
+	dim arr(0) as double
+	dim average as double
+	nValue = uBound(Array)
+	average = avg
+	dim sum as double
+	sum = 0
+	
+	for i=0 to nValue - 1
+		sum = sum + (Array(i) - average)*(Array(i) - average)
+	next i
+	dim n as integer
+	n = nValue * (nValue - 1)
+	
+	avgSqrt = 1/average*sqr(sum/n)*100
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
+	sSigma = sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+function ConfLimit(koef as double, sSigmaRes as double)
+	ConfLimit = koef * sSigmaRes
+end function
+rem---------------------------------------------------------------------------------------------------------
+function roundOneDigitAfterDot(num as double)
+	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ОДНОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
+	&apos;2.69 -&gt; 2.7
+	&apos;4.12 -&gt; 4.1 
+	dim a as double
+	a = num
+	a = a*100
+	if a mod 10 &gt;= 5 then a = a + 10
+	roundOneDigitAfterDot = int(a/10)/10
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub templateMultiStep(i as integer, strokeEnd as string)
+	dim src_name as string
+	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
+	dim bd as new DUnit
+	dim BDtype as string 
+	bd = BDList.item(i)
+	BDtype = bd.getType
+	dim j as integer
+	dim facilityPercent as integer
+
+	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
+	startGenerator
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+	
+	for k = 0 to 7
+		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
+	next k	
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+		
+	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(1)) rem расстояние до источника	
+
+		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
+		relativeErr = RelativeError(sum3/8, 0.8)
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
+		
+		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+		avgSqrtRes = avgSqrt(resList, sum3/8)
+		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+
+		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
+		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
+		
+		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		&apos;msgbox &quot;sSigmaRes - &quot; + sSigmaRes
+		
+		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+		dovGranica = ConfLimit(2, sSigmaRes)
+		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
+	
+	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
+
+		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
+	
+		dim deviceCountZero as double
+		dim deviceCountDone as double
+		dim deviceCountRes  as double
+	
+		deviceCountZero = bd.getDose &apos;oDialog3509.getControl(&quot;devCountZero&quot;).value
+		findAndRename((&quot;$&quot; + i + &quot;-d_dev&quot; + strokeEnd), Format(deviceCountZero, &quot;0.00&quot;))
+		deviceCountDone = (bd.getMultiValueList.item(2).item(1) + bd.getMultiValueList.item(2).item(2) + bd.getMultiValueList.item(2).item(3)) / 3 / 20 + deviceCountZero &apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек
+		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
+		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
+		deviceCountRes = deviceCountDone - deviceCountZero
+		findAndRename((&quot;$&quot; + i + &quot;-d_res&quot; + strokeEnd), Format(deviceCountRes, &quot;0.00&quot;))
+	
+		&apos;относительная погрешность измерения
+		dim otnosit as double
+		otnosit = otn_pogreshnost(deviceCountRes, 4)
+		findAndRename((&quot;$&quot; + i + &quot;-o_pog&quot; + strokeEnd), Format(otnosit, &quot;0.00&quot;))
+	
+		&apos;доверительная граница
+		dim dov_gr as double
+		dov_gr = dov_granica(otnosit, 4)
+		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
+
+		&apos;-----------------ЗАПОЛНЕНИЕ ГЛАВНОЙ (БОЛЬШОЙ) ТАБЛИЦЫ-------------------------------------
+		dim MyFormat as string
+		
+		cont_point = bd.pointList.item(j)
+		prefix =  bd.pointTextList.item(j)
+	
+		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
+		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
+		
+		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
+		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
+				
+		for m=0 to 4
+			m_point = fivePointArray(m)
+			
+			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
+			if m_point &lt; 10 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if m_point &lt; 100 and m_point &gt;= 10 then MyFormat = &quot;0.0&quot;
+			if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
+				
+			findAndRename((&quot;$&quot; + i + &quot;-m&quot; + j + m + strokeEnd), Format(fivePointArray(m), MyFormat))
+		next m
+
+		&apos;СРЕДНЕЕ БЕЗ УЧЕТА ФОНА
+		dim avg as double
+		avg = 0
+		for p=0 to 4
+			avg = avg + fivePointArray(p)
+		next p
+		avg = avg/5
+			if avg &lt; 0.1 and avg &gt; 0  	then MyFormat = &quot;0.000&quot;
+			if avg &lt; 10  and avg &gt;= 0.1 then MyFormat = &quot;0.00&quot;
+			if avg &lt; 100 and avg &gt;= 10 	then MyFormat = &quot;0.0&quot;
+			if avg &gt;= 100 				then MyFormat = &quot;0&quot;
+		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
+		
+		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
+		relativeErr = RelativeError(avg, cont_point)
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
+		
+		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+		avgSqrtRes = avgSqrt(fivePointArray, avg)
+		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+
+		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
+		facilityPercent = Overall.FacilityError(cont_point, BDType, prefix)
+		
+		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		
+		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+		dovGranica = ConfLimit(2, sSigmaRes)
+		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + j + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
+		
+	next j
+	findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)	
+		
+end sub
+
+</script:module>
