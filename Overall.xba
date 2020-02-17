@@ -364,7 +364,7 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
 		next j
-		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
+		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertToTemplateStep(i)

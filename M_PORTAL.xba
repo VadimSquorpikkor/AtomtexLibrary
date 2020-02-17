@@ -237,7 +237,7 @@ sub insertRecordsToTemplate
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j), bd.getSRCList.item(j))
 		next j
 		findAndRename(&quot;$delt&quot; + i, bd.getDelta)
-		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
+		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 		findAndRename(&quot;$type&quot; + i, bd.getType)
 		findAndRename(&quot;$bg_avr&quot; + i, Format(bd.getBgAverage, &quot;0.0&quot;))
 		findAndRename(&quot;$sr_avr&quot; + i, Format(bd.getSrcAverage, &quot;0.0&quot;))
