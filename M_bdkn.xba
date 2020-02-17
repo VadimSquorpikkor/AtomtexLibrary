@@ -198,7 +198,7 @@ sub insertRecordsToTemplate
 		if bd.BdName=&quot;БДКН-04&quot; then	bdkn.neutron_04_ToTemplateStep(i, bd)	
 		if bd.BdName=&quot;БДКН-05&quot; then	bdkn.neutron_05_ToTemplateStep(i, bd)
 		
-		findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
+		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 	next i
 	
 	&apos;&apos;&apos;&apos;&apos;&apos;findAndRename(&quot;$type&quot;, BDList.item(1).getName)
