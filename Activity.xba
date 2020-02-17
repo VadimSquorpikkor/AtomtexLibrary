@@ -138,12 +138,12 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 80 	then ar = Array(&quot;043&quot;,&quot;106.0&quot;)
 				if point = 200 	then ar = Array(&quot;043&quot;,&quot;67.7&quot;)
 				if point = 400 	then ar = Array(&quot;163&quot;,&quot;308.6&quot;)
-				if point = 800 	then ar = Array(&quot;&quot;,&quot;&quot;)
+				if point = 800 	then ar = Array(&quot;163&quot;,&quot;218.8&quot;)
 		case &quot;&quot;
 				if point = 0.35	then ar = Array(&quot;163&quot;,&quot;329.8&quot;)
 				if point = 0.5 	then ar = Array(&quot;163&quot;,&quot;276.9&quot;)
 				if point = 0.7 	then ar = Array(&quot;163&quot;,&quot;235&quot;)
-				if point = 4 	then ar = Array(&quot;163&quot;,&quot;&quot;)
+				if point = 4 	then ar = Array(&quot;163&quot;,&quot;98.8&quot;)
 				if point = 7 	then ar = Array(&quot;163&quot;,&quot;76&quot;)
 				if point = 40 	then ar = Array(&quot;163&quot;,&quot;32.7&quot;)
 		end select

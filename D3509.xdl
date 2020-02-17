@@ -38,7 +38,7 @@
   </dlg:radiogroup>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="14" dlg:left="21" dlg:top="171" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="16" dlg:left="21" dlg:top="196" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
-  <dlg:numericfield dlg:style-id="1" dlg:id="bdSerial" dlg:tab-index="53" dlg:left="108" dlg:top="13" dlg:width="55" dlg:height="14" dlg:decimal-accuracy="0" dlg:value="30682" dlg:spin="true"/>
+  <dlg:numericfield dlg:style-id="1" dlg:id="bdSerial" dlg:tab-index="53" dlg:left="108" dlg:top="13" dlg:width="55" dlg:height="14" dlg:decimal-accuracy="0" dlg:value="36100" dlg:spin="true"/>
   <dlg:button dlg:id="addButton" dlg:tab-index="0" dlg:left="108" dlg:top="29" dlg:width="55" dlg:height="12" dlg:value="Добавить">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
