@@ -156,7 +156,7 @@ sub addNewBD
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
-	Overall.increment(oDialog3509.getControl(&quot;bdSerial&quot;))
+	oDialog3509.getControl(&quot;bdSerial&quot;).value = oDialog3509.getControl(&quot;bdSerial&quot;).value + 1
 	Overall.makeLayoutFromMultiBD(BDList.item(1))
 	layoutPosition = 1
 
