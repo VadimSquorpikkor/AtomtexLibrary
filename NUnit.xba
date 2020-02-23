@@ -57,7 +57,7 @@ sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_
 	
 	for j=0 to bd.getPointList.count-1		
 		m_point = bd.valueList.item(j+1)
-		threePointArray = Overall.avaragePointsRndArray(m_point, OverAll.percentOtk)
+		threePointArray = Overall.avaragePointsRndArray(m_point, 7) &apos;OverAll.getPercentOtk)
 			
 		if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
 		if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;

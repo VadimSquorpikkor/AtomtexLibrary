@@ -39,6 +39,10 @@ rem									фона (так как БД будет ближе к опущенн
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 
 dim oDateFieldModel as object
+
+public function getPercentOtk as double
+	getPercentOtk = percentOtk
+end function
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -266,10 +270,10 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertParametersToTemplate(bdName as string)
 	percentOtk = 7 rem %
-	bground = Format(randValue(95, 5), &quot;0.0&quot;)
-	findAndRename(&quot;$bground&quot;, bground)
-	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2), &quot;0.0&quot;))
-	findAndRename(&quot;$vlag&quot;, Format(randValue(70, 5), &quot;0.0&quot;))
+	&apos;bground = Format(randValue(95, 5), &quot;0.0&quot;)
+	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
+	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
+	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, &quot;0.0&quot;))
 	findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)

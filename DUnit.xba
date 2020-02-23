@@ -28,6 +28,7 @@ private _betaValues as new Collection
 private _betaPoints as new Collection
 private _measuredMultiValue as new Collection &apos;(0.71, 0.69, 0.75) (7.2, 6.8, 7.0) (69, 71, 71) 
 private _dose as double
+private _isAlternativePoints as boolean
 &apos;private _sourceNameList as new Collection
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
@@ -111,6 +112,7 @@ Public Sub addData(ByVal BDname as string, ByVal measUnit as string, ByVal point
 	next i
 	_pointCount = uBound(arr)+1
 	_gradValue = 10000
+	_isAlternativePoints = false
 	&apos;msgbox &quot;adddata - &quot; + BDName
 	rem msgbox _pointValue.item(2)
 End Sub
@@ -155,13 +157,18 @@ end function
 public function setDose(dose as double)
 	_dose = dose
 end function
-
+  
 public function getDose()
 	getDose = _dose
 end function
 
+public function setAlternative(state as boolean)
+	_isAlternativePoints = state
+end function
 
-
+public function isAlternativePoints as boolean
+	isAlternativePoints = _isAlternativePoints
+end function
 
 
 

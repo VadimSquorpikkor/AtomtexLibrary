@@ -20,18 +20,35 @@ dim oOptionButtonSe as object
 dim checkedCount as integer
 
 dim layoutPosition as integer &apos;в отличии от других классов, здесь layoutPosition -- это фиксированная позиция каждого блока, совпадает с номером соответствующего чекбокса (т.е. при выборе только бдкг-11 layoutPosition будет равен 5 (только один номер позиции))
+
 rem---------------------------------------------------------------------------------------------------------
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.01 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.03 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
 	checkedCount = 0
 	layoutPosition = 0
+
+	for i=1 to 9
+		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = false rem скрыть все ненужные
+		oDialog1117.getControl(&quot;altField&quot; + i).Visible = false
+	next i
+
+	oDialog1117.Model.getByName(&quot;bgField&quot;).valueStep = 0.1	
+	oDialog1117.Model.getByName(&quot;bgField&quot;).DecimalAccuracy = 1
+	oDialog1117.Model.getByName(&quot;tempField&quot;).valueStep = 0.1	
+	oDialog1117.Model.getByName(&quot;tempField&quot;).DecimalAccuracy = 1
+	oDialog1117.Model.getByName(&quot;vlaghField&quot;).valueStep = 0.1	
+	oDialog1117.Model.getByName(&quot;vlaghField&quot;).DecimalAccuracy = 1
+	
+	oDialog1117.getControl(&quot;bgField&quot;).value = bgValue
+	oDialog1117.getControl(&quot;tempField&quot;).value = tempValue
+	oDialog1117.getControl(&quot;vlaghField&quot;).value = vlaghValue
 	
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
@@ -99,6 +116,21 @@ sub makeBetaLayout(bd as new DUnit) &apos;TODO  ОБЪЕДИНИТЬ С ТАКИ
 	bd.setPointList(pointList)
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub altCheckBoxListener(oEvent As Object)
+	Dim oCheckbox As Object
+    oCheckbox = oEvent.source.model
+    BDList.item(layoutPosition).setAlternative(oCheckbox.state)
+    if BDList.item(layoutPosition).isAlternativePoints = true then
+    	for i=1 to BDList.item(layoutPosition).getPointTextList.count
+    		oDialog1117.getControl(&quot;altField&quot; + i).Visible = true	
+    	next i
+    else
+    	for i=1 to BDList.item(layoutPosition).getPointTextList.count
+    		oDialog1117.getControl(&quot;altField&quot; + i).Visible = false	
+    	next i
+    end if
+end sub    
+rem---------------------------------------------------------------------------------------------------------
 sub dataChanged
 	rem ЕСЛИ ТЕКУЩИЙ ВЫБРАННЫЙ БД (ЕСЛИ ВООБЩЕ ЕСТЬ КАКОЙ-НИБУДЬ БД) ЭТО БЕТА, ТОГДА ПРИ СМЕНЕ ДАТЫ ПЕРЕСЧИТЫВАЕТСЯ АКТИВНОСТЬ ДЛЯ БЕТЫ И ПЕРЕРИСОВЫВАЕТСЯ ЛЭЙАУТ	
 	if layoutPosition&lt;&gt;0 then 
@@ -122,12 +154,22 @@ function makeLayout(bd as new DUnit)
 		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = false rem скрыть все ненужные
 		oDialog1117.getControl(&quot;Label&quot; + i).Visible = false
 	next i
+	oDialog1117.getControl(&quot;altCheckBox&quot;).state = bd.isAlternativePoints
+	if bd.isAlternativePoints = true then
+    	for i=1 to bd.getPointTextList.count
+    		oDialog1117.getControl(&quot;altField&quot; + i).Visible = true	
+    	next i
+    else
+    	for i=1 to bd.getPointTextList.count
+    		oDialog1117.getControl(&quot;altField&quot; + i).Visible = false	
+    	next i
+    end if
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub clearLayout
 	if checkedCount = 0 then
 		for i=1 to 9
-			oDialog1117.getControl(&quot;ValueField&quot; + i).text = &quot;&quot; rem скрыть все ненужные
+			oDialog1117.getControl(&quot;ValueField&quot; + i).visible = false rem скрыть все ненужные
 			oDialog1117.getControl(&quot;Label&quot; + i).text = &quot;&quot;
 		next i
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = &quot;Нет БД&quot; 
@@ -136,7 +178,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setColorIfChecked(checkBox as object)
 	if checkBox.state then
-		checkBox.textColor = RGB(200, 0, 0)
+		checkBox.textColor = RGB(0, 0, 200)
 	else 	
 		checkBox.textColor = RGB(0, 0 , 0)
 	end if	
@@ -339,7 +381,11 @@ sub insertDataToTemplate
 	dim facilities as new Facility rem ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	MyFormat = &quot;0.0&quot;
 	OpenTemplate(sertPath &amp; path)
-	
+
+	findAndRename(&quot;$bground&quot;, Format(oDialog1117.getControl(&quot;bgField&quot;).value, &quot;0.0&quot;))
+	findAndRename(&quot;$temp&quot;, Format(oDialog1117.getControl(&quot;tempField&quot;).value, &quot;0.0&quot;))
+	findAndRename(&quot;$vlag&quot;, Format(oDialog1117.getControl(&quot;vlaghField&quot;).value, &quot;0.0&quot;))
+		
 	Overall.insertParametersToTemplate(calibName, techName)
 	Overall.insertFacilitiesText
 
