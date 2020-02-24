@@ -127,7 +127,7 @@ public function getFacilityText(id as string) as string
 	case &quot;130_eng&quot;
 		stroke = &quot; standard dosimetry facility AT-130, N 015, Cs-137-137, error 4 %, the Certificate of Compliance  N210/ 1427-2018 on 23.10.2018 issued by FGUP «D.I.Mendeleyev VNIIM», St. Petersburg, Russia)&quot;
 	case &quot;140_eng&quot;
-		stroke = &quot; collimated beams of neutrons on the standard facility UPN-AT140 №001 with the set of Pu -  - Be neutron radiation sources (certificates of Compliance N210-1508/18 issued by VNIIM, St. Petersburg, Russia), error of ± 5 %&quot;	
+		stroke = &quot; collimated beams of neutrons on the standard facility UPN-AT140 №001 with the set of Pu - α - Be neutron radiation sources (certificates of Compliance N210-1508/18 issued by VNIIM, St. Petersburg, Russia), error of ± 5 %&quot;	
 	case &quot;alpha_eng&quot;
 		stroke = &quot; alpha radiation source of Pu-239: 4П9, 5П9, 6П9, error of ± 6 %, the certificateN МН0105687-4818  issued by BelGIM, Minsk, the Republic of Belarus&quot;	
 	case &quot;beta_eng&quot;
