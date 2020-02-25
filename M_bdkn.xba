@@ -24,11 +24,11 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.1 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.02 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
 
-	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)	
+	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
 	oOption04 = oDialogBDKN.getControl(&quot;is04&quot;)
 	oOption05 = oDialogBDKN.getControl(&quot;is05&quot;)
 
@@ -36,7 +36,7 @@ Sub BDKN_Dialog_Show
 	isComboCollection.add(oOption04)
 	isComboCollection.add(oOption05)
 	oOption02.State = 0
-	
+
 	for i=1 to 5
 		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
 		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)

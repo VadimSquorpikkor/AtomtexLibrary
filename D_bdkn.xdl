@@ -15,13 +15,13 @@
   <dlg:text dlg:id="Label9" dlg:tab-index="22" dlg:left="81" dlg:top="107" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="31" dlg:left="139" dlg:top="12" dlg:width="67" dlg:height="175"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:style-id="0" dlg:id="is02" dlg:tab-index="5" dlg:left="10" dlg:top="37" dlg:width="40" dlg:height="8" dlg:value="БДКН-02">
+   <dlg:radio dlg:style-id="0" dlg:id="is02" dlg:tab-index="5" dlg:left="4" dlg:top="37" dlg:width="47" dlg:height="8" dlg:value="БДКН-02">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="is04" dlg:tab-index="4" dlg:left="10" dlg:top="51" dlg:width="40" dlg:height="8" dlg:value="БДКН-04">
+   <dlg:radio dlg:style-id="0" dlg:id="is04" dlg:tab-index="4" dlg:left="4" dlg:top="51" dlg:width="47" dlg:height="8" dlg:value="БДКН-04">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="is05" dlg:tab-index="3" dlg:left="10" dlg:top="64" dlg:width="40" dlg:height="8" dlg:value="БДКН-05">
+   <dlg:radio dlg:style-id="0" dlg:id="is05" dlg:tab-index="3" dlg:left="4" dlg:top="64" dlg:width="47" dlg:height="8" dlg:value="БДКН-05">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
   </dlg:radiogroup>
@@ -72,7 +72,7 @@
   <dlg:radiogroup>
    <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="29" dlg:left="33" dlg:top="147" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>
-  <dlg:img dlg:style-id="4" dlg:id="bdknLogo" dlg:tab-index="32" dlg:left="46" dlg:top="4" dlg:width="90" dlg:height="100"/>
+  <dlg:img dlg:style-id="4" dlg:id="bdknLogo" dlg:tab-index="32" dlg:left="51" dlg:top="4" dlg:width="85" dlg:height="95"/>
   <dlg:textfield dlg:style-id="2" dlg:id="srkNum" dlg:tab-index="35" dlg:left="144" dlg:top="18" dlg:width="20" dlg:height="14" dlg:align="center" dlg:value="500"/>
   <dlg:textfield dlg:style-id="2" dlg:id="bdNum" dlg:tab-index="36" dlg:left="172" dlg:top="18" dlg:width="20" dlg:height="14" dlg:align="center" dlg:maxlength="3" dlg:value="002"/>
   <dlg:textfield dlg:id="fullNum" dlg:tab-index="33" dlg:left="214" dlg:top="18" dlg:width="48" dlg:height="12" dlg:value="000.000"/>
