@@ -94,15 +94,12 @@ sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal poi
 	BDList.add(bd)
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub makeBetaLayout(bd as new DUnit)
+sub makeBetaLayout(bd as new DUnit) &apos;TODO  ОБЪЕДИНИТЬ С ТАКИМ ЖЕ МЕТОДОМ В 1125 -- ДОБАВИТЬ В OVERALL
 	dim pointList as new collection
-	dim valueList as new collection
 	dim myFormat as string
 	dim point as double
-	dim value as double
 	for i=1 to bd.getPointTextList.count
 		point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
-		value = bd.getValueList.item(i)
 		if point &lt; 500 then
 			myFormat = &quot;0.0&quot;
 			oDialog1117.Model.getByName(&quot;ValueField&quot; + i).valueStep = 0.1
@@ -113,8 +110,7 @@ sub makeBetaLayout(bd as new DUnit)
 			oDialog1117.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = 0
 		end if
 		oDialog1117.getControl(&quot;Label&quot; + i).Text = Format(point, myFormat) &amp; &quot; &quot;
-		&apos;oDialog1117.getControl(&quot;ValueField&quot; + i).value = Format(point, myFormat) rem ЕСЛИ ЕСЛИ БЫ НУЖНО БЫЛО СОХРАНЕНИЕ, ТОГДА getValueList.item(i)
-		oDialog1117.getControl(&quot;ValueField&quot; + i).value = Format(value, myFormat)
+		oDialog1117.getControl(&quot;ValueField&quot; + i).value = Format(point, myFormat) rem ЕСЛИ ЕСЛИ БЫ НУЖНО БЫЛО СОХРАНЕНИЕ, ТОГДА getValueList.item(i)
 		pointList.add(point)
 	next i
 	bd.setPointList(pointList)
@@ -342,7 +338,6 @@ function setButtonVisibility
 	hasNext = false
 	hasPrev = false
 	for i=layoutPosition+1 to BDList.count
-		&apos;msgbox &quot;&quot; + (layoutPosition+1) + &quot;, &quot; + BDList.count
 		if BDList.item(i).isPrintable then hasNext = true
 		oDialog1117.getControl(&quot;nextButton&quot;).setEnable(hasNext)
 		oDialog1117.getControl(&quot;doneButton&quot;).setEnable(NOT hasNext)
@@ -352,10 +347,6 @@ function setButtonVisibility
 		oDialog1117.getControl(&quot;prevButton&quot;).setEnable(hasPrev)
 	next i
 	if layoutPosition = 1 then oDialog1117.getControl(&quot;prevButton&quot;).setEnable(hasPrev)
-	if layoutPosition = BDList.count then &apos;если текущий лэйаут является последним
-		oDialog1117.getControl(&quot;nextButton&quot;).setEnable(false)
-		oDialog1117.getControl(&quot;doneButton&quot;).setEnable(true)
-	end if
 end function 
 rem---------------------------------------------------------------------------------------------------------
 private function nextChecked
