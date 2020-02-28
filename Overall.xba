@@ -269,7 +269,7 @@ function PathForProtocol(bdName as string)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertParametersToTemplate(bdName as string)
-	percentOtk = 7 rem %
+	percentOtk = 3 rem %
 	&apos;bground = Format(randValue(95, 5), &quot;0.0&quot;)
 	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))

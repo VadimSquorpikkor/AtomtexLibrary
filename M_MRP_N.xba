@@ -88,7 +88,7 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
-	percentOtk = 7 rem %
+	percentOtk = 3 rem %
 
 	findAndRename(&quot;$bground&quot;, Format(randValue(95, 5), &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2),  &quot;0.0&quot;))

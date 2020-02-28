@@ -436,7 +436,7 @@ sub insertRecordsToTemplate_depricated
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	dim threePointArray(2) as double
 	dim bground as double
-	percentOtk = 7 rem %
+	percentOtk = 3 rem %
 	bground = Format(randValue(95, 5), MyFormat)
 	findAndRename(&quot;$bground&quot;, bground)
 	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2), MyFormat))
