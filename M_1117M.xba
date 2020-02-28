@@ -27,7 +27,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.03 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.04 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
@@ -49,6 +49,8 @@ Sub at1117m_Dialog_Show
 	oDialog1117.getControl(&quot;bgField&quot;).value = bgValue
 	oDialog1117.getControl(&quot;tempField&quot;).value = tempValue
 	oDialog1117.getControl(&quot;vlaghField&quot;).value = vlaghValue
+	
+	oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
 	
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
@@ -100,8 +102,22 @@ sub makeBetaLayout(bd as new DUnit)
 	dim myFormat as string
 	dim point as double
 	dim value as double
+	
+	&apos;dim pointSource as new Collection
+	&apos;if BDList.item(num).isAlternativePoints then
+	&apos;	pointSource = 
+	&apos;else 	
+	
+	&apos;oDialog1117.getControl(&quot;altCheckBox&quot;).state = bd.isAlternativePoints
+	
 	for i=1 to bd.getPointTextList.count
-		point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
+		if bd.isAlternativePoints then
+			point = bd.getPointList.item(i)
+			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
+		else
+			point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
+			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).Color = RGB(0, 0, 0)
+		end if	
 		value = bd.getValueList.item(i)
 		if point &lt; 500 then
 			myFormat = &quot;0.0&quot;
@@ -127,11 +143,15 @@ sub altCheckBoxListener(oEvent As Object)
     if BDList.item(layoutPosition).isAlternativePoints = true then
     	for i=1 to BDList.item(layoutPosition).getPointTextList.count
     		oDialog1117.getControl(&quot;altField&quot; + i).Visible = true	
+    		oDialog1117.getControl(&quot;Label&quot; + i).Visible = false
     	next i
     else
     	for i=1 to BDList.item(layoutPosition).getPointTextList.count
     		oDialog1117.getControl(&quot;altField&quot; + i).Visible = false	
+    		oDialog1117.getControl(&quot;Label&quot; + i).Visible = true
     	next i
+    	Overall.saveCurentBDValue(layoutPosition)
+    	makeLayout(BDList.item(layoutPosition))
     end if
 end sub    
 rem---------------------------------------------------------------------------------------------------------
@@ -144,12 +164,34 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function makeLayout(bd as new DUnit)
  	oDialog1117.getControl(&quot;typeLabel&quot;).text =  bd.getName
+ 	if bd.isAlternativePoints then
+		for i=1 to 9
+			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
+		next i
+	else
+		for i=1 to 9
+			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 0)
+		next i	
+	end if	
+ 	&apos;msgbox oDialog1117.Model.getByName(&quot;altCheckBox&quot;).state
+	if bd.isAlternativePoints then
+		oDialog1117.getControl(&quot;altCheckBox&quot;).state = 1
+	else
+		oDialog1117.getControl(&quot;altCheckBox&quot;).state = 0
+	end if	
  	if bd.getType = &quot;beta&quot; then
  		makeBetaLayout(bd)
  	else
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
  	end if
+ 	
+ 	if bd.getType = &quot;alpha&quot; OR bd.getType = &quot;beta&quot; then
+ 		oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(true)
+ 	else
+		oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
+ 	end if
+ 	
  	for i=1 to bd.getPointList.count
 		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = true rem скрыть все ненужные
 		oDialog1117.getControl(&quot;Label&quot; + i).Visible = true
@@ -158,16 +200,16 @@ function makeLayout(bd as new DUnit)
 		oDialog1117.getControl(&quot;ValueField&quot; + i).Visible = false rem скрыть все ненужные
 		oDialog1117.getControl(&quot;Label&quot; + i).Visible = false
 	next i
-	oDialog1117.getControl(&quot;altCheckBox&quot;).state = bd.isAlternativePoints
-	if bd.isAlternativePoints = true then
-    	for i=1 to bd.getPointTextList.count
-    		oDialog1117.getControl(&quot;altField&quot; + i).Visible = true	
-    	next i
-    else
-    	for i=1 to bd.getPointTextList.count
+
+	&apos;if bd.isAlternativePoints = true then
+    &apos;	for i=1 to bd.getPointTextList.count
+    &apos;		oDialog1117.getControl(&quot;altField&quot; + i).Visible = true	
+    &apos;	next i
+    &apos;else
+	   	for i=1 to bd.getPointTextList.count
     		oDialog1117.getControl(&quot;altField&quot; + i).Visible = false	
     	next i
-    end if
+    &apos;end if
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub clearLayout
@@ -214,7 +256,11 @@ sub checkBoxListener(oEvent As Object)
     else 	
     	checkedCount = checkedCount - n
     end if
-    if checkedCount = 0 then clearLayout &apos;ЕСЛИ ПОСЛЕ ТОГО, КАК ПОСЧИТАЛИ, СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО = 0, ЭТО ЗНАЧИТ БЫЛ УДАЛЕН САМЫЙ ПОСЛЕДНИЙ БД -- ОБНУЛЯЕМ ЛЭЙАУТ
+    if checkedCount = 0 then
+    	clearLayout &apos;ЕСЛИ ПОСЛЕ ТОГО, КАК ПОСЧИТАЛИ, СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО = 0, ЭТО ЗНАЧИТ БЫЛ УДАЛЕН САМЫЙ ПОСЛЕДНИЙ БД -- ОБНУЛЯЕМ ЛЭЙАУТ
+    	oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
+    	oDialog1117.getControl(&quot;altCheckBox&quot;).state = 0
+    end if	
     if position &lt; layoutPosition then
     	Overall.saveCurentBDValue(layoutPosition)
     	makeLayout(BDList.item(position)) &apos;
@@ -415,7 +461,7 @@ sub insertDataToTemplate
 			if bd.BdName=&quot;БДКН-01&quot; then	neutron_01(i, bd)
 			if bd.BdName=&quot;БДКН-03&quot; then	neutron_03(i, bd)
 			
-			if BDList.item(i).getType = &quot;beta&quot; then
+			if BDList.item(i).getType = &quot;beta&quot; then				
 				Overall.insertBetaToTemplateStep(i, oDateFieldModel)
 			else
 				Overall.insertToTemplateStep(i)

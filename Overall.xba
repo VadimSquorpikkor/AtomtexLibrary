@@ -388,6 +388,14 @@ sub insertBetaToTemplateStep(i, oDateFieldModel as object)
 
 		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
 		cont_point = Activity.get_activity_Sr(bd.getPointTextList.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
+		
+		if bd.isAlternativePoints then
+			cont_point = bd.getPointList.item(j+1)
+		else
+			Activity.get_activity_Sr(bd.getPointTextList.item(j+1), oDateFieldModel)
+		end if	
+			
+		
 		threePointArray = avaragePointsRndArray(m_point, percentOtk)
 		
 		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), bd.getPointTextList.item(j+1)) rem название источника
@@ -483,6 +491,14 @@ sub saveCurentBDValue(num as integer)
 	for i=1 to _BDList.item(num).valueList.count
 		newValues.add(_oDialog.getControl(&quot;ValueField&quot; + i).Value)
 	next i
+	if _BDList.item(num).isAlternativePoints then
+		&apos;msgbox &quot;alternate&quot;
+		dim altValues as new Collection
+		for i=1 to _BDList.item(num).valueList.count
+		altValues.add(_oDialog.getControl(&quot;altField&quot; + i).Value)
+		_BDList.item(num).setPointList(altValues)
+	next i
+	end if
 	_BDList.item(num).setValueList(newValues)
 end sub
 rem---------------------------------------------------------------------------------------------------------

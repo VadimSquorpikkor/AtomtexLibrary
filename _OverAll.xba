@@ -22,8 +22,12 @@ function RelativeError(meas as double, contr_point as double)
 	RelativeError = ((meas - contr_point) / contr_point) * 100
 end function
 rem------------доверительная граница погрешности измерения---------
-function ConfidenceLimit(pogr as double, percent as integer)
+function ConfidenceLimit(pogr as double, percent as long)
 	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
+end function
+rem----------------------------------------------------------------
+function randValue(num as double, otklonenie as double)
+	randValue = (num - otklonenie) + rnd()*otklonenie*2
 end function
 rem=======================================================================================
 sub deleteTable(name as string)

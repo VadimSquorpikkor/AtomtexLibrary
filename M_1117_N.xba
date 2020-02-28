@@ -72,7 +72,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Execute()
 End Sub
 rem=======================================================================================
-sub initialize1117							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md neutron / pp neutron
+sub initialize1117_depricated							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md neutron / pp neutron
 	addBDtoCollection(&quot;БДКГ-01&quot;,	&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 		&quot;gamma&quot;,	Array(0.1,10000))
 	addBDtoCollection(&quot;БДКГ-03&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,240), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, 	Array(0.03,0.3))
 	addBDtoCollection(&quot;БДКГ-04&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.05,10000))
@@ -107,14 +107,14 @@ sub initialize1117							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md n
 	&apos;msgbox BDList.item(1).BDName rem для проверки   
 end sub
 rem=======================================================================================
-sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
+sub addBDtoCollection_depricated(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
 	rem обертка для добавления БД в коллекцию, чтобы не плодить лишних (больше 20) объектов BDUnit (точнее их инициализации и добавления в коллекцию -- уже 60 строк)
 	dim bd as new DUnit
 	bd.addData(bname, measUnit, pointValue, pointText, BDType, measLimit)
 	BDList.add(bd)
 end sub
 rem=======================================================================================
-sub start
+sub start_depricated
 	oDialog1117.getControl(&quot;ser_rus&quot;).setVisible(false)
 	oDialog1117.getControl(&quot;ser_eng&quot;).setVisible(false)
 	oDialog1117.getControl(&quot;ComboBox1&quot;).setVisible(false)
@@ -143,42 +143,42 @@ sub start
 	nextChecked	
 end sub
 rem=======================================================================================
-sub onPrevButton
+sub onPrevButton_depricated
 	insertDataToList(BDList.item(count))&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
 	prevChecked
 	oDialog1117.getControl(&quot;bNext&quot;).setEnable(true)
 	oDialog1117.getControl(&quot;bDone&quot;).setEnable(false)
 end sub
 rem=======================================================================================
-sub onNextButton
+sub onNextButton_depricated
 	insertDataToList(BDList.item(count))
 	nextChecked
 	oDialog1117.getControl(&quot;bPrev&quot;).setEnable(true)
 end sub
 rem======================================================================================= 
-sub onDoneButton
+sub onDoneButton_depricated
 	insertDataToList(BDList.item(count))
 	insertRecordsToTemplate	
 end sub
 rem======================================================================================= 
-sub onProtocolButton
+sub onProtocolButton_depricated
 	protocolType = &quot;protRus&quot;
 
 	start
 end sub
 rem======================================================================================= 
-sub onESertButton
+sub onESertButton_depricated
 	protocolType = &quot;sertEng&quot;
 
 	start		
 end sub
 rem======================================================================================= 
-sub onRSertButton
+sub onRSertButton_depricated
 	protocolType = &quot;sertRus&quot;
 	start
 end sub
 rem=======================================================================================
-private function nextChecked
+private function nextChecked_depricated
 	rem if count&lt;&gt;0 then insertDataToList(BDList.item(count)) rem проверка -- если count = 0, значит функцию вызывает кнопка &quot;старт&quot;, а значит создавать лэйаут не нкжно
 	count = count + 1
 	while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
@@ -193,7 +193,7 @@ private function nextChecked
 	end if	
 end function
 rem=======================================================================================
-function prevChecked
+function prevChecked_depricated
 	count = count - 1
 	while BDList.item(count).isPrintable = false
 		count = count - 1
@@ -204,7 +204,7 @@ function prevChecked
 	if checkedCount=maxCheckedCount-1 then oDialog1117.getControl(&quot;bPrev&quot;).setEnable(false)
 end function
 rem=======================================================================================
-Sub checkBoxListener(oEvent As Object)
+Sub checkBoxListener_depricated(oEvent As Object)
 	rem при клике на чекбоксе функция считает кол-во чекнутых чекбоксов (нужно для проверки, есть ли хоть один выделенный, и для подсчета кол-ва чекнутых)
 	Dim oCheckbox As Object
     oCheckbox = oEvent.source.model
@@ -238,7 +238,7 @@ Sub checkBoxListener(oEvent As Object)
 End Sub
 rem=======================================================================================
 rem настройка отображения виджета под каждый конкретный тип БД 
-function makeLayout(bd as new DUnit)
+function makeLayout_depricated(bd as new DUnit)
  	typeText.Text = bd.BDName
  	dim list as new Collection
 	for i=1 to bd.pointList.count
@@ -271,7 +271,7 @@ function makeLayout(bd as new DUnit)
 	
 end function
 rem======================================================================================= 
-function rightStep(d as double) rem расчет правильного Step-а 
+function rightStep_depricated(d as double) rem расчет правильного Step-а 
 	if              d&gt;10000 then rightStep = 10
 	if d&lt;=10000 and d&gt;100	then rightStep = 1
 	if d&lt;=100    and d&gt;1     then rightStep = 0.1
@@ -279,14 +279,14 @@ function rightStep(d as double) rem расчет правильного Step-а
 	if d&lt;=0.1   and d&gt;0.01  then rightStep = 0.001
 end function
 rem======================================================================================= 
-function rightDecimalAccuracy(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
+function rightDecimalAccuracy_depricated(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
 	if nStep = 0.001 then rightDecimalAccuracy = 3
 	if nStep = 0.01  then rightDecimalAccuracy = 2
 	if nStep = 0.1 	 then rightDecimalAccuracy = 1
 	if nStep &gt;= 1 	 then rightDecimalAccuracy = 0
 end function
 rem=======================================================================================
-sub insertDataToList(bd as DUnit)
+sub insertDataToList_depricated(bd as DUnit)
 	dim list as new Collection
 	for i=1 to bd.pointCount
 		list.add(oDialog1117.getControl(&quot;NumericField&quot; + i).Value)
@@ -297,13 +297,13 @@ sub insertDataToList(bd as DUnit)
 	&apos;msgbox &quot;&quot; + count + &quot;, &quot; + bd.valueList.item(3)
 end sub
 rem=======================================================================================
-function limitComparator(min as double, max as double, position as integer)
+function limitComparator_depricated(min as double, max as double, position as integer)
 	&apos;msgbox &quot;LC&quot; + min + &quot;, &quot; + max 
 	if measLimitsArray(position)=0   OR measLimitsArray(position) &gt; min   then measLimitsArray(position) = min
 	if measLimitsArray(position+1)=0 OR measLimitsArray(position+1) &lt; max then measLimitsArray(position+1) = max	
 end function
 rem=======================================================================================
-sub calculateMeasLimitsArray(min as double, max as double, bdType as string) rem TODO вообще-то можно в параметре передавать не свойства, а сразу объект класса DUnit
+sub calculateMeasLimitsArray_depricated(min as double, max as double, bdType as string) rem TODO вообще-то можно в параметре передавать не свойства, а сразу объект класса DUnit
 	&apos;msgbox &quot;&quot;+min+&quot; &quot;+max+&quot; &quot;+bdType
 	select case bdType
 	case &quot;gamma&quot;
@@ -321,7 +321,7 @@ sub calculateMeasLimitsArray(min as double, max as double, bdType as string) rem
 	end select	
 end sub
 rem=======================================================================================
-function rightPrefixAndNumber(n as integer) as string
+function rightPrefixAndNumber_depricated(n as integer) as string
 	dim p as double
 	p = measLimitsArray(n)
 	&apos;msgbox &quot;n-&quot;+n+&quot;:&quot;+&quot; = &quot;+p
@@ -382,7 +382,7 @@ function rightPrefixAndNumber(n as integer) as string
 	end select
 end function
 rem=======================================================================================
-sub insertMeasLimits
+sub insertMeasLimits_depricated
 	findAndRename(&quot;$g_min&quot;,   rightPrefixAndNumber(0))
 	findAndRename(&quot;$g_max&quot;,   rightPrefixAndNumber(1))
 	findAndRename(&quot;$a_min&quot;,   rightPrefixAndNumber(2))
@@ -397,7 +397,7 @@ sub insertMeasLimits
 	findAndRename(&quot;$k_max&quot;,   rightPrefixAndNumber(11))
 end sub
 rem=======================================================================================
-sub insertRecordsToTemplate
+sub insertRecordsToTemplate_depricated
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
 	dim path as string
@@ -564,7 +564,7 @@ sub insertRecordsToTemplate
 	msgbox &quot;Готово!&quot;
 end sub
 rem=======================================================================================
-sub neutron_01(i as integer, bd as BUnit)
+sub neutron_01_depricated(i as integer, bd as BUnit)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
 	point_br_array = Array(0.6, 0.6, 0.863, 0.957)
@@ -588,7 +588,7 @@ sub neutron_01(i as integer, bd as BUnit)
 end sub
 rem=======================================================================================
 rem TODO объединить методы neutron_03 и neutron_01
-sub neutron_03(i as integer, bd as BUnit)
+sub neutron_03_depricated(i as integer, bd as BUnit)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
 	point_br_array = Array(0.866, 0.866, 0.957, 0.991)
@@ -610,7 +610,7 @@ sub neutron_03(i as integer, bd as BUnit)
 	
 end sub
 rem=======================================================================================
-function avaragePointsRndArray(point as double, o_percent as double)
+function avaragePointsRndArray_depricated(point as double, o_percent as double)
 	rem TODO сделать по Гауссу!!!
 	dim deviation as double
 	dim p1 as double
@@ -627,11 +627,11 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	avaragePointsRndArray = ar	
 end function
 rem=======================================================================================
-function randValue(num as double, otklonenie as double)
+function randValue_depricated(num as double, otklonenie as double)
 	randValue = (num - otklonenie) + rnd()*otklonenie*2
 end function
 rem======================================================================================
-function FacilityError(point as double, BDType as string, prefix as string)
+function FacilityError_depricated(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
 	case &quot;gamma&quot;, &quot;gamma-Gy&quot;

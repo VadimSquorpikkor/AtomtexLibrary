@@ -213,6 +213,7 @@ Public Function getPointList As Collection
    getPointList = _pointValue
 End Function
 
+
 rem Список префиксов контрольных точек (&quot;мк&quot;, &quot;м&quot;, ...)
 Public Function pointTextList As Collection
    pointTextList = _pointText
