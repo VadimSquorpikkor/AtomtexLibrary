@@ -324,7 +324,7 @@ sub insertBetaToTemplateStep(i)
 
 		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
 		cont_point = Activity.get_activity_Sr(bd.getBetaSources.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
-		threePointArray = avaragePointsRndArray(m_point, percentOtk)
+		threePointArray = Overall.avaragePointsRndArray(m_point, percentOtk)
 		
 		findAndRename((&quot;β&quot; + i + &quot;-3&quot; + j), bd.getBetaSources.item(j+1)) rem название источника
 		findAndRename((&quot;β&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
