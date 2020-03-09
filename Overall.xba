@@ -218,6 +218,7 @@ sub makeLayoutFromMultiBD(bd as new DUnit)
 			if point &lt; 100 and point &gt;= 10	then MyFormat = &quot;0.0&quot;
 			if point &gt;= 100               	then MyFormat = &quot;0&quot;
 			
+			&apos;_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = value
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).valueStep = nStep
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(nStep)

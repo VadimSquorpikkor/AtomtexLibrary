@@ -49,6 +49,8 @@ dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
 dim macroWindow as object
 
 dim doseField as object
+
+dim isSinglePoint as boolean
 rem---------------------------------------------------------------------------------------------------------
 Sub G3509_Dialog_Show
 	maxBDCount = 12
@@ -108,6 +110,8 @@ Sub G3509_Dialog_Show
 &apos;				ИЗМЕРЕНИЕ С УЧЕТОМ ВЫЧЕТА ФОНА:					&apos;	║█
 			from3.value = 0.8									&apos;	║█
 			to3.value   = 0.9									&apos;	║█
+&apos;				ИСПОЛЬЗУЕТСЯ ТОЛЬКО ОДНО ЗНАЧЕНИЕ ТОЧКИ				║█
+			isSinglePoint = true								&apos;	║█
 &apos;																	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -147,7 +151,7 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	
-	if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(3,3),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(1,1),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(3,3),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	
 	oDialog3509.getControl(&quot;removeButton&quot;).setEnable(true)

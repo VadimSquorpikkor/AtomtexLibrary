@@ -53,15 +53,15 @@
   <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="25" dlg:left="271" dlg:top="1" dlg:width="32" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="4" dlg:id="typeLabel" dlg:tab-index="5" dlg:left="210" dlg:top="87" dlg:width="50" dlg:height="12" dlg:value="TYPE" dlg:align="center"/>
   <dlg:text dlg:style-id="5" dlg:id="serialLabel" dlg:tab-index="10" dlg:left="196" dlg:top="99" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
-  <dlg:numericfield dlg:id="ValueField1-1" dlg:tab-index="6" dlg:left="206" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField1-2" dlg:tab-index="7" dlg:left="235" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField1-3" dlg:tab-index="8" dlg:left="263" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField2-1" dlg:tab-index="29" dlg:left="206" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField3-1" dlg:tab-index="32" dlg:left="206" dlg:top="154" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField2-2" dlg:tab-index="30" dlg:left="235" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField3-2" dlg:tab-index="33" dlg:left="235" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField2-3" dlg:tab-index="31" dlg:left="263" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField3-3" dlg:tab-index="34" dlg:left="263" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField1-1" dlg:tab-index="6" dlg:disabled="true" dlg:left="206" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField1-2" dlg:tab-index="7" dlg:disabled="true" dlg:left="235" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField1-3" dlg:tab-index="8" dlg:disabled="true" dlg:left="263" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField2-1" dlg:tab-index="29" dlg:disabled="true" dlg:left="206" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField3-1" dlg:tab-index="32" dlg:disabled="true" dlg:left="206" dlg:top="154" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField2-2" dlg:tab-index="30" dlg:disabled="true" dlg:left="235" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField3-2" dlg:tab-index="33" dlg:disabled="true" dlg:left="235" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField2-3" dlg:tab-index="31" dlg:disabled="true" dlg:left="263" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField3-3" dlg:tab-index="34" dlg:disabled="true" dlg:left="263" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="devCountZero" dlg:tab-index="46" dlg:left="224" dlg:top="178" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="0" dlg:value-min="0" dlg:spin="true"/>
   <dlg:text dlg:id="labelField1" dlg:tab-index="19" dlg:left="175" dlg:top="130" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="labelField2" dlg:tab-index="20" dlg:left="175" dlg:top="142" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
