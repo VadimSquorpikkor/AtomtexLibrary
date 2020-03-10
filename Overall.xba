@@ -197,7 +197,7 @@ sub makeLayoutFromBD(bd as new DUnit)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromMultiBD(bd as new DUnit)
-	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName rem &quot;БДКГ-22&quot;
+	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName
 	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
 	dim i as integer
 	dim j as integer
@@ -218,7 +218,9 @@ sub makeLayoutFromMultiBD(bd as new DUnit)
 			if point &lt; 100 and point &gt;= 10	then MyFormat = &quot;0.0&quot;
 			if point &gt;= 100               	then MyFormat = &quot;0&quot;
 			
-			&apos;_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
+			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).visible = true
+			&apos;msgbox &quot;&quot; + i + &quot;, &quot; + j
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = value
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).valueStep = nStep
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(nStep)
@@ -300,6 +302,28 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	ar(1) = p2
 	ar(2) = p3
 	avaragePointsRndArray = ar	
+end function
+rem---------------------------------------------------------------------------------------------------------
+function avaragePointsRndFiveArray(point as double, o_percent as double)
+	dim deviation as double
+	dim p1 as double
+	dim p2 as double
+	dim p3 as double
+	dim p4 as double
+	dim p5 as double
+	dim ar(4) as double 
+	deviation = o_percent/100*point
+	p1 = randValue(point, deviation)
+	p2 = randValue(point, deviation)
+	p3 = randValue(point, deviation)
+	p4 = randValue(point, deviation)
+	p5 = point*5 - p1 - p2 - p3 - p4
+	ar(0) = p1
+	ar(1) = p2
+	ar(2) = p3
+	ar(3) = p4
+	ar(4) = p5
+	avaragePointsRndFiveArray = ar
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;sub makeAdditionalBGValue

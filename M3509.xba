@@ -63,13 +63,14 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.00 &quot;, oListBox, pointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
 	for i=1 to pointCount
 		for j=1 to measurementPerPoint
-			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+			&apos;oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(false)
+			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).visible = false
 			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
 		next j
 	next i
@@ -115,6 +116,10 @@ Sub G3509_Dialog_Show
 &apos;																	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+	if isSinglePoint then oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1
+	if NOT isSinglePoint then oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 0
+	
 	oDialogMain.endexecute()   
 	oDialog3509.Execute()
 End Sub
@@ -128,32 +133,16 @@ sub addNewBD
 	dim nCount as integer
 	dim bd as new DUnit
 
-	if layoutPosition = 0 then
-		&apos;if is3509.state then
-		&apos;	for i=1 to 3 &apos;точки
-		&apos;		for j=1 to 3 &apos;кол-во измерений в точке
-		&apos;			oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
-		&apos;		next j					
-		&apos;	next i
-		&apos;end if
-		if is3509A.state OR is3509.state then
-			for i=1 to 2
-				for j=1 to 3 &apos;кол-во измерений в точке
-					oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
-				next j
-			next i
-			for j=1 to 3 &apos;кол-во измерений в точке
-				oDialog3509.getControl(&quot;ValueField&quot; + 3 + &quot;-&quot; + j).setEnable(false)
-			next j
-			
-		end if
-	end if
-	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	
-	if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(1,1),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(3,3),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	
+	if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
+		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(1,1),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(1,1),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	else
+		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(3,3),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(3,3),	&quot;Зв/ч&quot;, Array(4,800),	Array(&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	end if
+		
 	oDialog3509.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog3509.getControl(&quot;bdSerial&quot;).text)
 	
@@ -169,16 +158,24 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonVisibility(layoutPosition as integer)
 	Overall.setButtonVisibility(layoutPosition)
+
 	if BDList.count = 0 then
 		oDialog3509.getControl(&quot;is3509&quot;).setEnable(true)
 		oDialog3509.getControl(&quot;is3509A&quot;).setEnable(true)
+		oDialog3509.getControl(&quot;isSinglePoint&quot;).setEnable(true)
 		for i=1 to 3
 			oDialog3509.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
 		next i 
+		for i=1 to 3
+			for j=1 to 3
+				oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).visible = false
+			next j
+		next i
 	end if
 	if BDList.count &lt;&gt; 0 then
 		oDialog3509.getControl(&quot;is3509&quot;).setEnable(false)
 		oDialog3509.getControl(&quot;is3509A&quot;).setEnable(false)
+		oDialog3509.getControl(&quot;isSinglePoint&quot;).setEnable(false)
 	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -343,37 +340,44 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
 function avarageFivePointsRndArray(coll as Collection)
-	&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
-	dim deviation as double
-	dim p4 as double
-	dim p5 as double
-	dim point as double
-	point = (coll.item(1) + coll.item(2) + coll.item(3))/3
-	dim ar(5) as double 
+	dim ar(5) as double
+	&apos;&apos;если приходит одно число -- генерим все пять
+	if coll.count = 1 then
+		ar = Overall.avaragePointsRndFiveArray(coll.item(1), Overall.percentOTK)
+	&apos;&apos;если приходит 3 числа -- генерим оставшиеся 2 по хитрому рандому:	
+	else
+		&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
+		dim deviation as double
+		dim p4 as double
+		dim p5 as double
+		dim point as double
+		point = (coll.item(1) + coll.item(2) + coll.item(3))/3
+		 
 	
-	&apos;смысл такой -- процент отклонения от среднего не константа:
-	&apos;берём разницу между максимальным значением и минимальным минус минимальное
-	&apos;тогда четвертое значение рандомно выбирается из этого диапазона (минус минимальное нужно для того, чтобы пятое значение было не меньше минимального)
-	&apos;таким образом разброс значений никогда не будет выходить за границы макс и мин значений входящих трёх значений, т.е. процент отклонения считается автоматически на основании входных данных
-	dim maximum as double
-	dim minimum as double
-	maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
-	minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
-	p4 = minimum + rnd()*((point - minimum)*2)
+		&apos;смысл такой -- процент отклонения от среднего не константа:
+		&apos;берём разницу между максимальным значением и минимальным минус минимальное
+		&apos;тогда четвертое значение рандомно выбирается из этого диапазона (минус минимальное нужно для того, чтобы пятое значение было не меньше минимального)
+		&apos;таким образом разброс значений никогда не будет выходить за границы макс и мин значений входящих трёх значений, т.е. процент отклонения считается автоматически на основании входных данных
+		dim maximum as double
+		dim minimum as double
+		maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
+		minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
+		p4 = minimum + rnd()*((point - minimum)*2)	
 
-	&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
-	dim accuracy as integer
-	accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
-	p4 = round(p4, accuracy)
+		&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
+		dim accuracy as integer
+		accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
+		p4 = round(p4, accuracy)
 	
-	p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
-	ar(3) = coll.item(1)
-	ar(1) = coll.item(2)
-	ar(2) = coll.item(3)
-	ar(0) = p4
-	ar(4) = p5
-	&apos;СГЕНЕРИРОВАННЫЕ ЧИСЛА СТАВЛЮ В НАЧАЛО И КОНЕЦ (0), (4)
-	avarageFivePointsRndArray = ar	
+		p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
+		ar(3) = coll.item(1)
+		ar(1) = coll.item(2)
+		ar(2) = coll.item(3)
+		ar(0) = p4
+		ar(4) = p5
+		&apos;СГЕНЕРИРОВАННЫЕ ЧИСЛА СТАВЛЮ В НАЧАЛО И КОНЕЦ (0), (4)
+	end if	
+	avarageFivePointsRndArray = ar
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
@@ -475,7 +479,14 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	
 		deviceCountZero = bd.getDose &apos;oDialog3509.getControl(&quot;devCountZero&quot;).value
 		findAndRename((&quot;$&quot; + i + &quot;-d_dev&quot; + strokeEnd), Format(deviceCountZero, &quot;0.00&quot;))
-		deviceCountDone = (bd.getMultiValueList.item(2).item(1) + bd.getMultiValueList.item(2).item(2) + bd.getMultiValueList.item(2).item(3)) / 3 / 20 / 10 + deviceCountZero &apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) 
+		
+		if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
+			deviceCountDone = (bd.getMultiValueList.item(2).item(1)) / 20 / 10 + deviceCountZero 
+		else	
+			deviceCountDone = (bd.getMultiValueList.item(2).item(1) + bd.getMultiValueList.item(2).item(2) + bd.getMultiValueList.item(2).item(3)) / 3 / 20 / 10 + deviceCountZero 
+			&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) 
+		end if	
+		
 		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
@@ -502,6 +513,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
 		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
+				
+		&apos;msgbox &quot;&quot; + fivePointArray.count
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)

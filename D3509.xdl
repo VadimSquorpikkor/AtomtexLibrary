@@ -18,7 +18,7 @@
   <dlg:text dlg:id="Label5" dlg:tab-index="18" dlg:left="60" dlg:top="105" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="26" dlg:left="5" dlg:top="9" dlg:width="94" dlg:height="207"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="27" dlg:left="103" dlg:top="9" dlg:width="65" dlg:height="207"/>
-  <dlg:text dlg:id="Label10" dlg:tab-index="28" dlg:left="105" dlg:top="204" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во -- 12 БД" dlg:align="center"/>
+  <dlg:text dlg:id="Label10" dlg:tab-index="28" dlg:left="105" dlg:top="205" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во -- 12 БД" dlg:align="center"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="35" dlg:left="171" dlg:top="5" dlg:width="129" dlg:height="75">
    <dlg:title dlg:value="Параметры генератора"/>
   </dlg:titledbox>
@@ -39,13 +39,13 @@
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="14" dlg:left="21" dlg:top="171" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="16" dlg:left="21" dlg:top="196" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:numericfield dlg:style-id="1" dlg:id="bdSerial" dlg:tab-index="53" dlg:left="108" dlg:top="13" dlg:width="55" dlg:height="14" dlg:decimal-accuracy="0" dlg:value="36100" dlg:spin="true"/>
-  <dlg:button dlg:id="addButton" dlg:tab-index="0" dlg:left="108" dlg:top="29" dlg:width="55" dlg:height="12" dlg:value="Добавить">
+  <dlg:button dlg:id="addButton" dlg:tab-index="0" dlg:left="108" dlg:top="37" dlg:width="55" dlg:height="12" dlg:value="Добавить">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="removeButton" dlg:tab-index="4" dlg:left="108" dlg:top="42" dlg:width="55" dlg:height="12" dlg:value="Удалить последний">
+  <dlg:button dlg:id="removeButton" dlg:tab-index="4" dlg:left="108" dlg:top="50" dlg:width="55" dlg:height="12" dlg:value="Удалить последний">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.removeLastBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:menulist dlg:style-id="2" dlg:id="bdListBox" dlg:tab-index="3" dlg:left="108" dlg:top="57" dlg:width="55" dlg:height="146">
+  <dlg:menulist dlg:style-id="2" dlg:id="bdListBox" dlg:tab-index="3" dlg:left="108" dlg:top="64" dlg:width="55" dlg:height="141">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
@@ -57,7 +57,7 @@
   <dlg:numericfield dlg:id="ValueField1-2" dlg:tab-index="7" dlg:disabled="true" dlg:left="235" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField1-3" dlg:tab-index="8" dlg:disabled="true" dlg:left="263" dlg:top="129" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField2-1" dlg:tab-index="29" dlg:disabled="true" dlg:left="206" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField3-1" dlg:tab-index="32" dlg:disabled="true" dlg:left="206" dlg:top="154" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField3-1" dlg:tab-index="32" dlg:disabled="true" dlg:left="206" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField2-2" dlg:tab-index="30" dlg:disabled="true" dlg:left="235" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField3-2" dlg:tab-index="33" dlg:disabled="true" dlg:left="235" dlg:top="153" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField2-3" dlg:tab-index="31" dlg:disabled="true" dlg:left="263" dlg:top="141" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
@@ -91,5 +91,6 @@
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
   </dlg:radiogroup>
+  <dlg:checkbox dlg:id="isSinglePoint" dlg:tab-index="55" dlg:left="108" dlg:top="29" dlg:width="55" dlg:height="10" dlg:value="1 измер. в точке" dlg:checked="false"/>
  </dlg:bulletinboard>
 </dlg:window>
