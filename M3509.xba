@@ -39,9 +39,9 @@ dim to2 as object
 dim from3 as object
 dim to3 as object
 
-dim bgList(8)  as double &apos;сгенерированные значения фона
-dim devList(8) as double &apos;показания прибора (с фоном)
-dim resList(8) as double &apos;результаты измерения с учетом вычета фона
+dim bgList(7)  as double &apos;сгенерированные значения фона
+dim devList(7) as double &apos;показания прибора (с фоном)
+dim resList(7) as double &apos;результаты измерения с учетом вычета фона
 dim sum1, sum2, sum3 as double
 
 dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
@@ -340,7 +340,7 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
 function avarageFivePointsRndArray(coll as Collection)
-	dim ar(5) as double
+	dim ar(4) as double
 	&apos;&apos;если приходит одно число -- генерим все пять
 	if coll.count = 1 then
 		ar = Overall.avaragePointsRndFiveArray(coll.item(1), Overall.percentOTK)
@@ -385,7 +385,7 @@ function avgSqrt(Array as variant, avg as double)
 	dim nValue as integer
 	dim arr(0) as double
 	dim average as double
-	nValue = uBound(Array)
+	nValue = uBound(Array) + 1
 	average = avg
 	dim sum as double
 	sum = 0
@@ -393,6 +393,7 @@ function avgSqrt(Array as variant, avg as double)
 	for i=0 to nValue - 1
 		sum = sum + (Array(i) - average)*(Array(i) - average)
 	next i
+	
 	dim n as integer
 	n = nValue * (nValue - 1)
 	
@@ -513,8 +514,6 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
 		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
-				
-		&apos;msgbox &quot;&quot; + fivePointArray.count
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)

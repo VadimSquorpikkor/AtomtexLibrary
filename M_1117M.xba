@@ -32,7 +32,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.04 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.05 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
@@ -56,6 +56,10 @@ Sub at1117m_Dialog_Show
 	oDialog1117.getControl(&quot;vlaghField&quot;).value = vlaghValue
 	
 	oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
+	
+	oDialog1117.getControl(&quot;prevButton&quot;).setEnable(false)
+	oDialog1117.getControl(&quot;nextButton&quot;).setEnable(false)
+	oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
 	
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
@@ -272,6 +276,7 @@ sub checkBoxListener(oEvent As Object)
     	layoutPosition = position 
     end if	
     setButtonVisibility
+    
     &apos;msgbox layoutPosition
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -407,6 +412,8 @@ function setButtonVisibility
 		oDialog1117.getControl(&quot;nextButton&quot;).setEnable(false)
 		oDialog1117.getControl(&quot;doneButton&quot;).setEnable(true)
 	end if
+	if checkedCount = 0 then oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
+	&apos;if layoutPosition = 1 then oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
 end function 
 rem---------------------------------------------------------------------------------------------------------
 private function nextChecked

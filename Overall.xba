@@ -304,6 +304,17 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	avaragePointsRndArray = ar	
 end function
 rem---------------------------------------------------------------------------------------------------------
+function roundTwoDigitAfterDot(num as double)
+	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО 2 ЗНАКА ПОСЛЕ ЗАПЯТОЙ
+	&apos;msgbox &quot;before - &quot; + num
+	dim a as double
+	a = num
+	a = a*1000
+	if a mod 10 &gt;= 5 then a = a + 10
+	&apos;msgbox &quot;after - &quot; + int(a/10)/100
+	roundTwoDigitAfterDot = int(a/10)/100
+end function
+rem---------------------------------------------------------------------------------------------------------
 function avaragePointsRndFiveArray(point as double, o_percent as double)
 	dim deviation as double
 	dim p1 as double
@@ -313,10 +324,10 @@ function avaragePointsRndFiveArray(point as double, o_percent as double)
 	dim p5 as double
 	dim ar(4) as double 
 	deviation = o_percent/100*point
-	p1 = randValue(point, deviation)
-	p2 = randValue(point, deviation)
-	p3 = randValue(point, deviation)
-	p4 = randValue(point, deviation)
+	p1 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p2 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p3 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p4 = roundTwoDigitAfterDot(randValue(point, deviation))
 	p5 = point*5 - p1 - p2 - p3 - p4
 	ar(0) = p1
 	ar(1) = p2
