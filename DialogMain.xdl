@@ -34,7 +34,7 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G02N.G02N_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="CommandButton3" dlg:tab-index="13" dlg:left="9" dlg:top="211" dlg:width="8" dlg:height="10" dlg:value="#">
-   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.at1117m_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.Module1.D1_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="CommandButton10" dlg:tab-index="2" dlg:left="40" dlg:top="44" dlg:width="70" dlg:height="16" dlg:value="Портальный монитор">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_PORTAL.Portal_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>

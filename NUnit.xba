@@ -9,7 +9,7 @@ Option Explicit
 dim Overall as new Overall 
 
 sub neutron_01_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.957), Array(5.9, 57, 235, 1019), 5)
+	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.965), Array(6, 57, 235, 986), 5)
 end sub
 
 sub neutron_02_ToTemplateStep(i as integer, bd as BUnit)
@@ -17,7 +17,7 @@ sub neutron_02_ToTemplateStep(i as integer, bd as BUnit)
 end sub
 
 sub neutron_03_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.866, 0.866, 0.957, 0.991), Array(8.3, 80, 331, 1434), 7)
+	neutron(i, bd, Array(0.922, 0.922, 0.980, 0.995), Array(9, 80, 330, 1460), 7)
 end sub
 
 sub neutron_04_ToTemplateStep(i as integer, bd as BUnit)

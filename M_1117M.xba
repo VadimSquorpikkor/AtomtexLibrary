@@ -32,7 +32,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.05 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.07 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
@@ -76,8 +76,8 @@ sub initialize1117							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md n
 	addBDtoCollection(&quot;БДКГ-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.03,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.02,1))
 	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.35,0.5),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),	&quot;gamma&quot;,	Array(0.02,500))
 	rem-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;&quot;,		Array(0.5,5.9, 57, 235, 1019),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000))
-	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;&quot;,		Array(0.5,8.3, 80, 331, 1434),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10))
+	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000))
+	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10))
 	rem-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;&quot;,		Array(78.3,743,6300,62100),				emptyArray,										&quot;alpha&quot;,	Array(0.1,10))	rem №12
 	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;&quot;,		Array(74.4,630,5140,35600),				emptyArray,										&quot;alpha&quot;,	Array(0.05,5))
@@ -509,8 +509,8 @@ rem-----------------------------------------------------------------------------
 sub neutron_01(i as integer, bd as BUnit)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
-	point_br_array = Array(0.6, 0.6, 0.863, 0.957)
-	point_fio_array = Array(5.9, 57, 235, 1019)
+	point_br_array = Array(0.6, 0.6, 0.863, 0.965)
+	point_fio_array = Array(6, 57, 235, 986)
 	dim fon, p1, p2, p3 as double
 	fon = bd.valueList.item(1)	rem фон
 	dim point as double
@@ -530,8 +530,8 @@ rem TODO объединить методы neutron_03 и neutron_01
 sub neutron_03(i as integer, bd as BUnit)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
-	point_br_array = Array(0.866, 0.866, 0.957, 0.991)
-	point_fio_array = Array(8.3, 80, 331, 1434)
+	point_br_array = Array(0.922, 0.866, 0.980, 0.995)
+	point_fio_array = Array(9, 80, 330, 1460)
 	dim fon, p1, p2, p3 as double
 	fon = bd.valueList.item(1)	rem фон
 	dim point as double

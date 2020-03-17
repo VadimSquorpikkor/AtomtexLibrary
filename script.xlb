@@ -28,4 +28,5 @@
  <library:element library:name="Generator"/>
  <library:element library:name="M3509"/>
  <library:element library:name="AtomMath"/>
+ <library:element library:name="Module1"/>
 </library:library>
