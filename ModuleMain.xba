@@ -3,8 +3,15 @@
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="ModuleMain" script:language="StarBasic">REM  *****  BASIC  *****
 
 dim oDialogMain as object 
+dim oDialogMain as object 
 global sertPath as String
-global bgValue, tempValue, vlaghValue as double
+global bgValue as double
+global tempValue as double
+global vlaghValue as double
+&apos;global sertPath as String
+&apos;global bgValue as double
+&apos;global tempValue as double
+&apos;global vlaghValue as double
 rem-------------------------------------------------------------------------
 Sub MainDialog_Show
 	dim user_name as String
@@ -30,9 +37,9 @@ Sub MainDialog_Show
 	bgValue = randValue(95, 5)
 	tempValue = randValue(21, 2)
 	vlaghValue = randValue(70, 5)
-	
+		
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.65&quot;	
+	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.66&quot;	
    	oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    	oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	oDialogMain.Execute()

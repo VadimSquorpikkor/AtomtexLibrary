@@ -17,6 +17,8 @@ dim oOptionButtonPr as object
 dim oOptionButtonSr as object
 dim oOptionButtonSe as object
 
+dim bgValue2 as double
+
 dim checkedCount as integer
 
 dim layoutPosition as integer &apos;в отличии от других классов, здесь layoutPosition -- это фиксированная позиция каждого блока, совпадает с номером соответствующего чекбокса (т.е. при выборе только бдкг-11 layoutPosition будет равен 5 (только один номер позиции))
@@ -61,8 +63,12 @@ Sub at1117m_Dialog_Show
 	oDialog1117.getControl(&quot;nextButton&quot;).setEnable(false)
 	oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
 	
+	&apos;msgbox &quot;bgValue - &quot; + bgValue
+	bgValue2 = bgValue
+	
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
+	
 End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub initialize1117							rem  	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md neutron / pp neutron

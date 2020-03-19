@@ -19,12 +19,12 @@ dim maxBDCount as integer
 dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub AT1121_Dialog_Show
-	maxBDCount = 10
+	maxBDCount = 20
 
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
 	oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.14 &quot;, oListBox, 9)
+	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 

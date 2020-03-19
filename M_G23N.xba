@@ -263,7 +263,8 @@ sub insertRecordsToTemplate
 	dim threePointArray(2) as double
 	dim bground as double
 	percentOtk = 3 rem %
-	bground = Format(randValue(95, 5), MyFormat)
+	&apos;bground = Format(randValue(95, 5), MyFormat)
+	bground = Format(bgValue, MyFormat)
 	findAndRename(&quot;$bground&quot;, bground)
 	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2), MyFormat))
 	findAndRename(&quot;$vlag&quot;, Format(randValue(70, 5), MyFormat))
@@ -286,7 +287,7 @@ sub insertRecordsToTemplate
 			m_point = bd.valueList.item(j+1)
 			cont_point = bd.pointList.item(j+1)
 			prefix =  bd.pointTextList.item(j+1)
-			threePointArray = avaragePointsRndArray(m_point, percentOtk)
+			threePointArray = Overall.avaragePointsRndArray(m_point, percentOtk)
 			
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника

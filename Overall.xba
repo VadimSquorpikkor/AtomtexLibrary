@@ -32,7 +32,7 @@ dim prefix, MyFormat as string
 dim threePointArray(2) as double
 
 dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
-dim bground as double
+&apos;dim bground as double
 dim bg007 as double
 dim additionalBGValue as double 	rem к каждому последующему значению фона в таблице добавляется рандомно небольшое значение, так, чем больше значение точки, тем боьше будет (немного) значение
 rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
@@ -43,6 +43,7 @@ dim oDateFieldModel as object
 public function getPercentOtk as double
 	getPercentOtk = percentOtk
 end function
+
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -271,9 +272,10 @@ function PathForProtocol(bdName as string)
 	end if
 end function
 rem---------------------------------------------------------------------------------------------------------
-sub insertParametersToTemplate(bdName as string)
+sub insertParametersToTemplate&apos;(bdName as string)
 	percentOtk = 3 rem %
 	&apos;bground = Format(randValue(95, 5), &quot;0.0&quot;)
+	
 	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, &quot;0.0&quot;))
@@ -384,7 +386,8 @@ sub templateStep(i as integer, strokeEnd as string)
 				if bd.getType = &quot;gamma007&quot; then
 					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
 				else
-					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bground)
+					&apos;msgbox bground
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), Format(bgValue, &quot;0.0&quot;)
 				end if		
 			else	
 				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;---&quot;) 
