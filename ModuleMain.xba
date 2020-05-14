@@ -16,8 +16,8 @@ rem-------------------------------------------------------------------------
 Sub MainDialog_Show
 	dim user_name as String
 
-	user_name = &quot;Serikov_VA&quot;
-	&apos;user_name = &quot;Squorpikkor&quot;
+	&apos;user_name = &quot;Serikov_VA&quot;
+	user_name = &quot;Squorpikkor&quot;
 	&apos;user_name = &quot;Krechko_AI&quot;
 	&apos;user_name = &quot;Kurbatova&quot;
 	&apos;user_name = &quot;Leshkevich_SV&quot;

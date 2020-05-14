@@ -243,6 +243,7 @@ sub insertRecordsToTemplate
 		findAndRename(&quot;$sr_avr&quot; + i, Format(bd.getSrcAverage, &quot;0.0&quot;))
 		findAndRename(&quot;$sence&quot; + i, Format(bd.getSensitivity(activity), &quot;0.00&quot;))
 		findAndRename(&quot;$pogr&quot; + i, Format(bd.getDelta - bd.getSensitivity(activity), &quot;0.00&quot;))
+		findAndRename(&quot;$pog_delt&quot; + i, Format(bd.getPogDelta, &quot;0.0&quot;))
 	next i
 
 	strokeForSaving = &quot;&quot; + srk_serial &amp; &quot; (&quot; &amp; bd.getType &amp; &quot;)&quot;

@@ -19,12 +19,17 @@ private _BDnumber As String					rem 452.000 -- номер блока
 private _pointBGValue as new Collection		rem 330 -- скорость счета на фоне
 private _pointSrcValue as new Collection	rem 10000 -- скорость счета от источника
 private _delta as double					rem 110.1 -- дельта
+private _pogDelta as double					rem 12.1 -- погрешность (которая не более +-) вторая дельта
 private _bdtype as string					rem &quot;БДКГ-11/1&quot; -- тип блока, как будет написан в протоколе
 &apos;&apos;private _MEASUREMENT_NUMBER as integer		rem 5
 
 REM --- CLASS METHODS
 public function getDelta	rem 110.1
 	getDelta = _delta
+end function
+
+public function getPogDelta	rem 12.1
+	getPogDelta = _pogDelta
 end function
 
 public function getType	rem &quot;БДКГ-11/1&quot;
@@ -42,9 +47,10 @@ end function
 rem Каждый БД может устанавливаться как в контейнере (со свинцовой защитой), так и без него,
 rem соответственно есть два разных набора параметров для каждого блока
 
-private function setBdType(bdName as string, bgRate as double, srcRate as double, delta as double)
+private function setBdType(bdName as string, bgRate as double, srcRate as double, delta as double, pogDelta as double)
 	dim i as integer
-	_delta = delta 
+	_delta = delta
+	_pogDelta = pogDelta 
 	for i=1 to 5
 		_pointBGValue.add(BgRate)
 		_pointSrcValue.add(SrcRate)
@@ -54,31 +60,31 @@ end function
 
 &apos;БДКГ-11/1 (для МРП, например)
 Public Sub setAsBDKG11
-	setBdType(&quot;БДКГ-11/1&quot;, 330, 10000, 110.1)
+	setBdType(&quot;БДКГ-11/1&quot;, 330, 10000, 110.1, 0) &apos;0 -- потому что не знаю сколько
 end sub
 &apos;БДКГ-11/1 в контейнере (для портального, например)
 Public Sub setAsBDKG11container
-	setBdType(&quot;БДКГ-11/1&quot;, 160, 5200, 60.8)
+	setBdType(&quot;БДКГ-11/1&quot;, 160, 5200, 60.8, 12.1)
 end sub
 &apos;БДКГ-19 (для МРП, например)
 Public Sub setAsBDKG19
-	setBdType(&quot;БДКГ-19&quot;, 660, 13000, 147.8)
+	setBdType(&quot;БДКГ-19&quot;, 660, 13000, 147.8, 0)
 end sub
 &apos;БДКГ-19 в контейнере (для портального, например)
 Public Sub setAsBDKG19container
-	setBdType(&quot;БДКГ-19&quot;, 300, 9000, 106.1)
+	setBdType(&quot;БДКГ-19&quot;, 300, 9000, 106.1, 21.2)
 end sub
 &apos;БДКГ-35 (для МРП, например)
 Public Sub setAsBDKG35
-	setBdType(&quot;БДКГ-35&quot;, 400, 9000, 100)
+	setBdType(&quot;БДКГ-35&quot;, 400, 9000, 100, 0)
 end sub
 &apos;БДКГ-35 в контейнере (для портального, например)
 Public Sub setAsBDKG35container
-	setBdType(&quot;БДКГ-35&quot;, 200, 5000, 55)
+	setBdType(&quot;БДКГ-35&quot;, 200, 5000, 55, 11)
 end sub
 
 Public Sub setAsBDRM05
-	setBdType(&quot;БДРМ-05&quot;, 1700, 13000, 125)
+	setBdType(&quot;БДРМ-05&quot;, 1700, 13000, 125, 25)
 end sub
 
 public function setBGList(measuredBGValue as Collection)

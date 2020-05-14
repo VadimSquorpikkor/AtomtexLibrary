@@ -29,4 +29,5 @@
  <library:element library:name="M3509"/>
  <library:element library:name="AtomMath"/>
  <library:element library:name="Module1"/>
+ <library:element library:name="M_G25"/>
 </library:library>
