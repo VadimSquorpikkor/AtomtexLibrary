@@ -65,7 +65,7 @@
   <dlg:button dlg:id="nextButton" dlg:tab-index="20" dlg:left="200" dlg:top="186" dlg:width="30" dlg:height="14" dlg:value="Вперед">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M224.showNextBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="doneButton" dlg:tab-index="21" dlg:left="229" dlg:top="186" dlg:width="30" dlg:height="14" dlg:value="Готово">
+  <dlg:button dlg:id="doneButton" dlg:tab-index="21" dlg:left="230" dlg:top="186" dlg:width="30" dlg:height="14" dlg:value="Готово">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M224.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:id="Label10" dlg:tab-index="40" dlg:left="104" dlg:top="202" dlg:width="53" dlg:height="7" dlg:value="Mакс кол-во -- 12 БД" dlg:align="center"/>
