@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="BaseC" script:language="StarBasic">REM  *****  BASIC  *****
+
+Option Compatible
+Option ClassModule
+Option Explicit
+
+dim _oDialog as object
+dim _maxBDCount as integer
+dim _versionName as String
+dim _logoName as String
+
+public function setNewDialog(dialogName)
+	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+	_oDialog = CreateUnoDialog( dialogName )
+	oDialogMain.endexecute()   
+	_oDialog.Execute()
+end function
+
+public function setVersion(versionName as String)
+	_versionName = versionName
+end function
+
+public function setMaxBDCount(maxBDCount as integer)
+	_maxBDCount = maxBDCount
+end function
+
+public function setLogo(logoName as String)
+	_logoName = logoName
+end function	
+	
+
+	&apos;oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
+	&apos;Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)
+	&apos;Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+	&apos;oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
+</script:module>
