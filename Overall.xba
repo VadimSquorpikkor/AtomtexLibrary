@@ -532,6 +532,7 @@ sub saveCurentBDValue(num as integer)
 	next i
 	if _BDList.item(num).isAlternativePoints then
 		&apos;msgbox &quot;alternate&quot;
+		msgbox _BDList.item(num).valueList.count
 		dim altValues as new Collection
 		for i=1 to _BDList.item(num).valueList.count
 		altValues.add(_oDialog.getControl(&quot;altField&quot; + i).Value)

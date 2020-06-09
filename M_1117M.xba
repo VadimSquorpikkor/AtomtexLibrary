@@ -422,26 +422,35 @@ function setButtonVisibility
 	&apos;if layoutPosition = 1 then oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
 end function 
 rem---------------------------------------------------------------------------------------------------------
+dim inProcess &apos;В начале выполнения функции проверяется, если inProcess=false, то ставится в true и начинается выполнение функции, после завершения ставится в false, таким образом нельзя начать выполнять функцию, не завершив её. В ф-ии nextChecked и prevChecked быстрое нажатие на кнопку приводило к тому,что ф-я начинала опять выполняться, не окончив выполнение себя, что приводило к ошибке 
 private function nextChecked
-	Overall.saveCurentBDValue(layoutPosition)
-	count = layoutPosition+1
-	while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
-		count = count + 1
-	wend
-	layoutPosition = count
-	makeLayout(BDList.item(layoutPosition))
-	setButtonVisibility
+	if inProcess = false then
+		inProcess = true
+		Overall.saveCurentBDValue(layoutPosition)
+		count = layoutPosition+1
+		while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
+			count = count + 1
+		wend
+		layoutPosition = count
+		makeLayout(BDList.item(layoutPosition))
+		setButtonVisibility
+		inProcess = false
+	end if	
 end function
 rem---------------------------------------------------------------------------------------------------------
 function prevChecked
-	Overall.saveCurentBDValue(layoutPosition)
-	count = layoutPosition-1
-	while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
-		count = count - 1
-	wend
-	layoutPosition = count
-	makeLayout(BDList.item(layoutPosition))
-	setButtonVisibility
+	if inProcess = false then
+		inProcess = true
+		Overall.saveCurentBDValue(layoutPosition)
+		count = layoutPosition-1
+		while BDList.item(count).isPrintable=false &apos;count&lt;BDList.count
+			count = count - 1
+		wend
+		layoutPosition = count
+		makeLayout(BDList.item(layoutPosition))
+		setButtonVisibility
+		inProcess = false
+	end if	
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertDataToTemplate

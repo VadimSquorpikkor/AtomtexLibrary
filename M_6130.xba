@@ -57,9 +57,12 @@ Sub AT6130_Dialog_Show
 	isComboCollection.add(oOption6130d)
 	oDialog6130.getControl(&quot;addButton&quot;).setEnable(true)
 	
+	oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(false)
+	
 	for i=1 to 4
 		oDialog6130.getControl(&quot;betaField&quot; + i).visible = true
 		oDialog6130.getControl(&quot;betaField&quot; + i).setEnable(false)
+		oDialog6130.getControl(&quot;altField&quot; + i).visible = false
 	next i
 		
 	oDialogMain.endexecute()   
@@ -181,11 +184,37 @@ function listBoxListener
 	setButtonVisibility
 end function
 rem---------------------------------------------------------------------------------------------------------
+sub altCheckBoxListener(oEvent As Object)
+	Dim oCheckbox As Object
+    oCheckbox = oEvent.source.model
+    BDList.item(layoutPosition).setAlternative(oCheckbox.state)
+    if BDList.item(layoutPosition).isAlternativePoints = true then
+    	for i=1 to BDList.item(layoutPosition).getBetaValues.count
+    		oDialog6130.getControl(&quot;altField&quot; + i).Visible = true	
+    		oDialog6130.getControl(&quot;betaLabel&quot; + i).Visible = false
+    	next i
+    else
+    	for i=1 to BDList.item(layoutPosition).getBetaValues.count
+    		oDialog6130.getControl(&quot;altField&quot; + i).Visible = false	
+    		oDialog6130.getControl(&quot;betaLabel&quot; + i).Visible = true
+    	next i
+    	Overall.saveCurentBDValue(layoutPosition)
+    	makeLayout(BDList.item(layoutPosition))
+    end if
+end sub
+rem---------------------------------------------------------------------------------------------------------
 sub setBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim point as double
 	for i=1 to bd.getBetaSources.count
-		point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+		if bd.isAlternativePoints then
+			point = bd.getPointList.item(i)
+			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
+		else
+			point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).Color = RGB(0, 0, 0)
+		end if
+	
 		if oOption6130bq.state then
 			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк &quot;
 		else
@@ -250,6 +279,7 @@ function setButtonVisibility
 	end if
 	
 	if BDList.count&gt;0 then
+		oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(true)
 		for j=1 to BDList.item(layoutPosition).valueList.count
 			oDialog6130.getControl(&quot;ValueField&quot; + j).visible = true
 			oDialog6130.getControl(&quot;Label&quot; + j).visible = true
@@ -264,6 +294,7 @@ function setButtonVisibility
 	end if
 	
 	if BDList.count=0 then
+		oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(false)
 		for i=1 to 4
 			oDialog6130.getControl(&quot;betaField&quot; + i).setEnable(false)
 		next i

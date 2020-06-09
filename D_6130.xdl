@@ -16,8 +16,8 @@
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="16" dlg:left="10" dlg:top="121" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
    <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.comboChanged?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:datefield>
-  <dlg:text dlg:id="Label7" dlg:tab-index="22" dlg:left="10" dlg:top="174" dlg:width="59" dlg:height="10" dlg:value="Проверку произвел:" dlg:align="center"/>
-  <dlg:text dlg:id="Label8" dlg:tab-index="24" dlg:left="67" dlg:top="174" dlg:width="59" dlg:height="10" dlg:value="Технический контроль:" dlg:align="center"/>
+  <dlg:text dlg:id="Label7" dlg:tab-index="22" dlg:left="6" dlg:top="174" dlg:width="63" dlg:height="10" dlg:value="Проверку произвел:" dlg:align="center"/>
+  <dlg:text dlg:id="Label8" dlg:tab-index="24" dlg:left="67" dlg:top="174" dlg:width="62" dlg:height="10" dlg:value="Технический контроль:" dlg:align="center"/>
   <dlg:text dlg:id="Label9" dlg:tab-index="25" dlg:left="60" dlg:top="124" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="36" dlg:left="211" dlg:top="14" dlg:width="98" dlg:height="187"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="37" dlg:left="134" dlg:top="14" dlg:width="75" dlg:height="187"/>
@@ -26,15 +26,15 @@
   <dlg:titledbox dlg:id="FrameControl6" dlg:tab-index="41" dlg:left="75" dlg:top="74" dlg:width="57" dlg:height="16"/>
   <dlg:titledbox dlg:id="FrameControl7" dlg:tab-index="42" dlg:left="75" dlg:top="93" dlg:width="57" dlg:height="16"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="44" dlg:left="4" dlg:top="112" dlg:width="128" dlg:height="89"/>
-  <dlg:text dlg:id="betaLabel1" dlg:tab-index="14" dlg:left="221" dlg:top="127" dlg:width="28" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel2" dlg:tab-index="15" dlg:left="221" dlg:top="138" dlg:width="28" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel3" dlg:tab-index="31" dlg:left="221" dlg:top="149" dlg:width="28" dlg:height="8" dlg:align="right"/>
-  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="10" dlg:left="251" dlg:top="125" dlg:width="33" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField2" dlg:tab-index="11" dlg:left="251" dlg:top="136" dlg:width="33" dlg:height="12" dlg:value="7" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField3" dlg:tab-index="30" dlg:left="251" dlg:top="147" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="40" dlg:spin="true"/>
+  <dlg:text dlg:id="betaLabel1" dlg:tab-index="14" dlg:left="213" dlg:top="131" dlg:width="36" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel2" dlg:tab-index="15" dlg:left="213" dlg:top="142" dlg:width="36" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel3" dlg:tab-index="31" dlg:left="213" dlg:top="153" dlg:width="36" dlg:height="8" dlg:align="right"/>
+  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="10" dlg:left="251" dlg:top="129" dlg:width="33" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField2" dlg:tab-index="11" dlg:left="251" dlg:top="140" dlg:width="33" dlg:height="12" dlg:value="7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField3" dlg:tab-index="30" dlg:left="251" dlg:top="151" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="40" dlg:spin="true"/>
   <dlg:text dlg:style-id="0" dlg:id="versionLabel" dlg:tab-index="35" dlg:left="271" dlg:top="4" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="1" dlg:id="typeLabel" dlg:tab-index="3" dlg:left="225" dlg:top="16" dlg:width="66" dlg:height="12" dlg:value="TYPE" dlg:align="center"/>
-  <dlg:text dlg:style-id="2" dlg:id="serialLabel" dlg:tab-index="17" dlg:left="220" dlg:top="26" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
+  <dlg:text dlg:style-id="2" dlg:id="serialLabel" dlg:tab-index="17" dlg:left="220" dlg:top="28" dlg:width="75" dlg:height="20" dlg:value="123" dlg:align="center"/>
   <dlg:button dlg:id="prevButton" dlg:tab-index="18" dlg:left="215" dlg:top="178" dlg:width="30" dlg:height="14" dlg:value="Назад">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.showPrevBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
@@ -96,11 +96,18 @@
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
   </dlg:radiogroup>
-  <dlg:numericfield dlg:id="betaField4" dlg:tab-index="51" dlg:left="251" dlg:top="158" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="40" dlg:spin="true"/>
-  <dlg:text dlg:id="betaLabel4" dlg:tab-index="52" dlg:left="221" dlg:top="160" dlg:width="28" dlg:height="8" dlg:align="right"/>
+  <dlg:numericfield dlg:id="betaField4" dlg:tab-index="51" dlg:left="251" dlg:top="162" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="40" dlg:spin="true"/>
+  <dlg:text dlg:id="betaLabel4" dlg:tab-index="52" dlg:left="213" dlg:top="164" dlg:width="36" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:style-id="6" dlg:id="Label10" dlg:tab-index="53" dlg:left="75" dlg:top="0" dlg:width="183" dlg:height="14" dlg:value="6130 ПОЛНЫЙ ПОКА БЕЗ CPS!!!"/>
   <dlg:img dlg:style-id="5" dlg:id="catImage" dlg:tab-index="54" dlg:left="97" dlg:top="121" dlg:width="32" dlg:height="49"/>
-  <dlg:text dlg:style-id="7" dlg:id="betaLabel" dlg:tab-index="56" dlg:left="284" dlg:top="129" dlg:width="15" dlg:height="34" dlg:value="β" dlg:align="center"/>
+  <dlg:text dlg:style-id="7" dlg:id="betaLabel" dlg:tab-index="56" dlg:left="284" dlg:top="139" dlg:width="15" dlg:height="28" dlg:value="β" dlg:align="center"/>
   <dlg:text dlg:style-id="8" dlg:id="gammaLabel" dlg:tab-index="55" dlg:left="284" dlg:top="59" dlg:width="15" dlg:height="34" dlg:value="γ" dlg:align="center"/>
+  <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="57" dlg:left="226" dlg:top="117" dlg:width="72" dlg:height="10" dlg:value="Свои значения для α, β" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.altCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:numericfield dlg:id="altField1" dlg:tab-index="58" dlg:left="225" dlg:top="129" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
+  <dlg:numericfield dlg:id="altField2" dlg:tab-index="59" dlg:left="225" dlg:top="140" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
+  <dlg:numericfield dlg:id="altField3" dlg:tab-index="60" dlg:left="225" dlg:top="151" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
+  <dlg:numericfield dlg:id="altField4" dlg:tab-index="61" dlg:left="225" dlg:top="162" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
  </dlg:bulletinboard>
 </dlg:window>
