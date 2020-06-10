@@ -29,10 +29,69 @@ end function
 public function setLogo(logoName as String)
 	_logoName = logoName
 end function	
-	
 
 	&apos;oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
 	&apos;Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)
 	&apos;Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	&apos;oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
+	
+rem---------------------------------------------------------------------------------------------------------
+&apos; maxBDCount - максимально возможное кол-во БД в протоколе
+&apos; version - версия диалога
+&apos; pointCount - кол-во полей для ввода значений измереных точек (ValueField), оно же -- кол-во самих точек
+sub initializeValueFields(fieldName as String, pointCount as integer, fieldType as integer)
+	&apos; С помощью параметра fieldType можно задать, как будут отображаться valueField
+	boolean visibility
+	boolean availability
+	select case src
+		case 0
+			visibility = 0
+			availability = 0
+		case 1
+			visibility = 1
+			availability = 1
+		case 2
+			visibility = 1
+			availability = 0
+		case 4
+			visibility = 0
+			availability = 1	
+	end select
+
+	dim i as integer
+	for i=1 to pointCount
+		_oDialog.getControl(fieldName + i).visible = visibility
+		_oDialog.getControl(fieldName + i).setEnable(availability)
+		_oDialog.getControl(fieldName + i).value = 0
+	next i
+end sub
+rem---------------------------------------------------------------------------------------------------------
+rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 
+sub dialogInitializeWithoutValueField(maxBDCount as integer, version as string, oListBox as object, pointCount as integer)
+	_maxBDCount = maxBDCount
+	_oListBox = oListBox
+	initializeDateField(oDateFieldModel)	
+	_oDialog.getControl(&quot;versionLabel&quot;).text = version	
+	
+	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
+	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
+
+	initializeSertificateCombo(oComboBox1, oComboBox2)
+
+	_oDialog.getControl(&quot;addButton&quot;).setEnable(false)	
+	_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
+	_oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
+	_oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
+	_oDialog.getControl(&quot;doneButton&quot;).setEnable(false)
+	_oDialog.getControl(&quot;serialLabel&quot;).text = &quot;S/N&quot;
+	_oDialog.getControl(&quot;typeLabel&quot;).text = &quot;тип блока&quot;
+	
+	_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
+	_oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
+	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
+	_oOptionButtonPr.State = 1
+		
+	_oListBox.setEnable(false)
+end sub
+	
 </script:module>

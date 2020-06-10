@@ -2,17 +2,16 @@
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="b_new" script:language="StarBasic">REM  *****  BASIC  *****
 
-
+dim baseC as new BaseC
 
 Sub new_Dialog_Show
-	dim baseC as new BaseC
-	
 	baseC.setNewDialog(DialogLibraries.AtomtexLibrary.D_1121)
 	baseC.setVersion(&quot;Версия 2.15 &quot;)
 	baseC.setMaxBDCount(20)
 	baseC.setLogo(&quot;1121\1121_bg.png&quot;)
 	
 
+	
 
 	&apos;oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
 	&apos;Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)

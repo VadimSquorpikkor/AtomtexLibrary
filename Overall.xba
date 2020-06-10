@@ -124,6 +124,7 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	dialogShowInitializeWithoutValueField(maxBDCount, oDialog, oDateFieldModel, version, oListBox, pointCount)
 end sub
 rem---------------------------------------------------------------------------------------------------------
+rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 
 sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as object, oDateFieldModel as object, version as string, oListBox as object, pointCount as integer)
 	_oDialog = oDialog
 	_maxBDCount = maxBDCount
