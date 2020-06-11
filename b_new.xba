@@ -5,11 +5,12 @@
 dim baseC as new BaseC
 
 Sub new_Dialog_Show
+	baseC = new BaseC
 	baseC.setNewDialog(DialogLibraries.AtomtexLibrary.D_1121)
 	baseC.setVersion(&quot;Версия 2.15 &quot;)
 	baseC.setMaxBDCount(20)
 	baseC.setLogo(&quot;1121\1121_bg.png&quot;)
-	
+	initializeComboBox(&quot;provCombo&quot;, &quot;techCombo&quot;)
 
 	
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
-<script:module xmlns:script="http://openoffice.org/2000/script" script:name="BaseC" script:language="StarBasic">REM  *****  BASIC  *****
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="BaseC" script:language="StarBasic">
+REM  *****  BASIC  *****
 
 Option Compatible
 Option ClassModule
@@ -10,6 +11,9 @@ dim _oDialog as object
 dim _maxBDCount as integer
 dim _versionName as String
 dim _logoName as String
+dim _oListBox as object
+dim _oComboProv as object
+dim _oComboTech as object
 
 public function setNewDialog(dialogName)
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
@@ -17,6 +21,7 @@ public function setNewDialog(dialogName)
 	oDialogMain.endexecute()   
 	_oDialog.Execute()
 end function
+
 
 public function setVersion(versionName as String)
 	_versionName = versionName
@@ -30,34 +35,20 @@ public function setLogo(logoName as String)
 	_logoName = logoName
 end function	
 
-	&apos;oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	&apos;Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)
-	&apos;Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
-	&apos;oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
-	
-rem---------------------------------------------------------------------------------------------------------
-&apos; maxBDCount - максимально возможное кол-во БД в протоколе
-&apos; version - версия диалога
-&apos; pointCount - кол-во полей для ввода значений измереных точек (ValueField), оно же -- кол-во самих точек
-sub initializeValueFields(fieldName as String, pointCount as integer, fieldType as integer)
-	&apos; С помощью параметра fieldType можно задать, как будут отображаться valueField
-	boolean visibility
-	boolean availability
-	select case src
-		case 0
-			visibility = 0
-			availability = 0
-		case 1
-			visibility = 1
-			availability = 1
-		case 2
-			visibility = 1
-			availability = 0
-		case 4
-			visibility = 0
-			availability = 1	
-	end select
+public function initializeListBox(listBoxName as String)
+	    _oListBox = _oDialog.getControl(listBoxName)
+end function
 
+&apos;   Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 9)
+&apos;   Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+&apos;   oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
+&apos;   oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
+
+rem---------------------------------------------------------------------------------------------------------
+&apos;   maxBDCount - максимально возможное кол-во БД в протоколе
+&apos;   version - версия диалога
+&apos;   pointCount - кол-во полей для ввода значений измереных точек (ValueField), оно же -- кол-во самих точек
+sub initializeValueFields(fieldName as String, pointCount as integer, visibility as boolean, availability as boolean)
 	dim i as integer
 	for i=1 to pointCount
 		_oDialog.getControl(fieldName + i).visible = visibility
@@ -66,7 +57,30 @@ sub initializeValueFields(fieldName as String, pointCount as integer, fieldType 
 	next i
 end sub
 rem---------------------------------------------------------------------------------------------------------
-rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 
+public function initializeComboBox(provComboName as String, techComboName as String)
+    _oComboProv = _oDialog.getControl(provComboName)
+    _oComboTech = _oDialog.getControl(techComboName)
+    &apos; first remove all old items from the list
+    _oComboProv.removeItems( 0, _oComboProv.getItemCount() )
+    _oComboTech.removeItems( 0, _oComboTech.getItemCount() )
+    &apos; add new items to the list
+    rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot; )
+    engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot; )
+    oComboProv.addItems( rusItems1, 0 )
+    oComboProv.text = rusItems1(0)
+    rusItems2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;В. Тарасенко&quot; )
+    engItems2 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;V. Tarasenko&quot; )
+    oComboTech.addItems( rusItems2, 0 )
+    oComboTech.text = rusItems2(0)
+end function
+rem---------------------------------------------------------------------------------------------------------
+sub initializeDateField(oDateFieldModel as object, oDialog as object)
+	oDateFieldModel = oDialog.Model.getByName(&quot;DateField1&quot;)
+	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
+	oDateFieldModel.Date = cDateToIso(Now)
+end sub
+
+rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3
 sub dialogInitializeWithoutValueField(maxBDCount as integer, version as string, oListBox as object, pointCount as integer)
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
