@@ -126,6 +126,7 @@ sub makeBetaLayout(bd as new DUnit)
 	&apos;oDialog1117.getControl(&quot;altCheckBox&quot;).state = bd.isAlternativePoints
 	
 	for i=1 to bd.getPointTextList.count
+		&apos;msgbox bd.BdType
 		if bd.isAlternativePoints then
 			point = bd.getPointList.item(i)
 			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
@@ -179,6 +180,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function makeLayout(bd as new DUnit)
  	oDialog1117.getControl(&quot;typeLabel&quot;).text =  bd.getName
+ 	&apos;msgbox (&quot;&quot; + BDList.item(12).getName + &quot; &quot; + BDList.item(12).getPointList.item(1) + BDList.item(14).getName + &quot; &quot; + BDList.item(14).getPointList.item(1))
  	if bd.isAlternativePoints then
 		for i=1 to 9
 			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)

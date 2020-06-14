@@ -7,40 +7,28 @@ Option Compatible
 Option ClassModule
 Option Explicit
 
-&apos;КЛАСС ДЛЯ НОВОЙ БИБЛИОТЕКИ
-&apos;Базовый класс для всех диалогов.
-&apos;   1. Диалоги классы диалогов НЕ БУДУТ ИСПОЛЬЗОВАТЬ этот класс напрямую
-&apos;   2. Будут созданы классы-обертки, которые будут использовать объект этого класса и в которых будут методы, состоящие из нескольких методов базового класса
-&apos;   3. Нестандартные методы или переменные можно будет назначать: BD_Class.std_class.baseC.setVersion(&quot;ANOTHER_name&quot;, &quot;Версия 2.15 &quot;),
-&apos;   т.е. класс_для_диалога -&gt; общий_класс -&gt; базовый_класс -&gt; метод
 
 dim _oDialog as object
 dim _maxBDCount as integer
-
+dim _versionName as String
 dim _logoName as String
 dim _oListBox as object
 dim _oComboProv as object
 dim _oComboTech as object
 dim _oDateFieldModel as object
-&apos;dim _libraryName as String
 
-public function setNewDialog(libraryName as String, dialogName as object)
-	DialogLibraries.LoadLibrary( libraryName ) &apos;&quot;AtomtexLibrary&quot;
+public function setNewDialog(dialogName)
+	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	_oDialog = CreateUnoDialog( dialogName )
 end function
 
-public function getDialog as object
-    getDialog = _oDialog
-end function
-
-&apos;Запускает новый диалог, если true - закрывает Главный Диалог, иначе - не закрывает
-public function dialogStart(shouldEnd as boolean)
-    if shouldEnd then oDialogMain.endexecute()
+public function dialogStart
+    oDialogMain.endexecute()
     _oDialog.Execute()
 end function
 
-public function setVersion(versionLabelName as String, versionName as String)
-	_oDialog.getControl(versionLabelName).text = version
+public function setVersion(versionName as String)
+	_versionName = versionName
 end function
 
 public function setMaxBDCount(maxBDCount as integer)
@@ -74,16 +62,12 @@ sub initializeValueFields(fieldName as String, pointCount as integer, visibility
 	next i
 end sub
 
-public function initializeDateField(dateFieldName as String)
-	_oDateFieldModel = _oDialog.Model.getByName(dateFieldName)
-	_oDateFieldModel.dateFormat = 7 &apos; // в виде dd.mm.yyyy
+public function initializeDateField
+	_oDateFieldModel = _oDialog.Model.getByName(&quot;DateField1&quot;)
+	_oDateFieldModel.dateFormat = 7 &apos;// в виде dd.mm.yyyy
 	_oDateFieldModel.Date = cDateToIso(Now)
 end function
 
-rem---------------------------------------------------------------------------------------------------------
-public function initializeComboBox_STD
-    initializeComboBox(&quot;provCombo&quot;, &quot;techCombo&quot;)
-end function
 rem---------------------------------------------------------------------------------------------------------
 public function initializeComboBox(provComboName as String, techComboName as String)
     _oComboProv = _oDialog.getControl(provComboName)
@@ -103,42 +87,19 @@ public function initializeComboBox(provComboName as String, techComboName as Str
 end function
 rem---------------------------------------------------------------------------------------------------------
 
-sub comboChanged(activityComboName as String, resultFieldName as String)
-    Combo = _oDialog.Model.getByName(activityComboName) &apos;&quot;ActivityField&quot;
-    resultField = _oDialog.Model.getByName(resultFieldName) &apos;&quot;ActivityField&quot;
-	select case Combo.text
-		case &quot;№516&quot;
-		resultField.value = get_activity(act516, _oDateFieldModel)
-		case &quot;№517&quot;
-		resultField.value = get_activity(act517, _oDateFieldModel)
-		case &quot;№518&quot;
-		resultField.value = get_activity(act518, _oDateFieldModel)
-		case &quot;№519&quot;
-		resultField.value = get_activity(act519, _oDateFieldModel)
-		case &quot;№520&quot;
-		resultField.value = get_activity(act520, _oDateFieldModel)
-		case &quot;№521&quot;
-		resultField.value = get_activity(act521, _oDateFieldModel)
-		case &quot;№2910&quot;
-		resultField.value = get_activity2910(_oDateFieldModel)
-	end select
-end sub
-
-
-
 rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3
 sub dialogInitializeWithoutValueField(maxBDCount as integer, version as string, oListBox as object, pointCount as integer)
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
 	initializeDateField(oDateFieldModel)	
-	_oDialog.getControl(&quot;versionLabel&quot;).text = version
+	_oDialog.getControl(&quot;versionLabel&quot;).text = version	
 	
 	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
 	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
 
 	initializeSertificateCombo(oComboBox1, oComboBox2)
 
-	_oDialog.getControl(&quot;addButton&quot;).setEnable(false)
+	_oDialog.getControl(&quot;addButton&quot;).setEnable(false)	
 	_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
 	_oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
 	_oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
