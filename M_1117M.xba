@@ -34,7 +34,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.07 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.08 &quot;, isComboCollection, BDList)
 		
 	initialize1117 rem ЗАГРУЗКА БД
 	
@@ -118,15 +118,7 @@ sub makeBetaLayout(bd as new DUnit)
 	dim point as double
 	dim value as double
 	
-	&apos;dim pointSource as new Collection
-	&apos;if BDList.item(num).isAlternativePoints then
-	&apos;	pointSource = 
-	&apos;else 	
-	
-	&apos;oDialog1117.getControl(&quot;altCheckBox&quot;).state = bd.isAlternativePoints
-	
 	for i=1 to bd.getPointTextList.count
-		&apos;msgbox bd.BdType
 		if bd.isAlternativePoints then
 			point = bd.getPointList.item(i)
 			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
@@ -190,7 +182,6 @@ function makeLayout(bd as new DUnit)
 			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 0)
 		next i	
 	end if	
- 	&apos;msgbox oDialog1117.Model.getByName(&quot;altCheckBox&quot;).state
 	if bd.isAlternativePoints then
 		oDialog1117.getControl(&quot;altCheckBox&quot;).state = 1
 	else
@@ -202,6 +193,17 @@ function makeLayout(bd as new DUnit)
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
  	end if
+		
+	&apos;Обязательно заносить значение Point в альтПоля, даже если они не видны, иначе при сохранении лэйаута в коллекцию Point&apos;ов сохраняться значения альт полей по-умолчанию 	
+	for i=1 to bd.getPointTextList.count
+		point = bd.getPointList.item(i)
+		if point &lt; 500 then
+			myFormat = &quot;0.0&quot;
+		else
+			myFormat = &quot;0&quot;
+		end if
+		oDialog1117.getControl(&quot;altField&quot; + i).value = Format(point, myFormat)
+ 	next i
  	
  	if bd.getType = &quot;alpha&quot; OR bd.getType = &quot;beta&quot; then
  		oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(true)
