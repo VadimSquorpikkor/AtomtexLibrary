@@ -91,22 +91,22 @@
   <dlg:checkbox dlg:id="CheckBox9" dlg:tab-index="17" dlg:left="11" dlg:top="305" dlg:width="35" dlg:height="10" dlg:value="БДКГ-32" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox10" dlg:tab-index="1" dlg:left="53" dlg:top="209" dlg:width="34" dlg:height="10" dlg:value="БДКН-01" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox10" dlg:tab-index="1" dlg:left="53" dlg:top="213" dlg:width="34" dlg:height="10" dlg:value="БДКН-01" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox11" dlg:tab-index="2" dlg:left="53" dlg:top="221" dlg:width="34" dlg:height="10" dlg:value="БДКН-03" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox11" dlg:tab-index="2" dlg:left="53" dlg:top="225" dlg:width="34" dlg:height="10" dlg:value="БДКН-03" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
   <dlg:checkbox dlg:id="CheckBox12" dlg:tab-index="5" dlg:left="53" dlg:top="251" dlg:width="35" dlg:height="10" dlg:value="БДПА-01" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox18" dlg:tab-index="20" dlg:left="95" dlg:top="233" dlg:width="32" dlg:height="10" dlg:value="БОИ-4" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox18" dlg:tab-index="20" dlg:left="95" dlg:top="235" dlg:width="32" dlg:height="10" dlg:value="БОИ-4" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox17" dlg:tab-index="19" dlg:left="95" dlg:top="221" dlg:width="32" dlg:height="10" dlg:value="БОИ-2" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox17" dlg:tab-index="19" dlg:left="95" dlg:top="223" dlg:width="32" dlg:height="10" dlg:value="БОИ-2" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox16" dlg:tab-index="18" dlg:left="95" dlg:top="209" dlg:width="32" dlg:height="10" dlg:value="БОИ" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox16" dlg:tab-index="18" dlg:left="95" dlg:top="211" dlg:width="32" dlg:height="10" dlg:value="БОИ" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
   <dlg:checkbox dlg:id="CheckBox15" dlg:tab-index="4" dlg:left="53" dlg:top="302" dlg:width="35" dlg:height="10" dlg:value="БДПБ-02" dlg:checked="false">
