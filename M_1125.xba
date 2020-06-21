@@ -27,6 +27,9 @@ dim	isComboCollection as new Collection
 dim alphaCount, betaCount, gammaCount, gammaCount1125a as integer
 
 dim BDList as new collection
+
+dim betaAltCheckBox as object 
+dim alphaAltCheckBox as object
 rem---------------------------------------------------------------------------------------------------------
 Sub AT1125_Dialog_Show
 	alphaCount = 5 rem ДЛЯ БДПС
@@ -38,7 +41,7 @@ Sub AT1125_Dialog_Show
 	mainImage = oDialog1125.Model.getByName(&quot;1125Logo&quot;)
 	mainImage.ImageURL = sertPath &amp; &quot;1125/1125_wide.png&quot;
 
-	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.1 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.02 &quot;, isComboCollection, BDList)
 
 	oOption1125 = oDialog1125.getControl(&quot;is1125&quot;)
 	oOption1125A = oDialog1125.getControl(&quot;is1125A&quot;)
@@ -50,11 +53,23 @@ Sub AT1125_Dialog_Show
 	oCheckBoxBDPS = oDialog1125.getControl(&quot;isBDPS&quot;)
 	oCheckBoxSM = oDialog1125.getControl(&quot;isMarin&quot;)
 	
+	alphaAltCheckBox = oDialog1125.getControl(&quot;altAlphaCheckBox&quot;)
+	betaAltCheckBox = oDialog1125.getControl(&quot;altBetaCheckBox&quot;)
+	
+	alphaAltCheckBox.setEnable(false)
+	betaAltCheckBox.setEnable(false)
+	
+	for i=1 to 5
+		oDialog1125.getControl(&quot;altalphaField&quot; + i).visible = false
+		oDialog1125.getControl(&quot;altbetaField&quot; + i).visible = false
+	next i
+	
 	enableBDPS(false)
 	enableUA(false)
 	
 	initializeBD rem ЗАГРУЗКА БД
 	makeLayout1125
+	makeAltBetaLayout(BDList.item(4))
 	oDialogMain.endexecute()   
 	oDialog1125.Execute()
 End Sub
@@ -62,6 +77,54 @@ rem-----------------------------------------------------------------------------
 sub comboChanged
 	makeBetaLayout(BDList.item(4))
 	calculateUA(BDList.item(6))
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub altAlphaCheckBoxListener()
+    oCheckbox = alphaAltCheckBox
+    altLayoutVisibility(&quot;alpha&quot;, 3, oCheckbox)
+    
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub altBetaCheckBoxListener()
+    oCheckbox = betaAltCheckBox
+    altLayoutVisibility(&quot;beta&quot;, 4, oCheckbox)
+    makeAltBetaLayout(BDList.item(4))
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub altLayoutVisibility(fieldName as String, position as integer, checkBox as object)
+	BDList.item(position).setAlternative(checkbox.state)
+    &apos;if BDList.item(position).isAlternativePoints = true then
+    	for i=1 to BDList.item(position).getPointTextList.count
+    		oDialog1125.getControl(&quot;alt&quot; + fieldName + &quot;Field&quot; + i).Visible = BDList.item(position).isAlternativePoints	
+    		oDialog1125.getControl(fieldName + &quot;Label&quot; + i).Visible = not BDList.item(position).isAlternativePoints
+    	next i
+    &apos;else
+    &apos;	for i=1 to BDList.item(position).getPointTextList.count
+    &apos;		oDialog1125.getControl(&quot;alt&quot; + fieldName + &quot;Field&quot; + i).Visible = false	
+    &apos;		oDialog1125.getControl(fieldName + &quot;Label&quot; + i).Visible  = true
+    &apos;	next i
+    	&apos;Overall.saveCurentBDValue(layoutPosition)
+    	&apos;makeLayout(BDList.item(layoutPosition))
+    &apos;end if
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub makeAltBetaLayout(bd as new DUnit)
+	dim myFormat as string
+	dim point as double
+	for i=1 to bd.getPointTextList.count
+		point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
+		&apos;msgbox point
+		if point &lt; 500 then
+			myFormat = &quot;0.0&quot;
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 0.1
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 1
+		else
+			myFormat = &quot;0&quot;
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 1
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 0
+		end if
+		oDialog1125.getControl(&quot;altbetaField&quot; + i).value = Format(point, myFormat)
+	next i
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeBetaLayout(bd as new DUnit)
@@ -134,11 +197,10 @@ sub initializeBD
 	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;&quot;,			Array(58.3,727,6300,62100,186000),	emptyArray,									 &quot;alpha&quot;,		Array(2.4,100))
 	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;&quot;,			Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),	 &quot;beta&quot;,		Array(6,100))
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;Зв/ч&quot;,		Array(0.7,7,70,0.7,7,20),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),			 &quot;gamma&quot;,		Array(0.1,30))
-	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;3663&quot;),						 &quot;gamma-Src&quot;,	Array(0,0))
+	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;3663&quot;),			 &quot;gamma-Src&quot;,	Array(0,0))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
-	rem обертка для добавления БД в коллекцию, чтобы не плодить лишних (больше 20) объектов BDUnit (точнее их инициализации и добавления в коллекцию -- уже 60 строк)
 	dim bd as new DUnit
 	bd.addData(bname, measUnit, pointValue, pointText, BDType, measLimit)
 	BDList.add(bd)
@@ -158,6 +220,8 @@ sub enableBDPS(visibility as boolean)
 		oDialog1125.getControl(&quot;gammaLabel&quot; + i).setEnable(visibility)
 	next i
 	oDialog1125.getControl(&quot;bdpsLabel&quot;).setEnable(visibility)
+	alphaAltCheckBox.setEnable(visibility)
+	betaAltCheckBox.setEnable(visibility)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub enable1125A(visibility as boolean)
@@ -243,10 +307,19 @@ sub saveCurentBD(num as integer, VALUE_FIELD as string)
 	dim newValues as new Collection
 	dim i as integer
 	for i=1 to BDList.item(num).valueList.count
+		if BDList.item(num).isAlternativePoints then
+			&apos;Если стоит чекБокс &quot;свои значения для а, б&quot;, то значения в полях формы (&quot;betaField&quot;) заменяются значениями из (&quot;altbetaField&quot;), т.е. теми, что ввел пользователь	
+			oDialog1125.getControl(VALUE_FIELD + i).Value = oDialog1125.getControl(&quot;alt&quot; + VALUE_FIELD + i).Value
+		end if	 
 		newValues.add(oDialog1125.getControl(VALUE_FIELD + i).Value)
 	next i
 	BDList.item(num).setValueList(newValues)
 end sub
+rem---------------------------------------------------------------------------------------------------------
+&apos;sub replacePointValueWithAltValue(int i, VALUE_FIELD as String, ALT_VALUE_FIELD as String)
+&apos;Если стоит чекБокс &quot;свои значения для а, б&quot;, то значения в полях формы (&quot;betaField&quot;) заменяются значениями из (&quot;altbetaField&quot;), т.е. теми, что ввел пользователь
+&apos;	oDialog1125.getControl(VALUE_FIELD + i).Value = oDialog1125.getControl(&quot;alt&quot; + VALUE_FIELD + i).Value
+&apos;end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveAllBD rem ПЕРЕД ТЕМ, КАК ФОРМИРОВАТЬ ПРОТОКОЛ ПОВЕРКИ, НЕОБХОДИМО СОХРАНИТЬ В DUnit ИЗМЕНЕННЫЕ ЗНАЧЕНИЯ В ЯЧЕЙКАХ ФОРМЫ ПРОГРАММЫ (МЕТОД Overall.insertToTemplateStep ФОРМИРУЕТ ТАБЛИЦУ ИЗ ДАННЫХ ОБЪЕКТА DUnit)

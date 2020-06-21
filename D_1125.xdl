@@ -48,43 +48,43 @@
   <dlg:numericfield dlg:id="ValueField6" dlg:tab-index="6" dlg:left="175" dlg:top="114" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField7" dlg:tab-index="13" dlg:left="175" dlg:top="125" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField8" dlg:tab-index="14" dlg:left="175" dlg:top="136" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField1" dlg:tab-index="19" dlg:left="250" dlg:top="186" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField2" dlg:tab-index="20" dlg:left="250" dlg:top="197" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField3" dlg:tab-index="21" dlg:left="250" dlg:top="208" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField4" dlg:tab-index="22" dlg:left="250" dlg:top="219" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField5" dlg:tab-index="23" dlg:left="250" dlg:top="230" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="gammaField6" dlg:tab-index="24" dlg:left="250" dlg:top="241" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="31" dlg:left="250" dlg:top="123" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField2" dlg:tab-index="32" dlg:left="250" dlg:top="134" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField3" dlg:tab-index="35" dlg:left="250" dlg:top="145" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField4" dlg:tab-index="37" dlg:left="250" dlg:top="156" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="betaField5" dlg:tab-index="47" dlg:left="250" dlg:top="167" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="alphaField1" dlg:tab-index="39" dlg:left="250" dlg:top="58" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="alphaField2" dlg:tab-index="40" dlg:left="250" dlg:top="69" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="alphaField3" dlg:tab-index="43" dlg:left="250" dlg:top="80" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="alphaField4" dlg:tab-index="45" dlg:left="250" dlg:top="91" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="alphaField5" dlg:tab-index="49" dlg:left="250" dlg:top="102" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField1" dlg:tab-index="19" dlg:left="250" dlg:top="188" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField2" dlg:tab-index="20" dlg:left="250" dlg:top="199" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField3" dlg:tab-index="21" dlg:left="250" dlg:top="210" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField4" dlg:tab-index="22" dlg:left="250" dlg:top="221" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField5" dlg:tab-index="23" dlg:left="250" dlg:top="232" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="gammaField6" dlg:tab-index="24" dlg:left="250" dlg:top="243" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="31" dlg:left="250" dlg:top="129" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField2" dlg:tab-index="32" dlg:left="250" dlg:top="140" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField3" dlg:tab-index="35" dlg:left="250" dlg:top="151" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField4" dlg:tab-index="37" dlg:left="250" dlg:top="162" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField5" dlg:tab-index="47" dlg:left="250" dlg:top="173" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="alphaField1" dlg:tab-index="39" dlg:left="250" dlg:top="62" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="alphaField2" dlg:tab-index="40" dlg:left="250" dlg:top="73" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="alphaField3" dlg:tab-index="43" dlg:left="250" dlg:top="84" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="alphaField4" dlg:tab-index="45" dlg:left="250" dlg:top="95" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="alphaField5" dlg:tab-index="49" dlg:left="250" dlg:top="106" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:text dlg:style-id="2" dlg:id="Label33" dlg:tab-index="65" dlg:left="142" dlg:top="31" dlg:width="66" dlg:height="22" dlg:value="АТ-1125" dlg:align="center"/>
   <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="66" dlg:left="260" dlg:top="3" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="4" dlg:id="Label34" dlg:tab-index="67" dlg:left="200" dlg:top="85" dlg:width="13" dlg:height="34" dlg:value="γ" dlg:align="center"/>
-  <dlg:text dlg:style-id="4" dlg:id="Label21" dlg:tab-index="69" dlg:left="283" dlg:top="70" dlg:width="15" dlg:height="34" dlg:value="α" dlg:align="center"/>
-  <dlg:text dlg:style-id="4" dlg:id="Label16" dlg:tab-index="70" dlg:left="283" dlg:top="202" dlg:width="15" dlg:height="34" dlg:value="γ" dlg:align="center"/>
-  <dlg:text dlg:id="alphaLabel1" dlg:tab-index="41" dlg:left="216" dlg:top="60" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="alphaLabel2" dlg:tab-index="42" dlg:left="216" dlg:top="71" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="alphaLabel3" dlg:tab-index="44" dlg:left="216" dlg:top="82" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="alphaLabel4" dlg:tab-index="46" dlg:left="216" dlg:top="93" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="alphaLabel5" dlg:tab-index="50" dlg:left="216" dlg:top="104" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel1" dlg:tab-index="33" dlg:left="216" dlg:top="125" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel2" dlg:tab-index="34" dlg:left="216" dlg:top="136" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel3" dlg:tab-index="36" dlg:left="216" dlg:top="147" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel4" dlg:tab-index="38" dlg:left="216" dlg:top="158" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="betaLabel5" dlg:tab-index="48" dlg:left="216" dlg:top="169" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="gammaLabel1" dlg:tab-index="27" dlg:left="216" dlg:top="188" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="gammaLabel2" dlg:tab-index="28" dlg:left="216" dlg:top="199" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="gammaLabel3" dlg:tab-index="29" dlg:left="216" dlg:top="210" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="gammaLabel4" dlg:tab-index="30" dlg:left="216" dlg:top="221" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="gammaLabel5" dlg:tab-index="25" dlg:left="216" dlg:top="232" dlg:width="33" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="gammaLabel6" dlg:tab-index="26" dlg:left="216" dlg:top="243" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:style-id="4" dlg:id="Label21" dlg:tab-index="69" dlg:left="283" dlg:top="74" dlg:width="15" dlg:height="34" dlg:value="α" dlg:align="center"/>
+  <dlg:text dlg:style-id="4" dlg:id="Label16" dlg:tab-index="70" dlg:left="283" dlg:top="204" dlg:width="15" dlg:height="34" dlg:value="γ" dlg:align="center"/>
+  <dlg:text dlg:id="alphaLabel1" dlg:tab-index="41" dlg:left="216" dlg:top="65" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="alphaLabel2" dlg:tab-index="42" dlg:left="216" dlg:top="75" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="alphaLabel3" dlg:tab-index="44" dlg:left="216" dlg:top="86" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="alphaLabel4" dlg:tab-index="46" dlg:left="216" dlg:top="97" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="alphaLabel5" dlg:tab-index="50" dlg:left="216" dlg:top="108" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel1" dlg:tab-index="33" dlg:left="216" dlg:top="131" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel2" dlg:tab-index="34" dlg:left="216" dlg:top="142" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel3" dlg:tab-index="36" dlg:left="216" dlg:top="153" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel4" dlg:tab-index="38" dlg:left="216" dlg:top="164" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="betaLabel5" dlg:tab-index="48" dlg:left="216" dlg:top="175" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="gammaLabel1" dlg:tab-index="27" dlg:left="216" dlg:top="190" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="gammaLabel2" dlg:tab-index="28" dlg:left="216" dlg:top="201" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="gammaLabel3" dlg:tab-index="29" dlg:left="216" dlg:top="212" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="gammaLabel4" dlg:tab-index="30" dlg:left="216" dlg:top="223" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="gammaLabel5" dlg:tab-index="25" dlg:left="216" dlg:top="234" dlg:width="33" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="gammaLabel6" dlg:tab-index="26" dlg:left="216" dlg:top="245" dlg:width="33" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="Label1" dlg:tab-index="9" dlg:left="142" dlg:top="61" dlg:width="31" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label2" dlg:tab-index="10" dlg:left="142" dlg:top="72" dlg:width="31" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label3" dlg:tab-index="11" dlg:left="142" dlg:top="83" dlg:width="31" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
@@ -92,7 +92,7 @@
   <dlg:text dlg:id="Label5" dlg:tab-index="7" dlg:left="142" dlg:top="105" dlg:width="31" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="Label6" dlg:tab-index="8" dlg:left="142" dlg:top="116" dlg:width="31" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="Label8" dlg:tab-index="16" dlg:left="142" dlg:top="138" dlg:width="31" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:style-id="4" dlg:id="Label77" dlg:tab-index="68" dlg:left="283" dlg:top="135" dlg:width="15" dlg:height="34" dlg:value="β" dlg:align="center"/>
+  <dlg:text dlg:style-id="4" dlg:id="Label77" dlg:tab-index="68" dlg:left="283" dlg:top="141" dlg:width="15" dlg:height="34" dlg:value="β" dlg:align="center"/>
   <dlg:text dlg:id="Label7" dlg:tab-index="15" dlg:left="142" dlg:top="127" dlg:width="31" dlg:height="8" dlg:align="right"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="71" dlg:left="136" dlg:top="26" dlg:width="78" dlg:height="127"/>
   <dlg:titledbox dlg:id="FrameControl4" dlg:tab-index="72" dlg:left="216" dlg:top="26" dlg:width="83" dlg:height="234"/>
@@ -117,5 +117,21 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.setSM?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
   <dlg:text dlg:id="SourseText" dlg:tab-index="88" dlg:left="139" dlg:top="259" dlg:width="72" dlg:height="18" dlg:align="center" dlg:multiline="true"/>
+  <dlg:numericfield dlg:id="altalphaField1" dlg:tab-index="89" dlg:left="220" dlg:top="62" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:checkbox dlg:id="altAlphaCheckBox" dlg:tab-index="99" dlg:left="220" dlg:top="53" dlg:width="72" dlg:height="9" dlg:value="Свои значения для α" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.altAlphaCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:checkbox dlg:id="altBetaCheckBox" dlg:tab-index="100" dlg:left="220" dlg:top="120" dlg:width="72" dlg:height="9" dlg:value="Свои значения для β" dlg:checked="false">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.altBetaCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:checkbox>
+  <dlg:numericfield dlg:id="altalphaField2" dlg:tab-index="90" dlg:left="220" dlg:top="73" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField3" dlg:tab-index="91" dlg:left="220" dlg:top="84" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField4" dlg:tab-index="92" dlg:left="220" dlg:top="95" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField5" dlg:tab-index="93" dlg:left="220" dlg:top="106" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField1" dlg:tab-index="94" dlg:left="220" dlg:top="129" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField2" dlg:tab-index="95" dlg:left="220" dlg:top="140" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField3" dlg:tab-index="96" dlg:left="220" dlg:top="151" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField4" dlg:tab-index="97" dlg:left="220" dlg:top="162" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField5" dlg:tab-index="98" dlg:left="220" dlg:top="173" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
  </dlg:bulletinboard>
 </dlg:window>
