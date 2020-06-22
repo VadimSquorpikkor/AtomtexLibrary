@@ -99,6 +99,16 @@ function get_activity_Sr(src as string, mdate)
 		activity_0 = BETA_0666
 	case &quot;0667&quot;
 		activity_0 = BETA_0667
+	case &quot;0663/S&quot;
+		activity_0 = BETA_0663 / 2.83
+	case &quot;0664/S&quot;
+		activity_0 = BETA_0664 / 2.83
+	case &quot;0665/S&quot;
+		activity_0 = BETA_0665 / 2.83
+	case &quot;0666/S&quot;
+		activity_0 = BETA_0666 / 2.83
+	case &quot;0667/S&quot;
+		activity_0 = BETA_0667 / 2.83
 	case &quot;0660Bq&quot;
 		activity_0 = BETA_0660_BQ
 	case &quot;6905Bq&quot;
