@@ -35,7 +35,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.08 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.09 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -110,8 +110,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БОИ-1 сбм&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100))
 	addBDtoCollection(&quot;БОИ-2 сбм&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100))
 	
-	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(74.4,630,5140,35600),				emptyArray,										&quot;alpha&quot;,	Array(0.05,5))
-	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,15))
+	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),				emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
+	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)

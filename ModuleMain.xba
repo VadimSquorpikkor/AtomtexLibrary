@@ -16,10 +16,10 @@ rem-------------------------------------------------------------------------
 Sub MainDialog_Show
 	dim user_name as String
 
-	user_name = &quot;Serikov_VA&quot;
+	&apos;user_name = &quot;Serikov_VA&quot;
 	&apos;user_name = &quot;Squorpikkor&quot;
 	&apos;user_name = &quot;Krechko_AI&quot;
-	&apos;user_name = &quot;Kurbatova&quot;
+	user_name = &quot;Kurbatova&quot;
 	&apos;user_name = &quot;Leshkevich_SV&quot;
 	&apos;user_name = &quot;Rusakevich_AV&quot;
 	&apos;user_name = &quot;Tarasenko_VV&quot;  	
@@ -40,7 +40,7 @@ Sub MainDialog_Show
 		
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
 	&apos;oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.Dialog1 )
-	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.72&quot;
+	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.73&quot;
    	oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    	oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	oDialogMain.Execute()
