@@ -41,7 +41,7 @@ Sub AT1125_Dialog_Show
 	mainImage = oDialog1125.Model.getByName(&quot;1125Logo&quot;)
 	mainImage.ImageURL = sertPath &amp; &quot;1125/1125_wide.png&quot;
 
-	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.02 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.03 &quot;, isComboCollection, BDList)
 
 	oOption1125 = oDialog1125.getControl(&quot;is1125&quot;)
 	oOption1125A = oDialog1125.getControl(&quot;is1125A&quot;)
@@ -69,7 +69,6 @@ Sub AT1125_Dialog_Show
 	
 	initializeBD rem ЗАГРУЗКА БД
 	makeLayout1125
-	makeAltBetaLayout(BDList.item(4))
 	oDialogMain.endexecute()   
 	oDialog1125.Execute()
 End Sub
@@ -108,25 +107,6 @@ sub altLayoutVisibility(fieldName as String, position as integer, checkBox as ob
     &apos;end if
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
-sub makeAltBetaLayout(bd as new DUnit)
-	dim myFormat as string
-	dim point as double
-	for i=1 to bd.getPointTextList.count
-		point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
-		&apos;msgbox point
-		if point &lt; 500 then
-			myFormat = &quot;0.0&quot;
-			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 0.1
-			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 1
-		else
-			myFormat = &quot;0&quot;
-			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 1
-			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 0
-		end if
-		oDialog1125.getControl(&quot;altbetaField&quot; + i).value = Format(point, myFormat)
-	next i
-end sub
-rem---------------------------------------------------------------------------------------------------------
 sub makeBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim myFormat as string
@@ -137,13 +117,18 @@ sub makeBetaLayout(bd as new DUnit)
 			myFormat = &quot;0.0&quot;
 			oDialog1125.Model.getByName(&quot;betaField&quot; + i).valueStep = 0.1
 			oDialog1125.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 1
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 0.1
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 1
 		else
 			myFormat = &quot;0&quot;
 			oDialog1125.Model.getByName(&quot;betaField&quot; + i).valueStep = 1
 			oDialog1125.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 0
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).valueStep = 1
+			oDialog1125.Model.getByName(&quot;altbetaField&quot; + i).DecimalAccuracy = 0
 		end if
 		oDialog1125.getControl(&quot;betaLabel&quot; + i).Text = Format(point, myFormat) &amp; &quot; &quot;
 		oDialog1125.getControl(&quot;betaField&quot; + i).value = Format(point, myFormat) rem ЕСЛИ ЕСЛИ БЫ НУЖНО БЫЛО СОХРАНЕНИЕ, ТОГДА getValueList.item(i)
+		oDialog1125.getControl(&quot;altbetaField&quot; + i).value = Format(point, myFormat)
 		pointList.add(point)
 	next i
 	bd.setPointList(pointList)
@@ -177,6 +162,7 @@ rem-----------------------------------------------------------------------------
 sub makeLayout1125
 	Overall.makeSimpleLayoutFromBD(BDList.item(2), &quot;ValueField&quot;, &quot;Label&quot;)
 	Overall.makeSimpleLayoutFromBD(BDList.item(3), &quot;alphaField&quot;, &quot;alphaLabel&quot;)
+	Overall.makeSimpleLayoutFromBD(BDList.item(3), &quot;altalphaField&quot;, &quot;alphaLabel&quot;)
 	makeBetaLayout(BDList.item(4))
 	Overall.makeSimpleLayoutFromBD(BDList.item(5), &quot;gammaField&quot;, &quot;gammaLabel&quot;)
 	calculateUA(BDList.item(6))
@@ -305,14 +291,14 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBD(num as integer, VALUE_FIELD as string)
 	dim newValues as new Collection
+	dim altValues as new Collection
 	dim i as integer
+	dim ALT as string
 	for i=1 to BDList.item(num).valueList.count
-		if BDList.item(num).isAlternativePoints then
-			&apos;Если стоит чекБокс &quot;свои значения для а, б&quot;, то значения в полях формы (&quot;betaField&quot;) заменяются значениями из (&quot;altbetaField&quot;), т.е. теми, что ввел пользователь	
-			oDialog1125.getControl(VALUE_FIELD + i).Value = oDialog1125.getControl(&quot;alt&quot; + VALUE_FIELD + i).Value
-		end if	 
+		if NOT isNull(oDialog1125.getControl(&quot;alt&quot; + VALUE_FIELD + i)) then altValues.add(oDialog1125.getControl(&quot;alt&quot; + VALUE_FIELD + i).Value)
 		newValues.add(oDialog1125.getControl(VALUE_FIELD + i).Value)
 	next i
+	if BDList.item(num).isAlternativePoints then BDList.item(num).setPointList(altValues)
 	BDList.item(num).setValueList(newValues)
 end sub
 rem---------------------------------------------------------------------------------------------------------
