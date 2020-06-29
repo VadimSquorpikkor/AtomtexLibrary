@@ -110,7 +110,7 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БОИ-1 сбм&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100))
 	addBDtoCollection(&quot;БОИ-2 сбм&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100))
 	
-	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),				emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
+	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),			emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
@@ -128,21 +128,13 @@ sub makeBetaLayout(bd as new DUnit)
 	dim point as double
 	dim value as double
 	
-	&apos;dim s as double &apos; Множитель для беты, если 1-я или 2-я, то активность делим на единицу, если 3-я -- на 2.83
-	
-	
-	&apos;if bd.bdName = &quot;БДПБ-03&quot; then
-	&apos;	s = 2.83
-	&apos;else
-	&apos;	s = 1
-	&apos;end if		
 	
 	for i=1 to bd.getPointTextList.count
 		if bd.isAlternativePoints then
-			point = bd.getPointList.item(i)&apos; / s
+			point = bd.getPointList.item(i)
 			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
 		else
-			point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)&apos; / s
+			point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
 			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).Color = RGB(0, 0, 0)
 		end if	
 		value = bd.getValueList.item(i)
