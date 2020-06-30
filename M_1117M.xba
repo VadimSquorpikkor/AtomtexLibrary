@@ -35,7 +35,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.09 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.10 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -112,6 +112,7 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	
 	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),			emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5))
+	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),		&quot;n-PP&quot;,		Array(0,0))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
@@ -503,6 +504,7 @@ sub insertDataToTemplate
 			
 			if bd.BdName=&quot;БДКН-01&quot; then	neutron_01(i, bd)
 			if bd.BdName=&quot;БДКН-03&quot; then	neutron_03(i, bd)
+			if bd.BdName=&quot;БДКН-05&quot; then	neutron_05(i, bd)
 			
 			if BDList.item(i).getType = &quot;beta&quot; then				
 				Overall.insertBetaToTemplateStep(i, oDateFieldModel)
@@ -578,8 +580,29 @@ sub neutron_03(i as integer, bd as BUnit)
 	next n
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
-
-
+sub neutron_05(i as integer, bd as BUnit)
+	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
+	dim m_point, p1, p2, p3 as double
+	dim j as integer
+	p1 = bd.valueList.item(1)
+	p2 = bd.valueList.item(2)
+	p3 = bd.valueList.item(3)
+	
+	rem Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
+	threePointArray_1 = Overall.avaragePointsRndArray(p1, 25) &apos;OverAll.percentOtk)
+	threePointArray_2 = Overall.avaragePointsRndArray(p2, 10) &apos;OverAll.percentOtk)
+	threePointArray_3 = Overall.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
+	
+	for j=0 to bd.getPointList.count-1
+		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
+		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), Format(threePointArray_2(j), &quot;0&quot;)) rem рандом 2
+		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
+	next j		
+	
+	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
+	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
+	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
+end sub
 
 
 

@@ -43,7 +43,7 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
 	next j		
 	
-	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0&quot;)) rem среднее по трем измерениям 1
+	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
 	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
 	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
 
