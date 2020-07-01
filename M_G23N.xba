@@ -28,7 +28,7 @@ Sub G23N_Dialog_Show
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
 	
-	oDialogG23N.getControl(&quot;versionLabel&quot;).text = &quot;Версия 3.00 &quot;	
+	oDialogG23N.getControl(&quot;versionLabel&quot;).text = &quot;Версия 3.01 &quot;	
 	
 	oListBox = oDialogG23N.getControl(&quot;bdListBox&quot;)
 	
@@ -282,7 +282,7 @@ sub insertRecordsToTemplate
 	
 	for i=1 to BDList.count
 		bd = BDList.item(i)
-		strokeForSaving = strokeForSaving &amp; bd.getSerial &amp; &quot; &quot;
+		strokeForSaving = strokeForSaving &amp; bd.getSerial &amp; &quot;; &quot;
 		for j=0 to bd.pointList.count-1
 			m_point = bd.valueList.item(j+1)
 			cont_point = bd.pointList.item(j+1)
