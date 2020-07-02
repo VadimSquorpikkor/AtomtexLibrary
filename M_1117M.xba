@@ -112,7 +112,7 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	
 	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),			emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5))
-	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),		&quot;n-PP&quot;,		Array(0,0))
+	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),			&quot;n-PP&quot;,		Array(0.1,0.2))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)

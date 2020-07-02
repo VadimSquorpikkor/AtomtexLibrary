@@ -76,6 +76,6 @@
   <dlg:radiogroup>
    <dlg:radio dlg:id="isBDKG25" dlg:tab-index="44" dlg:left="28" dlg:top="9" dlg:width="37" dlg:height="10" dlg:value="БДКГ-25"/>
   </dlg:radiogroup>
-  <dlg:img dlg:style-id="4" dlg:id="ImageControl1" dlg:tab-index="45" dlg:left="96" dlg:top="1" dlg:width="95" dlg:height="87" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25.png"/>
+  <dlg:img dlg:style-id="4" dlg:id="Image" dlg:tab-index="45" dlg:left="96" dlg:top="1" dlg:width="95" dlg:height="87" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25.png"/>
  </dlg:bulletinboard>
 </dlg:window>
