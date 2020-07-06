@@ -519,13 +519,16 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
 		
-	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(0)
-	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(1)
-	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(2)
+		&apos;insertDose(дозиметр, номер_в_списке, постфикс_для_таблицы, номер_в_списке_значения_в_контрольной_точке, на_что_делим_чтобы_перевести_из_МД_в_дозу, начальная_доза)
 		
-		if is3509B.state OR is3509C.state then insertDose(bd, i, &quot;_2&quot;, 40, 10, bd.getDoseArray()(1))&apos; 10 -- это 1 / (360/3600) -- перевод из мэд в дозу за 180 сек /10
-		if is3509C.state then insertDose(bd, i, &quot;_3&quot;, 40, 10, bd.getDoseArray()(2))
-		insertDose(bd, i, &quot;&quot;, 80, 20, bd.getDoseArray()(0))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) // 4 - это контр. точка в милиЗивертах
+		&apos;Вторая строка дозы 4 мкЗв Нр(0.07) считается от точки 20 мкЗв
+		if is3509B.state then insertDose(bd, i, &quot;_2&quot;, 3, 5, bd.getDoseArray()(1))
+		if is3509C.state then insertDose(bd, i, &quot;_2&quot;, 4, 5, bd.getDoseArray()(1))&apos; 5 -- это 1 / (360/3600) * 2 -- перевод из мэд в дозу за 180 сек /10
+		&apos;Третья строка дозы  4 мкЗв Нр(10) считается от точки 20 мкЗв
+		if is3509B.state then insertDose(bd, i, &quot;_2&quot;, 3, 5, bd.getDoseArray()(2))
+		if is3509C.state then insertDose(bd, i, &quot;_3&quot;, 4, 5, bd.getDoseArray()(2))
+		&apos;Первая строка дозы 4 мЗв Нр(10) считается от точки 800 мЗв
+		insertDose(bd, i, &quot;&quot;, 2, 200, bd.getDoseArray()(0))&apos; 200 -- это 1 / (180/3600) / 10 -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) // 4 - это контр. точка в милиЗивертах
 
 		&apos;-----------------ЗАПОЛНЕНИЕ ГЛАВНОЙ (БОЛЬШОЙ) ТАБЛИЦЫ-------------------------------------
 		dim MyFormat as string
@@ -586,7 +589,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 end sub
 &apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
-sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point as double, numb as integer, doseValue as double)
+sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number as integer, time as double, doseValue as double)
 
 		dim deviceCountZero as double
 		dim deviceCountDone as double
@@ -596,11 +599,9 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point as doub
 		findAndRename((&quot;$&quot; + i + &quot;-d_dev&quot; + strokeEnd), Format(deviceCountZero, &quot;0.00&quot;))
 		
 		if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
-			&apos;deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1)) / numb / 10 + deviceCountZero 
-			deviceCountDone = point / numb + deviceCountZero 
+			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1)) / time + deviceCountZero
 		else	
-			deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1) + bd.getMultiValueList.item(value_from_valueList).item(2) + bd.getMultiValueList.item(value_from_valueList).item(3)) / 3 / numb / 10 + deviceCountZero 
-			&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) 
+			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1) + bd.getMultiValueList.item(point_number).item(2) + bd.getMultiValueList.item(point_number).item(3)) / 3 / time + deviceCountZero 
 		end if	
 		
 		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
