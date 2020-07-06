@@ -30,6 +30,8 @@ private _measuredMultiValue as new Collection &apos;(0.71, 0.69, 0.75) (7.2, 6.8
 private _dose as double
 private _isAlternativePoints as boolean
 &apos;private _sourceNameList as new Collection
+private _doseArray(2) as double
+private _bdTypeArray as new Collection
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
 Private Sub Class_Initialize()
@@ -161,6 +163,33 @@ end function
 public function getDose()
 	getDose = _dose
 end function
+
+
+
+public function setBdTypeArray(points as Collection)&apos;gamma, gamma, gamma007
+	_bdTypeArray = points
+end function
+
+public function getBdTypeArray()
+	BdTypeArray = _bdTypeArray
+end function
+
+public function setDoseArray(p1 as double, p2 as double, p3 as double)&apos;для 3509 и 2503 -- накопленная доза (три точки)
+	dim arr(2) as double
+	&apos;_doseArray(0) = p1 &apos;так не работает!!!
+	&apos;_doseArray(1) = p2
+	&apos;_doseArray(2) = p3
+	arr(0) = p1
+	arr(1) = p2
+	arr(2) = p3
+	_doseArray = arr
+	&apos;msgbox &quot;set!!!-&quot;+_doseArray(0)+&quot; &quot;+_doseArray(1)+&quot; &quot;+_doseArray(2) + &quot; &quot; + _serial
+end function
+
+public function getDoseArray()
+	getDoseArray = _doseArray
+end function
+
 
 public function setAlternative(state as boolean)
 	_isAlternativePoints = state

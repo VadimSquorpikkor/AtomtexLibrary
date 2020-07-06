@@ -191,11 +191,11 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 	if bdType = &quot;gamma007&quot; then
 		select case prefix
 		case &quot;мк&quot;
-				if point = 0.07	then ar = Array(&quot;430&quot;,&quot;248.3&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
-				if point = 0.7	then ar = Array(&quot;430&quot;,&quot;77.3&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
-				if point = 7 	then ar = Array(&quot;430&quot;,&quot;165.7&quot;)	rem без экрана
-				if point = 20	then ar = Array(&quot;430&quot;,&quot;98.8&quot;)
-				if point = 70 	then ar = Array(&quot;430&quot;,&quot;52.6&quot;)	rem без экрана
+				if point = 0.07	then ar = Array(&quot;430&quot;,&quot;257.3&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
+				if point = 0.7	then ar = Array(&quot;430_3&quot;,&quot;80.1&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
+				if point = 7 	then ar = Array(&quot;430&quot;,&quot;171.7&quot;)	rem без экрана
+				if point = 40	then ar = Array(&quot;430&quot;,&quot;70.6&quot;)	rem без экрана
+				if point = 70 	then ar = Array(&quot;430&quot;,&quot;54.5&quot;)	rem без экрана
 		end select
 	end if
 	&apos;if bdType = &quot;beta&quot; then 

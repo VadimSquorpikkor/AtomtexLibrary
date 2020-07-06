@@ -50,7 +50,9 @@ dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
 
 dim macroWindow as object
 
-dim doseField as object
+dim doseField1 as object
+dim doseField2 as object
+dim doseField3 as object
 
 dim isSinglePoint as boolean
 rem---------------------------------------------------------------------------------------------------------
@@ -76,8 +78,12 @@ Sub G3509_Dialog_Show
 		next j
 	next i
 
-	doseField = oDialog3509.getControl(&quot;devCountZero&quot;)
-	oDialog3509.Model.getByName(&quot;devCountZero&quot;).valueStep = 0.1
+	doseField1 = oDialog3509.getControl(&quot;devCountZero1&quot;)
+	doseField2 = oDialog3509.getControl(&quot;devCountZero2&quot;)
+	doseField3 = oDialog3509.getControl(&quot;devCountZero3&quot;)
+	oDialog3509.Model.getByName(&quot;devCountZero1&quot;).valueStep = 0.1
+	oDialog3509.Model.getByName(&quot;devCountZero2&quot;).valueStep = 0.1
+	oDialog3509.Model.getByName(&quot;devCountZero3&quot;).valueStep = 0.1
 
 	is3509  = oDialog3509.Model.getByName(&quot;is3509&quot;)
 	is3509A = oDialog3509.Model.getByName(&quot;is3509A&quot;)
@@ -205,7 +211,9 @@ sub removeLastBD
 		next i
 	else
 		Overall.makeLayoutFromMultiBD(BDList.item(BDList.count))
-		doseField.value = BDList.item(layoutPosition).getDose
+		doseField1.value = BDList.item(layoutPosition).getDoseArray()(0)
+		doseField2.value = BDList.item(layoutPosition).getDoseArray()(1)
+		doseField3.value = BDList.item(layoutPosition).getDoseArray()(2)
 	end if
 	setButtonVisibility(layoutPosition)
 end Sub
@@ -213,30 +221,38 @@ rem-----------------------------------------------------------------------------
 function listBoxListener
 	Dim selectPos As Integer
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, doseField3.value)
 	selectPos = oListBox.getSelectedItemPos()
 	layoutPosition = selectPos + 1
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
-	doseField.value = BDList.item(layoutPosition).getDose
+	doseField1.value = BDList.item(layoutPosition).getDoseArray()(0)
+	doseField2.value = BDList.item(layoutPosition).getDoseArray()(1)
+	doseField3.value = BDList.item(layoutPosition).getDoseArray()(2)
 	setButtonVisibility(layoutPosition)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, doseField3.value)
 	layoutPosition = layoutPosition + 1
 	setButtonVisibility(layoutPosition)
-	doseField.value = BDList.item(layoutPosition).getDose	
+	doseField1.value = BDList.item(layoutPosition).getDoseArray()(0)
+	doseField2.value = BDList.item(layoutPosition).getDoseArray()(1)
+	doseField3.value = BDList.item(layoutPosition).getDoseArray()(2)	
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
+	&apos;msgbox &quot;&quot; + BDList.item(1).getSerial + &quot; &quot; + BDList.item(1).getDoseArray()(0) + &quot; &quot; + BDList.item(2).getSerial + &quot; &quot; + BDList.item(1).getDoseArray()(0)
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, doseField3.value)
 	layoutPosition = layoutPosition - 1
 	setButtonVisibility(layoutPosition)
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
-	doseField.value = BDList.item(layoutPosition).getDose
+	doseField1.value = BDList.item(layoutPosition).getDoseArray()(0)
+	doseField2.value = BDList.item(layoutPosition).getDoseArray()(1)
+	doseField3.value = BDList.item(layoutPosition).getDoseArray()(2)
+	&apos;msgbox &quot;&quot; + BDList.item(1).getSerial + &quot; &quot; + BDList.item(1).getDoseArray()(0) + &quot; &quot; + BDList.item(2).getSerial + &quot; &quot; + BDList.item(1).getDoseArray()(0)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
@@ -248,7 +264,7 @@ sub insertRecordsToTemplate
 	toNum3   = to3.value
 
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, doseField3.value)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
 	if is3509.state  then path = Overall.PathForProtocol(&quot;3509\3509&quot;, calibName, techName)
@@ -281,6 +297,7 @@ sub insertRecordsToTemplate
 	if is3509C.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509C&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
+	&apos;&apos;&apos;&apos;&apos;oDialog3509.endexecute()
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub startGenerator()
@@ -468,8 +485,12 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	num = -1
 	if is3509B.state then num=3
 	if is3509C.state then num=4
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(20, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(20, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника	
+
+	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (40 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
+	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника
 	
 	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (80 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
 	findAndRename((&quot;$&quot; + i + &quot;-dn&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType)(0)) rem название источника
@@ -497,8 +518,14 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
 		
 		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
-		insertDose(bd, i, &quot;&quot;, 2)
-		insertDose(bd, i, &quot;_2&quot;, 3)
+		
+	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(0)
+	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(1)
+	&apos;	msgbox &quot;&quot; + bd.getDoseArray()(2)
+		
+		if is3509B.state OR is3509C.state then insertDose(bd, i, &quot;_2&quot;, 40, 10, bd.getDoseArray()(1))&apos; 10 -- это 1 / (360/3600) -- перевод из мэд в дозу за 180 сек /10
+		if is3509C.state then insertDose(bd, i, &quot;_3&quot;, 40, 10, bd.getDoseArray()(2))
+		insertDose(bd, i, &quot;&quot;, 80, 20, bd.getDoseArray()(0))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) // 4 - это контр. точка в милиЗивертах
 
 		&apos;-----------------ЗАПОЛНЕНИЕ ГЛАВНОЙ (БОЛЬШОЙ) ТАБЛИЦЫ-------------------------------------
 		dim MyFormat as string
@@ -559,19 +586,20 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 end sub
 &apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
-sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, value_from_valueList as double)
+sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point as double, numb as integer, doseValue as double)
 
 		dim deviceCountZero as double
 		dim deviceCountDone as double
 		dim deviceCountRes  as double
 	
-		deviceCountZero = bd.getDose &apos;oDialog3509.getControl(&quot;devCountZero&quot;).value
+		deviceCountZero = doseValue &apos;oDialog3509.getControl(&quot;devCountZero&quot;).value
 		findAndRename((&quot;$&quot; + i + &quot;-d_dev&quot; + strokeEnd), Format(deviceCountZero, &quot;0.00&quot;))
 		
 		if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
-			deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1)) / 20 / 10 + deviceCountZero 
+			&apos;deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1)) / numb / 10 + deviceCountZero 
+			deviceCountDone = point / numb + deviceCountZero 
 		else	
-			deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1) + bd.getMultiValueList.item(value_from_valueList).item(2) + bd.getMultiValueList.item(value_from_valueList).item(3)) / 3 / 20 / 10 + deviceCountZero 
+			deviceCountDone = (bd.getMultiValueList.item(value_from_valueList).item(1) + bd.getMultiValueList.item(value_from_valueList).item(2) + bd.getMultiValueList.item(value_from_valueList).item(3)) / 3 / numb / 10 + deviceCountZero 
 			&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) 
 		end if	
 		
