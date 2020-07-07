@@ -56,7 +56,7 @@ Sub MainDialog_Show
 		vlaghValue = randValue(70, 5)
 		
 		oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.78&quot;
+		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.79&quot;
 		oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    		oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 		oDialogMain.Execute()
