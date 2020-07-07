@@ -137,6 +137,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 7 	then ar = Array(&quot;0НА&quot;,&quot;76&quot;)
 				if point = 70	then ar = Array(&quot;К/С Г3&quot;,&quot;257&quot;)
 				if point = 20 	then ar = Array(&quot;9ХК&quot;,&quot;299.9&quot;)
+				if point = 40 	then ar = Array(&quot;9ХК&quot;,&quot;215.3&quot;)
 				if point = 240 	then ar = Array(&quot;9ХК&quot;,&quot;88.9&quot;)
 		case &quot;м&quot;
 				if point = 0.5 	then ar = Array(&quot;9TH&quot;,&quot;214.9&quot;)

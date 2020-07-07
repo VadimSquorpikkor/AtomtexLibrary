@@ -67,7 +67,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, pointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.03 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -144,16 +144,21 @@ sub addNewBD
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	
+	&apos;Во всех приборах последняя точка (40 мк) используется только для расчета третей строки дозы (4 мк Нр(10)) и не выводится в протоколе.
+	&apos;Механизм пропуска этой точки при выводе простой: на самом деле она не пропускается, а так же рассчитывается, просто в протоколе,
+	&apos;например для 3509А есть место для вывода только двух точек -- 4 и 800 (0.8 и фон генерятся и не присутствуют в коллекции точек БД),
+	&apos;а при выводе 3-ей точки (40) алгоритм не находит в таблице соответствующей метки (таблица уже закончилась) и пропускает её
+	&apos;В диалоге точка идет последней
 	if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
-		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(1,1),		&quot;Зв/ч&quot;, Array(4,800),		Array(&quot;м&quot;,&quot;м&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(1,1),		&quot;Зв/ч&quot;, Array(4,800),		Array(&quot;м&quot;,&quot;м&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509B.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509B&quot;,	Array(1,1,1),	&quot;Зв/ч&quot;, Array(4,800,20),	Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509C.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509C&quot;,	Array(1,1,1,1),	&quot;Зв/ч&quot;, Array(4,800,4,20),	Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(1,1,1),		&quot;Зв/ч&quot;, Array(4,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(1,1,1),		&quot;Зв/ч&quot;, Array(4,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509B.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509B&quot;,	Array(1,1,1,1),		&quot;Зв/ч&quot;, Array(4,800,20,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;,&quot;мк&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509C.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509C&quot;,	Array(1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,800,4,20,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	else
-		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(3,3),		&quot;Зв/ч&quot;, Array(4,800),		Array(&quot;м&quot;,&quot;м&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(3,3),		&quot;Зв/ч&quot;, Array(4,800),		Array(&quot;м&quot;,&quot;м&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509B.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509B&quot;,	Array(3,3,3),	&quot;Зв/ч&quot;, Array(4,800,20),	Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-		if is3509C.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509C&quot;,	Array(3,3,3,3),	&quot;Зв/ч&quot;, Array(4,800,4,20),	Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509.state  then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509&quot;,	Array(3,3,3),		&quot;Зв/ч&quot;, Array(4,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509A.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509A&quot;,	Array(3,3,3),		&quot;Зв/ч&quot;, Array(4,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;),			&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509B.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509B&quot;,	Array(3,3,3,3),		&quot;Зв/ч&quot;, Array(4,800,20,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;,&quot;мк&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
+		if is3509C.state then bd.addDataWithMultiPoint(&quot;ДКГ-АТ3509C&quot;,	Array(3,3,3,3,3),	&quot;Зв/ч&quot;, Array(4,800,4,20,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	end if
 
 	oDialog3509.getControl(&quot;removeButton&quot;).setEnable(true)
@@ -178,10 +183,11 @@ sub setButtonVisibility(layoutPosition as integer)
 		oDialog3509.getControl(&quot;is3509B&quot;).setEnable(true)
 		oDialog3509.getControl(&quot;is3509C&quot;).setEnable(true)
 		oDialog3509.getControl(&quot;isSinglePoint&quot;).setEnable(true)
-		for i=1 to 3
+		for i=1 to 5
 			oDialog3509.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
+			oDialog3509.Model.getByName(&quot;labelField&quot; + i).textColor = RGB(0, 0, 0)
 		next i 
-		for i=1 to 3
+		for i=1 to 5
 			for j=1 to 3
 				oDialog3509.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).visible = false
 			next j
@@ -193,6 +199,7 @@ sub setButtonVisibility(layoutPosition as integer)
 		oDialog3509.getControl(&quot;is3509B&quot;).setEnable(false)
 		oDialog3509.getControl(&quot;is3509C&quot;).setEnable(false)				
 		oDialog3509.getControl(&quot;isSinglePoint&quot;).setEnable(false)
+		oDialog3509.Model.getByName(&quot;labelField&quot; + BDList.item(1).getMultiValueList.count).textColor = RGB(0, 0, 200)
 	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -492,6 +499,10 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника
 	
+	&apos;В 3509  ТОЧКА (40 мкЗв/ч), ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ (ХОТЯ ОНА И ЕСТЬ)
+	findAndRename((&quot;$&quot; + i + &quot;-dn_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(1)) rem расстояние до источника
+	
 	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (80 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
 	findAndRename((&quot;$&quot; + i + &quot;-dn&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-dd&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType)(1)) rem расстояние до источника
@@ -524,9 +535,11 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;Вторая строка дозы 4 мкЗв Нр(0.07) считается от точки 20 мкЗв
 		if is3509B.state then insertDose(bd, i, &quot;_2&quot;, 3, 5, bd.getDoseArray()(1))
 		if is3509C.state then insertDose(bd, i, &quot;_2&quot;, 4, 5, bd.getDoseArray()(1))&apos; 5 -- это 1 / (360/3600) * 2 -- перевод из мэд в дозу за 180 сек /10
-		&apos;Третья строка дозы  4 мкЗв Нр(10) считается от точки 20 мкЗв
-		if is3509B.state then insertDose(bd, i, &quot;_2&quot;, 3, 5, bd.getDoseArray()(2))
-		if is3509C.state then insertDose(bd, i, &quot;_3&quot;, 4, 5, bd.getDoseArray()(2))
+		&apos;Третья строка дозы  4 мкЗв Нр(10) СЧИТАЕТСЯ ОТ ТОЧКИ 40 мкЗв/ч, которая не выводится в протоколе
+		if is3509B.state then insertDose(bd, i, &quot;_3&quot;, 4, 10, bd.getDoseArray()(2))
+		if is3509C.state then insertDose(bd, i, &quot;_3&quot;, 5, 10, bd.getDoseArray()(2))
+		if is3509.state  then insertDose(bd, i, &quot;_3&quot;,   3, 10, bd.getDoseArray()(2))
+		if is3509A.state then insertDose(bd, i, &quot;_3&quot;,   3, 10, bd.getDoseArray()(2))
 		&apos;Первая строка дозы 4 мЗв Нр(10) считается от точки 800 мЗв
 		insertDose(bd, i, &quot;&quot;, 2, 200, bd.getDoseArray()(0))&apos; 200 -- это 1 / (180/3600) / 10 -- перевод из мэд в дозу за 180 сек /10 -- в 10 оаз меньше точка, чем в 2503 (800 и 80) // 4 - это контр. точка в милиЗивертах
 
