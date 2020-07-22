@@ -36,6 +36,13 @@ tables = ThisComponent.TextTables()
      ThisComponent.Text.removeTextContent(tables.getByName(name))
      end if
 end sub
+rem=======================================================================================
+sub copyTable(oldName as string, newName as string)
+tables = ThisComponent.TextTables()
+     if tables.hasByName(oldName) then
+     ThisComponent.Text.copyTextContent(tables.getByName(oldName))
+     end if
+end sub
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(oEvent As Object)
 	Dim oCheckbox As Object

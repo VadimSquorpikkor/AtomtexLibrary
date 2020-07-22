@@ -90,9 +90,9 @@ sub insertRecordsToTemplate
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	percentOtk = 3 rem %
 
-	findAndRename(&quot;$bground&quot;, Format(randValue(95, 5), &quot;0.0&quot;))
-	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2),  &quot;0.0&quot;))
-	findAndRename(&quot;$vlag&quot;, Format(randValue(70, 5),  &quot;0.0&quot;))
+	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
+	findAndRename(&quot;$temp&quot;, Format(tempValue,  &quot;0.0&quot;))
+	findAndRename(&quot;$vlag&quot;, Format(vlaghValue,  &quot;0.0&quot;))
 	findAndRename(&quot;$date&quot;, getDate(oDialogMRP.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
 	findAndRename(&quot;$source&quot;, oActivityCombo.text)

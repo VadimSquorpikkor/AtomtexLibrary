@@ -13,10 +13,10 @@
   <dlg:text dlg:style-id="1" dlg:id="Label10" dlg:tab-index="4" dlg:left="2" dlg:top="4" dlg:width="234" dlg:height="14" dlg:value="Протоколы поверки и калибровочные сертификаты"/>
   <dlg:img dlg:style-id="0" dlg:id="ImageControl9" dlg:tab-index="5" dlg:left="90" dlg:top="234" dlg:width="125" dlg:height="20" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/%D0%90%D0%A2%D0%9E%D0%9C%D0%A2%D0%95%D0%A5.png"/>
   <dlg:button dlg:id="CommandButton1" dlg:tab-index="6" dlg:left="61" dlg:top="22" dlg:width="57" dlg:height="57"/>
-  <dlg:img dlg:style-id="0" dlg:id="ImageControl1" dlg:tab-index="7" dlg:left="63" dlg:top="24" dlg:width="53" dlg:height="52" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/1121/1121_bg.png"/>
+  <dlg:img dlg:style-id="0" dlg:id="ImageControl1" dlg:tab-index="7" dlg:left="64" dlg:top="25" dlg:width="51" dlg:height="51" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25-2.jpg"/>
   <dlg:text dlg:id="Label1" dlg:tab-index="8" dlg:left="63" dlg:top="81" dlg:width="51" dlg:height="7" dlg:value="1121" dlg:align="center"/>
   <dlg:button dlg:id="CommandButton3" dlg:tab-index="9" dlg:left="119" dlg:top="22" dlg:width="57" dlg:height="69"/>
-  <dlg:img dlg:style-id="0" dlg:id="ImageControl3" dlg:tab-index="10" dlg:left="121" dlg:top="24" dlg:width="53" dlg:height="52" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/1125/1125_b_bz.png"/>
+  <dlg:img dlg:style-id="0" dlg:id="ImageControl3" dlg:tab-index="10" dlg:left="121" dlg:top="24" dlg:width="53" dlg:height="52" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25-2.jpg"/>
   <dlg:text dlg:id="Label2" dlg:tab-index="11" dlg:left="121" dlg:top="81" dlg:width="51" dlg:height="7" dlg:value="1125" dlg:align="center"/>
   <dlg:button dlg:id="CommandButton13" dlg:tab-index="12" dlg:left="177" dlg:top="22" dlg:width="57" dlg:height="69"/>
   <dlg:img dlg:style-id="0" dlg:id="ImageControl14" dlg:tab-index="13" dlg:left="193" dlg:top="24" dlg:width="27" dlg:height="52" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/6130/6130.png"/>

@@ -2,12 +2,16 @@
 <!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="ModuleMain" script:language="StarBasic">REM  *****  BASIC  *****
 
+dim Sensor as new Sensor
+
 dim oDialogMain as object 
 dim oDialogMain as object 
 global sertPath as String
 global bgValue as double
 global tempValue as double
 global vlaghValue as double
+
+
 &apos;------------------------------------------------------------------------------------------------------------------------
 function userExists(user_name as String) as boolean
 	userExists = FileExists(&quot;c:\Users\&quot; + user_name + &quot;\AppData\Roaming\OpenOffice\4\user\basic\AtomtexLibrary\sert_template\&quot; &amp; &quot;АТОМТЕХ.png&quot;)
@@ -50,18 +54,65 @@ Sub MainDialog_Show
 		msgbox &quot;Нет пользователя с таким именем!&quot;
 	else 
 		DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+		
+		Sensor.setValues
 
-		bgValue = randValue(95, 5)
-		tempValue = randValue(21, 2)
-		vlaghValue = randValue(70, 5)
+		&apos;bgValue = randValue(95, 5)
+		&apos;tempValue = randValue(21, 2)
+		&apos;vlaghValue = randValue(70, 5)
+		
+		bgValue = Sensor.getBackground
+		tempValue = Sensor.getTemperature
+		vlaghValue = Sensor.getHumidity
 		
 		oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.80&quot;
+		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.81&quot;
 		oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    		oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 		oDialogMain.Execute()
 	end if	
 End sub
+
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub writeText
+	&apos;Dim FileNo As Integer
+	&apos;Dim CurrentLine As String
+	&apos;Dim Filename As String
+	&apos;&apos;Filename = &quot;d:\data.txt&quot;            &apos; Define file name 
+	&apos;Filename = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\data.txt&quot;            &apos; Define file name 
+	&apos;FileNo = FreeFile               &apos; Establish free file handle
+	&apos;Open Filename For Output As #FileNo         &apos; Open file (writing mode)
+	&apos;Print #FileNo, cDateToIso(Now)      &apos; Save line 
+	&apos;Print #FileNo, 1   &apos; Save line 
+	&apos;Print #FileNo, 2   &apos; Save line 
+	&apos;Print #FileNo, 3   &apos; Save line 
+	&apos;Close #FileNo                  &apos; Close file
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub readText
+	Dim FileNo As Integer
+	Dim CurrentLine As String
+	Dim File As String
+	Dim Msg as String
+	&apos; Define filename 
+	Filename = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\data.txt&quot;
+	&apos; Establish free file handle
+	FileNo = Freefile
+	&apos; Open file (reading mode)
+	Open Filename For Input As FileNo
+	&apos; Check whether file end has been reached
+	Do While not eof(FileNo)  
+	&apos; Read line   
+	Line Input #FileNo, CurrentLine     
+	If CurrentLine &lt;&gt;&quot;&quot; then 
+	&apos;msgbox Sensor.dateIsToday(CurrentLine)   
+	Msg = Msg &amp; CurrentLine &amp; Chr(13)  
+	end if
+	Loop
+	&apos; Close file 
+	Close #FileNo               
+	Msgbox Msg
+end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 Sub MainDialog_Show_old
 	dim user_name as String

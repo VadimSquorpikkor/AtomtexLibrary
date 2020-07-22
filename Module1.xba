@@ -6,7 +6,7 @@ dim oDialogD1 as object
 
 Sub D1_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
-	oDialogD1 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D1 )
+	oDialogD1 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.Dialog1 )
 	
 	
 	

@@ -261,13 +261,14 @@ sub insertRecordsToTemplate
 	Overall.insertFacilitiesText
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	dim threePointArray(2) as double
-	dim bground as double
 	percentOtk = 3 rem %
 	&apos;bground = Format(randValue(95, 5), MyFormat)
-	bground = Format(bgValue, MyFormat)
-	findAndRename(&quot;$bground&quot;, bground)
-	findAndRename(&quot;$temp&quot;, Format(randValue(21, 2), MyFormat))
-	findAndRename(&quot;$vlag&quot;, Format(randValue(70, 5), MyFormat))
+	
+	&apos;&apos;&apos;&apos;&apos;&apos;TODO    Overall.insertParametersToTemplate (calibName, techName)  НЕ РАБОТАЕТ
+	
+	findAndRename(&quot;$bground&quot;, Format(bgValue, MyFormat))
+	findAndRename(&quot;$temp&quot;, Format(tempValue, MyFormat))
+	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, MyFormat))
 	findAndRename(&quot;$date&quot;, getDate(oDialogG23N.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
