@@ -35,23 +35,36 @@ const HUM_AVG as double = 70
 const HUM_SHIFT as double = 5
 
 const DATA_FILE as string = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\data.txt&quot;
+
+&apos;TODO переделать через ООП, сделать bg, temp и hum как объекты класса, тогда проще добавлять/переделывать и меньше кода будет
 &apos;------------------------------------------------------------------------------------------------------------------------
 function dateIsToday as boolean
-	if dataDate = cDateToIso(Now) then
-		dateIsToday = true
-	else	
-		dateIsToday = false
-	end if	
+	dateIsToday = (dataDate = cDateToIso(Now))
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Сравнивает параметр с его заданным значением. Фон, например, должен быть от 90 до 100 (95+-5)
+function getRightValue(value as double, param as double, shift as double) as double
+	if value &gt;= param - shift AND value &lt;= param + shift then
+		getRightValue = value
+	else
+		msgbox &quot;Параметр задан неверно и будет сгенерирован&quot;
+		getRightValue = randValue(param, shift)
+	end if		
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Функция загружает данные из файла и проверяет дату в файле, если дата не совпадает, рандомит данные и закидывает их во внешшний файл
 function setValues
-	setSensorsRandomly &apos;сразу записываю рандомно, если дальше что-то не сработает, значения остануться, проверить потом, может и избыточное
-	setSensors(DataFromFile)
-	if NOT dateIsToday then
+	&apos;Если файл настройки найден, работаем с файлом, если не найден, рандомим значения
+	if FileExists(DATA_FILE) then
+		setSensors(DataFromFile)
+		if NOT dateIsToday then
+			setSensorsRandomly
+			sensorsToFile
+		end if
+	else
+		msgbox &quot;Файл не найден, значения будут сгенерированы&quot;
 		setSensorsRandomly
-		sensorsToFile
-	end if	
+	end if		
 	&apos;msgbox &quot;&quot; &amp; dataDate &amp; Chr(13) &amp; background &amp; Chr(13) &amp; temperature &amp; Chr(13) &amp; humidity
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -77,10 +90,10 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Присваивает переменным из макроса значения из коллекции
 function setSensors(data as Collection)
-	dataDate = data.item(1)
-	background = data.item(2)
-	temperature = data.item(3)
-	humidity = data.item(4)
+	dataDate 	= data.item(1)
+	background 	= getRightValue(data.item(2), BG_AVG, 	BG_SHIFT)
+	temperature = getRightValue(data.item(3), TEMP_AVG, TEMP_SHIFT)
+	humidity 	= getRightValue(data.item(4), HUM_AVG, 	HUM_SHIFT)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function DataFromFile as Collection
