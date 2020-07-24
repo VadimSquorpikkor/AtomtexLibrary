@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE library:library PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "library.dtd">
 <library:library xmlns:library="http://openoffice.org/2000/library" library:name="AtomtexLibrary" library:readonly="false" library:passwordprotected="false">
- <library:element library:name="M_1117_N"/>
+ <library:element library:name="Sensor"/>
  <library:element library:name="Overall"/>
  <library:element library:name="_Ver"/>
  <library:element library:name="M_PORTAL"/>
@@ -32,5 +32,4 @@
  <library:element library:name="M_G25"/>
  <library:element library:name="b_new"/>
  <library:element library:name="BaseC"/>
- <library:element library:name="Sensor"/>
 </library:library>
