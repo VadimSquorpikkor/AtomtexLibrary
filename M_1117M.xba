@@ -29,6 +29,18 @@ dim layoutPosition as integer &apos;в отличии от других клас
 &apos; При формировании протокола опять проверяется флаг isAlternative, если true, данные из pointList используются, как контрольные точки, если false, перерасчитывается активность на дату поверки для каждой точки.
 &apos; Проверка перед самим формированием протокола нужна для того, чтобы всем бета БД (не альтернативным) была присвоена одинаковая активность (иначе если дата проверки была изменена после сохранения первого БД, а затем был выбран лругой бета БД, то у них будет разная активность источников)
 &apos;  
+
+
+rem СТАРЫЙ КЛАСС. НЕ МСПОЛЬЗУЕТСЯ
+&apos;&apos;&apos;&apos;&apos;dim count as integer
+&apos;&apos;&apos;&apos;&apos;dim maxCheckedCount as integer
+&apos;&apos;&apos;&apos;&apos;dim rusItems1, engItems1, rusItems2, engItems2 as variant
+&apos;&apos;&apos;&apos;&apos;dim protocolType as String
+
+
+
+
+
 &apos;---------------------------------------------------------------------------------------------------------
 Sub at1117m_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )

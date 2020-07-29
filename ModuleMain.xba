@@ -65,7 +65,7 @@ Sub MainDialog_Show
 		vlaghValue = Sensor.getHumidity
 		
 		oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.82&quot;
+		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.83&quot;
 		oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
    		oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 		oDialogMain.Execute()
