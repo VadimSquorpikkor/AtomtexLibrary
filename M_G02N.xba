@@ -28,6 +28,26 @@ dim oComboBox, oComboBox1, oComboBox2 as object
 
 dim Overall as new Overall
 dim Facility as new Facility
+
+&apos;ТАК НАДО СДЕЛАТЬ ДЛЯ АЛЬТЕРНАТИВНЫХ ТОЧЕК!!!
+&apos;на будущее: как я сделал индивидуальное значение фона для каждого БД:
+&apos;нужно было: для каждого БД значение фона (который выводится в таблице) изначально был один общий, нужно было сделать, 
+&apos;чтобы для каждого БД можно было выбирать значение фона индивидуально, по аналогии ввода значения в точке
+&apos;я хотел сделать, чтобы на форме был checkBox, чтобы можно было выбрать, делать фон общим для всех блоков (значение берется из bgValue, т.е. фон общий для всего макроса)
+&apos;или ставить каждому блоку свой индивидуальный
+&apos;Как я это сделал: общий фон (bgValue) остался, как и был. В классе DUnit создал переменную _bdBackground (double) и геттер/сеттер к ней
+&apos;при переходе между БД ЕСЛИ флаг стоит &quot;Для каждого БД свой фон&quot; сохраняю значение из EditText, если флаг == false -- не сохраняю
+&apos;при формировании лэйаута ЕСЛИ флаг стоит &quot;Для каждого БД свой фон&quot; загружаю значение переменной, если флаг == false -- загружаю общий фон
+&apos;Вывод протокола: в классе Overall добавлена boolean переменная _separateBGround (и сеттер к ней), при вызове insertRecordsToTemplate заношу в эту переменную значение checkBox&apos;а (true или false)
+&apos;при вызове метода вывода протокола templateStep (общий метод для всех приборов) заменил строку &lt;...&gt;Format(bgValue, &quot;0.0&quot;) на &lt;...&gt;Format(valueOfBg, &quot;0.0&quot;) -- 
+&apos;т.е. вместо общей переменной поставил локальную, которая определяется: if _separateBGround=true then valueOfBg=bd.getBdBackground else valueOfBg=bgValue
+&apos;получается если чекБокс стоит, то в templateStep фон берется из конкретного БД, если НЕ стоит -- выбирается общий фон для всего макроса
+&apos;при добавлении нового БД добавил установку индивидуального фона по умолчанию bd.setBdBackground(100)
+&apos;Плюс такого подхода: 1) простота реализации 2) для каждого нового прибора мало кода добавляется (надо ещё, наверное, вынести в Overall строку Overall.setSeparateBG(oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state))
+&apos;3) самое главное -- все старые приборы, которые не использует индивидуальное значение фона для каждого БД, будут продолжать работать как ни в чем не бывало, для них значение _separateBGround будет всегда = false
+&apos;по сути получается в любой момент времени я сохраняю оба варианта фона и уже при выводе протокола выбираю, какой из вариантов выбрать
+&apos;ТАК НАДО СДЕЛАТЬ ДЛЯ АЛЬТЕРНАТИВНЫХ ТОЧЕК!!!
+
 rem---------------------------------------------------------------------------------------------------------
 Sub G02N_Dialog_Show
 	maxBDCount = 10
@@ -38,7 +58,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.23 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.24 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -55,9 +75,13 @@ Sub G02N_Dialog_Show
 	Overall.initializeSertificateCombo(oComboBox1, oComboBox2)
 		
 	oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
+	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
+	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).valueStep = 0.1
+	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).DecimalAccuracy = 1
 	oDialogG02N.getControl(&quot;serialLabel&quot;).Text = &quot;S/N&quot;
 	oDialogG02N.getControl(&quot;typeLabel&quot;).visible = false
 	oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
+	oDialogG02N.getControl(&quot;ActivityAll&quot;).setEnable(false)
 	
 	oOptionBDKG02  = oDialogG02N.Model.getByName(&quot;isBDKG-02&quot;)
 	oOptionBDKG204 = oDialogG02N.Model.getByName(&quot;isBDKG-204&quot;)
@@ -138,6 +162,7 @@ sub enableBDMG(visibility as boolean)
 		oDialogG02N.getControl(&quot;ValueBDMG&quot; + i).visible = visibility
 		oDialogG02N.getControl(&quot;LabelBDMG&quot; + i).visible = visibility
 	next i
+	oDialogG02N.getControl(&quot;ActivityAll&quot;).setEnable(visibility)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -198,6 +223,7 @@ sub addNewBD
 	if oOptionBDMG.state 	then bd.addData(bdName , &quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if oOptionBDKG11.state  then bd.addData(bdName , &quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma&quot;, Array(0.01, 0.1)) 
 	bd.setSerial(bdName)
+	bd.setBdBackground(100)
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bdName, nCount )
 	BDList.add(bd)
@@ -241,6 +267,11 @@ rem-----------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
 	Overall.makeLayoutFromBD(bd)
 	oDialogG02N.getControl(&quot;GradValueField&quot;).Text = bd.getGradValue
+	if oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state then
+		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bd.getBdBackground
+	else
+		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgVAlue
+	end if		
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
@@ -250,6 +281,7 @@ sub saveCurentBDValue(num as integer)
 	next i
 	BDList.item(num).setValueList(newValues)
 	BDList.item(num).setGradValue(oDialogG02N.getControl(&quot;GradValueField&quot;).text
+	if oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state then BDList.item(num).setBdBackground(oDialogG02N.getControl(&quot;BGValueField&quot;).value
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
@@ -286,6 +318,9 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
+	
+	Overall.setSeparateBG(oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state)
+	
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
 	dim path as string
@@ -334,6 +369,16 @@ sub insertRecordsToTemplate
 	if oOptionBDMG.state 	then strokeForSaving = &quot;БДМГ-2343 &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub BgCheckBoxListener
+	if oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state then
+		oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(true)
+		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = BDList.item(layoutPosition).getBdBackground
+	else
+		oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
+		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
+	end if			
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertDataToLayout

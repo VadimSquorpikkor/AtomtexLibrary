@@ -28,6 +28,8 @@ dim _oOptionButtonPr as object
 dim _oOptionButtonSe as object
 dim _oOptionButtonSr as object
 dim _calibName, _techName as string
+
+dim _separateBGround as boolean
 rem---------------------------------------------------------------------------------------------------------
 dim m_point, cont_point as double 
 dim prefix, MyFormat as string
@@ -45,6 +47,10 @@ dim oDateFieldModel as object
 public function getPercentOtk as double
 	getPercentOtk = percentOtk
 end function
+
+sub setSeparateBG(state as boolean)
+	_separateBGround = state
+end sub
 
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
@@ -385,12 +391,19 @@ sub templateStep(i as integer, strokeEnd as string)
 				
 			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
 			
+			dim valueOfBg as double
+			if _separateBGround = true then
+				valueOfBg = bd.getBdBackground
+			else
+				valueOfBg = bgValue
+			end if		
+			
 			if AbsoluteValue(cont_point, prefix)&lt;0.001 then 
 				if bd.getType = &quot;gamma007&quot; then
 					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
 				else
 					&apos;msgbox bground
-					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), Format(bgValue, &quot;0.0&quot;)
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), Format(valueOfBg, &quot;0.0&quot;)
 				end if		
 			else	
 				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;---&quot;) 

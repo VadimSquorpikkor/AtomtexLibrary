@@ -37,6 +37,7 @@ Sub MainDialog_Show
 	users.add(&quot;Leshkevich_SV&quot;)									&apos;	║█
 	users.add(&quot;Rusakevich_AV&quot;)									&apos;	║█
 	users.add(&quot;Tarasenko_VV&quot;)									&apos;	║█
+	users.add(&quot;Stsiapanau_MS&quot;)									&apos;	║█
 																&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -54,25 +55,34 @@ Sub MainDialog_Show
    	if FileExists(XPPath &amp; &quot;АТОМТЕХ.png&quot;) then sertPath=XPPath
    	
 	if sertPath = &quot;&quot; then
-		msgbox &quot;Нет пользователя с таким именем!&quot;
-	else 
-		DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
-		
-		Sensor.setValues
-		
-		bgValue = Sensor.getBackground
-		tempValue = Sensor.getTemperature
-		vlaghValue = Sensor.getHumidity
-		
-		oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-		oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.83&quot;
-		oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
-   		oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
-		oDialogMain.Execute()
+		InputVal = InputBox(&quot;Нет пользователя с таким именем! Для продолжения работы введите имя пользователя. Это сообщение будет появляться каждый раз при запуске макроса, пока пользователь не будет добавлен в список пользователей макроса&quot;, &quot;Неизвестный пользователь&quot;, &quot;Serikov_VA&quot;)
+		sertPath = getPath(InputVal)
+		if userExists(InputVal) then
+			startMacro(sertPath)
+		else	
+			msgbox &quot;Некорректное имя пользователя!&quot;
+		end if	
+	else
+		startMacro(sertPath)	
 	end if	
+		
 End sub
-
-
+rem-------------------------------------------------------------------------
+sub startMacro(sertPath as String)
+	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+	
+	Sensor.setValues
+	
+	bgValue = Sensor.getBackground
+	tempValue = Sensor.getTemperature
+	vlaghValue = Sensor.getHumidity
+			
+	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
+	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.84&quot;
+	oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
+	oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
+	oDialogMain.Execute()
+end sub
 rem-------------------------------------------------------------------------
 sub subInsertString(oDoc, sString, bReplace)
 	oVC = oDoc.getCurrentSelection

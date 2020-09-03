@@ -32,6 +32,7 @@ private _isAlternativePoints as boolean
 &apos;private _sourceNameList as new Collection
 private _doseArray(2) as double
 private _bdTypeArray as new Collection
+private _bdBackground as double &apos;фон для каждого БД -- в протоколе для каждого БД будет свой фон, а не общий, как в шапке протокола
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
 Private Sub Class_Initialize()
@@ -284,7 +285,13 @@ public function getGradValue
 	getGradValue = _gradValue
 end function
 
+public function setBdBackground(value as double)
+	_bdBackground = value
+end function
 
+public function getBdBackground
+	getBdBackground = _bdBackground
+end function
 
 
 
