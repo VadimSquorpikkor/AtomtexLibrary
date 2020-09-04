@@ -283,7 +283,6 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertParametersToTemplate&apos;(bdName as string)
 	percentOtk = 3 rem %
-	&apos;bground = Format(randValue(95, 5), &quot;0.0&quot;)
 	
 	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
@@ -392,7 +391,7 @@ sub templateStep(i as integer, strokeEnd as string)
 			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
 			
 			dim valueOfBg as double
-			if _separateBGround = true then
+			if _separateBGround = true then &apos; Если стоит флаг &quot;раздельный фон для каждого БД&quot;, то беру фон от каждого БД, если флаг не стоит -- для всех блоков ставлю фон, который общий для всех приборов
 				valueOfBg = bd.getBdBackground
 			else
 				valueOfBg = bgValue
@@ -434,45 +433,48 @@ sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStep(i, oDateFieldModel as object)
+sub insertBetaToTemplateStep(i, oDateFieldModel as object, betaSourcesList as Collection, betaValueList as Collection, sign as String)
+
 	dim bd as new DUnit 
 	bd = _BDList.item(i)
 	dim j as integer
-	for j=0 to bd.getPointTextList.count-1
-		m_point = bd.getValueList.item(j+1)
+	&apos;for j=0 to betaSourcesList.count-1
+	for j=0 to betaValueList.count-1
+		m_point = betaValueList.item(j+1)
 
 		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
-		cont_point = Activity.get_activity_Sr(bd.getPointTextList.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
+		cont_point = Activity.get_activity_Sr(betaSourcesList.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
 		
 		if bd.isAlternativePoints then
-			cont_point = bd.getPointList.item(j+1)
+			&apos;cont_point = bd.getPointList.item(j+1)
+			cont_point = bd.getAltList.item(j+1)
 		else
-			Activity.get_activity_Sr(bd.getPointTextList.item(j+1), oDateFieldModel)
+			Activity.get_activity_Sr(betaSourcesList.item(j+1), oDateFieldModel)
 		end if	
 			
 		
 		threePointArray = avaragePointsRndArray(m_point, percentOtk)
 		
-		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), bd.getPointTextList.item(j+1)) rem название источника
+		findAndRename((sign + i + &quot;-3&quot; + j), betaSourcesList.item(j+1)) rem название источника
 	
-		if cont_point&lt;500  then findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
-		if cont_point&gt;=500 then findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
+		if cont_point&lt;500  then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
+		if cont_point&gt;=500 then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
 				
 		rem TODO сделать через select case
 		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
 		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
 				
-		findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
-		findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
-		findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+		findAndRename((sign + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		findAndRename((sign + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		findAndRename((sign + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
 				
 		if cont_point&lt;150 then 
-			findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
+			findAndRename((sign + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
 		else	
-			findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
+			findAndRename((sign + i + &quot;-5&quot; + j), &quot;---&quot;) 
 		end if
 				
-		findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+		findAndRename((sign + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
 				
 		dim percent as integer
 		percent = 6
@@ -480,8 +482,8 @@ sub insertBetaToTemplateStep(i, oDateFieldModel as object)
 		dim pogr_point as double
 		pogr_point = RelativeError(m_point, cont_point)
 		MyFormat = &quot;0.00&quot;
-		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
+		findAndRename((sign + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
 	next j
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -546,17 +548,14 @@ sub saveCurentBDValue(num as integer)
 	for i=1 to _BDList.item(num).valueList.count
 		newValues.add(_oDialog.getControl(&quot;ValueField&quot; + i).Value)
 	next i
-	if _BDList.item(num).isAlternativePoints then
-		&apos;msgbox &quot;alternate&quot;
-		&apos;msgbox _BDList.item(num).valueList.count
-		dim altValues as new Collection
-		for i=1 to _BDList.item(num).valueList.count
-		&apos;msgbox i
-		altValues.add(_oDialog.getControl(&quot;altField&quot; + i).Value)
-		_BDList.item(num).setPointList(altValues)
-	next i
-	end if
 	_BDList.item(num).setValueList(newValues)
+	if _BDList.item(num).isAlternativePoints then
+		dim altValues as new Collection
+		for i=1 to _BDList.item(num).getAltList.count
+			altValues.add(_oDialog.getControl(&quot;altField&quot; + i).Value)
+			_BDList.item(num).setAltList(altValues)
+		next i
+	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentMultiBDValue(num as integer)

@@ -37,7 +37,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.04 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.05 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -149,6 +149,7 @@ sub addNewBD
 			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
 		next i	
 		bd.setBetaValues(list)
+		bd.setAltList(list)
 	end if
 	
 	oDialog6130.getControl(&quot;removeButton&quot;).setEnable(true)
@@ -199,20 +200,31 @@ sub altCheckBoxListener(oEvent As Object)
     		oDialog6130.getControl(&quot;betaLabel&quot; + i).Visible = true
     	next i
     	Overall.saveCurentBDValue(layoutPosition)
-    	makeLayout(BDList.item(layoutPosition))
+    	&apos;makeLayout(BDList.item(layoutPosition))
+    	makeLayoutFromBD(BDList.item(layoutPosition))
     end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim point as double
+	&apos;dim altPointList as new collection
+	&apos;dim altPoint as double
+	if bd.isAlternativePoints then
+		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 1
+	else	
+		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 0
+	end if	
+	
 	for i=1 to bd.getBetaSources.count
+		
 		if bd.isAlternativePoints then
-			point = bd.getPointList.item(i)
-			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
+			&apos;altPoint = bd.getAltList.item(i)
+			point = bd.getAltList.item(i)
+			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 200)
 		else
 			point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
-			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).Color = RGB(0, 0, 0)
+			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
 		if oOption6130bq.state then
@@ -223,9 +235,17 @@ sub setBetaLayout(bd as new DUnit)
 		oDialog6130.Model.getByName(&quot;betaField&quot; + i).valueStep = 0.1
 		oDialog6130.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 1
 		oDialog6130.getControl(&quot;betaField&quot; + i).value = bd.getBetaValues.item(i)  &apos;Format(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel), &quot;0.0&quot;)
+		oDialog6130.getControl(&quot;altField&quot; + i).value = bd.getAltList.item(i)
 		pointList.add(point)
+		&apos;altPointList.add(point)
 	next i
-	bd.setBetaPoints(pointList)
+	&apos;bd.setBetaPoints(pointList)
+	&apos;bd.setAltList(altPointList)
+	
+	
+	for i=1 to bd.getAltList.count
+    	oDialog6130.getControl(&quot;altField&quot; + i).Visible = false	
+    next i
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
@@ -328,8 +348,10 @@ sub insertRecordsToTemplate
 		deleteTable(&quot;b&quot; + k)
 	next k
 	
-		for i=1 to BDList.count
-		insertBetaToTemplateStep(i)
+	
+	
+	for i=1 to BDList.count
+		Overall.insertBetaToTemplateStep(i, oDateFieldModel, BDList.item(i).getBetaSources, BDList.item(i).getBetaValues, &quot;β&quot;)
 		Overall.insertToTemplateStep(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
 	next i
@@ -344,47 +366,5 @@ sub insertRecordsToTemplate
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
-rem---------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStep(i)
-	dim bd as new DUnit 
-	bd = BDList.item(i)
-	dim j as integer
-	for j=0 to bd.getBetaValues.count-1
-		m_point = bd.getBetaValues.item(j+1)
-		
 
-		&apos;cont_point = bd.getBetaPoints.item(j+1) &apos;ЕСЛИ ТАК -- ЕСТЬ БАГ. ЕСЛИ ДОБАВИТЬ 1 БД, ЗАТЕМ ДРУГОЙ И ПРИ ВЫБРАННОМ ВТОРОМ ПОМЕНЯТЬ ДАТУ, ТОГДА ДЛЯ КАЖДОГО БД БУДЕТ СОХРАНЕНА СВОЯ (РАЗНАЯ) ДАТА, ЗНАЧИТ АКТИВНОСТЬ БУДЕТ РАЗНАЯ  
-		cont_point = Activity.get_activity_Sr(bd.getBetaSources.item(j+1), oDateFieldModel) &apos;А ЕСЛИ ТАК -- ПРИ ВЫВОДЕ ПРОТОКОЛА ВСЕМ БЛОКАМ БУДЕТ ПРИСВОЕНА ОДИНАКОВАЯ (ПОСЛЕДНЯЯ ВЫБРАННАЯ) ДАТА, А ЗНАЧИТ И АКТИВНОСТЬ
-		threePointArray = Overall.avaragePointsRndArray(m_point, percentOtk)
-		
-		findAndRename((&quot;β&quot; + i + &quot;-3&quot; + j), bd.getBetaSources.item(j+1)) rem название источника
-		findAndRename((&quot;β&quot; + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
-				
-		rem TODO сделать через select case
-		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
-		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
-				
-		findAndRename((&quot;β&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
-		findAndRename((&quot;β&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
-		findAndRename((&quot;β&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
-				
-		if cont_point&lt;150 then 
-			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
-		else	
-			findAndRename((&quot;β&quot; + i + &quot;-5&quot; + j), &quot;---&quot;) 
-		end if
-				
-		findAndRename((&quot;β&quot; + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
-				
-		dim percent as integer
-		percent = 6
-			
-		dim pogr_point as double
-		pogr_point = RelativeError(m_point, cont_point)
-		MyFormat = &quot;0.00&quot;
-		findAndRename((&quot;β&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((&quot;β&quot; + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
-	next j
-	&apos;findAndRename(&quot;$bd_num&quot; + i, bd.getSerial)
-end sub
 </script:module>

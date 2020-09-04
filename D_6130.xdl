@@ -44,12 +44,12 @@
   <dlg:button dlg:id="doneButton" dlg:tab-index="20" dlg:left="275" dlg:top="178" dlg:width="30" dlg:height="14" dlg:value="Готово">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:text dlg:id="Label6" dlg:tab-index="13" dlg:left="229" dlg:top="107" dlg:width="28" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="Label5" dlg:tab-index="12" dlg:left="229" dlg:top="96" dlg:width="28" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="Label4" dlg:tab-index="29" dlg:left="229" dlg:top="85" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label3" dlg:tab-index="28" dlg:left="229" dlg:top="74" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label2" dlg:tab-index="27" dlg:left="229" dlg:top="63" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label1" dlg:tab-index="26" dlg:left="229" dlg:top="52" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label6" dlg:tab-index="13" dlg:left="220" dlg:top="107" dlg:width="37" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="Label5" dlg:tab-index="12" dlg:left="220" dlg:top="96" dlg:width="37" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="Label4" dlg:tab-index="29" dlg:left="220" dlg:top="85" dlg:width="37" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label3" dlg:tab-index="28" dlg:left="220" dlg:top="74" dlg:width="37" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label2" dlg:tab-index="27" dlg:left="220" dlg:top="63" dlg:width="37" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label1" dlg:tab-index="26" dlg:left="220" dlg:top="52" dlg:width="37" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:button dlg:id="addButton" dlg:tab-index="0" dlg:left="144" dlg:top="39" dlg:width="55" dlg:height="12" dlg:value="Добавить">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
@@ -102,12 +102,12 @@
   <dlg:img dlg:style-id="5" dlg:id="catImage" dlg:tab-index="54" dlg:left="97" dlg:top="121" dlg:width="32" dlg:height="49"/>
   <dlg:text dlg:style-id="7" dlg:id="betaLabel" dlg:tab-index="56" dlg:left="284" dlg:top="139" dlg:width="15" dlg:height="28" dlg:value="β" dlg:align="center"/>
   <dlg:text dlg:style-id="8" dlg:id="gammaLabel" dlg:tab-index="55" dlg:left="284" dlg:top="59" dlg:width="15" dlg:height="34" dlg:value="γ" dlg:align="center"/>
-  <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="57" dlg:left="226" dlg:top="117" dlg:width="72" dlg:height="10" dlg:value="Свои значения для α, β" dlg:checked="false">
+  <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="57" dlg:left="226" dlg:top="119" dlg:width="72" dlg:height="10" dlg:value="Свои значения для α, β" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.altCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:numericfield dlg:id="altField1" dlg:tab-index="58" dlg:left="225" dlg:top="129" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField2" dlg:tab-index="59" dlg:left="225" dlg:top="140" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField3" dlg:tab-index="60" dlg:left="225" dlg:top="151" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField4" dlg:tab-index="61" dlg:left="225" dlg:top="162" dlg:width="24" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
+  <dlg:numericfield dlg:id="altField1" dlg:tab-index="58" dlg:left="220" dlg:top="129" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField2" dlg:tab-index="59" dlg:left="220" dlg:top="140" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField3" dlg:tab-index="60" dlg:left="220" dlg:top="151" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField4" dlg:tab-index="61" dlg:left="220" dlg:top="162" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
  </dlg:bulletinboard>
 </dlg:window>

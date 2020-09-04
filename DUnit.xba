@@ -32,6 +32,7 @@ private _isAlternativePoints as boolean
 &apos;private _sourceNameList as new Collection
 private _doseArray(2) as double
 private _bdTypeArray as new Collection
+private _altValueList as new Collection
 private _bdBackground as double &apos;фон для каждого БД -- в протоколе для каждого БД будет свой фон, а не общий, как в шапке протокола
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
@@ -82,6 +83,7 @@ public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVa
 	dim i as integer
 	for i=0 to uBound(arr)
 		_betaSources.add(arr(i))
+		_altValueList.add(arr(i))
 		_betaValues.add(0)
 	next i
 end sub
@@ -112,6 +114,7 @@ Public Sub addData(ByVal BDname as string, ByVal measUnit as string, ByVal point
 		_pointValue.add(arr(i))
 		_pointText.add(ar2(i))
 		_measuredValue.add(arr(i))
+		_altValueList.add(arr(i))
 	next i
 	_pointCount = uBound(arr)+1
 	_gradValue = 10000
@@ -200,8 +203,13 @@ public function isAlternativePoints as boolean
 	isAlternativePoints = _isAlternativePoints
 end function
 
+public function setAltList(list as Collection)
+	_altValueList = list
+end function
 
-
+public function getAltList as Collection
+	getAltList = _altValueList
+end function
 
 Public Function BDName As string
    BDName = _BDName

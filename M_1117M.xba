@@ -24,22 +24,13 @@ dim checkedCount as integer
 
 dim layoutPosition as integer &apos;в отличии от других классов, здесь layoutPosition -- это фиксированная позиция каждого блока, совпадает с номером соответствующего чекбокса (т.е. при выборе только бдкг-11 layoutPosition будет равен 5 (только один номер позиции))
 
-&apos; Пользовательские значения для контрольных точек (для альфа и бета) -- при сохранении лэйаута БЕТА метод Overall.saveCurentBDValue проверяет, если стоит флаг isAlternative, то считывает данные из altField и сохраняет в коллекцию контрольных точек БД (.setPointList)
-&apos; При постройке лэйаута (при переходе между БД и возврате к бета БД с альтернативными контрю точками), проверяется флаг isAlternative, если true, данные из pointList записываются в Label
-&apos; При формировании протокола опять проверяется флаг isAlternative, если true, данные из pointList используются, как контрольные точки, если false, перерасчитывается активность на дату поверки для каждой точки.
-&apos; Проверка перед самим формированием протокола нужна для того, чтобы всем бета БД (не альтернативным) была присвоена одинаковая активность (иначе если дата проверки была изменена после сохранения первого БД, а затем был выбран лругой бета БД, то у них будет разная активность источников)
+&apos; Пользовательские значения для контрольных точек (для альфа и бета) -- при сохранении лэйаута БЕТА метод Overall.saveCurentBDValue проверяет, если стоит флаг isAlternative, 
+&apos; то считывает данные из altField и сохраняет в коллекцию контрольных точек БД (.setAltList)
+&apos; При постройке лэйаута (при переходе между БД и возврате к бета БД с альтернативными контрю точками), проверяется флаг isAlternative, если true, данные из altList записываются в Label
+&apos; При формировании протокола опять проверяется флаг isAlternative, если true, данные из altList используются, как контрольные точки, если false, перерасчитывается активность на дату поверки для каждой точки.
+&apos; Проверка перед самим формированием протокола нужна для того, чтобы всем бета БД (не альтернативным) была присвоена одинаковая активность (иначе если дата проверки была изменена после сохранения первого БД, 
+&apos; а затем был выбран лругой бета БД, то у них будет разная активность источников)
 &apos;  
-
-
-rem СТАРЫЙ КЛАСС. НЕ МСПОЛЬЗУЕТСЯ
-&apos;&apos;&apos;&apos;&apos;dim count as integer
-&apos;&apos;&apos;&apos;&apos;dim maxCheckedCount as integer
-&apos;&apos;&apos;&apos;&apos;dim rusItems1, engItems1, rusItems2, engItems2 as variant
-&apos;&apos;&apos;&apos;&apos;dim protocolType as String
-
-
-
-
 
 &apos;---------------------------------------------------------------------------------------------------------
 Sub at1117m_Dialog_Show
@@ -47,7 +38,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.10 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.11 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -144,7 +135,7 @@ sub makeBetaLayout(bd as new DUnit)
 	
 	for i=1 to bd.getPointTextList.count
 		if bd.isAlternativePoints then
-			point = bd.getPointList.item(i)
+			point = bd.getAltList.item(i)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;bd.getPointList.item(i)
 			&apos;oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
 		else
 			point = Activity.get_activity_Sr(bd.getPointTextList.item(i), oDateFieldModel)
@@ -165,7 +156,7 @@ sub makeBetaLayout(bd as new DUnit)
 		oDialog1117.getControl(&quot;ValueField&quot; + i).value = Format(value, myFormat)
 		pointList.add(point)
 	next i
-	bd.setPointList(pointList)
+	bd.setPointList(pointList)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub altCheckBoxListener(oEvent As Object)
@@ -217,16 +208,16 @@ function makeLayout(bd as new DUnit)
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
  	end if
-		
-	&apos;Обязательно заносить значение Point в альтПоля, даже если они не видны, иначе при сохранении лэйаута в коллекцию Point&apos;ов сохраняться значения альт полей по-умолчанию 	
+			
 	for i=1 to bd.getPointTextList.count
-		point = bd.getPointList.item(i)
-		if point &lt; 500 then
+		&apos;point = bd.getPointList.item(i)
+		altPoint = bd.getAltList.item(i)
+		if altPoint &lt; 500 then
 			myFormat = &quot;0.0&quot;
 		else
 			myFormat = &quot;0&quot;
 		end if
-		oDialog1117.getControl(&quot;altField&quot; + i).value = Format(point, myFormat)
+		oDialog1117.getControl(&quot;altField&quot; + i).value = Format(altPoint, myFormat)
  	next i
  	
  	if bd.getType = &quot;alpha&quot; OR bd.getType = &quot;beta&quot; then
@@ -519,7 +510,7 @@ sub insertDataToTemplate
 			if bd.BdName=&quot;БДКН-05&quot; then	neutron_05(i, bd)
 			
 			if BDList.item(i).getType = &quot;beta&quot; then				
-				Overall.insertBetaToTemplateStep(i, oDateFieldModel)
+				Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
 			else
 				Overall.insertToTemplateStep(i)
 			end if	

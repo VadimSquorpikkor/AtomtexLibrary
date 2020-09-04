@@ -150,15 +150,15 @@
   <dlg:numericfield dlg:id="tempField" dlg:tab-index="70" dlg:left="78" dlg:top="105" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:spin="true"/>
   <dlg:numericfield dlg:id="vlaghField" dlg:tab-index="72" dlg:left="146" dlg:top="105" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:spin="true"/>
   <dlg:text dlg:style-id="0" dlg:id="Label1" dlg:tab-index="22" dlg:left="131" dlg:top="237" dlg:width="39" dlg:height="10" dlg:page="1" dlg:align="right" dlg:tabstop="false"/>
-  <dlg:numericfield dlg:id="altField1" dlg:tab-index="74" dlg:left="146" dlg:top="237" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField2" dlg:tab-index="76" dlg:left="146" dlg:top="247" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField3" dlg:tab-index="77" dlg:left="146" dlg:top="257" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField4" dlg:tab-index="78" dlg:left="146" dlg:top="267" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField5" dlg:tab-index="79" dlg:left="146" dlg:top="277" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField6" dlg:tab-index="80" dlg:left="146" dlg:top="287" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField7" dlg:tab-index="81" dlg:left="146" dlg:top="297" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField8" dlg:tab-index="82" dlg:left="146" dlg:top="307" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
-  <dlg:numericfield dlg:id="altField9" dlg:tab-index="83" dlg:left="146" dlg:top="317" dlg:width="24" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1"/>
+  <dlg:numericfield dlg:id="altField1" dlg:tab-index="74" dlg:left="139" dlg:top="237" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField2" dlg:tab-index="76" dlg:left="139" dlg:top="247" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField3" dlg:tab-index="77" dlg:left="139" dlg:top="257" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField4" dlg:tab-index="78" dlg:left="139" dlg:top="267" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField5" dlg:tab-index="79" dlg:left="139" dlg:top="277" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField6" dlg:tab-index="80" dlg:left="139" dlg:top="287" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField7" dlg:tab-index="81" dlg:left="139" dlg:top="297" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField8" dlg:tab-index="82" dlg:left="139" dlg:top="307" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField9" dlg:tab-index="83" dlg:left="139" dlg:top="317" dlg:width="31" dlg:height="10" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
   <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="75" dlg:left="136" dlg:top="218" dlg:width="72" dlg:height="10" dlg:value="Свои значения для α, β" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.AltCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
