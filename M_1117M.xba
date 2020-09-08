@@ -510,7 +510,8 @@ sub insertDataToTemplate
 			if bd.BdName=&quot;БДКН-05&quot; then	neutron_05(i, bd)
 			
 			if BDList.item(i).getType = &quot;beta&quot; then				
-				Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
+				&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
+				Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;)
 			else
 				Overall.insertToTemplateStep(i)
 			end if	

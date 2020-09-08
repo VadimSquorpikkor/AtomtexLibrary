@@ -37,7 +37,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.05 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.06 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -64,7 +64,9 @@ Sub AT6130_Dialog_Show
 		oDialog6130.getControl(&quot;betaField&quot; + i).setEnable(false)
 		oDialog6130.getControl(&quot;altField&quot; + i).visible = false
 	next i
-		
+	
+	oDialog6130.getControl(&quot;AttentionLabel&quot;).visible = false
+			
 	oDialogMain.endexecute()   
 	oDialog6130.Execute()
 End Sub
@@ -103,8 +105,8 @@ sub setButtonEnabled
 	end if
 	if oDialog6130.getControl(&quot;is6130cps&quot;).state then
 		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(false)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).state = 1
+		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(false)
+		oDialog6130.getControl(&quot;isSertificateEng&quot;).state = 1
 	end if
 	if oDialog6130.getControl(&quot;is6130bq&quot;).state then
 		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(false)
@@ -137,7 +139,7 @@ sub addNewBD
 	
 	&apos;if BDList.count &lt;&gt; 0 then Overall.saveCurentBDValue(BDList.count) rem !!!!!НЕ использовать!!! сохраняет значение первого во втором ИСПОЛЬЗОВАТЬ: if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition)
 	if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-	if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;))
+	if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
 	if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
 	if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
@@ -146,7 +148,12 @@ sub addNewBD
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
-			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			&apos;Если 6130cps, то для беты считаем поверхностную активность (а не просто активность): Ап = А * 1.426
+			if oOption6130cps.state then
+				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
+			else
+				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
+			end if		
 		next i	
 		bd.setBetaValues(list)
 		bd.setAltList(list)
@@ -203,6 +210,12 @@ sub altCheckBoxListener(oEvent As Object)
     	&apos;makeLayout(BDList.item(layoutPosition))
     	makeLayoutFromBD(BDList.item(layoutPosition))
     end if
+    
+    if oOption6130cps.state AND oCheckbox.state then
+		oDialog6130.getControl(&quot;AttentionLabel&quot;).visible = true
+	else
+		oDialog6130.getControl(&quot;AttentionLabel&quot;).visible = false
+	end if	
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setBetaLayout(bd as new DUnit)
@@ -223,7 +236,11 @@ sub setBetaLayout(bd as new DUnit)
 			point = bd.getAltList.item(i)
 			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 200)
 		else
-			point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			if oOption6130cps.state then
+				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel) * 1.426
+			else	
+				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			end if	
 			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
@@ -329,7 +346,7 @@ sub insertRecordsToTemplate
 	&apos;for i=1 to isComboCollection.count
 	&apos;	if isComboCollection.item(i).state then path = Overall.PathForProtocol(&quot;6130\6130&quot;, calibName, techName)
 	if oOption6130pp.state  then path = Overall.PathForProtocol(&quot;6130\6130&quot;, calibName, techName)
-	if oOption6130cps.state then path = Overall.PathForProtocol(&quot;6130\6130&quot;, calibName, techName)
+	if oOption6130cps.state then path = Overall.PathForProtocol(&quot;6130\6130cps&quot;, calibName, techName)
 	if oOption6130bq.state  then path = Overall.PathForProtocol(&quot;6130\6130bq&quot;, calibName, techName)
 	if oOption6130a.state   then path = Overall.PathForProtocol(&quot;6130\6130a&quot;, calibName, techName)
 	if oOption6130c.state   then path = Overall.PathForProtocol(&quot;6130\6130c&quot;, calibName, techName)
@@ -349,9 +366,22 @@ sub insertRecordsToTemplate
 	next k
 	
 	
-	
+	&apos;
 	for i=1 to BDList.count
-		Overall.insertBetaToTemplateStep(i, oDateFieldModel, BDList.item(i).getBetaSources, BDList.item(i).getBetaValues, &quot;β&quot;)
+		dim point as double
+		dim pointList as new Collection 
+		for j=1 to BDList.item(1).getBetaSources.count
+			if oOption6130cps.state then
+				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel) * 1.426
+			else	
+				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
+			end if
+			pointList.add(point)
+		next j
+	&apos;msgbox pointList.count
+		 &apos;Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;)
+		 Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
+		&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, BDList.item(i).getBetaSources, BDList.item(i).getBetaValues, &quot;β&quot;)
 		Overall.insertToTemplateStep(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
 	next i
