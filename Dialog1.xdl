@@ -52,7 +52,7 @@
   <dlg:img dlg:style-id="0" dlg:id="ImageControl15" dlg:tab-index="43" dlg:left="178" dlg:top="165" dlg:width="53" dlg:height="52" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25.jpg"/>
   <dlg:text dlg:id="Label16" dlg:tab-index="44" dlg:left="178" dlg:top="222" dlg:width="51" dlg:height="7" dlg:value="1125" dlg:align="center"/>
   <dlg:button dlg:id="CommandButton15" dlg:tab-index="45" dlg:left="235" dlg:top="163" dlg:width="57" dlg:height="69"/>
-  <dlg:img dlg:style-id="0" dlg:id="ImageControl16" dlg:tab-index="46" dlg:left="236" dlg:top="166" dlg:width="53" dlg:height="52" dlg:src="file:///C:/Users/Squorpikkor/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/bdkg25/bdkg25.jpg"/>
+  <dlg:img dlg:style-id="0" dlg:id="ImageControl16" dlg:tab-index="46" dlg:left="100" dlg:top="146" dlg:width="59" dlg:height="65" dlg:src="file:///C:/Users/Serikov_VA/Desktop/1125_button.png"/>
   <dlg:text dlg:id="Label17" dlg:tab-index="47" dlg:left="236" dlg:top="223" dlg:width="51" dlg:height="7" dlg:value="1125" dlg:align="center"/>
  </dlg:bulletinboard>
 </dlg:window>

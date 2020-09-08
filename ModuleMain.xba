@@ -78,89 +78,33 @@ sub startMacro(sertPath as String)
 	vlaghValue = Sensor.getHumidity
 			
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
-	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.85&quot;
-	oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
-	oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
+	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.86&quot;
+	
+	oDialogMain.getControl(&quot;bgLabel&quot;).text = &quot;Фон: &quot; + Format(bgValue, &quot;0.0&quot;) + &quot; нЗв/ч&quot;
+	oDialogMain.getControl(&quot;tempLabel&quot;).text = &quot;Темп: +&quot; + Format(tempValue, &quot;0.0&quot;) + &quot; С&quot;
+	oDialogMain.getControl(&quot;humLabel&quot;).text = &quot;Влажн: &quot; + Format(vlaghValue, &quot;0.0&quot;)
+	
+	oDialogMain.Model.getByName(&quot;CommandButton1117&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;1117s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton1125&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;1125s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton1103&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;1121s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton6130&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;6130s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButtonBDKN&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;BDKNs.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton02&quot;).ImageURL   = sertPath &amp; &quot;imgs/&quot; &amp; &quot;02s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton920&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;MRPs.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButtonPORTAL&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;PORTALs.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton22&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;BDKG-22s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton25&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;25s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton224&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;224s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton2503&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;2503s.png&quot;
+	oDialogMain.Model.getByName(&quot;CommandButton3509&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;3509s.png&quot;	
+	
+	oDialogMain.Model.getByName(&quot;ImageControlHEAD&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;MAIN_FORM_6.png&quot;
+	oDialogMain.Model.getByName(&quot;ImageControlLOGO&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp;&quot;logo.png&quot;
+	
+	
+	&apos;oDialogMain.Model.getByName(&quot;ImageControl1&quot;).ImageURL = sertPath &amp; &quot;АТОМТЕХ.png&quot;
+	&apos;oDialogMain.Model.getByName(&quot;ImageControl2&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	oDialogMain.Execute()
-end sub
-rem-------------------------------------------------------------------------
-sub subInsertString(oDoc, sString, bReplace)
-	oVC = oDoc.getCurrentSelection
-	xText.insertString( xTextCursor, &quot;more text ...&quot;, false )
-end sub
-
-rem-------------------------------------------------------------------------
-Function MySubstitute(sText1 as string, sText2 as string, sText3 as string) as string
-   FuncAcc = createunoservice(&quot;com.sun.star.sheet.FunctionAccess&quot;)
-   MySubstitute = FuncAcc.callFunction(&quot;SUBSTITUTE&quot;, array(sText1,sText2,sText3))
-End function
-rem-------------------------------------------------------------------------
-Function ComboItemPosition(ComboBox as variant)
-   For x = 0 to ComboBox.ItemCount - 1
-      If ComboBox.Items(x) = ComboBox.Text Then
-         ComboItemPosition = x
-      end if
-   next x
-end Function
-
-sub sharpFunction
-	MsgBox getLibraryLinkUrl(&quot;AtomtexLibrary&quot;)
-end sub
-
-
-rem================standard methods from oo=====================
-&apos;Retrieves the mere filename out of a whole path
-Function FileNameoutofPath(ByVal Path as String, Optional Separator as String) as String
-Dim i as Integer
-Dim SepList() as String
-	If IsMissing(Separator) Then
-		Path = ConvertFromUrl(Path)
-		Separator = GetPathSeparator()		
-	End If
-	SepList() = ArrayoutofString(Path, Separator,i)
-	FileNameoutofPath = SepList(i)
-End Function
-
-
-Function GetFileNameExtension(ByVal FileName as String)
-Dim MaxIndex as Integer
-Dim SepList() as String
-	SepList() = ArrayoutofString(FileName,&quot;.&quot;, MaxIndex)
-	GetFileNameExtension = SepList(MaxIndex)
-End Function
-
-
-Function GetFileNameWithoutExtension(ByVal FileName as String, Optional Separator as String)
-Dim MaxIndex as Integer
-Dim SepList() as String
-	If not IsMissing(Separator) Then
-		FileName = FileNameoutofPath(FileName, Separator)
-	End If
-	SepList() = ArrayoutofString(FileName,&quot;.&quot;, MaxIndex)
-	GetFileNameWithoutExtension = RTrimStr(FileName, &quot;.&quot; &amp; SepList(MaxIndex)
-End Function
-
-
-Function DirectoryNameoutofPath(sPath as String, Separator as String) as String
-Dim LocFileName as String
-	LocFileName = FileNameoutofPath(sPath, Separator)
-	DirectoryNameoutofPath = RTrimStr(sPath, Separator &amp; LocFileName)
-End Function
-
-sub generateMath
-	OpenTemplate(sertPath &amp; &quot;math.odt&quot;)
-	dim a, b, c, d, fst, sec as integer
-	for i=1 to 80
-		a=int(rnd()*7+2) 
-		b=int(rnd()*7+1)	
-		c=int(rnd()*(a-1)+1)	
-		d=int(rnd()*(8-b) +(b+1))
-	
-		fst=a*10+b
-		sec=c*10+d
-	
-		findAndRename(&quot;$math&quot;+i+&quot;$&quot;, &quot;&quot;+fst+&quot; – &quot;+sec+&quot; = &quot;)
-	next i
 end sub
 
 </script:module>

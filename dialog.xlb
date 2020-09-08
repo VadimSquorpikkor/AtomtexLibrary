@@ -3,7 +3,7 @@
 <library:library xmlns:library="http://openoffice.org/2000/library" library:name="AtomtexLibrary" library:readonly="false" library:passwordprotected="false">
  <library:element library:name="D_BDKN"/>
  <library:element library:name="D_G02N"/>
- <library:element library:name="DialogMain"/>
+ <library:element library:name="DialogMainOLD"/>
  <library:element library:name="D_1117_N"/>
  <library:element library:name="D_1117"/>
  <library:element library:name="D_PORTAL"/>
@@ -22,4 +22,5 @@
  <library:element library:name="D25"/>
  <library:element library:name="Dialog1"/>
  <library:element library:name="Dialog2"/>
+ <library:element library:name="DialogMain"/>
 </library:library>
