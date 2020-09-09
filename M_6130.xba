@@ -37,7 +37,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.06 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.07 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -73,9 +73,6 @@ End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged
 	if BDList.count&lt;&gt;0 then
-		&apos;for i=1 to BDList.item(layoutPosition).getBetaValues.count
-		&apos;	oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(Activity.get_activity_Sr(BDList.item(layoutPosition).getBetaSources.item(i), oDateFieldModel), &quot;0.0&quot;
-		&apos;next i
 		setBetaLayout(BDList.item(layoutPosition))
 	end if	
 end sub
@@ -148,7 +145,7 @@ sub addNewBD
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
-			&apos;Если 6130cps, то для беты считаем поверхностную активность (а не просто активность): Ап = А * 1.426
+			&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
 			if oOption6130cps.state then
 				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
 			else
@@ -221,14 +218,12 @@ rem-----------------------------------------------------------------------------
 sub setBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim point as double
-	&apos;dim altPointList as new collection
-	&apos;dim altPoint as double
 	if bd.isAlternativePoints then
 		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 1
 	else	
 		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 0
 	end if	
-	
+
 	for i=1 to bd.getBetaSources.count
 		
 		if bd.isAlternativePoints then
@@ -245,7 +240,9 @@ sub setBetaLayout(bd as new DUnit)
 		end if
 	
 		if oOption6130bq.state then
-			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк &quot;
+			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк/см2 &quot;
+		elseif oOption6130cps.state then
+			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; cps &quot;
 		else
 			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; &quot;
 		end if	
@@ -254,15 +251,8 @@ sub setBetaLayout(bd as new DUnit)
 		oDialog6130.getControl(&quot;betaField&quot; + i).value = bd.getBetaValues.item(i)  &apos;Format(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel), &quot;0.0&quot;)
 		oDialog6130.getControl(&quot;altField&quot; + i).value = bd.getAltList.item(i)
 		pointList.add(point)
-		&apos;altPointList.add(point)
+		oDialog6130.getControl(&quot;altField&quot; + i).Visible = false
 	next i
-	&apos;bd.setBetaPoints(pointList)
-	&apos;bd.setAltList(altPointList)
-	
-	
-	for i=1 to bd.getAltList.count
-    	oDialog6130.getControl(&quot;altField&quot; + i).Visible = false	
-    next i
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)

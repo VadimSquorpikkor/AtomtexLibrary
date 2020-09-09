@@ -1,4 +1,4 @@
-# AtomtexLibrary 2.79
+# AtomtexLibrary 2.87
 ### <i>Автоматизация протоколов поверки и калибровочных сертификатов</i>
 
 ![alt tag](allBD2.jpg)

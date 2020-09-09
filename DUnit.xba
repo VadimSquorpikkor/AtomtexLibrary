@@ -86,6 +86,7 @@ public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVa
 		_altValueList.add(arr(i))
 		_betaValues.add(0)
 	next i
+	_betaSources.count
 end sub
 
 

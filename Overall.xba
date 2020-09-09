@@ -482,55 +482,6 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 	next j
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStepOld(i, oDateFieldModel as object, betaSourcesList as Collection, betaValueList as Collection, sign as String)
-
-	dim bd as new DUnit 
-	bd = _BDList.item(i)
-	dim j as integer
-	for j=0 to betaValueList.count-1
-		m_point = betaValueList.item(j+1)
-		
-		if bd.isAlternativePoints then
-			cont_point = bd.getAltList.item(j+1)
-		else
-			cont_point = Activity.get_activity_Sr(betaSourcesList.item(j+1), oDateFieldModel)
-		end if	
-			
-		
-		threePointArray = avaragePointsRndArray(m_point, percentOtk)
-		
-		findAndRename((sign + i + &quot;-3&quot; + j), betaSourcesList.item(j+1)) rem название источника
-	
-		if cont_point&lt;500  then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
-		if cont_point&gt;=500 then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
-				
-		rem TODO сделать через select case
-		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
-		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
-				
-		findAndRename((sign + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
-		findAndRename((sign + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
-		findAndRename((sign + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
-				
-		if cont_point&lt;150 then 
-			findAndRename((sign + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
-		else	
-			findAndRename((sign + i + &quot;-5&quot; + j), &quot;---&quot;) 
-		end if
-				
-		findAndRename((sign + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
-				
-		dim percent as integer
-		percent = 6
-			
-		dim pogr_point as double
-		pogr_point = RelativeError(m_point, cont_point)
-		MyFormat = &quot;0.00&quot;
-		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((sign + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
-	next j
-end sub
-rem---------------------------------------------------------------------------------------------------------
 function FacilityError(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
