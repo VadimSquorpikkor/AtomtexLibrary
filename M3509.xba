@@ -67,7 +67,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, pointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.06 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -274,6 +274,8 @@ sub insertRecordsToTemplate
 	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, doseField3.value)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
+	dim divider as String
+	divider = &quot;&quot;
 	if is3509.state  then path = Overall.PathForProtocol(&quot;3509\3509&quot;, calibName, techName)
 	if is3509A.state then path = Overall.PathForProtocol(&quot;3509\3509a&quot;, calibName, techName)
 	if is3509B.state then path = Overall.PathForProtocol(&quot;3509\3509b&quot;, calibName, techName)
@@ -293,15 +295,16 @@ sub insertRecordsToTemplate
 	next k
 	
 	for i=1 to BDList.count
-		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
+		strokeForSaving = strokeForSaving &amp; divider &amp; BDList.item(i).getSerial
 		templateMultiStep(i, &quot;&quot;)
+		divider = &quot;; &quot;
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if is3509.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509&quot;
-	if is3509A.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509A&quot;
-	if is3509B.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509B&quot;
-	if is3509C.state then strokeForSaving = strokeForSaving &amp; &quot;- 3509C&quot;
+	if is3509.state  then strokeForSaving = strokeForSaving &amp; &quot; - 3509&quot;
+	if is3509A.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509A&quot;
+	if is3509B.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509B&quot;
+	if is3509C.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509C&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 	&apos;&apos;&apos;&apos;&apos;oDialog3509.endexecute()

@@ -63,7 +63,7 @@ Sub G2503_Dialog_Show
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.04 &quot;, oListBox, pointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, pointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -265,6 +265,8 @@ sub insertRecordsToTemplate
 	BDList.item(layoutPosition).setDose(doseField.value)
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;
+	dim divider as String
+	divider = &quot;&quot;
 	if is2503.state  then path = Overall.PathForProtocol(&quot;2503\2503&quot;, calibName, techName)
 	if is2503A.state then path = Overall.PathForProtocol(&quot;2503\2503a&quot;, calibName, techName)
 
@@ -282,13 +284,14 @@ sub insertRecordsToTemplate
 	next k
 	
 	for i=1 to BDList.count
-		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
+		strokeForSaving = strokeForSaving &amp; divider &amp; BDList.item(i).getSerial
 		templateMultiStep(i, &quot;&quot;)
+		divider = &quot;; &quot;
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if is2503.state then strokeForSaving = strokeForSaving &amp; &quot;- 2503&quot;
-	if is2503A.state then strokeForSaving = strokeForSaving &amp; &quot;- 2503A&quot;
+	if is2503.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503&quot;
+	if is2503A.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503A&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub

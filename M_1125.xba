@@ -41,7 +41,7 @@ Sub AT1125_Dialog_Show
 	mainImage = oDialog1125.Model.getByName(&quot;1125Logo&quot;)
 	mainImage.ImageURL = sertPath &amp; &quot;1125/1125_wide.png&quot;
 
-	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.04 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.05 &quot;, isComboCollection, BDList)
 
 	oOption1125 = oDialog1125.getControl(&quot;is1125&quot;)
 	oOption1125A = oDialog1125.getControl(&quot;is1125A&quot;)
@@ -363,11 +363,11 @@ sub insertRecordsToTemplate
 		
 	findAndRename(&quot;$serial&quot;, serial)
 	if oOption1125.state then
-		strokeForSaving = &quot;1125 №&quot; &amp; serial &amp; &quot;)&quot;
+		strokeForSaving = &quot;1125 №&quot; &amp; serial
 		findAndRename(&quot;$type&quot;, &quot;AT1125&quot;)
 	end if	
 	if oOption1125A.state then
-		strokeForSaving = &quot;1125A №&quot; &amp; serial &amp; &quot;)&quot;
+		strokeForSaving = &quot;1125A №&quot; &amp; serial
 		findAndRename(&quot;$type&quot;, &quot;AT1125A&quot;)
 	end if	
 	CopyVariableToClipboard(strokeForSaving)

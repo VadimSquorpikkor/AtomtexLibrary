@@ -11,9 +11,13 @@ dim Facility as new Facility
 dim oDialog6130 as object
 dim oDateFieldModel as object
 dim oListBox as object
-dim oOptionButtonPr as object
-dim oOptionButtonSr as object
-dim oOptionButtonSe as object
+
+dim PrSwitch as object
+dim SEnSwitch as object
+dim SRuSwitch as object
+
+dim image6130 as object
+dim altCheckBox as object
 
 dim oOption6130pp  as object
 dim oOption6130cps  as object
@@ -37,7 +41,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.07 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.09 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -49,15 +53,23 @@ Sub AT6130_Dialog_Show
 	oOption6130c   = oDialog6130.getControl(&quot;is6130c&quot;)
 	oOption6130d   = oDialog6130.getControl(&quot;is6130d&quot;)
 	oOption6130pp.State = 1
+	
+	PrSwitch  = oDialog6130.getControl(&quot;isProtocol&quot;)
+	SEnSwitch = oDialog6130.getControl(&quot;isSertificateEng&quot;)
+	SRuSwitch = oDialog6130.getControl(&quot;isSertificateRus&quot;)
+	
 	isComboCollection.add(oOption6130pp)
 	isComboCollection.add(oOption6130cps)
 	isComboCollection.add(oOption6130bq)
 	isComboCollection.add(oOption6130a)
 	isComboCollection.add(oOption6130c)
 	isComboCollection.add(oOption6130d)
-	oDialog6130.getControl(&quot;addButton&quot;).setEnable(true)
-	
-	oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(false)
+
+	image6130   = oDialog6130.Model.getByName(&quot;6130Logo&quot;)
+	altCheckBox = oDialog6130.getControl(&quot;altCheckBox&quot;)
+
+	oDialog6130.getControl(&quot;addButton&quot;).setEnable(true)	
+	altCheckBox.setEnable(false)
 	
 	for i=1 to 4
 		oDialog6130.getControl(&quot;betaField&quot; + i).visible = true
@@ -78,37 +90,43 @@ sub comboChanged
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
-	if oDialog6130.getControl(&quot;is6130a&quot;).state then
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
+	if oOption6130a.state then
+		PrSwitch.setEnable(true)
+		SRuSwitch.setEnable(true)
+		PrSwitch.state = 1
+		altCheckBox.visible = false
 	end if
-	if oDialog6130.getControl(&quot;is6130d&quot;).state then
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
+	if oOption6130d.state then
+		PrSwitch.setEnable(true)
+		SRuSwitch.setEnable(true)
+		PrSwitch.state = 1
+		altCheckBox.visible = false
 	end if
 	if oOption6130c.State = true then
-		oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130c.png&quot;
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
+		image6130.ImageURL = sertPath &amp; &quot;6130\6130c.png&quot;
+		PrSwitch.setEnable(true)
+		SRuSwitch.setEnable(true)
+		PrSwitch.state = 1
+		altCheckBox.visible = false
 	end if	
-	if oOption6130c.State = false then oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
-	if oDialog6130.getControl(&quot;is6130pp&quot;).state then
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(true)
-		oDialog6130.getControl(&quot;isProtocol&quot;).state = 1
+	if oOption6130c.State = false then image6130.ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
+	if oOption6130pp.state then
+		PrSwitch.setEnable(true)
+		SRuSwitch.setEnable(true)
+		PrSwitch.state = 1
+		altCheckBox.visible = true
 	end if
-	if oDialog6130.getControl(&quot;is6130cps&quot;).state then
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(false)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(false)
-		oDialog6130.getControl(&quot;isSertificateEng&quot;).state = 1
+	if oOption6130cps.state then
+		PrSwitch.setEnable(false)
+		SRuSwitch.setEnable(false)
+		SEnSwitch.state = 1
+		altCheckBox.visible = true
 	end if
-	if oDialog6130.getControl(&quot;is6130bq&quot;).state then
-		oDialog6130.getControl(&quot;isProtocol&quot;).setEnable(false)
-		oDialog6130.getControl(&quot;isSertificateRus&quot;).setEnable(false)
-		oDialog6130.getControl(&quot;isSertificateEng&quot;).state = 1
+	if oOption6130bq.state then
+		PrSwitch.setEnable(false)
+		SRuSwitch.setEnable(false)
+		SEnSwitch.state = 1
+		altCheckBox.visible = true
 	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -219,9 +237,9 @@ sub setBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim point as double
 	if bd.isAlternativePoints then
-		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 1
+		altCheckBox.state = 1
 	else	
-		oDialog6130.getControl(&quot;altCheckBox&quot;).state = 0
+		altCheckBox.state = 0
 	end if	
 
 	for i=1 to bd.getBetaSources.count
@@ -306,7 +324,7 @@ function setButtonVisibility
 	end if
 	
 	if BDList.count&gt;0 then
-		oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(true)
+		altCheckBox.setEnable(true)
 		for j=1 to BDList.item(layoutPosition).valueList.count
 			oDialog6130.getControl(&quot;ValueField&quot; + j).visible = true
 			oDialog6130.getControl(&quot;Label&quot; + j).visible = true
@@ -321,7 +339,7 @@ function setButtonVisibility
 	end if
 	
 	if BDList.count=0 then
-		oDialog6130.getControl(&quot;altCheckBox&quot;).setEnable(false)
+		altCheckBox.setEnable(false)
 		for i=1 to 4
 			oDialog6130.getControl(&quot;betaField&quot; + i).setEnable(false)
 		next i
@@ -329,18 +347,14 @@ function setButtonVisibility
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
-	saveCurentBDValue(layoutPosition)  &apos;(oDialog6130, layoutPosition, BDList)
-	dim strokeForSaving as string
-	strokeForSaving = &quot;&quot;
+	saveCurentBDValue(layoutPosition)
 	
-	&apos;for i=1 to isComboCollection.count
-	&apos;	if isComboCollection.item(i).state then path = Overall.PathForProtocol(&quot;6130\6130&quot;, calibName, techName)
-	if oOption6130pp.state  then path = Overall.PathForProtocol(&quot;6130\6130&quot;, calibName, techName)
-	if oOption6130cps.state then path = Overall.PathForProtocol(&quot;6130\6130cps&quot;, calibName, techName)
-	if oOption6130bq.state  then path = Overall.PathForProtocol(&quot;6130\6130bq&quot;, calibName, techName)
-	if oOption6130a.state   then path = Overall.PathForProtocol(&quot;6130\6130a&quot;, calibName, techName)
-	if oOption6130c.state   then path = Overall.PathForProtocol(&quot;6130\6130c&quot;, calibName, techName)
-	if oOption6130d.state   then path = Overall.PathForProtocol(&quot;6130\6130d&quot;, calibName, techName)
+	if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\6130&quot;, 		&quot;6130 пп&quot;)
+	if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\6130cps&quot;, 	&quot;6130 cps&quot;)
+	if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\6130bq&quot;, 	&quot;6130 Бк&quot;)
+	if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\6130a&quot;, 	&quot;6130A&quot;)
+	if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\6130c&quot;, 	&quot;6130C&quot;)
+	if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\6130d&quot;, 	&quot;6130D&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -348,15 +362,12 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$facility_6130beta&quot;, Facility.getFacilityText(&quot;beta6130&quot;))
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta&quot;))
 	findAndRename(&quot;$facility_6130e_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
-	dim bd as new DUnit
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot; + k)
 		deleteTable(&quot;b&quot; + k)
 	next k
-	
-	
-	&apos;
+		
 	for i=1 to BDList.count
 		dim point as double
 		dim pointList as new Collection 
@@ -368,22 +379,11 @@ sub insertRecordsToTemplate
 			end if
 			pointList.add(point)
 		next j
-	&apos;msgbox pointList.count
-		 &apos;Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;)
-		 Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
-		&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, BDList.item(i).getBetaSources, BDList.item(i).getBetaValues, &quot;β&quot;)
+		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
 		Overall.insertToTemplateStep(i)
-		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
 	next i
 	
-	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if oOption6130pp.state then strokeForSaving = &quot;6130 пп&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption6130cps.state then strokeForSaving = &quot;6130 cps&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption6130bq.state then strokeForSaving = &quot;6130 Бк&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption6130a.state then strokeForSaving = &quot;6130A&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption6130c.state then strokeForSaving = &quot;6130C&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption6130d.state then strokeForSaving = &quot;6130D&quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	Overall.setSerial(&quot;$allSerial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 

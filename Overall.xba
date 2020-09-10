@@ -35,6 +35,10 @@ dim m_point, cont_point as double
 dim prefix, MyFormat as string
 dim threePointArray(2) as double
 
+dim strokeForSaving as String
+dim deviceNameForSavingStroke as String
+dim divider as String
+
 dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 &apos;dim bground as double
 dim bg007 as double
@@ -73,13 +77,21 @@ sub comboChanged(Combo as object, NumericField as object, DateField as object)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub increment(TField as object) as string
-	dim inc as string
 	dim value as integer
 	value = TField.text
-	if value &lt; 9 then inc = (&quot;00&quot; &amp; (value + 1))
-	if value &lt; 99 and value &gt; 8 then inc = &quot;0&quot; &amp; (value + 1)
-	if value &gt; 98 then inc = &quot;&quot; &amp; (value + 1)
-	TField.text = inc
+	TField.text = integerTo3String(value + 1)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub integerTo3String(value as integer) as string
+	dim inc as string
+	if 	   value &lt; 9  then
+		inc = &quot;00&quot; &amp; value
+	elseif value &lt; 99 then
+		inc = &quot;0&quot;  &amp; value
+	else
+		inc = &quot;&quot;   &amp; value
+	end if
+	integerTo3String = inc
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub initializeActivityCombo(oActivityCombo as object)
@@ -347,8 +359,6 @@ function avaragePointsRndFiveArray(point as double, o_percent as double)
 	avaragePointsRndFiveArray = ar
 end function
 rem---------------------------------------------------------------------------------------------------------
-&apos;sub makeAdditionalBGValue
-&apos;end sub
 function getFormat(num as double)
 	if m_point &lt; 0.1 and m_point &gt; 0  then getFormat = &quot;0.000&quot;
 	if m_point &lt; 1 and m_point &gt;= 0.1 then getFormat = &quot;0.00&quot;
@@ -384,12 +394,6 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), MyFormat)) rem измерение 2
 			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), MyFormat)) rem измерение 3
 			
-			&apos;findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), getFormat(threePointArray(0)))) rem измерение 1
-			&apos;findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), getFormat(threePointArray(1))) rem измерение 2
-			&apos;findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), getFormat(threePointArray(2))) rem измерение 3
-				
-			&apos;if cont_point&lt;1 and prefix=&quot;мк&quot; then
-			
 			dim valueOfBg as double
 			if _separateBGround = true then &apos; Если стоит флаг &quot;раздельный фон для каждого БД&quot;, то беру фон от каждого БД, если флаг не стоит -- для всех блоков ставлю фон, который общий для всех приборов
 				valueOfBg = bd.getBdBackground
@@ -423,6 +427,8 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
 		next j
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
+		strokeForSaving = strokeForSaving &amp; divider &amp; bd.getSerial
+		divider = &quot;; &quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertToTemplateStep(i)
@@ -634,5 +640,29 @@ function makeSRKNumber(value as long)
 	makeSRKNumber = stroke
 end function
 rem---------------------------------------------------------------------------------------------------------
+&apos;Инициализация (сброс) строки вывода номеров приборов &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
+&apos;запускается до вызова templateStep, уже при запуске templateStep в каждом шаге цикла добавляет в строку серийный номер выбранного в цикле БД
+function setStrokeForSaving(stroke as String)
+	strokeForSaving = &quot;&quot; &apos;сброс
+	divider = &quot;&quot; &apos;сброс
+	deviceNameForSavingStroke = stroke
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
+&apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
+function setSerial(label as String)
+	findAndRename(label, strokeForSaving)
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot;
+	CopyVariableToClipboard(strokeForSaving)
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;Объединение методов setStrokeForSaving и PathForProtocol
+function getPathAndSetName(sert_path as String, device_name as String)
+	setStrokeForSaving(device_name)
+	getPathAndSetName = PathForProtocol(sert_path)
+end function
+
+
+
 
 </script:module>

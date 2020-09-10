@@ -24,7 +24,7 @@ Sub AT1121_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
 	oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.16 &quot;, oListBox, 9)
+	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.17 &quot;, oListBox, 9)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 
@@ -41,6 +41,9 @@ Sub AT1121_Dialog_Show
 		oDialog1121.getControl(&quot;ValueField&quot; + i).setEnable(false)
 		oDialog1121.getControl(&quot;Label&quot; + i).setVisible(false)
 	next i
+
+	oOption1103.state = 1
+	setButtonEnabled
 
 	oDialogMain.endexecute()   
 	oDialog1121.Execute()
@@ -146,14 +149,10 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
-	dim strokeForSaving as string
-	strokeForSaving = &quot;&quot;	
 	
-	if oOption1103.state  then
-		path = Overall.PathForProtocol(&quot;1121\1103&quot;, calibName, techName)
-	else
-		path = Overall.PathForProtocol(&quot;1121\1121&quot;, calibName, techName)
-	end if	
+	if oOption1103.state  then path = Overall.getPathAndSetName(&quot;1121\1103&quot;, &quot;AT1103M&quot;)
+	if oOption1121.state  then path = Overall.getPathAndSetName(&quot;1121\1121&quot;, &quot;AT1121&quot;)
+	if oOption1123.state  then path = Overall.getPathAndSetName(&quot;1121\1121&quot;, &quot;AT1123&quot;)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -165,16 +164,11 @@ sub insertRecordsToTemplate
 	next k
 	
 	for i=1 to BDList.count
-		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot;; &quot;
-		Overall.insertToTemplateStep(i) &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i, percentOtk, bground)
+		Overall.insertToTemplateStep(i)
 	next i
 	
 	findAndRename(&quot;$type&quot;, BDList.item(1).getName)
-	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if oOption1103.state then strokeForSaving = &quot;AT1103M &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption1121.state then strokeForSaving = &quot;AT1121 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption1123.state then strokeForSaving = &quot;AT1123 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	Overall.setSerial(&quot;$allSerial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------

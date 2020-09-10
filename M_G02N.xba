@@ -58,7 +58,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.24 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.25 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -318,18 +318,14 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
-	
 	Overall.setSeparateBG(oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state)
-	
-	dim strokeForSaving as string
-	strokeForSaving = &quot;&quot;	
 	dim path as string
 	
-	if oOptionBDKG02.state   then path = Overall.PathForProtocol(&quot;bdkg02\bdkg02&quot;, calibName, techName)
-	if oOptionBDKG204.state  then path = Overall.PathForProtocol(&quot;bdkg204\bdkg204&quot;, calibName, techName)
-	if oOptionBDMG.state     then path = Overall.PathForProtocol(&quot;bdmg2343\bdmg2343&quot;, calibName, techName)
-	if oOptionBDKG11.state   then path = Overall.PathForProtocol(&quot;bdkg11_1\bdkg11_1&quot;, calibName, techName)
-
+	if oOptionBDKG02.state   then path = Overall.getPathAndSetName(&quot;bdkg02\bdkg02&quot;, &quot;БДКГ-02&quot;)
+	if oOptionBDKG204.state  then path = Overall.getPathAndSetName(&quot;bdkg204\bdkg204&quot;, &quot;БДКГ-204&quot;)
+	if oOptionBDMG.state     then path = Overall.getPathAndSetName(&quot;bdmg2343\bdmg2343&quot;, &quot;БДМГ-2343&quot;)
+	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11_1\bdkg11_1&quot;, &quot;БДКГ-11/1&quot;)
+	
 	dim bd as new DUnit
 		
 	OpenTemplate(sertPath &amp; path)
@@ -343,7 +339,6 @@ sub insertRecordsToTemplate
 		
 	for i=1 to BDList.count
 		bd = BDList.item(i)
-		strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
 		findAndRename(&quot;$grad&quot; + i, bd.getGradValue)
 		Overall.insertToTemplateStepDoted(i)
 	next i
@@ -364,10 +359,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$source&quot;, oDialogG02N.getControl(&quot;ActivityCombo&quot;).text)
 	findAndRename(&quot;$serial&quot;, oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text)
 
-	if oOptionBDKG02.state 	then strokeForSaving = &quot;БДКГ-02 &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOptionBDKG204.state then strokeForSaving = &quot;БДКГ-204 &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOptionBDMG.state 	then strokeForSaving = &quot;БДМГ-2343 &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	Overall.setSerial(&quot;$serial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------
