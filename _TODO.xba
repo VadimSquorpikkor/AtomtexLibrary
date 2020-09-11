@@ -13,4 +13,11 @@
 
 
 &apos; setButtonEnabled -- не нужный метод, если при старте формы какой-то из блоков уже выбран (см. БДКГ-22 например) и тогда кнопка &quot;Добавить&quot; активна. Нужна если: при открытии формы тип блока не выбран и тогда нельзя нажимать кнопку &quot;добавить&quot; 
+
+&apos;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+&apos; Если есть методы dialogShowInitialize или dialogShowInitializeWithoutValueField или dialogSimpleInitialize, 
+&apos; то НЕ НУЖНО инициализировать поля выбора сертификатов (oOptionButtonPr = oDialogG23N.Model.getByName(&quot;isProtocol&quot;) и остальные) 
+&apos; и НЕ НУЖНО инициализировать комбоБоксы сертификатов (Overall.initializeSertificateCombo(oComboBox1, oComboBox2)). 
+&apos; В этих методах всё уже инициализировано
+
 </script:module>

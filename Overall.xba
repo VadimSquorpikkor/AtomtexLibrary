@@ -28,9 +28,11 @@ dim _oOptionButtonPr as object
 dim _oOptionButtonSe as object
 dim _oOptionButtonSr as object
 dim _calibName, _techName as string
-
+dim _maxPointsCount as integer 	&apos;сколько максимально может отображаться точек (полей) в форме. Отличается от количества точек в БД -- в форме могут отображаться 
+								&apos;несколько типов БД на выбор (БДКГ-22 и БДКГ-23), у которых кол-во точек различается, кол-во точек на форме одинаково для каждого
+								&apos;для типа БД(по сути равно максимальному кол-ву точек из доступных в форме типов БД), просто некоторые могут быть неактивный для какого-то из БД
 dim _separateBGround as boolean
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 dim m_point, cont_point as double 
 dim prefix, MyFormat as string
 dim threePointArray(2) as double
@@ -40,23 +42,21 @@ dim deviceNameForSavingStroke as String
 dim divider as String
 
 dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
-&apos;dim bground as double
 dim bg007 as double
 dim additionalBGValue as double 	rem к каждому последующему значению фона в таблице добавляется рандомно небольшое значение, так, чем больше значение точки, тем боьше будет (немного) значение
 rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 
 dim oDateFieldModel as object
-
+&apos;------------------------------------------------------------------------------------------------------------------------
 public function getPercentOtk as double
 	getPercentOtk = percentOtk
 end function
-
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub setSeparateBG(state as boolean)
 	_separateBGround = state
 end sub
-
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
 		case &quot;№516&quot;
@@ -75,13 +75,13 @@ sub comboChanged(Combo as object, NumericField as object, DateField as object)
 		NumericField.value = get_activity2910(DateField)
 	end select	
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub increment(TField as object) as string
 	dim value as integer
 	value = TField.text
 	TField.text = integerTo3String(value + 1)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub integerTo3String(value as integer) as string
 	dim inc as string
 	if 	   value &lt; 9  then
@@ -93,7 +93,7 @@ sub integerTo3String(value as integer) as string
 	end if
 	integerTo3String = inc
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeActivityCombo(oActivityCombo as object)
 	REM first remove all old items from the list
 	dim nCount as integer
@@ -105,7 +105,7 @@ sub initializeActivityCombo(oActivityCombo as object)
 	oActivityCombo.addItems( sItems, 0 )
 	oActivityCombo.text = &quot;№516&quot;
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
 	REM first remove all old items from the list
   	oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
@@ -121,19 +121,23 @@ sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
   	oComboBox2.addItems( rusItems2, 0 )
 	oComboBox2.text = rusItems2(0)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;sub initializeCertificateCombo
+&apos;	initializeSertificateCombo(_oDialog.getControl(&quot;provCombo&quot;), _oDialog.getControl(&quot;techCombo&quot;))
+&apos;end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeDateField(oDateFieldModel as object, oDialog as object)
 	oDateFieldModel = oDialog.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
 	_layoutPosition = layoutPosition
 	_BDList = BDList
 	_isComboCollection = isComboCollection
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldModel as object, version as string, oListBox as object, pointCount as integer)
 	_oDialog = oDialog
 	dim i as integer
@@ -143,12 +147,13 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	next i
 	dialogShowInitializeWithoutValueField(maxBDCount, oDialog, oDateFieldModel, version, oListBox, pointCount)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 
 sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as object, oDateFieldModel as object, version as string, oListBox as object, pointCount as integer)
 	_oDialog = oDialog
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
+	_maxPointsCount = pointCount
 	initializeDateField(oDateFieldModel, _oDialog)	
 	_oDialog.getControl(&quot;versionLabel&quot;).text = version	
 	
@@ -172,7 +177,7 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 		
 	_oListBox.setEnable(false)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version as string, isComboCollection as Collection, BDList as Collection)
 	_BDList = BDList
 	_isComboCollection = isComboCollection
@@ -189,7 +194,7 @@ sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version
 	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
 	_oOptionButtonPr.State = 1
 end sub	
-rem-------метод из 1117_N--------------------------------------------------------------------------------------------------
+&apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightStep(d as double) rem расчет правильного Step-а 
 	if              d&gt;10000 then rightStep = 10
 	if d&lt;=10000 and d&gt;10	then rightStep = 1
@@ -197,27 +202,34 @@ function rightStep(d as double) rem расчет правильного Step-а
 	if d&lt;=1     and d&gt;0.1   then rightStep = 0.01
 	if d&lt;=0.1   and d&gt;0.01  then rightStep = 0.001
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function rightStep2503(d as double) rem расчет правильного Step-а 
 	if 				d&gt;100	then rightStep2503 = 1
 	if d&lt;=100	and d&gt;10	then rightStep2503 = 0.1
 	if d&lt;=10    and d&gt;0.1   then rightStep2503 = 0.01
 	if d&lt;=0.1				then rightStep2503 = 0.001
 end function
-rem-------метод из 1117_N--------------------------------------------------------------------------------------------------
+&apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightDecimalAccuracy(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
 	if nStep = 0.001 then rightDecimalAccuracy = 3
 	if nStep = 0.01  then rightDecimalAccuracy = 2
 	if nStep = 0.1 	 then rightDecimalAccuracy = 1
 	if nStep &gt;= 1 	 then rightDecimalAccuracy = 0
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getRightFormat(point as double)
+	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
+	if point &lt; 1   and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
+	if point &lt; 100 and point &gt;= 1	then getRightFormat = &quot;0.0&quot;
+	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
 	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName rem &quot;БДКГ-22&quot;
 	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
 	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub makeLayoutFromMultiBD(bd as new DUnit)
 	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName
 	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
@@ -250,12 +262,7 @@ sub makeLayoutFromMultiBD(bd as new DUnit)
 		next j
 	next i
 end sub
-rem---------------------------------------------------------------------------------------------------------
-&apos;sub makeLayoutFromBDWithBeta(bd as new DUnit)
-&apos;	
-&apos;	makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
-&apos;end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as string)
 	dim i as integer
 	dim point, nStep, value as double
@@ -265,18 +272,13 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 		nStep = rightStep(point)
 		value = bd.valueList.item(i)
 	
-		if point &lt; 0.1 and point &gt; 0  then MyFormat = &quot;0.000&quot;
-		if point &lt; 1 and point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
-		if point &lt; 100 and point &gt;= 1 then MyFormat = &quot;0.0&quot;
-		if point &gt;= 100               then MyFormat = &quot;0&quot;
-		
-		_oDialog.getControl(valueField + i).Text = Format(value, MyFormat)
+		_oDialog.getControl(valueField + i).Text = Format(value, getRightFormat(point))
 		_oDialog.Model.getByName(valueField + i).valueStep = nStep
 		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(nStep)
-		_oDialog.getControl(labelField + i).Text = &quot; &quot; + Format(point, MyFormat) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
+		_oDialog.getControl(labelField + i).Text = &quot; &quot; + Format(point, getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
 	next i
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function PathForProtocol(bdName as string)
 	if _oOptionButtonPr.State then
 		PathForProtocol = bdName &amp; &quot;.odt&quot;
@@ -292,7 +294,7 @@ function PathForProtocol(bdName as string)
 		PathForProtocol = bdName &amp; &quot;_se.odt&quot;
 	end if
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertParametersToTemplate&apos;(bdName as string)
 	percentOtk = 3 rem %
 	
@@ -304,11 +306,11 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$controlledBy&quot;, techName)
 	bg007 = Format(randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
 end sub	
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function randValue(num as double, otklonenie as double)
 	randValue = (num - otklonenie) + rnd()*otklonenie*2
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function avaragePointsRndArray(point as double, o_percent as double)
 	rem TODO сделать по Гауссу!!!
 	dim deviation as double
@@ -325,7 +327,7 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	ar(2) = p3
 	avaragePointsRndArray = ar	
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function roundTwoDigitAfterDot(num as double)
 	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО 2 ЗНАКА ПОСЛЕ ЗАПЯТОЙ
 	&apos;msgbox &quot;before - &quot; + num
@@ -336,7 +338,7 @@ function roundTwoDigitAfterDot(num as double)
 	&apos;msgbox &quot;after - &quot; + int(a/10)/100
 	roundTwoDigitAfterDot = int(a/10)/100
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function avaragePointsRndFiveArray(point as double, o_percent as double)
 	dim deviation as double
 	dim p1 as double
@@ -358,14 +360,7 @@ function avaragePointsRndFiveArray(point as double, o_percent as double)
 	ar(4) = p5
 	avaragePointsRndFiveArray = ar
 end function
-rem---------------------------------------------------------------------------------------------------------
-function getFormat(num as double)
-	if m_point &lt; 0.1 and m_point &gt; 0  then getFormat = &quot;0.000&quot;
-	if m_point &lt; 1 and m_point &gt;= 0.1 then getFormat = &quot;0.00&quot;
-	if m_point &lt; 100 and m_point &gt;= 1 then getFormat = &quot;0.0&quot;
-	if m_point &gt;= 100 				  then getFormat = &quot;0&quot;
-end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)
 		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
 		dim src_name as string
@@ -385,14 +380,9 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника
 
-			if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
-			if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;
-			if m_point &lt; 100 and m_point &gt;= 1 then MyFormat = &quot;0.0&quot;
-			if m_point &gt;= 100 				  then MyFormat = &quot;0&quot;
-				
-			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), MyFormat)) rem измерение 1
-			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), MyFormat)) rem измерение 2
-			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), MyFormat)) rem измерение 3
+			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), getRightFormat(m_point))) rem измерение 1
+			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), getRightFormat(m_point))) rem измерение 2
+			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), getRightFormat(m_point))) rem измерение 3
 			
 			dim valueOfBg as double
 			if _separateBGround = true then &apos; Если стоит флаг &quot;раздельный фон для каждого БД&quot;, то беру фон от каждого БД, если флаг не стоит -- для всех блоков ставлю фон, который общий для всех приборов
@@ -430,15 +420,15 @@ sub templateStep(i as integer, strokeEnd as string)
 		strokeForSaving = strokeForSaving &amp; divider &amp; bd.getSerial
 		divider = &quot;; &quot;
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertToTemplateStep(i)
 	templateStep(i, &quot;&quot;)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String)
 
 	dim bd as new DUnit 
@@ -487,7 +477,7 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		findAndRename((sign + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
 	next j
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function FacilityError(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
@@ -509,7 +499,7 @@ function FacilityError(point as double, BDType as string, prefix as string)
 			FacilityError = 10 rem `beta		
 	end select
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	_oListBox.selectItemPos( layoutPosition-1, True )
 	dim i as integer
@@ -528,6 +518,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 	if _BDList.count &lt;&gt; 0 then
 		_oListBox.setEnable(true)
 		_oDialog.getControl(&quot;doneButton&quot;).setEnable(true)
+		_oDialog.getControl(&quot;removeButton&quot;).setEnable(true)
 		for i=1 to _isComboCollection.count
 			_isComboCollection.item(i).setEnable(false)	
 		next i
@@ -541,7 +532,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 	if _BDList.count = 0 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
 	if _BDList.count = _maxBDCount-1 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
 	&apos;msgbox &quot;saving: &quot; + num + &quot; &quot; + _BDList.count
 	dim newValues as new Collection
@@ -558,7 +549,7 @@ sub saveCurentBDValue(num as integer)
 		next i
 	end if
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub saveCurentMultiBDValue(num as integer)
 	&apos;msgbox &quot;saving: &quot; + num + &quot; &quot; + _BDList.count
 	dim pointList as new Collection &apos;pointList = ((measList),(measList),(measList))
@@ -573,7 +564,7 @@ sub saveCurentMultiBDValue(num as integer)
 	next i
 	_BDList.item(num).setMultiValueList(pointList)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub saveCurentBDBetaValues(num as integer)
 	dim newValues as new Collection
 	dim i as integer
@@ -582,7 +573,7 @@ sub saveCurentBDBetaValues(num as integer)
 	next i
 	_BDList.item(num).setBetaValues(newValues)
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub removeLastBD(layoutPosition as integer)&apos;&apos;&apos;&apos;&apos;, BDList as Collection, oDialog as object, oListBox as object, isComboCollection as Collection, maxBDCount as integer)
 	if layoutPosition = _BDList.count then layoutPosition = layoutPosition - 1
 	_oListBox.removeItems(_oListBox.getItemCount()-1, 1 )
@@ -594,21 +585,21 @@ sub removeLastBD(layoutPosition as integer)&apos;&apos;&apos;&apos;&apos;, BDLis
 	end if
 	setButtonVisibility(layoutPosition)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(_oDialog, _oListBox, layoutPosition, _BDList, _isComboCollection, _maxBDCount)
 end Sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub showNextBD(layoutPosition as integer)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	saveCurentBDValue(layoutPosition)
 	layoutPosition = layoutPosition + 1
 	setButtonVisibility(layoutPosition)&apos;&apos;&apos;(_oDialog, _oListBox, layoutPosition, _BDList, _isComboCollection, _maxBDCount)	
 	makeLayoutFromBD(_BDList.item(layoutPosition))
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub showPrevBD(layoutPosition as integer)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	saveCurentBDValue(layoutPosition)
 	layoutPosition = layoutPosition - 1
 	setButtonVisibility(layoutPosition)&apos;&apos;(_oDialog, _oListBox, layoutPosition, _BDList, _isComboCollection, _maxBDCount)
 	makeLayoutFromBD(_BDList.item(layoutPosition))
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertFacilitiesText
 	dim Facility as new Facility
 	findAndRename(&quot;$facility_110&quot;, Facility.getFacilityText(&quot;110&quot;))
@@ -628,7 +619,7 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_beta&quot;, Facility.getFacilityText(&quot;beta_eng&quot;))
 
 end sub	
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 function makeSRKNumber(value as long)
 	dim first, second as integer
 	dim stroke as string
@@ -639,7 +630,7 @@ function makeSRKNumber(value as long)
 	if second &gt; 99 then stroke = &quot;&quot; + first + &quot;.&quot; + second
 	makeSRKNumber = stroke
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Инициализация (сброс) строки вывода номеров приборов &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
 &apos;запускается до вызова templateStep, уже при запуске templateStep в каждом шаге цикла добавляет в строку серийный номер выбранного в цикле БД
 function setStrokeForSaving(stroke as String)
@@ -647,7 +638,7 @@ function setStrokeForSaving(stroke as String)
 	divider = &quot;&quot; &apos;сброс
 	deviceNameForSavingStroke = stroke
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
 &apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
 function setSerial(label as String)
@@ -655,13 +646,13 @@ function setSerial(label as String)
 	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot;
 	CopyVariableToClipboard(strokeForSaving)
 end function
-rem---------------------------------------------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Объединение методов setStrokeForSaving и PathForProtocol
 function getPathAndSetName(sert_path as String, device_name as String)
 	setStrokeForSaving(device_name)
 	getPathAndSetName = PathForProtocol(sert_path)
 end function
-
+&apos;------------------------------------------------------------------------------------------------------------------------
 
 
 
