@@ -21,6 +21,7 @@ Option Explicit
 dim background as double
 dim temperature as double
 dim humidity as double
+dim avalableVersion as double
 
 dim sensors as new collection
 dim dataDate as String
@@ -35,6 +36,7 @@ const HUM_AVG as double = 70
 const HUM_SHIFT as double = 5
 
 const DATA_FILE as string = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\data.txt&quot;
+const SETTINGS_FILE as string = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\settings.cfg&quot;
 
 &apos;TODO переделать через ООП, сделать bg, temp и hum как объекты класса, тогда проще добавлять/переделывать и меньше кода будет
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -52,11 +54,34 @@ function getRightValue(value as double, param as double, shift as double) as dou
 	end if		
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Из строки version=2.91 получает массив из двух элементов: &quot;version&quot; и &quot;2.91&quot;
+function splitParameters(stroke as String)
+	dim arr(1) as String
+	dim position as integer
+	position = InStr(1, stroke, &quot;=&quot;)&apos;позиция &quot;=&quot; в строке (8)
+	arr(0) = Left(stroke, position-1)&apos;часть строки от начала (т.е. слева) до позиции &quot;=&quot; (8-1)
+	arr(1) = Right(stroke, Len(stroke)-position)&apos;часть строки с конца (т.е. справа) до длина строки - позиция (12-8)
+	splitParameters = arr
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getVersionFromFile
+	dim list as new Collection
+	dim names as new Collection
+	dim values as new Collection
+	
+	if FileExists(SETTINGS_FILE) then list = DataFromFile(SETTINGS_FILE)
+	
+	dim i as integer
+	for i=1 to list.count
+		if splitParameters(list.item(i))(0) = &quot;version&quot; then avalableVersion = splitParameters(list.item(i))(1)
+	next i	
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Функция загружает данные из файла и проверяет дату в файле, если дата не совпадает, рандомит данные и закидывает их во внешшний файл
 function setValues
 	&apos;Если файл настройки найден, работаем с файлом, если не найден, рандомим значения
 	if FileExists(DATA_FILE) then
-		setSensors(DataFromFile)
+		setSensors(DataFromFile(DATA_FILE))
 		if NOT dateIsToday then
 			setSensorsRandomly
 			sensorsToFile
@@ -96,14 +121,14 @@ function setSensors(data as Collection)
 	humidity 	= getRightValue(data.item(4), HUM_AVG, 	HUM_SHIFT)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-function DataFromFile as Collection
+function DataFromFile(data_file as String) as Collection
 	Dim FileNo As Integer
 	Dim CurrentLine As String
 	Dim File As String
 	Dim Msg as String
 	Dim Filename as string
 	Dim coll as new Collection
-	Filename = DATA_FILE &apos; Define filename
+	Filename = data_file &apos; Define filename
 	FileNo = Freefile &apos; Establish free file handle
 	&apos; Open file (reading mode)
 	Open Filename For Input As FileNo
@@ -117,7 +142,6 @@ function DataFromFile as Collection
 	Close #FileNo   
 	DataFromFile = coll
 end function
-
 &apos;------------------------------------------------------------------------------------------------------------------------
 function getBackground
 	getBackground = background
@@ -131,6 +155,9 @@ function getHumidity
 	getHumidity = humidity
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function getAvalableVersion
+	getAvalableVersion = avalableVersion
+end function	
 
 
 

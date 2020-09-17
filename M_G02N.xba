@@ -129,8 +129,34 @@ Sub G02N_Dialog_Show
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).valueStep = 0.1	
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).DecimalAccuracy = 1
 	
+	oDialogG02N.Model.getByName(&quot;CloseButton&quot;).ImageURL = sertPath &amp; &quot;imgs\Close_Box_Red.png&quot;
+	oDialogG02N.getControl(&quot;CloseButton&quot;).Visible = false
+		
 	oDialogMain.endexecute()   
+	
 	oDialogG02N.Execute()
+	
+	&apos;oDlgModel = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialogModel&quot;)
+	&apos;With oDlgModel
+	&apos;	.Name = sDialog
+	&apos;	.Title = &quot;Doc Identify 31&quot;
+	&apos;	.PositionX = 170
+	&apos;	.PositionY = 70
+	&apos;	.Width = 190
+	&apos;	.Height = 40
+	&apos;	.DesktopAsParent = True
+	&apos;End With
+	
+	&apos;Dim oDlg As Variant
+	&apos;oDlg = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialog&quot;)
+	&apos;oDlg.setModel(oDlgModel)
+	
+	&apos;Dim oWindow As Variant
+	&apos;oWindow = CreateUnoService(&quot;com.sun.star.awt.Toolkit&quot;)
+	
+	&apos;oDlg.createPeer(oWindow, null)
+	
+	&apos;oDlg.execute()
 End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled

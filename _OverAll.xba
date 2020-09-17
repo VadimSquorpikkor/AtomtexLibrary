@@ -137,7 +137,49 @@ document   = ThisComponent.CurrentController.Frame
 dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
 dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
 oVC.String = &quot;&quot;
+
 End Sub
+
+
+rem-------------------------------------------------------------------------
+Sub variableFromClipboard
+dim RangeData(0,0)
+RangeData = FillArrayFromSelection
+msgbox RangeData(0,0)
+End Sub
+rem-------------------------------------------------------------------------
+&apos;Копирует выделенный текст и выводит его в msgbox
+Sub variableFromClipboardOLD 
+
+	dim document   as object
+	dim dispatcher as object
+	dim oDoc, oVC
+	oDoc = ThisComponent
+	oVC = oDoc.CurrentController.getViewCursor
+	document   = ThisComponent.CurrentController.Frame
+	&apos;dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	&apos;dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+	msgbox oVC.string
+End Sub
+rem-------------------------------------------------------------------------
+&apos;Можно выделить в Calc несколько ячеек (или таблицу в Writer), скопировать её.
+&apos;Функция берет эту таблицу из буфера обмена и выводит её в writer как &quot;Вставить как -&gt; Форматированный текст&quot;
+&apos;т.е. можно копировать ячейки из Calc и с помощью этой функции вставлять их в Writer
+sub variableFromClipboard1
+	dim document   as object
+	dim dispatcher as object
+	rem get access to the document
+	document   = ThisComponent.CurrentController.Frame
+	dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+	dim args2(0) as new com.sun.star.beans.PropertyValue
+	args2(0).Name = &quot;SelectedFormat&quot;
+	args2(0).Value = 1
+
+	&apos;msgbox args2()
+
+	dispatcher.executeDispatch(document, &quot;.uno:ClipboardFormatItems&quot;, &quot;&quot;, 0, args2())
+end sub
 rem-------------------------------------------------------------------------
 sub insertDate
    dim document   as object
@@ -219,4 +261,200 @@ private function AbsoluteValue(value as double, pref as string) as double
 end function
 rem---------------------------------------------------------------------------------------------------------
 
+
+sub recorded
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dim args1(0) as new com.sun.star.beans.PropertyValue
+args1(0).Name = &quot;ToPoint&quot;
+args1(0).Value = &quot;$EX$34:$EX$42&quot;
+
+dispatcher.executeDispatch(document, &quot;.uno:GoToCell&quot;, &quot;&quot;, 0, args1())
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+
+
+end sub
+
+
+
+&apos;==============================================================================================
+REM  *****  NON-MODAL DIALOG *****
+
+Option Explicit	
+
+Sub ID_CreateDialog
+
+	Dim oDlgModel As Variant
+	Dim sDialog As String
+	
+	sDialog = &quot;DocIdentify_31&quot;
+	
+	Dim oComponents As Variant
+	Dim oDoc As Variant
+	
+	oDlgModel = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialogModel&quot;)
+	With oDlgModel
+		.Name = sDialog
+		.Title = &quot;Doc Identify 31&quot;
+		.PositionX = 170
+		.PositionY = 70
+		.Width = 190
+		.Height = 40
+		.DesktopAsParent = True
+	End With
+	
+	Dim oModel As Variant
+	oModel = oDlgModel.createInstance(&quot;com.sun.star.awt.UnoControlEditModel&quot;)
+	With oModel
+		.TabIndex = 0
+		.Name = &quot;TextField1&quot;
+		.PositionX = 10
+		.PositionY = 6
+		.Width = 170
+		.Height = 12
+	End With
+	oDlgModel.insertByName(oModel.Name, oModel)
+	
+	oModel = oDlgModel.createInstance(&quot;com.sun.star.awt.UnoControlButtonModel&quot;)
+	With oModel
+		.TabIndex = 1
+		.Name = &quot;CommandButton1&quot;
+		.Label = &quot;Identify Active Document&quot;
+		.PositionX = 55
+		.PositionY = 22
+		.Width = 80
+		.Height = 12
+	End With
+	oDlgModel.insertByName(oModel.Name, oModel)
+	
+	Dim oDlg As Variant
+	oDlg = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialog&quot;)
+	oDlg.setModel(oDlgModel)
+	
+	Dim oListener As Variant
+	Dim oControl As Variant
+	oListener = CreateUnoListener(&quot;IDButton31_&quot;, &quot;com.sun.star.awt.XActionListener&quot;)
+	oControl = oDlg.getControl(&quot;CommandButton1&quot;)
+	ocontrol.addActionListener(oListener)
+	
+	Dim oWindow As Variant
+	oWindow = CreateUnoService(&quot;com.sun.star.awt.Toolkit&quot;)
+	
+	oDlg.createPeer(oWindow, null)
+	
+	oDlg.execute()
+End Sub
+
+Sub IDButton31_actionPerformed(oEvent As Variant)
+&apos;	Assign this macro to the button action event
+
+	Dim vTextfield As Variant
+	
+	vTextfield = oEvent.Source.Context.getControl(&quot;TextField1&quot;)
+	
+	vTextfield.Text = ThisComponent.URL
+End Sub
+&apos;=========================================================================================================
+
+&apos;=========NON-МОДАЛЬНЫЙ ДИАЛОГ==========================
+&apos;public myContinue
+
+&apos;myDialog.setVisible(true)
+&apos;while myContinue
+&apos;   wait(100)
+&apos;wend
+&apos;myDialog.setVisible(false)
+
+&apos;somewhere else
+
+&apos;sub myStopButton_click()
+&apos;   myContinue = false
+&apos;end sub
+
+
+
+Sub WindowListener_windowClosing(ev)
+   
+   &apos; Close window using the window bar close button
+&apos;   ev.Source.setVisible(FALSE)
+&apos;   closed = TRUE
+msgbox &quot;closing...&quot;
+ev.source.dispose
+End Sub
+
+
+
+sub recorded2
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dim args2(0) as new com.sun.star.beans.PropertyValue
+args2(0).Name = &quot;ToPoint&quot;
+args2(0).Value = &quot;$EZ$56&quot;
+
+dispatcher.executeDispatch(document, &quot;.uno:GoToCell&quot;, &quot;&quot;, 0, args2())
+
+rem ----------------------------------------------------------------------
+dim args3(5) as new com.sun.star.beans.PropertyValue
+args3(0).Name = &quot;Flags&quot;
+args3(0).Value = &quot;SVD&quot;
+args3(1).Name = &quot;FormulaCommand&quot;
+args3(1).Value = 0
+args3(2).Name = &quot;SkipEmptyCells&quot;
+args3(2).Value = false
+args3(3).Name = &quot;Transpose&quot;
+args3(3).Value = false
+args3(4).Name = &quot;AsLink&quot;
+args3(4).Value = false
+args3(5).Name = &quot;MoveMode&quot;
+args3(5).Value = 4
+
+dispatcher.executeDispatch(document, &quot;.uno:InsertContents&quot;, &quot;&quot;, 0, args3())
+
+
+end sub
+
+
+sub recorded3
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dim args2(0) as new com.sun.star.beans.PropertyValue
+args2(0).Name = &quot;SelectedFormat&quot;
+args2(0).Value = 10
+
+dispatcher.executeDispatch(document, &quot;.uno:ClipboardFormatItems&quot;, &quot;&quot;, 0, args2())
+
+
+end sub
 </script:module>

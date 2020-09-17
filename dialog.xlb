@@ -4,7 +4,7 @@
  <library:element library:name="D_BDKN"/>
  <library:element library:name="D_G02N"/>
  <library:element library:name="DialogMainOLD"/>
- <library:element library:name="D_1117_N"/>
+ <library:element library:name="DialogMain"/>
  <library:element library:name="D_1117"/>
  <library:element library:name="D_PORTAL"/>
  <library:element library:name="D_6130"/>
@@ -20,5 +20,4 @@
  <library:element library:name="D3509"/>
  <library:element library:name="D1"/>
  <library:element library:name="D25"/>
- <library:element library:name="DialogMain"/>
 </library:library>
