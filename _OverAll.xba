@@ -29,14 +29,21 @@ rem----------------------------------------------------------------
 function randValue(num as double, otklonenie as double) as double
 	randValue = (num - otklonenie) + rnd()*otklonenie*2
 end function
-rem=======================================================================================
-sub deleteTable(name as string)
+&apos;---------------------------------------------------------------------------------------------------------
+&apos;Старая версия. на 2.90 или 2.91 почему-то перестала работать. Немного изменил см. deleteTable, с ней работает
+sub deleteTableOLD(name as string)
 tables = ThisComponent.TextTables()
      if tables.hasByName(name) then
      ThisComponent.Text.removeTextContent(tables.getByName(name))
      end if
 end sub
-rem=======================================================================================
+&apos;---------------------------------------------------------------------------------------------------------
+sub deleteTable(name as string)
+	 if ThisComponent.TextTables().hasByName(name) then
+     	ThisComponent.Text.removeTextContent(ThisComponent.TextTables().getByName(name))
+     end if
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
 sub copyTable(oldName as string, newName as string)
 tables = ThisComponent.TextTables()
      if tables.hasByName(oldName) then
