@@ -29,6 +29,7 @@ dim oComboBox, oComboBox1, oComboBox2 as object
 dim Overall as new Overall
 dim Facility as new Facility
 
+dim insertButton as object
 &apos;ТАК НАДО СДЕЛАТЬ ДЛЯ АЛЬТЕРНАТИВНЫХ ТОЧЕК!!!
 &apos;на будущее: как я сделал индивидуальное значение фона для каждого БД:
 &apos;нужно было: для каждого БД значение фона (который выводится в таблице) изначально был один общий, нужно было сделать, 
@@ -58,7 +59,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.25 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.26 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -104,6 +105,10 @@ Sub G02N_Dialog_Show
 		oDialogG02N.getControl(&quot;LabelBDMG&quot; + i).visible = false
 	next i
 
+	oDialogG02N.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
+	insertButton = oDialogG02N.getControl(&quot;insertButton&quot;)
+	insertButton.visible = false
+
 	oDialogG02N.Model.getByName(&quot;ValueBDMG1&quot;).value = 80
 	oDialogG02N.Model.getByName(&quot;ValueBDMG1&quot;).valueStep = 0.1	
 	oDialogG02N.Model.getByName(&quot;ValueBDMG1&quot;).DecimalAccuracy = 1
@@ -128,35 +133,10 @@ Sub G02N_Dialog_Show
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).value = 15
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).valueStep = 0.1	
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).DecimalAccuracy = 1
-	
-	&apos;oDialogG02N.Model.getByName(&quot;CloseButton&quot;).ImageURL = sertPath &amp; &quot;imgs\Close_Box_Red.png&quot;
-	&apos;oDialogG02N.getControl(&quot;CloseButton&quot;).Visible = false
 		
 	oDialogMain.endexecute()   
-	
 	oDialogG02N.Execute()
-	
-	&apos;oDlgModel = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialogModel&quot;)
-	&apos;With oDlgModel
-	&apos;	.Name = sDialog
-	&apos;	.Title = &quot;Doc Identify 31&quot;
-	&apos;	.PositionX = 170
-	&apos;	.PositionY = 70
-	&apos;	.Width = 190
-	&apos;	.Height = 40
-	&apos;	.DesktopAsParent = True
-	&apos;End With
-	
-	&apos;Dim oDlg As Variant
-	&apos;oDlg = CreateUnoService(&quot;com.sun.star.awt.UnoControlDialog&quot;)
-	&apos;oDlg.setModel(oDlgModel)
-	
-	&apos;Dim oWindow As Variant
-	&apos;oWindow = CreateUnoService(&quot;com.sun.star.awt.Toolkit&quot;)
-	
-	&apos;oDlg.createPeer(oWindow, null)
-	
-	&apos;oDlg.execute()
+
 End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
@@ -304,6 +284,7 @@ sub saveCurentBDValue(num as integer)
 	dim newValues as new Collection
 	for i=1 to BDList.item(num).valueList.count
 		newValues.add(oDialogG02N.getControl(&quot;ValueField&quot; + i).Value)
+		&apos;oDialogG02N.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
 	next i
 	BDList.item(num).setValueList(newValues)
 	BDList.item(num).setGradValue(oDialogG02N.getControl(&quot;GradValueField&quot;).text
@@ -327,6 +308,7 @@ rem-----------------------------------------------------------------------------
 function setButtonVisibility
 	Overall.setButtonVisibility(layoutPosition)
 	if BDList.count = 0 then
+		insertButton.visible = false
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = true
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = true		
@@ -334,6 +316,7 @@ function setButtonVisibility
 		oDialogG02N.getControl(&quot;bdTypeLabel&quot;).visible = false
 	end if
 	if BDList.count &lt;&gt; 0 then
+		insertButton.visible = true
 		oDialogG02N.getControl(&quot;isBDKG-02&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDKG-204&quot;).visible = false
 		oDialogG02N.getControl(&quot;isBDMG&quot;).visible = false
@@ -408,5 +391,11 @@ function insertDataToLayout
    		oDialogG02N.Model.getByName(&quot;ValueField&quot; + i).value = RangeData(i-2, 0)
    	next i
 end function
+rem---------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueList()
+	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+end function
+
+
 
 </script:module>

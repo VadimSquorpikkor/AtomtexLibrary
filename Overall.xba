@@ -272,6 +272,7 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 		nStep = rightStep(point)
 		value = bd.valueList.item(i)
 	
+		_oDialog.Model.getByName(valueField + i).textColor = RGB(0, 0, 0)
 		_oDialog.getControl(valueField + i).Text = Format(value, getRightFormat(point))
 		_oDialog.Model.getByName(valueField + i).valueStep = nStep
 		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(nStep)
@@ -653,7 +654,110 @@ function getPathAndSetName(sert_path as String, device_name as String)
 	getPathAndSetName = PathForProtocol(sert_path)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;метод берет данные из буфера обмена и преобразует их в строку (не мой метод)
+Function getClipboardText() As String
+    &apos;&apos;&apos;Returns a string of the current clipboard text&apos;&apos;&apos;
 
+    Dim oClip As Object &apos; com.sun.star.datatransfer.clipboard.SystemClipboard
+    Dim oConverter As Object &apos; com.sun.star.script.Converter
+    Dim oClipContents As Object
+    Dim oTypes As Object
+    Dim i%
+
+    oClip = createUnoService(&quot;com.sun.star.datatransfer.clipboard.SystemClipboard&quot;)
+    oConverter = createUnoService(&quot;com.sun.star.script.Converter&quot;)
+    On Error Resume Next
+    oClipContents = oClip.getContents
+    oTypes = oClipContents.getTransferDataFlavors
+
+    For i = LBound(oTypes) To UBound(oTypes)
+        If oTypes(i).MimeType = &quot;text/plain;charset=utf-16&quot; Then
+            Exit For
+        End If
+    Next
+
+    If (i &gt;= 0) Then
+        On Error Resume Next
+        getClipboardText = oConverter.convertToSimpleType _
+	        (oClipContents.getTransferData(oTypes(i)), com.sun.star.uno.TypeClass.STRING)
+	        &apos;(oClipContents.getTransferData(oTypes(i)), com.sun.star.uno.TypeClass.DOUBLE)
+    End If
+
+End Function &apos; getClipboardText
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;метод берет коллекцию из буфера обмена, полученнцю в getCollectionFromClipBoard и вставляет значения в поля формы
+&apos;Если в коллекции попадаются 0, то вместо нуля вставляется значение по умолчанию для текущей ячейки и отмечается красным — так пользователь видит, что значение НЕ ИЗ СКОПИРОВАННОЙ ЯЧЕЙКИ из журнала градуировки
+&apos;С помощью этого метода можно копировать ячейки из EXCEL/Calc (CTRL+C) и вставлять в форму нажатием кнопки на форме
+function insertClipBoardToBDValueList(value_list as Collection)
+	dim i as integer
+	dim list as new Collection
+	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	
+	for i=1 to value_list.count
+		if list.item(i) = 0 then
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(200, 0, 0)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = value_list.item(i)
+		else
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = list.item(i)
+		end if	
+	next i
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;методу insertClipBoardToBDValueList нужна коллекция значений для формы ПО РАЗМЕРУ СОВПАДАЮЩАЯ С РАЗМЕРОМ КОЛЛЕКЦИИ valueList (значения точек, которые пользователь вводит как измеренные)
+&apos;Другими словами, кол-во элементов в скопированном массиве должен совпадать с количеством полей в форме для записи значений
+&apos;метод get_2nd_ListSizeAs_1st_ListSize приводит размер скопированной коллекции (list_2) к размеру коллекции valueList (list_2)
+&apos;если размеры совпадает, метод (по сути) возвращает коллекцию list_2
+&apos;если list_2 больше, удаляются лишние элементы С НАЧАЛА коллекции list_2
+&apos;если размер list_2 меньше, недостающие элементы будут добавлены В НАЧАЛО коллекции со значением 0
+&apos;если в строке были буквы или ещё по какой причине не удалось преобразовать строку в double, будет показано соответствующее сообщение, а макрос продолжит работать (можно попробовать скопировать еще раз не перезапуская макрос)
+function get_2nd_ListSizeAs_1st_ListSize(list_1 as Collection, list_2 as Collection)
+	On Error Goto ErrorHandler
+	dim list_result as new Collection
+	dim k as integer
+	dim a as integer	
+	a = list_2.count - list_1.count 	
+
+	for k=1 to list_1.count
+		if (k+a) &lt;= 0 then
+			list_result.add(0)
+		else
+			
+			list_result.add(CDbl(list_2.item(k+a)))
+		end if	
+	next k	
+		
+	get_2nd_ListSizeAs_1st_ListSize = list_result	
+	Exit function
+	ErrorHandler:
+	msgbox &quot;Неправильные данные.&quot; + Chr(10) + &quot;Возможно вместе с цифрами были скопированы буквы.&quot; + Chr(10) + &quot;Попробуйте ещё раз&quot;
+	dim er_list as new Collection
+	dim m as integer
+	for m=1 to list_1.count
+		er_list.add(0)	
+	next m
+	get_2nd_ListSizeAs_1st_ListSize = er_list
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод возвращает коллекцию значений из буфера обмена
+&apos;удаляет символы перевода на другую строку, если есть запятые, заменяет их точками
+function getCollectionFromClipBoard()
+	Dim sText As String
+    sText= (getClipboardText)
+    sText = Replace (sText,Chr(10),&quot;&quot;) &apos; Replace line breaks with white spaces
+    sText = Replace (sText,Chr(13),&quot; &quot;) &apos; Replace paragraph breaks with white spaces
+    sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
+    sText = Trim (sText)
+    
+    dim list as new Collection
+    dim s_arr(0) as String
+    s_arr = split(sText, &quot; &quot;)
+    dim i as integer
+    for i=0 to uBound(s_arr)
+    	list.add(s_arr(i))
+    next i
+    getCollectionFromClipBoard = list
+end function
 
 
 </script:module>
