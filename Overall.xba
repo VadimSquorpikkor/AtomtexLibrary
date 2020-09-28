@@ -767,16 +767,16 @@ function getCollectionFromClipBoard()
     sText = Replace (sText,Chr(10),&quot; &quot;) &apos; Replace line breaks with white spaces
     sText = Replace (sText,Chr(13),&quot;&quot;) &apos; Replace paragraph breaks with white spaces
     
-    if 2 * CDbl(&quot;3.3&quot;) = 6.6 then
-    	sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
-    else
+    if CDbl(&quot;3,3&quot;) = 3.3 then
     	sText = Replace (sText,&quot;.&quot;,&quot;,&quot;)
+    else
+    	sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
     end if
     
     &apos;sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
     sText = Trim (sText)
     
-    msgbox sText
+    &apos;msgbox sText
     
     dim list as new Collection
     dim s_arr(0) as String

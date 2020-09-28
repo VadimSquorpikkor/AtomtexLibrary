@@ -24,7 +24,7 @@ Sub G23N_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG23N = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_G23N )
 	oListBox = oDialogG23N.getControl(&quot;bdListBox&quot;)	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.03 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.04 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	
@@ -156,4 +156,8 @@ sub setSerialNumberToForm
 	if oOptionBDKG23.state  then oDialogG23N.getControl(&quot;bdSerial&quot;).text = Overall.integerTo3String(serial_23)
 	if oOptionBDKG231.state then oDialogG23N.getControl(&quot;bdSerial&quot;).text = Overall.integerTo3String(serial_231)
 end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueList()
+	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+end function
 </script:module>

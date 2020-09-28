@@ -34,19 +34,19 @@
   </dlg:radiogroup>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="18" dlg:left="6" dlg:top="175" dlg:width="63" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="20" dlg:left="71" dlg:top="175" dlg:width="63" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField1" dlg:tab-index="7" dlg:left="274" dlg:top="70" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField2" dlg:tab-index="8" dlg:left="274" dlg:top="81" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField3" dlg:tab-index="9" dlg:left="274" dlg:top="92" dlg:width="25" dlg:height="12" dlg:value="70" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField4" dlg:tab-index="10" dlg:left="274" dlg:top="103" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="ValueField5" dlg:tab-index="11" dlg:left="274" dlg:top="114" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField1" dlg:tab-index="7" dlg:left="246" dlg:top="70" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField2" dlg:tab-index="8" dlg:left="246" dlg:top="81" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField3" dlg:tab-index="9" dlg:left="246" dlg:top="92" dlg:width="25" dlg:height="12" dlg:value="70" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField4" dlg:tab-index="10" dlg:left="246" dlg:top="103" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="ValueField5" dlg:tab-index="11" dlg:left="246" dlg:top="114" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
   <dlg:text dlg:id="Label31" dlg:tab-index="34" dlg:left="263" dlg:top="19" dlg:width="35" dlg:height="8" dlg:value="Номер СРК"/>
   <dlg:text dlg:style-id="1" dlg:id="versionLabel" dlg:tab-index="30" dlg:left="269" dlg:top="4" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="2" dlg:id="typeLabel" dlg:tab-index="6" dlg:left="218" dlg:top="35" dlg:width="66" dlg:height="10" dlg:value="TYPE" dlg:align="center"/>
   <dlg:text dlg:style-id="3" dlg:id="serialLabel" dlg:tab-index="14" dlg:left="213" dlg:top="44" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
-  <dlg:text dlg:id="Label1" dlg:tab-index="23" dlg:left="212" dlg:top="73" dlg:width="58" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label5" dlg:tab-index="12" dlg:left="212" dlg:top="116" dlg:width="58" dlg:height="8" dlg:align="right"/>
-  <dlg:text dlg:id="Label2" dlg:tab-index="24" dlg:left="212" dlg:top="83" dlg:width="58" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label3" dlg:tab-index="25" dlg:left="212" dlg:top="94" dlg:width="58" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label1" dlg:tab-index="23" dlg:left="207" dlg:top="73" dlg:width="35" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label5" dlg:tab-index="12" dlg:left="207" dlg:top="117" dlg:width="35" dlg:height="8" dlg:align="right"/>
+  <dlg:text dlg:id="Label2" dlg:tab-index="24" dlg:left="207" dlg:top="84" dlg:width="35" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="Label3" dlg:tab-index="25" dlg:left="207" dlg:top="95" dlg:width="35" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:menulist dlg:style-id="0" dlg:id="bdListBox" dlg:tab-index="1" dlg:left="145" dlg:top="62" dlg:width="55" dlg:height="119">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
@@ -65,8 +65,8 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:style-id="2" dlg:id="Label41" dlg:tab-index="37" dlg:left="165" dlg:top="20" dlg:width="5" dlg:height="10" dlg:value="." dlg:align="center"/>
-  <dlg:text dlg:id="Label4" dlg:tab-index="26" dlg:left="212" dlg:top="106" dlg:width="58" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:button dlg:id="removeButton" dlg:tab-index="2" dlg:left="145" dlg:top="46" dlg:width="55" dlg:height="12" dlg:value="Удалить последний">
+  <dlg:text dlg:id="Label4" dlg:tab-index="26" dlg:left="207" dlg:top="106" dlg:width="35" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:button dlg:id="removeButton" dlg:tab-index="2" dlg:left="145" dlg:top="47" dlg:width="55" dlg:height="12" dlg:value="Удалить последний">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.removeLastBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:radiogroup>
@@ -76,5 +76,8 @@
   <dlg:textfield dlg:style-id="2" dlg:id="srkNum" dlg:tab-index="35" dlg:left="144" dlg:top="18" dlg:width="20" dlg:height="14" dlg:align="center" dlg:value="500"/>
   <dlg:textfield dlg:style-id="2" dlg:id="bdNum" dlg:tab-index="36" dlg:left="172" dlg:top="18" dlg:width="20" dlg:height="14" dlg:align="center" dlg:maxlength="3" dlg:value="002"/>
   <dlg:textfield dlg:id="fullNum" dlg:tab-index="33" dlg:left="214" dlg:top="18" dlg:width="48" dlg:height="12" dlg:value="000.000"/>
+  <dlg:button dlg:id="insertButton" dlg:tab-index="39" dlg:left="272" dlg:top="73" dlg:width="30" dlg:height="36" dlg:image-src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/down_arr.png">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.insertClipBoardToBDValueList?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
  </dlg:bulletinboard>
 </dlg:window>

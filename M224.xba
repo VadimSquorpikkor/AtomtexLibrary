@@ -29,7 +29,7 @@ Sub G224_Dialog_Show
 	oDialogG224 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D224 )
 	oListBox = oDialogG224.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.16 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
@@ -117,5 +117,8 @@ sub insertRecordsToTemplate
 	Overall.setSerial(&quot;$allSerial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
-
+rem---------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueList()
+	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+end function
 </script:module>
