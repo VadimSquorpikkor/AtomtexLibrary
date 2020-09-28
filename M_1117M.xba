@@ -38,7 +38,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.11 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.12 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -295,6 +295,9 @@ sub checkBoxListener(oEvent As Object)
     	clearLayout &apos;ЕСЛИ ПОСЛЕ ТОГО, КАК ПОСЧИТАЛИ, СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО = 0, ЭТО ЗНАЧИТ БЫЛ УДАЛЕН САМЫЙ ПОСЛЕДНИЙ БД -- ОБНУЛЯЕМ ЛЭЙАУТ
     	oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
     	oDialog1117.getControl(&quot;altCheckBox&quot;).state = 0
+    	oDialog1117.getControl(&quot;insertButton&quot;).visible = false
+    else
+    	oDialog1117.getControl(&quot;insertButton&quot;).visible = true	
     end if	
     if position &lt; layoutPosition then
     	Overall.saveCurentBDValue(layoutPosition)
@@ -302,8 +305,6 @@ sub checkBoxListener(oEvent As Object)
     	layoutPosition = position 
     end if	
     setButtonVisibility
-    
-    &apos;msgbox layoutPosition
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 function limitComparator(min as double, max as double, position as integer)
@@ -439,7 +440,6 @@ function setButtonVisibility
 		oDialog1117.getControl(&quot;doneButton&quot;).setEnable(true)
 	end if
 	if checkedCount = 0 then oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
-	&apos;if layoutPosition = 1 then oDialog1117.getControl(&quot;doneButton&quot;).setEnable(false)
 end function 
 &apos;---------------------------------------------------------------------------------------------------------
 dim inProcess &apos;В начале выполнения функции проверяется, если inProcess=false, то ставится в true и начинается выполнение функции, после завершения ставится в false, таким образом нельзя начать выполнять функцию, не завершив её. В ф-ии nextChecked и prevChecked быстрое нажатие на кнопку приводило к тому,что ф-я начинала опять выполняться, не окончив выполнение себя, что приводило к ошибке 
@@ -620,8 +620,10 @@ sub neutron_05(i as integer, bd as BUnit)
 	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
 	findAndRename((&quot;$&quot; + i + &quot;-70&quot;), Format(s,  &quot;0.00&quot;)) 
 end sub
-
-
+&apos;---------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueList()
+	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+end function
 
 
 

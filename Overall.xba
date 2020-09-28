@@ -175,6 +175,13 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
 	_oOptionButtonPr.State = 1
 		
+	dim insertButton as object
+	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
+		_oDialog.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
+		insertButton = _oDialog.getControl(&quot;insertButton&quot;)
+		insertButton.visible = false
+	end if	
+		
 	_oListBox.setEnable(false)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -184,6 +191,15 @@ sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version
 	_oDialog = oDialog
 	initializeDateField(oDateFieldModel, _oDialog)	
 	_oDialog.getControl(&quot;versionLabel&quot;).text = version
+	
+	_oDialog.Model.hasByName(&quot;insertButton&quot;)
+	
+	dim insertButton as object
+	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
+		_oDialog.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
+		insertButton = _oDialog.getControl(&quot;insertButton&quot;)
+		insertButton.visible = false
+	end if	
 	
 	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
 	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
@@ -515,6 +531,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 			_isComboCollection.item(i).setEnable(true)	
 		next i
 		_oDialog.getControl(&quot;typeLabel&quot;).text = &quot;type&quot;
+		if _oDialog.Model.hasByName(&quot;insertButton&quot;) then _oDialog.getControl(&quot;insertButton&quot;).visible = false
 	end if
 	if _BDList.count &lt;&gt; 0 then
 		_oListBox.setEnable(true)
@@ -523,6 +540,7 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 		for i=1 to _isComboCollection.count
 			_isComboCollection.item(i).setEnable(false)	
 		next i
+		if _oDialog.Model.hasByName(&quot;insertButton&quot;) then _oDialog.getControl(&quot;insertButton&quot;).visible = true
 	end if
 	if _BDList.count &gt; layoutPosition then _oDialog.getControl(&quot;doneButton&quot;).setEnable(false)
 	if layoutPosition = _BDList.count then _oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
@@ -532,6 +550,8 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 	if _BDList.count = _maxBDCount then _oDialog.getControl(&quot;addButton&quot;).setEnable(false)
 	if _BDList.count = 0 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
 	if _BDList.count = _maxBDCount-1 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
+	
+	
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
@@ -744,10 +764,19 @@ end function
 function getCollectionFromClipBoard()
 	Dim sText As String
     sText= (getClipboardText)
-    sText = Replace (sText,Chr(10),&quot;&quot;) &apos; Replace line breaks with white spaces
-    sText = Replace (sText,Chr(13),&quot; &quot;) &apos; Replace paragraph breaks with white spaces
-    sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
+    sText = Replace (sText,Chr(10),&quot; &quot;) &apos; Replace line breaks with white spaces
+    sText = Replace (sText,Chr(13),&quot;&quot;) &apos; Replace paragraph breaks with white spaces
+    
+    if 2 * CDbl(&quot;3.3&quot;) = 6.6 then
+    	sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
+    else
+    	sText = Replace (sText,&quot;.&quot;,&quot;,&quot;)
+    end if
+    
+    &apos;sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
     sText = Trim (sText)
+    
+    msgbox sText
     
     dim list as new Collection
     dim s_arr(0) as String

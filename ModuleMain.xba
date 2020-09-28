@@ -30,7 +30,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 2.93										&apos;	║█
+	currentVersion = 2.94										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -86,7 +86,7 @@ sub startMacro(sertPath as String)
 	&apos;oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия &quot; &amp; Format(currentVersion, &quot;0.00&quot;)
 	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия &quot; &amp; currentVersionToString(currentVersion)
 	
-	if Sensor.getAvalableVersion &gt; currentVersion then oDialogMain.getControl(&quot;newVersionLabel&quot;).text = &quot;На FILESERVER доступна новая версия &quot; &amp; Sensor.getAvalableVersion
+	if Sensor.getAvalableVersion &gt; currentVersion then oDialogMain.getControl(&quot;newVersionLabel&quot;).text = &quot;На FILESERVER доступна новая версия &quot; &amp; currentVersionToString(Sensor.getAvalableVersion)
 	
 	oDialogMain.getControl(&quot;bgLabel&quot;).text = &quot;Фон: &quot; + Format(bgValue, &quot;0.0&quot;) + &quot; нЗв/ч&quot;
 	oDialogMain.getControl(&quot;tempLabel&quot;).text = &quot;Темп: +&quot; + Format(tempValue, &quot;0.0&quot;) + &quot; С&quot;
