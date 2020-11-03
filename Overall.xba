@@ -383,13 +383,14 @@ sub templateStep(i as integer, strokeEnd as string)
 		dim src_name as string
 		dim bd as new DUnit
 		dim BDtype as string 
-		&apos;msgbox _BDList.item(i).count
 		bd = _BDList.item(i)
 		BDtype = bd.BDType
-		dim j as integer
+		dim j, k as integer
+		
 		for j=0 to bd.getPointList.count-1
 			src_name = bd.getPointTextList.item(j+1)
 			m_point = bd.valueList.item(j+1)
+
 			cont_point = bd.pointList.item(j+1)
 			prefix =  bd.pointTextList.item(j+1)
 			threePointArray = avaragePointsRndArray(m_point, percentOtk)
@@ -419,9 +420,9 @@ sub templateStep(i as integer, strokeEnd as string)
 				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;---&quot;) 
 			end if
 				
-			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, MyFormat)) rem среднее по трем измерениям
+			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point))) rem среднее по трем измерениям
 		
-			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, MyFormat)) rem активность источника
+			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, getRightFormat(cont_point))) rem активность источника
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
 			
 			dim percent as integer

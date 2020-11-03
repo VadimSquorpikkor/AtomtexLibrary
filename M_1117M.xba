@@ -38,7 +38,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.12 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.13 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -186,17 +186,10 @@ sub dataChanged
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 function makeLayout(bd as new DUnit)
+	dim altPoint as double
  	oDialog1117.getControl(&quot;typeLabel&quot;).text =  bd.getName
  	&apos;msgbox (&quot;&quot; + BDList.item(12).getName + &quot; &quot; + BDList.item(12).getPointList.item(1) + BDList.item(14).getName + &quot; &quot; + BDList.item(14).getPointList.item(1))
- 	if bd.isAlternativePoints then
-		for i=1 to 9
-			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
-		next i
-	else
-		for i=1 to 9
-			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 0)
-		next i	
-	end if	
+ 	
 	if bd.isAlternativePoints then
 		oDialog1117.getControl(&quot;altCheckBox&quot;).state = 1
 	else
@@ -208,6 +201,16 @@ function makeLayout(bd as new DUnit)
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
  	end if
+
+	if bd.isAlternativePoints then
+		for i=1 to 9
+			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 200)
+		next i
+	else
+		for i=1 to 9
+			oDialog1117.Model.getByName(&quot;Label&quot; + i).textColor = RGB(0, 0, 0)
+		next i	
+	end if	
 			
 	for i=1 to bd.getPointTextList.count
 		&apos;point = bd.getPointList.item(i)
@@ -218,6 +221,7 @@ function makeLayout(bd as new DUnit)
 			myFormat = &quot;0&quot;
 		end if
 		oDialog1117.getControl(&quot;altField&quot; + i).value = Format(altPoint, myFormat)
+		if bd.isAlternativePoints then oDialog1117.getControl(&quot;Label&quot; + i).text = Format(bd.getAltList.item(i), myFormat)
  	next i
  	
  	if bd.getType = &quot;alpha&quot; OR bd.getType = &quot;beta&quot; then
@@ -479,6 +483,7 @@ sub insertDataToTemplate
 	strokeForSaving = &quot;&quot;	
 	dim path as string
 	path = Overall.PathForProtocol(&quot;1117\1117&quot;, calibName, techName)
+	dim point as double
 
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	MyFormat = &quot;0.0&quot;
@@ -500,8 +505,18 @@ sub insertDataToTemplate
 	for i=1 to BDList.count
 		if BDList.item(i).isPrintable then
 			bd = BDList.item(i)
+			
+			&apos;Если альтернативные, то контрольные точеи приравниваем альтернативным (! bd.pointList.item(i) = bd.getAltList.item(i) НЕ работает в этом тупом языке !)
+			if bd.isAlternativePoints then 
+				dim newValues as new Collection
+				dim k as integer
+				for k=1 to bd.getAltList.count
+					newValues.add(bd.getAltList.item(k))
+				next k
+				bd.setPointList(newValues)
+			end if	
+			
 			calculateMeasLimitsArray(bd.minLimit, bd.maxLimit, bd.getType)
-			&apos;msgbox &quot;&quot;+bd.minLimit+bd.maxLimit+bd.getType
 			strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
 			facilities.addTypeAndLimits(bd.BDType, bd.minLimit, bd.maxLimit)		
 			
