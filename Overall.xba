@@ -240,6 +240,13 @@ function getRightFormat(point as double)
 	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function getRightFormat2503(point as double)
+	if point &lt; 0.1 and point &gt;  0	then getRightFormat2503 = &quot;0.000&quot;
+	if point &lt; 10   and point &gt;= 0.1 then getRightFormat2503 = &quot;0.00&quot;
+	if point &lt; 100 and point &gt;= 10	then getRightFormat2503 = &quot;0.0&quot;
+	if point &gt;= 100               	then getRightFormat2503 = &quot;0&quot;
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
 	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName rem &quot;БДКГ-22&quot;
 	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
