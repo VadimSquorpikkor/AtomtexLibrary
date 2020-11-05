@@ -442,6 +442,36 @@ function avgSqrt(Array as variant, avg as double)
 	avgSqrt = 1/average*sqr(sum/n)*100
 end function
 rem---------------------------------------------------------------------------------------------------------
+&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ ΣRiw
+function getOtclickArrayFromPointArray(p_Array as variant, contr_point as double)
+	dim arr(uBound(p_Array)) as double
+	
+	for j=0 to uBound(p_Array)
+		arr(j) = p_Array(j)/contr_point
+	next j
+	getOtclickArrayFromPointArray = arr
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;СРЕДНИЙ ОТКЛИК Ṝw
+function getAverageOtk(o_Array as variant)
+	dim summ as double
+	summ = 0
+	for j=0 to uBound(o_Array)
+		summ = summ + o_Array(j)
+	next j
+	getAverageOtk = summ / (uBound(o_Array)+1)
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw (для английских сертификатов)
+function VariationsCoefficient(o_Array as variant, o_avg as double)
+	dim sum as double
+	sum = 0
+	for j=0 to uBound(o_Array)
+		sum = sum + (o_Array(j)-o_avg)*(o_Array(j)-o_avg)
+	next j
+	VariationsCoefficient = 100/o_avg*(sqr(1/(uBound(o_Array))*sum))
+end function
+rem---------------------------------------------------------------------------------------------------------
 &apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
 function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
 	&apos;msgbox &quot;b: &quot; + avgSqrtRes + &quot; &quot; + facilityPercent + &quot; &quot; + relativeErr
@@ -529,7 +559,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		dovGranica = ConfLimit(2, sSigmaRes)
 		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 	
-	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
+	&apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
+	for j=1 to bd.getPointList.count 
 
 		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
 
@@ -569,6 +600,26 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		relativeErr = RelativeError(avg, cont_point)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
+		&apos;ОТКЛИК (Rw)
+		&apos;По техю условиям отклик считается: для каждой точки сначала отклик для каждого измерения, затем считается средний отклик
+		&apos;Можно проще: брать среднее измеренное в точке, и от этого значения считать отклик.
+				
+		&apos;ОТКЛИК (Rw%)
+		&apos;Это ТО ЖЕ САМОЕ, что и RelativeError:
+		&apos;RelativeEr = (p-t)/t*100%, отклик% = (p/t-1)*100% , где p это измеренное значение, t это контр. точка. Видно, что это одно и то же
+		
+		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ ΣRiw
+		&apos;otclikArray = getOtclickArrayFromPointArray(fivePointArray, cont_point)
+		otclikArray = getOtclickArrayFromPointArray(Array(90,110,70), 100)
+		
+		&apos;СРЕДНИЙ ОТКЛИК Ṝw
+		dim averageOtk as double
+		averageOtk = getAverageOtk(otclikArray)
+		&apos;msgbox averageOtk
+		
+		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
+		dim koefVar = msgbox VariationsCoefficient(otclikArray, averageOtk)
+					
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
 		avgSqrtRes = avgSqrt(fivePointArray, avg)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))

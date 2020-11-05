@@ -495,12 +495,12 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	num = -1
 	if is3509B.state then num=3
 	if is3509C.state then num=4
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(1)) rem расстояние до источника	
 
 	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (40 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
-	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma007&quot;)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(1)) rem расстояние до источника
 	
 	&apos;В 3509  ТОЧКА (40 мкЗв/ч), ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ (ХОТЯ ОНА И ЕСТЬ)
 	findAndRename((&quot;$&quot; + i + &quot;-dn_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(0)) rem название источника

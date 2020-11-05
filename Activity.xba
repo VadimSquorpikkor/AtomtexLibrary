@@ -126,85 +126,90 @@ end function
 rem----------------------------------------------------------------
 function sourceDistanceArray(point as double, prefix as string, bdType as string)
 	dim ar(1) as variant
+	&apos;Перерасчет расстояний - 05.11.20
 	ar = Array(&quot;Неизв&quot;,&quot;Неизв&quot;) rem если точка не будет найдена, останется значение по умолчанию -- не найдено
 	rem если это гамма блок:
-	if bdType = &quot;gamma&quot; then
+	if bdType = &quot;gamma&quot; then &apos;Мощность амбиентной дозы Н*(10) Зв/ч
 		select case prefix
 		case &quot;мк&quot;
-				if point = 0.06 then ar = Array(&quot;263&quot;,&quot;215.9&quot;)
-				if point = 0.03 then ar = Array(&quot;263&quot;,&quot;304.7&quot;)
-				if point = 0.07 then ar = Array(&quot;263&quot;,&quot;200.7&quot;)
-				if point = 0.24 then ar = Array(&quot;263&quot;,&quot;108.4&quot;)
-				if point = 0.7 	then ar = Array(&quot;0НА&quot;,&quot;236&quot;)
-				if point = 0.8  then ar = Array(&quot;0НА&quot;,&quot;219.8&quot;)
-				if point = 7 	then ar = Array(&quot;0НА&quot;,&quot;76&quot;)
-				if point = 70	then ar = Array(&quot;К/С Г3&quot;,&quot;257&quot;)
-				if point = 20 	then ar = Array(&quot;9ХК&quot;,&quot;299.9&quot;)
-				if point = 40 	then ar = Array(&quot;9ХК&quot;,&quot;215.3&quot;)
-				if point = 240 	then ar = Array(&quot;9ХК&quot;,&quot;88.9&quot;)
+				if point = 0.03 then ar = Array(&quot;263&quot;,&quot;301.1&quot;)
+				if point = 0.06 then ar = Array(&quot;263&quot;,&quot;213.7&quot;)
+				if point = 0.07 then ar = Array(&quot;263&quot;,&quot;198.0&quot;)
+				if point = 0.24 then ar = Array(&quot;263&quot;,&quot;107.4&quot;)
+				if point = 0.7 	then ar = Array(&quot;0НА&quot;,&quot;232.8&quot;)
+				if point = 0.8  then ar = Array(&quot;0НА&quot;,&quot;218.0&quot;)
+				if point = 7 	then ar = Array(&quot;0НА&quot;,&quot;74.7&quot;)
+				if point = 70	then ar = Array(&quot;9ХК&quot;,&quot;161.7&quot;)
+				if point = 20 	then ar = Array(&quot;9ХК&quot;,&quot;296.4&quot;)
+				if point = 40 	then ar = Array(&quot;9ХК&quot;,&quot;213.3&quot;)
+				if point = 240 	then ar = Array(&quot;9ХК&quot;,&quot;87.8&quot;)
 		case &quot;м&quot;
-				if point = 0.5 	then ar = Array(&quot;9TH&quot;,&quot;214.9&quot;)
-				if point = 0.7 	then ar = Array(&quot;К/С Г3&quot;,&quot;82&quot;)
-				if point = 4 	then ar = Array(&quot;043&quot;,&quot;467.2&quot;)
-				if point = 7 	then ar = Array(&quot;043&quot;,&quot;357&quot;)
-				if point = 20 	then ar = Array(&quot;043&quot;,&quot;210.5&quot;)
-				if point = 70 	then ar = Array(&quot;043&quot;,&quot;114&quot;)
-				if point = 80 	then ar = Array(&quot;043&quot;,&quot;106.0&quot;)
-				if point = 200 	then ar = Array(&quot;043&quot;,&quot;67.7&quot;)
-				if point = 400 	then ar = Array(&quot;163&quot;,&quot;308.6&quot;)
-				if point = 800 	then ar = Array(&quot;163&quot;,&quot;218.8&quot;)
+				if point = 0.5 	then ar = Array(&quot;9TH&quot;,&quot;212.7&quot;)
+				if point = 0.7 	then ar = Array(&quot;К/С Г3&quot;,&quot;80.8&quot;)
+				if point = 4 	then ar = Array(&quot;043&quot;,&quot;463.3&quot;)
+				if point = 7 	then ar = Array(&quot;043&quot;,&quot;351.3&quot;)
+				if point = 20 	then ar = Array(&quot;043&quot;,&quot;208.5&quot;)
+				if point = 70 	then ar = Array(&quot;043&quot;,&quot;112.3&quot;)
+				if point = 80 	then ar = Array(&quot;043&quot;,&quot;105.1&quot;)
+				if point = 200 	then ar = Array(&quot;043&quot;,&quot;67.0&quot;)
+				if point = 400 	then ar = Array(&quot;163&quot;,&quot;306.0&quot;)
+				if point = 800 	then ar = Array(&quot;163&quot;,&quot;217.1&quot;)
 		case &quot;&quot;
-				if point = 0.35	then ar = Array(&quot;163&quot;,&quot;329.8&quot;)
-				if point = 0.5 	then ar = Array(&quot;163&quot;,&quot;276.9&quot;)
-				if point = 0.7 	then ar = Array(&quot;163&quot;,&quot;235&quot;)
-				if point = 4 	then ar = Array(&quot;163&quot;,&quot;98.8&quot;)
-				if point = 7 	then ar = Array(&quot;163&quot;,&quot;76&quot;)
-				if point = 40 	then ar = Array(&quot;163&quot;,&quot;32.7&quot;)
+				if point = 0.35	then ar = Array(&quot;163&quot;,&quot;326.8&quot;)
+				if point = 0.5 	then ar = Array(&quot;163&quot;,&quot;273.5&quot;)
+				if point = 0.7 	then ar = Array(&quot;163&quot;,&quot;231.8&quot;)
+				if point = 4 	then ar = Array(&quot;163&quot;,&quot;98.0&quot;)
+				if point = 7 	then ar = Array(&quot;163&quot;,&quot;74.7&quot;)
+				if point = 8 	then ar = Array(&quot;163&quot;,&quot;69.9&quot;)
+				if point = 40 	then ar = Array(&quot;163&quot;,&quot;32.3&quot;)
 		end select
 	end if
-	if bdType = &quot;gamma-Gy&quot; then
+	if bdType = &quot;gamma-Gy&quot; then &apos;Мощность кермы в воздухе, Ка, Гр/ч
 		select case prefix
 		case &quot;н&quot;
-				if point = 75	then ar = Array(&quot;263&quot;,&quot;176.5&quot;)
+				if point = 75	then ar = Array(&quot;263&quot;,&quot;174.7&quot;)
 		case &quot;мк&quot;
-				if point = 0.03	then ar = Array(&quot;263&quot;,&quot;277.8&quot;)
-				if point = 0.075 then ar = Array(&quot;263&quot;,&quot;176.5&quot;)
-				if point = 0.7	then ar = Array(&quot;УП4&quot;,&quot;304.7&quot;)
-				if point = 0.75	then ar = Array(&quot;263&quot;,&quot;562.4&quot;)
-				if point = 7 	then ar = Array(&quot;УП4&quot;,&quot;108.9&quot;)
-				if point = 7.5 	then ar = Array(&quot;0НА&quot;,&quot;66.6&quot;)
-				if point = 70 	then ar = Array(&quot;К/С Г3&quot;,&quot;233.5&quot;)
-				if point = 75 	then ar = Array(&quot;9ХК&quot;,&quot;144.1&quot;)
+				if point = 0.03	then ar = Array(&quot;263&quot;,&quot;274.9&quot;)
+				if point = 0.075 then ar = Array(&quot;263&quot;,&quot;174.7&quot;)
+				if point = 0.7	then ar = Array(&quot;0НА&quot;,&quot;212.6&quot;)
+				if point = 0.75	then ar = Array(&quot;0НА&quot;,&quot;205.4&quot;)
+				if point = 7 	then ar = Array(&quot;0НА&quot;,&quot;68.2&quot;)
+				if point = 7.5 	then ar = Array(&quot;0НА&quot;,&quot;65.9&quot;)
+				if point = 70 	then ar = Array(&quot;9ХК&quot;,&quot;147.6&quot;)
+				if point = 75 	then ar = Array(&quot;9ХК&quot;,&quot;142.6&quot;)
 		case &quot;м&quot;
-				if point = 0.5 	then ar = Array(&quot;9XK&quot;,&quot;56.6&quot;)
-				if point = 0.7	then ar = Array(&quot;9TH&quot;, &quot;166.1&quot;)				
-				if point = 0.75	then ar = Array(&quot;9XK&quot;, &quot;46.2&quot;)
-				if point = 7	then ar = Array(&quot;9TH&quot;, &quot;53.6&quot;)
-				if point = 7.5 	then ar = Array(&quot;9TH&quot;,&quot;51.8&quot;)
-				if point = 70	then ar = Array(&quot;043&quot;, &quot;103.6&quot;)
-				if point = 75 	then ar = Array(&quot;043&quot;,&quot;100.1&quot;)
-				if point = 200 	then ar = Array(&quot;043&quot;,&quot;61.7&quot;)
+				if point = 0.5 	then ar = Array(&quot;9XK&quot;,&quot;56.0&quot;)
+				if point = 0.7	then ar = Array(&quot;9TH&quot;, &quot;47.3&quot;)				
+				if point = 0.75	then ar = Array(&quot;9XK&quot;, &quot;45.7&quot;)
+				if point = 7	then ar = Array(&quot;9TH&quot;, &quot;53.0&quot;)
+				if point = 7.5 	then ar = Array(&quot;9TH&quot;,&quot;51.2&quot;)
+				if point = 70	then ar = Array(&quot;043&quot;, &quot;102.5&quot;)
+				if point = 75 	then ar = Array(&quot;043&quot;,&quot;99.0&quot;)
+				if point = 200 	then ar = Array(&quot;043&quot;,&quot;61.1&quot;)
 		case &quot;&quot;
-				if point = 0.7	then ar = Array(&quot;163&quot;, &quot;213.9&quot;)
-				if point = 0.75	then ar = Array(&quot;163&quot;,&quot;206.7&quot;)
-				if point = 7	then ar = Array(&quot;163&quot;, &quot;68.8&quot;)
-				if point = 7.5 	then ar = Array(&quot;163&quot;,&quot;66.5&quot;)
-				if point = 40 	then ar = Array(&quot;163&quot;,&quot;30.7&quot;) &apos;Чуть завышено
+				if point = 0.7	then ar = Array(&quot;163&quot;, &quot;211.7&quot;)
+				if point = 0.75	then ar = Array(&quot;163&quot;,&quot;204.6&quot;)
+				if point = 7	then ar = Array(&quot;163&quot;, &quot;68.1&quot;)
+				if point = 7.5 	then ar = Array(&quot;163&quot;,&quot;65.8&quot;)
+				if point = 40 	then ar = Array(&quot;163&quot;,&quot;29.5&quot;) &apos;Чуть завышено
 		end select
 	end if
-	if bdType = &quot;gamma007&quot; then
+	if bdType = &quot;gamma007&quot; then &apos;мощность направленного эквивалента дозы H&apos;(0.07)
 		select case prefix
 		case &quot;мк&quot;
-				if point = 0.07	then ar = Array(&quot;430&quot;,&quot;257.3&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
-				if point = 0.7	then ar = Array(&quot;430_3&quot;,&quot;80.1&quot;)	rem в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
-				if point = 7 	then ar = Array(&quot;430&quot;,&quot;171.7&quot;)	rem без экрана
-				if point = 40	then ar = Array(&quot;430&quot;,&quot;70.6&quot;)	rem без экрана
-				if point = 70 	then ar = Array(&quot;430&quot;,&quot;54.5&quot;)	rem без экрана
+				if point = 0.07	then ar = Array(&quot;430_3&quot;,&quot;248.2&quot;)&apos; в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
+				if point = 0.7	then ar = Array(&quot;430_3&quot;,&quot;77.2&quot;)	&apos; в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
+				if point = 7 	then ar = Array(&quot;430&quot;,&quot;165.6&quot;)	&apos; без экрана
+				if point = 40	then ar = Array(&quot;430&quot;,&quot;70.0&quot;)	&apos; без экрана
+				if point = 70 	then ar = Array(&quot;430&quot;,&quot;52.6&quot;)	&apos; без экрана
 		end select
 	end if
-	&apos;if bdType = &quot;beta&quot; then 
-	&apos;			if prefix = &quot;0660&quot;	then ar = Array(&quot;0660&quot;, &quot;12345&quot;)
-	&apos;end if
+	if bdType = &quot;gammaHp007&quot; then &apos;мощность индивидуального эквивалента дозы Hp(0.07)
+		select case prefix
+		case &quot;мк&quot;
+				if point = 40	then ar = Array(&quot;430&quot;,&quot;72.6&quot;)	rem без экрана				
+		end select
+	end if
 	sourceDistanceArray = ar
 end function
 
