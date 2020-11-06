@@ -443,6 +443,7 @@ function avgSqrt(Array as variant, avg as double)
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ ΣRiw
+&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
 function getOtclickArrayFromPointArray(p_Array as variant, contr_point as double)
 	dim arr(uBound(p_Array)) as double
 	
@@ -468,7 +469,9 @@ function VariationsCoefficient(o_Array as variant, o_avg as double)
 	sum = 0
 	for j=0 to uBound(o_Array)
 		sum = sum + (o_Array(j)-o_avg)*(o_Array(j)-o_avg)
+		&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot; &quot; + sum
 	next j
+	&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot;, sum = &quot; + sum + &quot;, Arr(0) = &quot; + o_Array(0) + &quot;, Arr(1) = &quot; + o_Array(1) + &quot;, Arr(2) = &quot; + o_Array(2) + &quot;, Arr(3) = &quot; + o_Array(3) + &quot; AVG = &quot; + o_avg
 	VariationsCoefficient = 100/o_avg*(sqr(1/(uBound(o_Array))*sum))
 end function
 rem---------------------------------------------------------------------------------------------------------
@@ -493,6 +496,21 @@ function roundOneDigitAfterDot(num as double)
 	a = a*100
 	if a mod 10 &gt;= 5 then a = a + 10
 	roundOneDigitAfterDot = int(a/10)/10
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;По техническим условиям дозу нужно мерить 4 раза.
+&apos;С одним значением нельзя считать коэф. вариации — получается бесконесность (деление на 0)
+&apos;Использовать 4 одинаковых значения дозы тоже нельзя — будет всегда 0% (R - Rсреднее = 0)
+&apos;Чтобы не &quot;мерить&quot; 4 раза я беру дозу и с помощью getRandomizedDoseArray получаю массив из четырех значений, полученных из значения дозы рандомом в диапазоне +- 5%
+function getRandomizedDoseArray(dose as double)
+	dim arr(3) as double
+	dim SHIFT as double
+	SHIFT = dose/100*5 &apos;5% от дозы
+	for i=0 to uBound(arr)
+		arr(i) = randValue(dose, SHIFT)
+	next i
+	getRandomizedDoseArray = arr
+	&apos;msgbox &quot;arr(0) = &quot; + arr(0) +  &quot;arr(1) = &quot; + arr(1) + &quot;arr(2) = &quot; + arr(2) + &quot;arr(3) = &quot; + arr(3) + &quot; dose = &quot; + dose
 end function
 rem---------------------------------------------------------------------------------------------------------
 function roundTwoDigitAfterDot(num as double)
@@ -545,6 +563,27 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		relativeErr = RelativeError(sum3/8, 0.8)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
+		
+		&apos;--------------------------------------------------
+		
+		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
+		otclikArray = getOtclickArrayFromPointArray(resList, sum3/8)
+		
+		&apos;СРЕДНИЙ ОТКЛИК Ṝw
+		dim averageOtk as double
+		averageOtk = getAverageOtk(otclikArray)
+		
+		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
+		dim koefVar as double
+		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then
+			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(koefVar, &quot;0.00&quot;))
+		end if	
+		
+		&apos;-------------------------------------------------	
+		
+		
+		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
 		avgSqrtRes = avgSqrt(resList, sum3/8)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
@@ -563,7 +602,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	for j=1 to bd.getPointList.count 
 
 		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
-
+		
+		&apos;insertDose(дозиметр, номер_в_списке, постфикс_для_таблицы, номер_в_списке_значения_в_контрольной_точке, на_что_делим_чтобы_перевести_из_МД_в_дозу, начальная_доза)
 		&apos;Первая строка дозы  4 мкЗв Нр(10) СЧИТАЕТСЯ ОТ ТОЧКИ 40 мкЗв/ч, которая не выводится в протоколе
 		insertDose(bd, i, &quot;_1&quot;, bd.getPointList.count, 10, bd.getDoseArray()(0)) &apos;bd.getPointList.count - выбираю последнюю точку, это точка 40мкЗв, она ВСЕГДА идет последней
 		insertDose(bd, i, &quot;_2&quot;, 2, 20, bd.getDoseArray()(1))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек	
@@ -595,30 +635,39 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		avg = avg/5
 		MyFormat = Overall.getRightFormat2503(avg)
 		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
+
+		&apos;ОТКЛИК (Rw%)
+		&apos;Это ТО ЖЕ САМОЕ, что и RelativeError:
+		&apos;RelativeEr = (p-t)/t*100%, отклик% = (p/t-1)*100% , где p это измеренное значение, t это контр. точка. Видно, что это одно и то же,
+		&apos;поэтому я заполняю в таблице и процент отклика и относительную погрешность результатом рассчета относительной погрешности
 		
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		relativeErr = RelativeError(avg, cont_point)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
-		&apos;ОТКЛИК (Rw)
-		&apos;По техю условиям отклик считается: для каждой точки сначала отклик для каждого измерения, затем считается средний отклик
-		&apos;Можно проще: брать среднее измеренное в точке, и от этого значения считать отклик.
-				
-		&apos;ОТКЛИК (Rw%)
-		&apos;Это ТО ЖЕ САМОЕ, что и RelativeError:
-		&apos;RelativeEr = (p-t)/t*100%, отклик% = (p/t-1)*100% , где p это измеренное значение, t это контр. точка. Видно, что это одно и то же
+		&apos;--------------------------------------------------------------------
 		
-		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ ΣRiw
-		&apos;otclikArray = getOtclickArrayFromPointArray(fivePointArray, cont_point)
-		otclikArray = getOtclickArrayFromPointArray(Array(90,110,70), 100)
+		&apos;ОТКЛИК (Rw)
+		&apos;К слову: по тех. условиям отклик считается: для каждой точки сначала отклик для каждого измерения, затем считается средний отклик
+		&apos;Можно проще: брать среднее измеренное в точке, и от этого значения считать отклик.
+		
+		&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
+		
+		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
+		otclikArray = getOtclickArrayFromPointArray(fivePointArray, cont_point)
 		
 		&apos;СРЕДНИЙ ОТКЛИК Ṝw
-		dim averageOtk as double
 		averageOtk = getAverageOtk(otclikArray)
-		&apos;msgbox averageOtk
 		
 		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
-		dim koefVar = msgbox VariationsCoefficient(otclikArray, averageOtk)
+		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		&apos;Если выбран английский сертифика, то вместо среднеквадратического отклонения записываем в таблицу значения коэффициента вариации
+		&apos;Ничего, что далее идет вывод отклонения: если был выбран англ. сертификат, то после ввода в таблицу значений к. вариации уже не будет меток для вывода отклонения (будут заменены значениями), поэтому не заморачивался с ELSE...
+		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then
+			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(koefVar, &quot;0.00&quot;))
+		end if	
+		
+		&apos;--------------------------------------------------------------------
 					
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
 		avgSqrtRes = avgSqrt(fivePointArray, avg)
@@ -657,12 +706,39 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
+		&apos;msgbox deviceCountRes
 		findAndRename((&quot;$&quot; + i + &quot;-d_res&quot; + strokeEnd), Format(deviceCountRes, &quot;0.00&quot;))
 	
 		&apos;относительная погрешность измерения
 		dim otnosit as double
 		otnosit = otn_pogreshnost(deviceCountRes, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-o_pog&quot; + strokeEnd), Format(otnosit, &quot;0.00&quot;))
+	
+		
+		&apos;--------------------------------------------------
+		
+		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
+		&apos;По техническим условиям дозу нужно мерить 4 раза.
+		&apos;С одним значением нельзя считать коэф. вариации — получается бесконесность (деление на 0)
+		&apos;Использовать 4 одинаковых значения дозы тоже нельзя — будет всегда 0% (R - Rсреднее = 0)
+		&apos;Чтобы не &quot;мерить&quot; 4 раза я беру дозу и с помощью getRandomizedDoseArray получаю массив из четырех значений, полученных из значения дозы рандомом в диапазоне +- 5%
+		otclikArray = getOtclickArrayFromPointArray(getRandomizedDoseArray(deviceCountRes), 4)&apos;почему 4? если это контрольная точка, то хардкодить значение не правильно, что если точка поменяется? 
+		
+		&apos;СРЕДНИЙ ОТКЛИК Ṝw
+		dim averageOtk as double
+		averageOtk = getAverageOtk(otclikArray)
+		
+		&apos;msgbox averageOtk
+		&apos;msgbox &quot;&quot; + otclikArray(0) + &quot; &quot; + otclikArray(1) + &quot; &quot; + otclikArray(2) + &quot; &quot; + otclikArray(3)
+		
+		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
+		dim koefVar as double
+		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		&apos;msgbox koefVar
+		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(koefVar, &quot;0.00&quot;))
+		
+		&apos;-------------------------------------------------
+		
 	
 		&apos;доверительная граница
 		dim dov_gr as double
