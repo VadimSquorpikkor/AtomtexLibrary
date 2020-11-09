@@ -70,7 +70,7 @@ Sub G2503_Dialog_Show
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.06 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.07 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -233,7 +233,7 @@ rem-----------------------------------------------------------------------------
 function listBoxListener
 	Dim selectPos As Integer
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, 0)
 	selectPos = oListBox.getSelectedItemPos()
 	layoutPosition = selectPos + 1
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
@@ -244,7 +244,7 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, 0)
 	layoutPosition = layoutPosition + 1
 	setButtonVisibility(layoutPosition)
 	doseField1.value = BDList.item(layoutPosition).getDoseArray()(0)
@@ -254,7 +254,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
 	Overall.saveCurentMultiBDValue(layoutPosition)
-	BDList.item(layoutPosition).setDose(doseField.value)
+	BDList.item(layoutPosition).setDoseArray(doseField1.value, doseField2.value, 0)
 	layoutPosition = layoutPosition - 1
 	setButtonVisibility(layoutPosition)
 	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
