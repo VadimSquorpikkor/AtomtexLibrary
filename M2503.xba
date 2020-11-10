@@ -154,17 +154,17 @@ sub addNewBD
 	&apos;В диалоге точка идет последней
 	&apos;Диапазон: мк-м
 	if oDialog2503.getControl(&quot;isSinglePoint&quot;).state = 1 then
-		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 &quot;Зв/ч&quot;, Array(4,80,400,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,500))
-		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 &quot;Зв/ч&quot;, Array(4,80,40),	  		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,100))
-		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1),  	 &quot;Зв/ч&quot;, Array(4,80,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
-		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 &quot;Зв/ч&quot;, Array(4,80,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1),&quot;Зв/ч&quot;, Array(4,80,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
+		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
+		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
+		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
+		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
 	else
-		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(3,3,3,3), 	 &quot;Зв/ч&quot;, Array(4,80,400,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,500))
-		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(3,3,3),  		 &quot;Зв/ч&quot;, Array(4,80,40),	  		Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,100))
-		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3),  	 &quot;Зв/ч&quot;, Array(4,80,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
-		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 &quot;Зв/ч&quot;, Array(4,80,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3,3),&quot;Зв/ч&quot;, Array(4,80,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(3,3,3,3), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
+		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
+		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
+		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
+		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3,3,3),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,,&quot;м&quot;&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
 	end if	
 	
 	oDialog2503.getControl(&quot;removeButton&quot;).setEnable(true)
@@ -353,8 +353,10 @@ function randValueFromTo(fromNum as double, toNum as double)
 	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
 end function
 rem---------------------------------------------------------------------------------------------------------
+&apos;ОКРУГЛЯЕТ ДАННОЕ ЧИСЛО ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ, ОБРЕЗАЕТ ЧАСТЬ ЧИСЛА ПОСЛЕ ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
+&apos;2.89 -&gt; 2.9; 3.45123 -&gt; 3.45; 246.9 -&gt; 247
 Function round(num as single,dec as integer)
-	Round = Int(num * 10 ^ dec + 0.6) / 10 ^ dec
+	Round = Int(num * 10 ^ dec + 0.5) / 10 ^ dec
 End Function
 rem---------------------------------------------------------------------------------------------------------
 function max(one as double, two as double)
@@ -409,7 +411,10 @@ function avarageFivePointsRndArray(coll as Collection)
 		&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
 		dim accuracy as integer
 		accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
+		dim temp as double
+		temp = p4
 		p4 = round(p4, accuracy)
+		msgbox &quot;до: &quot; + temp + &quot; после: &quot; + p4
 	
 		p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
 		ar(3) = coll.item(1)
@@ -487,7 +492,7 @@ function ConfLimit(koef as double, sSigmaRes as double)
 	ConfLimit = koef * sSigmaRes
 end function
 rem---------------------------------------------------------------------------------------------------------
-function roundOneDigitAfterDot(num as double)
+function roundOneDigitAfterDot(num as double)&apos;!!!@DEPRECATED!!!
 	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ОДНОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
 	&apos;2.69 -&gt; 2.7
 	&apos;4.12 -&gt; 4.1 
@@ -536,15 +541,15 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
-	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(round(sum1/8, 2), &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(round(sum2/8, 2), &quot;0.00&quot;))
 	
 	for k = 0 to 7
-		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
-		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(round(bgList(k), 2), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(round(devList(k), 2), &quot;0.00&quot;))
 	next k	
-	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+&apos;	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+&apos;	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
@@ -558,15 +563,18 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;)(1)) rem расстояние до источника
 
+		&apos;resList — это сгенерированные 8 точек С ВЫЧЕТОМ ФОНА
+
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		&apos;msgbox &quot;avrg = &quot; + sum3/8
 		relativeErr = RelativeError(sum3/8, 0.8)
-		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(round(relativeErr, 2), &quot;0.00&quot;))
 		
-		
+		&apos;msgbox &quot;0-&quot; + resList(0) + &quot;1-&quot; + resList(1) + &quot;2-&quot; + resList(2) + &quot;3-&quot; + resList(3) 
 		&apos;--------------------------------------------------
 		
 		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
+		&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
 		otclikArray = getOtclickArrayFromPointArray(resList, sum3/8)
 		
 		&apos;СРЕДНИЙ ОТКЛИК Ṝw
@@ -577,7 +585,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		dim koefVar as double
 		koefVar = VariationsCoefficient(otclikArray, averageOtk)
 		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then
-			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(koefVar, &quot;0.00&quot;))
+			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(round(koefVar, 2), &quot;0.00&quot;))
 		end if	
 		
 		&apos;-------------------------------------------------	
@@ -703,7 +711,11 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1) + bd.getMultiValueList.item(point_number).item(2) + bd.getMultiValueList.item(point_number).item(3)) / 3 / time + deviceCountZero 
 		end if	
 		
-		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
+		&apos;deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
+		deviceCountDone = round(deviceCountDone,1)
+		
+		&apos;msgbox &quot;&quot; + roundOneDigitAfterDot(deviceCountDone) + &quot; = &quot; + round(deviceCountDone,1)
+		
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
 		&apos;msgbox deviceCountRes
