@@ -38,7 +38,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1117M )
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
-	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.13 &quot;, isComboCollection, BDList)
+	Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.14 &quot;, isComboCollection, BDList)
 		
 	initialize1117 &apos;ЗАГРУЗКА БД
 	
@@ -115,7 +115,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	
 	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),			emptyArray,										&quot;alpha&quot;,	Array(0.05,2))
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5))
-	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),			&quot;n-PP&quot;,		Array(0.1,0.2))
+	&apos;addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),			&quot;n-PP&quot;,		Array(0.1,0.2))
+	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,		Array(2.1, 11.60, 91.0, 261, 913),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,0.2))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
@@ -600,6 +601,26 @@ sub neutron_03(i as integer, bd as BUnit)
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_05(i as integer, bd as BUnit)
+	dim point_br_array(3) as double
+	dim point_fio_array(3) as double
+	point_br_array = Array(0.607, 0.607, 0.866, 0.966)
+	point_fio_array = Array(6, 57, 235, 986)
+	dim fon, p1, p2, p3 as double
+	fon = bd.valueList.item(1)	&apos;фон
+	dim point as double
+	
+	for n = 1 to 4
+		point = bd.valueList.item(n+1)
+		p1 = (point-fon)*point_br_array(n-1)
+		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
+		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
+		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
+		p3 = 1.1 * sqr(p2 * p2 + 5*5)
+		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+	next n
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub neutron_05_old(i as integer, bd as BUnit)
 	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
 	dim m_point, p1, p2, p3 as double
 	dim j as integer

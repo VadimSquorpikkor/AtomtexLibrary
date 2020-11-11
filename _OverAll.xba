@@ -44,8 +44,15 @@ sub deleteTable(name as string)
      end if
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
+sub copyTableNOTW(oldName as string, newName as string)
+	if ThisComponent.TextTables().hasByName(oldName) then
+     	ThisComponent.Text.copyTextContent(ThisComponent.TextTables().getByName(oldName))
+    end if
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
 sub copyTable(oldName as string, newName as string)
-tables = ThisComponent.TextTables()
+	dim tables as object
+	tables = ThisComponent.TextTables()
      if tables.hasByName(oldName) then
      ThisComponent.Text.copyTextContent(tables.getByName(oldName))
      end if
@@ -540,4 +547,44 @@ rem ----------------------------------------------------------------------
 																										&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+
+sub table_copping
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+
+
+end sub
+
+
+sub rec_1
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+
+rem ----------------------------------------------------------------------
+dispatcher.executeDispatch(document, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+
+
+end sub
 </script:module>

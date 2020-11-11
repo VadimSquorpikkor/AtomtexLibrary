@@ -287,6 +287,8 @@ sub insertRecordsToTemplate
 	Overall.insertParametersToTemplate(calibName, techName)
 	dim bd as new DUnit
 	
+	copyTable(&quot;t1&quot;, &quot;new_t1&quot;)
+	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot;  + (k))
 	next k
