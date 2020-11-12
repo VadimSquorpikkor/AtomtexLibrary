@@ -344,7 +344,7 @@ sub insertRecordsToTemplate
 	next k
 	
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate (calibName, techName)
+	Overall.insertParametersToTemplate
 		
 	for i=1 to BDList.count
 		bd = BDList.item(i)

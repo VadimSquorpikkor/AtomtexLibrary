@@ -352,39 +352,6 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	avaragePointsRndArray = ar	
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-function roundTwoDigitAfterDot(num as double)
-	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО 2 ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-	&apos;msgbox &quot;before - &quot; + num
-	dim a as double
-	a = num
-	a = a*1000
-	if a mod 10 &gt;= 5 then a = a + 10
-	&apos;msgbox &quot;after - &quot; + int(a/10)/100
-	roundTwoDigitAfterDot = int(a/10)/100
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-function avaragePointsRndFiveArray(point as double, o_percent as double)
-	dim deviation as double
-	dim p1 as double
-	dim p2 as double
-	dim p3 as double
-	dim p4 as double
-	dim p5 as double
-	dim ar(4) as double 
-	deviation = o_percent/100*point
-	p1 = roundTwoDigitAfterDot(randValue(point, deviation))
-	p2 = roundTwoDigitAfterDot(randValue(point, deviation))
-	p3 = roundTwoDigitAfterDot(randValue(point, deviation))
-	p4 = roundTwoDigitAfterDot(randValue(point, deviation))
-	p5 = point*5 - p1 - p2 - p3 - p4
-	ar(0) = p1
-	ar(1) = p2
-	ar(2) = p3
-	ar(3) = p4
-	ar(4) = p5
-	avaragePointsRndFiveArray = ar
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)
 		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
 		dim src_name as string

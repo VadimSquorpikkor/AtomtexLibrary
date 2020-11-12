@@ -174,13 +174,13 @@ sub insertRecordsToTemplate
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
 		
-	if oOption02.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn02&quot;, calibName, techName)
-	if oOption04.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn04&quot;, calibName, techName)
-	if oOption05.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn05&quot;, calibName, techName)
+	if oOption02.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn02&quot;)
+	if oOption04.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn04&quot;)
+	if oOption05.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn05&quot;)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate (calibName, techName)
+	Overall.insertParametersToTemplate
 	dim bd as new DUnit
 	dim bdkn as new NUnit
 &apos;&apos;&apos;&apos;&apos;&apos;	dim threePointArray(2) as double

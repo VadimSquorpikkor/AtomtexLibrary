@@ -11,6 +11,7 @@ rem		╚════════════════════════
 rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
 rem---------------------------------------------------------------------------------------------------------
 dim Overall as new Overall
+dim Math as new AtomMath
 dim oDialog2503 as object
 dim oDateFieldModel as object
 dim oListBox as object
@@ -51,8 +52,6 @@ dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
 
 dim macroWindow as object
 
-&apos;dim doseField as object
-
 dim isSinglePoint as boolean
 
 dim doseField1 as object
@@ -70,7 +69,7 @@ Sub G2503_Dialog_Show
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.07 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.08 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -191,6 +190,7 @@ sub setButtonVisibility(layoutPosition as integer)
 		oDialog2503.getControl(&quot;isSinglePoint&quot;).setEnable(true)
 		for i=1 to pointCount
 			oDialog2503.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
+			oDialog2503.Model.getByName(&quot;labelField&quot; + i).textColor = RGB(0, 0, 0)&apos;сброс на черный цвет, если до этого был выбран синий
 		next i
 		for i=1 to pointCount
 			for j=1 to measurementPerPoint
@@ -276,18 +276,18 @@ sub insertRecordsToTemplate
 	strokeForSaving = &quot;&quot;
 	dim divider as String
 	divider = &quot;&quot;
-	if is2503.state  then path = Overall.PathForProtocol(&quot;2503\2503&quot;, calibName, techName)
-	if is2503A.state then path = Overall.PathForProtocol(&quot;2503\2503a&quot;, calibName, techName)
-	if is2503B.state then path = Overall.PathForProtocol(&quot;2503\2503b&quot;, calibName, techName)
-	if is2503B_1.state then path = Overall.PathForProtocol(&quot;2503\2503b1&quot;, calibName, techName)
-	if is2503B_2.state then path = Overall.PathForProtocol(&quot;2503\2503b2&quot;, calibName, techName)
+	if is2503.state  	then path = Overall.PathForProtocol(&quot;2503\2503&quot;)
+	if is2503A.state 	then path = Overall.PathForProtocol(&quot;2503\2503a&quot;)
+	if is2503B.state 	then path = Overall.PathForProtocol(&quot;2503\2503b&quot;)
+	if is2503B_1.state 	then path = Overall.PathForProtocol(&quot;2503\2503b1&quot;)
+	if is2503B_2.state 	then path = Overall.PathForProtocol(&quot;2503\2503b2&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate(calibName, techName)
+	Overall.insertParametersToTemplate
 	dim bd as new DUnit
 	
-	copyTable(&quot;t1&quot;, &quot;new_t1&quot;)
+	&apos;copyTable(&quot;t1&quot;, &quot;new_t1&quot;)
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot;  + (k))
@@ -304,11 +304,11 @@ sub insertRecordsToTemplate
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)
-	if is2503.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503&quot;
-	if is2503A.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503A&quot;
-	if is2503B.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503B&quot;
-	if is2503B_1.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/1&quot;
-	if is2503B_2.state then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/2&quot;
+	if is2503.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503&quot;
+	if is2503A.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503A&quot;
+	if is2503B.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B&quot;
+	if is2503B_1.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/1&quot;
+	if is2503B_2.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/2&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
@@ -350,187 +350,6 @@ sub startGenerator()
 	oDialog2503.getControl(&quot;count&quot;).text = k
 end sub
 rem---------------------------------------------------------------------------------------------------------
-&apos;рандом от числа -- до числа
-function randValueFromTo(fromNum as double, toNum as double)
-	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ОКРУГЛЯЕТ ДАННОЕ ЧИСЛО ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ, ОБРЕЗАЕТ ЧАСТЬ ЧИСЛА ПОСЛЕ ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-&apos;2.89 -&gt; 2.9; 3.45123 -&gt; 3.45; 246.9 -&gt; 247
-Function round(num as single,dec as integer)
-	Round = Int(num * 10 ^ dec + 0.5) / 10 ^ dec
-End Function
-rem---------------------------------------------------------------------------------------------------------
-function max(one as double, two as double)
-	if one &gt; two then
-		max = one
-	else
-		max = two
-	end if
-end function
-rem---------------------------------------------------------------------------------------------------------
-function min(one as double, two as double)
-	if one &gt; two then
-		min = two
-	else
-		min = one
-	end if
-end function
-rem---------------------------------------------------------------------------------------------------------
-function minimumAndMaximum(one as double, two as double, three as double)
-	&apos;TODO СДЕЛАТЬ -- НА ВХОД ПОДАВАТЬ КОЛЛЕКЦИЮ ИЗ ЛЮБОГО КОЛЛИЧЕСТВА ЭЛЕМЕНТОВ
-	dim ar(1) as double
-	ar(0) = min(min(one, two), three)
-	ar(1) = max(max(one, two), three)
-	minimumAndMaximum = ar
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
-function avarageFivePointsRndArray(coll as Collection)
-	dim ar(4) as double
-	&apos;&apos;если приходит одно число -- генерим все пять
-	if coll.count = 1 then
-		ar = Overall.avaragePointsRndFiveArray(coll.item(1), Overall.percentOTK)
-	&apos;&apos;если приходит 3 числа -- генерим оставшиеся 2 по хитрому рандому:	
-	else
-		&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
-		dim deviation as double
-		dim p4 as double
-		dim p5 as double
-		dim point as double
-		point = (coll.item(1) + coll.item(2) + coll.item(3))/3
-	
-		&apos;смысл такой -- процент отклонения от среднего не константа:
-		&apos;берём разницу между максимальным значением и минимальным минус минимальное
-		&apos;тогда четвертое значение рандомно выбирается из этого диапазона (минус минимальное нужно для того, чтобы пятое значение было не меньше минимального)
-		&apos;таким образом разброс значений никогда не будет выходить за границы макс и мин значений входящих трёх значений, т.е. процент отклонения считается автоматически на основании входных данных
-		dim maximum as double
-		dim minimum as double
-		maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
-		minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
-		p4 = minimum + rnd()*((point - minimum)*2)	
-
-		&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
-		dim accuracy as integer
-		accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
-		dim temp as double
-		temp = p4
-		p4 = round(p4, accuracy)
-		msgbox &quot;до: &quot; + temp + &quot; после: &quot; + p4
-	
-		p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
-		ar(3) = coll.item(1)
-		ar(1) = coll.item(2)
-		ar(2) = coll.item(3)
-		ar(0) = p4
-		ar(4) = p5
-		&apos;СГЕНЕРИРОВАННЫЕ ЧИСЛА СТАВЛЮ В НАЧАЛО И КОНЕЦ (0), (4)
-	end if	
-	avarageFivePointsRndArray = ar
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-function avgSqrt(Array as variant, avg as double)
-	dim nValue as integer
-	dim arr(0) as double
-	dim average as double
-	nValue = uBound(Array) + 1 
-	average = avg
-	dim sum as double
-	sum = 0
-		
-	for i=0 to nValue - 1
-		sum = sum + (Array(i) - average)*(Array(i) - average)
-	next i
-	
-	dim n as integer
-	n = nValue * (nValue - 1)
-	
-	avgSqrt = 1/average*sqr(sum/n)*100
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ ΣRiw
-&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
-function getOtclickArrayFromPointArray(p_Array as variant, contr_point as double)
-	dim arr(uBound(p_Array)) as double
-	
-	for j=0 to uBound(p_Array)
-		arr(j) = p_Array(j)/contr_point
-	next j
-	getOtclickArrayFromPointArray = arr
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;СРЕДНИЙ ОТКЛИК Ṝw
-function getAverageOtk(o_Array as variant)
-	dim summ as double
-	summ = 0
-	for j=0 to uBound(o_Array)
-		summ = summ + o_Array(j)
-	next j
-	getAverageOtk = summ / (uBound(o_Array)+1)
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw (для английских сертификатов)
-function VariationsCoefficient(o_Array as variant, o_avg as double)
-	dim sum as double
-	sum = 0
-	for j=0 to uBound(o_Array)
-		sum = sum + (o_Array(j)-o_avg)*(o_Array(j)-o_avg)
-		&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot; &quot; + sum
-	next j
-	&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot;, sum = &quot; + sum + &quot;, Arr(0) = &quot; + o_Array(0) + &quot;, Arr(1) = &quot; + o_Array(1) + &quot;, Arr(2) = &quot; + o_Array(2) + &quot;, Arr(3) = &quot; + o_Array(3) + &quot; AVG = &quot; + o_avg
-	VariationsCoefficient = 100/o_avg*(sqr(1/(uBound(o_Array))*sum))
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
-	&apos;msgbox &quot;b: &quot; + avgSqrtRes + &quot; &quot; + facilityPercent + &quot; &quot; + relativeErr
-	&apos;msgbox &quot;a: &quot; + sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
-	sSigma = sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-function ConfLimit(koef as double, sSigmaRes as double)
-	ConfLimit = koef * sSigmaRes
-end function
-rem---------------------------------------------------------------------------------------------------------
-function roundOneDigitAfterDot(num as double)&apos;!!!@DEPRECATED!!!
-	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ОДНОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-	&apos;2.69 -&gt; 2.7
-	&apos;4.12 -&gt; 4.1 
-	dim a as double
-	a = num
-	a = a*100
-	if a mod 10 &gt;= 5 then a = a + 10
-	roundOneDigitAfterDot = int(a/10)/10
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;По техническим условиям дозу нужно мерить 4 раза.
-&apos;С одним значением нельзя считать коэф. вариации — получается бесконесность (деление на 0)
-&apos;Использовать 4 одинаковых значения дозы тоже нельзя — будет всегда 0% (R - Rсреднее = 0)
-&apos;Чтобы не &quot;мерить&quot; 4 раза я беру дозу и с помощью getRandomizedDoseArray получаю массив из четырех значений, полученных из значения дозы рандомом в диапазоне +- 5%
-function getRandomizedDoseArray(dose as double)
-	dim arr(3) as double
-	dim SHIFT as double
-	SHIFT = dose/100*5 &apos;5% от дозы
-	for i=0 to uBound(arr)
-		arr(i) = randValue(dose, SHIFT)
-	next i
-	getRandomizedDoseArray = arr
-	&apos;msgbox &quot;arr(0) = &quot; + arr(0) +  &quot;arr(1) = &quot; + arr(1) + &quot;arr(2) = &quot; + arr(2) + &quot;arr(3) = &quot; + arr(3) + &quot; dose = &quot; + dose
-end function
-rem---------------------------------------------------------------------------------------------------------
-function roundTwoDigitAfterDot(num as double)
-	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО 2 ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-	&apos;msgbox &quot;before - &quot; + num
-	dim a as double
-	a = num
-	a = a*1000
-	if a mod 10 &gt;= 5 then a = a + 10
-	&apos;msgbox &quot;after - &quot; + int(a/10)/100
-	roundTwoDigitAfterDot = int(a/10)/100
-end function
-rem---------------------------------------------------------------------------------------------------------
 sub templateMultiStep(i as integer, strokeEnd as string)
 	dim src_name as string
 	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
@@ -543,15 +362,13 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
-	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(round(sum1/8, 2), &quot;0.00&quot;))
-	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(round(sum2/8, 2), &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(Math.round(sum1/8, 2), &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(Math.round(sum2/8, 2), &quot;0.00&quot;))
 	
 	for k = 0 to 7
-		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(round(bgList(k), 2), &quot;0.00&quot;))
-		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(round(devList(k), 2), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(Math.round(bgList(k), 2), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(Math.round(devList(k), 2), &quot;0.00&quot;))
 	next k	
-&apos;	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-&apos;	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
@@ -570,24 +387,24 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		&apos;msgbox &quot;avrg = &quot; + sum3/8
 		relativeErr = RelativeError(sum3/8, 0.8)
-		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(round(relativeErr, 2), &quot;0.00&quot;))
+		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(Math.round(relativeErr, 2), &quot;0.00&quot;))
 		
 		&apos;msgbox &quot;0-&quot; + resList(0) + &quot;1-&quot; + resList(1) + &quot;2-&quot; + resList(2) + &quot;3-&quot; + resList(3) 
 		&apos;--------------------------------------------------
 		
 		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
 		&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
-		otclikArray = getOtclickArrayFromPointArray(resList, sum3/8)
+		otclikArray = Math.getOtclickArrayFromPointArray(resList, sum3/8)
 		
 		&apos;СРЕДНИЙ ОТКЛИК Ṝw
 		dim averageOtk as double
-		averageOtk = getAverageOtk(otclikArray)
+		averageOtk = Math.getAverageOtk(otclikArray)
 		
 		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
 		dim koefVar as double
-		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		koefVar = Math.VariationsCoefficient(otclikArray, averageOtk)
 		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then
-			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(round(koefVar, 2), &quot;0.00&quot;))
+			findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(Math.round(koefVar, 2), &quot;0.00&quot;))
 		end if	
 		
 		&apos;-------------------------------------------------	
@@ -595,17 +412,17 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-		avgSqrtRes = avgSqrt(resList, sum3/8)
+		avgSqrtRes = Math.avgSqrt(resList, sum3/8)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
 		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
 		
 		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-		dovGranica = ConfLimit(2, sSigmaRes)
+		dovGranica = Math.ConfLimit(2, sSigmaRes)
 		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 	
 	&apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
@@ -628,7 +445,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
-		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
+		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j))
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)
@@ -664,13 +481,13 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;Чтобы получить массив значений отклика я беру массив измеренных значений и каждое значение перевожу в отклик (Rw = G / Hp(10))
 		
 		&apos;МАССИВ ОТКЛИКОВ ДЛЯ ТЕКУЩЕЙ КОНТРОЛЬНОЙ ТОЧКИ Riw
-		otclikArray = getOtclickArrayFromPointArray(fivePointArray, cont_point)
+		otclikArray = Math.getOtclickArrayFromPointArray(fivePointArray, cont_point)
 		
 		&apos;СРЕДНИЙ ОТКЛИК Ṝw
-		averageOtk = getAverageOtk(otclikArray)
+		averageOtk = Math.getAverageOtk(otclikArray)
 		
 		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
-		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		koefVar = Math.VariationsCoefficient(otclikArray, averageOtk)
 		&apos;Если выбран английский сертифика, то вместо среднеквадратического отклонения записываем в таблицу значения коэффициента вариации
 		&apos;Ничего, что далее идет вывод отклонения: если был выбран англ. сертификат, то после ввода в таблицу значений к. вариации уже не будет меток для вывода отклонения (будут заменены значениями), поэтому не заморачивался с ELSE...
 		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then
@@ -680,17 +497,17 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;--------------------------------------------------------------------
 					
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-		avgSqrtRes = avgSqrt(fivePointArray, avg)
+		avgSqrtRes = Math.avgSqrt(fivePointArray, avg)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
 		facilityPercent = Overall.FacilityError(cont_point, BDType, prefix)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
 		
 		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-		dovGranica = ConfLimit(2, sSigmaRes)
+		dovGranica = Math.ConfLimit(2, sSigmaRes)
 		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + j + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 		
 	next j
@@ -714,9 +531,7 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 		end if	
 		
 		&apos;deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
-		deviceCountDone = round(deviceCountDone,1)
-		
-		&apos;msgbox &quot;&quot; + roundOneDigitAfterDot(deviceCountDone) + &quot; = &quot; + round(deviceCountDone,1)
+		deviceCountDone = Math.round(deviceCountDone,1)
 		
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
@@ -736,32 +551,27 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 		&apos;С одним значением нельзя считать коэф. вариации — получается бесконесность (деление на 0)
 		&apos;Использовать 4 одинаковых значения дозы тоже нельзя — будет всегда 0% (R - Rсреднее = 0)
 		&apos;Чтобы не &quot;мерить&quot; 4 раза я беру дозу и с помощью getRandomizedDoseArray получаю массив из четырех значений, полученных из значения дозы рандомом в диапазоне +- 5%
-		otclikArray = getOtclickArrayFromPointArray(getRandomizedDoseArray(deviceCountRes), 4)&apos;почему 4? если это контрольная точка, то хардкодить значение не правильно, что если точка поменяется? 
+		otclikArray = Math.getOtclickArrayFromPointArray(Math.getRandomizedDoseArray(deviceCountRes), 4)&apos;почему 4? если это контрольная точка, то хардкодить значение не правильно, что если точка поменяется? 
 		
 		&apos;СРЕДНИЙ ОТКЛИК Ṝw
 		dim averageOtk as double
-		averageOtk = getAverageOtk(otclikArray)
+		averageOtk = Math.getAverageOtk(otclikArray)
 		
 		&apos;msgbox averageOtk
 		&apos;msgbox &quot;&quot; + otclikArray(0) + &quot; &quot; + otclikArray(1) + &quot; &quot; + otclikArray(2) + &quot; &quot; + otclikArray(3)
 		
 		&apos;КОЭФФИЦИЕНТ ВАРИАЦИИ Vw, %
 		dim koefVar as double
-		koefVar = VariationsCoefficient(otclikArray, averageOtk)
+		koefVar = Math.VariationsCoefficient(otclikArray, averageOtk)
 		&apos;msgbox koefVar
 		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(koefVar, &quot;0.00&quot;))
 		
 		&apos;-------------------------------------------------
-		
 	
 		&apos;доверительная граница
 		dim dov_gr as double
 		dov_gr = dov_granica(otnosit, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
 end sub
-
-		
-		
-		
 
 </script:module>

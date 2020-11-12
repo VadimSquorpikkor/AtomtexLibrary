@@ -311,11 +311,11 @@ sub insertRecordsToTemplate
 	saveAllBD rem ПЕРЕД ТЕМ, КАК ФОРМИРОВАТЬ ПРОТОКОЛ ПОВЕРКИ, НЕОБХОДИМО СОХРАНИТЬ В DUnit ИЗМЕНЕННЫЕ ЗНАЧЕНИЯ В ЯЧЕЙКАХ ФОРМЫ ПРОГРАММЫ (МЕТОД Overall.insertToTemplateStep ФОРМИРУЕТ ТАБЛИЦУ ИЗ ДАННЫХ ОБЪЕКТА DUnit)
 	dim strokeForSaving, serial as string
 	
-	path = Overall.PathForProtocol(&quot;1125/1125&quot;, calibName, techName)
+	path = Overall.PathForProtocol(&quot;1125/1125&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate(calibName, techName)
+	Overall.insertParametersToTemplate
 	
 	dim bd as new DUnit
 	dim min, max as double

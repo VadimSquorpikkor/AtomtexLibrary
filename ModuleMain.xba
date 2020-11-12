@@ -22,6 +22,8 @@ function getPath(user_name as String)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 Sub MainDialog_Show
+	&apos;BasicLibraries.loadLibrary(&quot;XrayTool&quot;)
+	&apos;xray thisComponent
 	dim user_name as String
 	dim serthPath as String
 	dim i as integer

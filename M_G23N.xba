@@ -134,7 +134,7 @@ sub insertRecordsToTemplate
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate (calibName, techName)
+	Overall.insertParametersToTemplate
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		deleteTable(&quot;t&quot; + (k))

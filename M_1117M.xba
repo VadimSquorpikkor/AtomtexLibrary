@@ -483,7 +483,7 @@ sub insertDataToTemplate
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
 	dim path as string
-	path = Overall.PathForProtocol(&quot;1117\1117&quot;, calibName, techName)
+	path = Overall.PathForProtocol(&quot;1117\1117&quot;)
 	dim point as double
 
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
@@ -494,7 +494,7 @@ sub insertDataToTemplate
 	findAndRename(&quot;$temp&quot;, Format(oDialog1117.getControl(&quot;tempField&quot;).value, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(oDialog1117.getControl(&quot;vlaghField&quot;).value, &quot;0.0&quot;))
 		
-	Overall.insertParametersToTemplate(calibName, techName)
+	Overall.insertParametersToTemplate
 	Overall.insertFacilitiesText
 
 	serial = oDialog1117.getControl(&quot;bdSerial&quot;).Text
@@ -560,51 +560,22 @@ sub insertDataToTemplate
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_01(i as integer, bd as BUnit)
-	dim point_br_array(3) as double
-	dim point_fio_array(3) as double
-	point_br_array = Array(0.6, 0.6, 0.863, 0.965)
-	point_fio_array = Array(6, 57, 235, 986)
-	dim fon, p1, p2, p3 as double
-	fon = bd.valueList.item(1)	&apos;фон
-	dim point as double
-	
-	for n = 1 to 4
-		point = bd.valueList.item(n+1)
-		p1 = (point-fon)*point_br_array(n-1)
-		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
-		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
-		p3 = 1.1 * sqr(p2 * p2 + 5*5)
-		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
-	next n
+	neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 57, 235, 986))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
-&apos;TODO объединить методы neutron_03 и neutron_01
 sub neutron_03(i as integer, bd as BUnit)
-	dim point_br_array(3) as double
-	dim point_fio_array(3) as double
-	point_br_array = Array(0.922, 0.866, 0.980, 0.995)
-	point_fio_array = Array(9, 80, 330, 1460)
-	dim fon, p1, p2, p3 as double
-	fon = bd.valueList.item(1)	&apos;фон
-	dim point as double
-		
-	for n = 1 to 4
-		point = bd.valueList.item(n+1)
-		p1 = (point-fon)*point_br_array(n-1)	
-		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
-		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
-		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
-		p3 = 1.1 * sqr(p2 * p2 + 5*5)
-		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
-	next n
+	neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_05(i as integer, bd as BUnit)
+	neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 57, 235, 986))
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
-	point_br_array = Array(0.607, 0.607, 0.866, 0.966)
-	point_fio_array = Array(6, 57, 235, 986)
+	point_br_array = br
+	point_fio_array = fio
 	dim fon, p1, p2, p3 as double
 	fon = bd.valueList.item(1)	&apos;фон
 	dim point as double
@@ -618,43 +589,6 @@ sub neutron_05(i as integer, bd as BUnit)
 		p3 = 1.1 * sqr(p2 * p2 + 5*5)
 		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
 	next n
-end sub
-&apos;---------------------------------------------------------------------------------------------------------
-sub neutron_05_old(i as integer, bd as BUnit)
-	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
-	dim m_point, p1, p2, p3 as double
-	dim j as integer
-	p1 = bd.valueList.item(1)
-	p2 = bd.valueList.item(2)
-	p3 = bd.valueList.item(3)
-	
-	dim s as double &apos;Чувствительность
-	dim N as double &apos;
-	dim f as double &apos;
-	dim k as double &apos;коэффициент
-
-	N = p3
-	f = p2
-	k = 0.6815
-	
-	&apos;Расчет чувствительности
-	s = n / f * k
-	
-	rem Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
-	threePointArray_1 = Overall.avaragePointsRndArray(p1, 25) &apos;OverAll.percentOtk)
-	threePointArray_2 = Overall.avaragePointsRndArray(p2, 10) &apos;OverAll.percentOtk)
-	threePointArray_3 = Overall.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
-	
-	for j=0 to bd.getPointList.count-1
-		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
-		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), Format(threePointArray_2(j), &quot;0&quot;)) rem рандом 2
-		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
-	next j		
-	
-	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
-	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
-	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
-	findAndRename((&quot;$&quot; + i + &quot;-70&quot;), Format(s,  &quot;0.00&quot;)) 
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()

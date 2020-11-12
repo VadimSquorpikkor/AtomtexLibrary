@@ -11,6 +11,7 @@ rem		╚════════════════════════
 rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
 rem---------------------------------------------------------------------------------------------------------
 dim Overall as new Overall
+dim Math as new AtomMath
 dim oDialog3509 as object
 dim oDateFieldModel as object
 dim oListBox as object
@@ -276,14 +277,14 @@ sub insertRecordsToTemplate
 	strokeForSaving = &quot;&quot;
 	dim divider as String
 	divider = &quot;&quot;
-	if is3509.state  then path = Overall.PathForProtocol(&quot;3509\3509&quot;, calibName, techName)
-	if is3509A.state then path = Overall.PathForProtocol(&quot;3509\3509a&quot;, calibName, techName)
-	if is3509B.state then path = Overall.PathForProtocol(&quot;3509\3509b&quot;, calibName, techName)
-	if is3509C.state then path = Overall.PathForProtocol(&quot;3509\3509c&quot;, calibName, techName)
+	if is3509.state  then path = Overall.PathForProtocol(&quot;3509\3509&quot;)
+	if is3509A.state then path = Overall.PathForProtocol(&quot;3509\3509a&quot;)
+	if is3509B.state then path = Overall.PathForProtocol(&quot;3509\3509b&quot;)
+	if is3509C.state then path = Overall.PathForProtocol(&quot;3509\3509c&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate(calibName, techName)
+	Overall.insertParametersToTemplate
 	dim bd as new DUnit
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
@@ -347,124 +348,6 @@ sub startGenerator()
 	oDialog3509.getControl(&quot;count&quot;).text = k
 end sub
 rem---------------------------------------------------------------------------------------------------------
-&apos;рандом от числа -- до числа
-function randValueFromTo(fromNum as double, toNum as double)
-	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ОКРУГЛЯЕТ ДАННОЕ ЧИСЛО ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ, ОБРЕЗАЕТ ЧАСТЬ ЧИСЛА ПОСЛЕ ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-&apos;2.89 -&gt; 2.9; 3.45123 -&gt; 3.45; 246.9 -&gt; 247
-Function round(num as single,dec as integer)
-	Round = Int(num * 10 ^ dec + 0.5) / 10 ^ dec
-End Function
-rem---------------------------------------------------------------------------------------------------------
-function max(one as double, two as double)
-	if one &gt; two then
-		max = one
-	else
-		max = two
-	end if
-end function
-rem---------------------------------------------------------------------------------------------------------
-function min(one as double, two as double)
-	if one &gt; two then
-		min = two
-	else
-		min = one
-	end if
-end function
-rem---------------------------------------------------------------------------------------------------------
-function minimumAndMaximum(one as double, two as double, three as double)
-	&apos;TODO СДЕЛАТЬ -- НА ВХОД ПОДАВАТЬ КОЛЛЕКЦИЮ ИЗ ЛЮБОГО КОЛЛИЧЕСТВА ЭЛЕМЕНТОВ
-	dim ar(1) as double
-	ar(0) = min(min(one, two), three)
-	ar(1) = max(max(one, two), three)
-	minimumAndMaximum = ar
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
-function avarageFivePointsRndArray(coll as Collection)
-	dim ar(4) as double
-	&apos;&apos;если приходит одно число -- генерим все пять
-	if coll.count = 1 then
-		ar = Overall.avaragePointsRndFiveArray(coll.item(1), Overall.percentOTK)
-	&apos;&apos;если приходит 3 числа -- генерим оставшиеся 2 по хитрому рандому:	
-	else
-		&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)
-		dim deviation as double
-		dim p4 as double
-		dim p5 as double
-		dim point as double
-		point = (coll.item(1) + coll.item(2) + coll.item(3))/3
-		 
-	
-		&apos;смысл такой -- процент отклонения от среднего не константа:
-		&apos;берём разницу между максимальным значением и минимальным минус минимальное
-		&apos;тогда четвертое значение рандомно выбирается из этого диапазона (минус минимальное нужно для того, чтобы пятое значение было не меньше минимального)
-		&apos;таким образом разброс значений никогда не будет выходить за границы макс и мин значений входящих трёх значений, т.е. процент отклонения считается автоматически на основании входных данных
-		dim maximum as double
-		dim minimum as double
-		maximum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(1)
-		minimum = minimumAndMaximum(coll.item(1), coll.item(2), coll.item(3))(0)
-		p4 = minimum + rnd()*((point - minimum)*2)	
-
-		&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
-		dim accuracy as integer
-		accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
-		p4 = round(p4, accuracy)
-	
-		p5 = point*2 - p4 &apos;сокращенное от (point*5 - point*3)-p4
-		ar(3) = coll.item(1)
-		ar(1) = coll.item(2)
-		ar(2) = coll.item(3)
-		ar(0) = p4
-		ar(4) = p5
-		&apos;СГЕНЕРИРОВАННЫЕ ЧИСЛА СТАВЛЮ В НАЧАЛО И КОНЕЦ (0), (4)
-	end if	
-	avarageFivePointsRndArray = ar
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-function avgSqrt(Array as variant, avg as double)
-	dim nValue as integer
-	dim arr(0) as double
-	dim average as double
-	nValue = uBound(Array) + 1
-	average = avg
-	dim sum as double
-	sum = 0
-	
-	for i=0 to nValue - 1
-		sum = sum + (Array(i) - average)*(Array(i) - average)
-	next i
-	
-	dim n as integer
-	n = nValue * (nValue - 1)
-	
-	avgSqrt = 1/average*sqr(sum/n)*100
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
-	sSigma = sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
-end function
-rem---------------------------------------------------------------------------------------------------------
-&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-function ConfLimit(koef as double, sSigmaRes as double)
-	ConfLimit = koef * sSigmaRes
-end function
-rem---------------------------------------------------------------------------------------------------------
-function roundOneDigitAfterDot(num as double)
-	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ОДНОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
-	&apos;2.69 -&gt; 2.7
-	&apos;4.12 -&gt; 4.1 
-	dim a as double
-	a = num
-	a = a*100
-	if a mod 10 &gt;= 5 then a = a + 10
-	roundOneDigitAfterDot = int(a/10)/10
-end function
-rem---------------------------------------------------------------------------------------------------------
 sub templateMultiStep(i as integer, strokeEnd as string)
 	dim src_name as string
 	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
@@ -517,18 +400,18 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-		avgSqrtRes = avgSqrt(resList, sum3/8)
+		avgSqrtRes = Math.avgSqrt(resList, sum3/8)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
 		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
 		&apos;msgbox &quot;sSigmaRes - &quot; + sSigmaRes
 		
 		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-		dovGranica = ConfLimit(2, sSigmaRes)
+		dovGranica = Math.ConfLimit(2, sSigmaRes)
 		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 	
 	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
@@ -558,7 +441,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
-		fivePointArray = avarageFivePointsRndArray(bd.getMultiValueList.item(j))
+		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j))
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)
@@ -589,17 +472,17 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-		avgSqrtRes = avgSqrt(fivePointArray, avg)
+		avgSqrtRes = Math.avgSqrt(fivePointArray, avg)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
 		facilityPercent = Overall.FacilityError(cont_point, BDType, prefix)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-		sSigmaRes = sSigma(avgSqrtRes, facilityPercent, relativeErr)
+		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
 		
 		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-		dovGranica = ConfLimit(2, sSigmaRes)
+		dovGranica = Math.ConfLimit(2, sSigmaRes)
 		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + j + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 		
 	next j
@@ -622,7 +505,8 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1) + bd.getMultiValueList.item(point_number).item(2) + bd.getMultiValueList.item(point_number).item(3)) / 3 / time + deviceCountZero 
 		end if	
 		
-		deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
+		&apos;deviceCountDone = roundOneDigitAfterDot(deviceCountDone)
+		deviceCountDone = Math.round(deviceCountDone,1)
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
 		findAndRename((&quot;$&quot; + i + &quot;-d_res&quot; + strokeEnd), Format(deviceCountRes, &quot;0.00&quot;))
