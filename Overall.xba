@@ -762,6 +762,79 @@ function getCollectionFromClipBoard()
     next i
     getCollectionFromClipBoard = list
 end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Супер метод. Пока его не было, протокол формировался так:
+&apos;В протоколе было изначально десять (иногда 12) таблиц, после нажатии кнопки &quot;Готово&quot; выбранное кол-во таблиц (до 10-ти, по количеству добавленых в диалоге БД)
+&apos;заполняются данными, остальные (не нужные) — удаляются.
+&apos;Плюс — простота реализации
+&apos;Минус — при изменениях в таблице (добавить точку, изменить процент, дизайн и т.д.) приходилось менять ВСЕ таблицы, с учетом и протоколов сертификатов — это 30 таблиц (и более). То же — при создании нового типа протоколов
+
+&apos;Используя метод, в шаблоне протокола нужно хранить только одну таблицу
+&apos;Метод копипастит таблицу, при копировании переименовывая метки в новой таблице получая на выходе аналогичный комплект таблиц с метками для последующего заполнения данными, 
+&apos;по сути — не пришлось менять ничего в последующих методах заполнения и расчета, метод является промежуточным между новым типом протоколов и всеми последующими методами, работавшими со старыми типами протоколов
+&apos;Из отличий — в таблицах теперь нет номеров (id таблиц), но они теперь и не нужны, так как id использовался только для нахождения, чтобы удалить таблицу
+&apos;Плюсы — кроме того, что теперь редактировать/создавать нужно только одну таблицу (а не 10 — это самый главны плюс), 
+&apos;так ещё теперь кол-во БД в протоколе уже не ограничено 10-ю, а может уже быть каким угодно большим (ограничено только ресурсами компа, времени и integer)
+&apos;Ещё плюс — для переделывания протокола под новый способ нужно просто удалить из протокола все таблицы, кроме первой и всё. В коде — добавить Overall.CreateTablesFromTemplate(BDList.count) и удалить метод удаления таблиц
+&apos;
+&apos;Метод находит таблицу по имени sName, выделяет и копирует. После этого переименовывает метки (&quot;$...&quot;) и только потом вставляет ранее скопированную таблицу — так получаются две таблицы с РАЗНЫМ набором меток
+&apos;Так как копируется всегда первая (базовая) таблица, а вставляется всегда тоже после первой, то получается таблицы вставляются с КОНЦА в НАЧАЛО.
+&apos;Поэтому перед вызовом метода сначала в базовой таблице нужно переименовать метки в последнюю, а после переименовывать из конца в начало, в результате получится таблицы с метками по порядку.
+&apos;Пример для 4-х БД:
+&apos;	findAndRename(&quot;$1-&quot;, &quot;$4-&quot;)
+&apos;	findAndRename(&quot;$bd_num1$&quot;, &quot;$bd_num4$&quot;)
+&apos;	CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$4-&quot;, &quot;$3-&quot;, &quot;$bd_num4$&quot;, &quot;$bd_num3$&quot;)
+&apos;	CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$3-&quot;, &quot;$2-&quot;, &quot;$bd_num3$&quot;, &quot;$bd_num2$&quot;)
+&apos;	CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$2-&quot;, &quot;$1-&quot;, &quot;$bd_num2$&quot;, &quot;$bd_num1$&quot;)
+&apos;Метод будет приватным, напрямую работать с ним не очень удобно, для этого сделан метод обертка CreateTablesFromTemplate, теперь для формирования таблиц достаточно вызвать Overall.CreateTablesFromTemplate(BDList.count)
+Sub CopyTableAndPasteAfter(sName As String, oldName as String, newName as String, oldName2 as String, newName2 as String)
+	Dim oTable        &apos;Table to copy
+	Dim oText         &apos;Document&apos;s text object
+	Dim oFrame        &apos;Current frame to use with the dispatcher
+	Dim oVCursor      &apos;Current view cursor
+	Dim oDispatcher   &apos;Dispatcher for clipboard commands
+	oVCursor = ThisComponent.CurrentController.getViewCursor()
+	oText = ThisComponent.getText()
+	oFrame = ThisComponent.CurrentController.Frame
+	oDispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	If NOT ThisComponent.getTextTables().hasByName(sName) Then
+		MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
+		Exit Sub
+	End If
+	oTable = ThisComponent.getTextTables().getByName(sName)
+	REM Place the cursor in the start of the first cell.
+	REM This is very easy!
+	ThisComponent.CurrentController.select(oTable)
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
+	REM Copy the table to the clipboard.
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
+	&apos;Поставить курсор после таблицы
+
+	findAndRename(oldName, newName)
+	findAndRename(oldName2, newName2)
+
+	oVCursor.godown(1,false)
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+End Sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод обертка для метода CopyTableAndPasteAfter, так гораздо удобнее работать, достаточно подать на вход метода только размер BDList (т.е. кол-во БД)
+Sub CreateTablesFromTemplate(count as integer)
+	dim i as integer
+	findAndRename(&quot;$1-&quot;, &quot;$&quot; + count + &quot;-&quot;)
+	findAndRename(&quot;$bd_num1$&quot;, &quot;$bd_num&quot; + count + &quot;$&quot;)
+	for i=count to 2 step -1
+		CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$&quot; + i + &quot;-&quot;, &quot;$&quot; + (i-1) + &quot;-&quot;, &quot;$bd_num&quot; + i + &quot;$&quot;, &quot;$bd_num&quot; + (i-1) + &quot;$&quot;)
+	next i
+End Sub	
+
+
+
+
+
+
+
+
 
 
 </script:module>

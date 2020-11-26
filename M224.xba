@@ -24,12 +24,12 @@ dim isComboCollection as new Collection
 dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub G224_Dialog_Show
-	maxBDCount = 12
+	maxBDCount = 100 &apos;В принципе ограничено только ресурсами компа, времени и integer. Поставил 100 просто для красоты
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG224 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D224 )
 	oListBox = oDialogG224.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.16 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.17 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
@@ -37,7 +37,7 @@ Sub G224_Dialog_Show
 	isComboCollection.add(oOptionBDKG224)
 	oDialogG224.getControl(&quot;addButton&quot;).setEnable(true)
 
-	&apos;oDialogG224.getControl(&quot;isBDKG224&quot;).setVisible(false)&apos;&apos;&apos;&apos;&apos;&apos;ЭТО НЕСТАНДАРТНАЯ ОПЕРАЦИЯ В ДРУГИХ МЕТОДАХ НЕ БУДЕТ
+	oDialogG224.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;imgs\224.jpg&quot;
 		
 	oDialogMain.endexecute()   
 	oDialogG224.Execute()
@@ -104,11 +104,15 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	dim bd as new DUnit
+
+&apos;	dim bd as new DUnit
 	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
-	next k
+	&apos;СТАРЫЙ МЕТОД ДЛЯ ПРОТОКОЛА С 10 ТАБЛИЦАМИ
+&apos;	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+&apos;		deleteTable(&quot;t&quot; + (k))
+&apos;	next k
+
+	Overall.CreateTablesFromTemplate(BDList.count)
 	
 	for i=1 to BDList.count
 		Overall.insertToTemplateStep(i)

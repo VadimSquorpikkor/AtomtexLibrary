@@ -26,7 +26,7 @@ Sub G25_Dialog_Show
 	oDialogG25 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D25 )
 	oListBox = oDialogG25.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.03 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialogG25.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;bdkg25\bdkg25.png&quot;
 	&apos;В этом классе как бы радиобаттон и коллекция радио не нужны (ведь oOptionG25 только один)

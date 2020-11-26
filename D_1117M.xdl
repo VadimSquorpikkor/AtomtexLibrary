@@ -30,12 +30,12 @@
   <dlg:titledbox dlg:id="FrameControl4" dlg:tab-index="45" dlg:left="50" dlg:top="284" dlg:width="38" dlg:height="42">
    <dlg:title dlg:value="Бета"/>
   </dlg:titledbox>
-  <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="46" dlg:left="92" dlg:top="199" dlg:width="37" dlg:height="49">
+  <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="46" dlg:left="92" dlg:top="199" dlg:width="39" dlg:height="49">
    <dlg:title dlg:value="БОИ"/>
   </dlg:titledbox>
-  <dlg:titledbox dlg:id="FrameControl6" dlg:tab-index="47" dlg:left="92" dlg:top="288" dlg:width="37" dlg:height="27"/>
-  <dlg:titledbox dlg:id="FrameControl7" dlg:tab-index="50" dlg:left="92" dlg:top="249" dlg:width="37" dlg:height="35">
-   <dlg:title dlg:value="БОИ(сбм)"/>
+  <dlg:titledbox dlg:id="FrameControl6" dlg:tab-index="47" dlg:left="92" dlg:top="288" dlg:width="39" dlg:height="27"/>
+  <dlg:titledbox dlg:id="FrameControl7" dlg:tab-index="50" dlg:left="92" dlg:top="249" dlg:width="39" dlg:height="35">
+   <dlg:title dlg:value="БОИ(си19)"/>
   </dlg:titledbox>
   <dlg:text dlg:id="Label15" dlg:tab-index="55" dlg:left="38" dlg:top="169" dlg:width="71" dlg:height="10" dlg:value="Проверку произвел:" dlg:align="center"/>
   <dlg:text dlg:id="Label16" dlg:tab-index="57" dlg:left="123" dlg:top="169" dlg:width="71" dlg:height="10" dlg:value="Технический контроль:" dlg:align="center"/>
@@ -103,10 +103,10 @@
   <dlg:checkbox dlg:id="CheckBox18" dlg:tab-index="20" dlg:left="95" dlg:top="233" dlg:width="32" dlg:height="10" dlg:value="БОИ-4" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox17" dlg:tab-index="19" dlg:left="95" dlg:top="221" dlg:width="32" dlg:height="10" dlg:value="БОИ-2" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox17" dlg:tab-index="19" dlg:left="95" dlg:top="272" dlg:width="32" dlg:height="10" dlg:value="БОИ-2" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox16" dlg:tab-index="18" dlg:left="95" dlg:top="209" dlg:width="32" dlg:height="10" dlg:value="БОИ" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox16" dlg:tab-index="18" dlg:left="95" dlg:top="260" dlg:width="32" dlg:height="10" dlg:value="БОИ" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
   <dlg:checkbox dlg:id="CheckBox15" dlg:tab-index="4" dlg:left="53" dlg:top="304" dlg:width="35" dlg:height="10" dlg:value="БДПБ-02" dlg:checked="false">
@@ -124,10 +124,10 @@
   <dlg:checkbox dlg:id="CheckBox20" dlg:tab-index="8" dlg:left="95" dlg:top="304" dlg:width="32" dlg:height="10" dlg:value="БДПС-02" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox23" dlg:tab-index="51" dlg:left="95" dlg:top="259" dlg:width="28" dlg:height="8" dlg:value="БОИ-1" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox23" dlg:tab-index="51" dlg:left="95" dlg:top="210" dlg:width="32" dlg:height="8" dlg:value="БОИ-1" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="CheckBox24" dlg:tab-index="52" dlg:left="95" dlg:top="271" dlg:width="28" dlg:height="8" dlg:value="БОИ-2" dlg:checked="false">
+  <dlg:checkbox dlg:id="CheckBox24" dlg:tab-index="52" dlg:left="95" dlg:top="222" dlg:width="32" dlg:height="8" dlg:value="БОИ-2" dlg:checked="false">
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1117M.checkBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
   <dlg:text dlg:id="Label12" dlg:tab-index="64" dlg:left="236" dlg:top="302" dlg:width="0" dlg:height="2" dlg:value="Label12"/>
