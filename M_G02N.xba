@@ -51,7 +51,7 @@ dim insertButton as object
 
 rem---------------------------------------------------------------------------------------------------------
 Sub G02N_Dialog_Show
-	maxBDCount = 10
+	maxBDCount = 40
 
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG02N = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_G02N )
@@ -59,7 +59,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.26 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.27 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oComboBox)
 	
@@ -339,16 +339,18 @@ sub insertRecordsToTemplate
 		
 	OpenTemplate(sertPath &amp; path)
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
+		&apos;deleteTable(&quot;t&quot; + (k))
 		deleteTable(&quot;tgrad&quot; + (k))
 	next k
 	
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
+	Overall.CreateTablesFromTemplate(BDList.count)
 		
 	for i=1 to BDList.count
 		bd = BDList.item(i)
-		findAndRename(&quot;$grad&quot; + i, bd.getGradValue)
+		findAndRename(&quot;$grad&quot; + i + &quot;$&quot;, bd.getGradValue)
+		findAndRename(&quot;$bd_num_g&quot; + i + &quot;$&quot;, bd.getSerial)
 		Overall.insertToTemplateStepDoted(i)
 	next i
 	

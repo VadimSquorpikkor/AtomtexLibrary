@@ -19,12 +19,12 @@ dim maxBDCount as integer
 dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub BDKN_Dialog_Show
-	maxBDCount = 10
+	maxBDCount = 50
 
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.05 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.06 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
 
@@ -181,14 +181,17 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
+	Overall.CreateTablesFromTemplate(BDList.count)
+	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;tf1&quot;, &quot;bd_num_n&quot;, &quot;bd_num&quot;, &quot;$&quot;)
+	
 	dim bd as new DUnit
 	dim bdkn as new NUnit
 &apos;&apos;&apos;&apos;&apos;&apos;	dim threePointArray(2) as double
 	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
-		deleteTable(&quot;tf&quot; + (k))
-	next k
+&apos;	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+&apos;		deleteTable(&quot;t&quot; + (k))
+&apos;		deleteTable(&quot;tf&quot; + (k))
+&apos;	next k
 	
 	for i=1 to BDList.count
 		bd = BDList.item(i)

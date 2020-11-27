@@ -19,7 +19,7 @@ dim maxBDCount as integer
 dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub AT1121_Dialog_Show
-	maxBDCount = 20
+	maxBDCount = 50
 
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
@@ -157,11 +157,13 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	dim bd as new DUnit
 	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
-	next k
+	&apos;dim bd as new DUnit
+	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+	&apos;	deleteTable(&quot;t&quot; + (k))
+	&apos;next k
+	
+	Overall.CreateTablesFromTemplate(BDList.count)
 	
 	for i=1 to BDList.count
 		Overall.insertToTemplateStep(i)

@@ -104,14 +104,6 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-
-&apos;	dim bd as new DUnit
-	
-	&apos;СТАРЫЙ МЕТОД ДЛЯ ПРОТОКОЛА С 10 ТАБЛИЦАМИ
-&apos;	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-&apos;		deleteTable(&quot;t&quot; + (k))
-&apos;	next k
-
 	Overall.CreateTablesFromTemplate(BDList.count)
 	
 	for i=1 to BDList.count

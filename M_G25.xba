@@ -21,12 +21,12 @@ dim isComboCollection as new Collection
 dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub G25_Dialog_Show
-	maxBDCount = 12
+	maxBDCount = 50
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG25 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D25 )
 	oListBox = oDialogG25.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.03 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.04 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialogG25.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;bdkg25\bdkg25.png&quot;
 	&apos;В этом классе как бы радиобаттон и коллекция радио не нужны (ведь oOptionG25 только один)
@@ -108,15 +108,17 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	dim bd as new DUnit
+	Overall.CreateTablesFromTemplate(BDList.count)
 	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
-	next k
+	&apos;dim bd as new DUnit
+	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+	&apos;	deleteTable(&quot;t&quot; + (k))
+	&apos;next k
+	
 	
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
-		Overall.insertToTemplateStep(i) &apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;(i, percentOtk, bground)
+		Overall.insertToTemplateStep(i)
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)

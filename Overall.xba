@@ -798,7 +798,7 @@ Sub CopyTableAndPasteAfter(sName As String, oldName as String, newName as String
 	oFrame = ThisComponent.CurrentController.Frame
 	oDispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
 	If NOT ThisComponent.getTextTables().hasByName(sName) Then
-		MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
+		&apos;MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
 		Exit Sub
 	End If
 	oTable = ThisComponent.getTextTables().getByName(sName)
@@ -809,11 +809,11 @@ Sub CopyTableAndPasteAfter(sName As String, oldName as String, newName as String
 	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
 	REM Copy the table to the clipboard.
 	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
+	
+	findAndRename(oldName, newName) 	&apos;&quot;$2-&quot; -&gt; &quot;$1-&quot;
+	findAndRename(oldName2, newName2) 	&apos;&quot;$bd_num2$&quot; -&gt; &quot;$bd_num1$&quot;
+
 	&apos;Поставить курсор после таблицы
-
-	findAndRename(oldName, newName)
-	findAndRename(oldName2, newName2)
-
 	oVCursor.godown(1,false)
 	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
 End Sub
@@ -827,12 +827,89 @@ Sub CreateTablesFromTemplate(count as integer)
 		CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$&quot; + i + &quot;-&quot;, &quot;$&quot; + (i-1) + &quot;-&quot;, &quot;$bd_num&quot; + i + &quot;$&quot;, &quot;$bd_num&quot; + (i-1) + &quot;$&quot;)
 	next i
 End Sub	
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;count -  размер BDList
+&apos;tname - название таблицы
+&apos;bdName - как в файле изначально называется метка для номера БД (отличается от метки в основных таблицах, так как при переименновании метод CopyTableAndPasteAfter заодно переименует и метки основных таблиц, что недопустимо)
+&apos;bdNameRight - как будет называться метка для номера БД, когда все таблицы сформированы (но ещё не заполнены данными), теперь эти метки будут совпадать с метками в основных таблицах
+&apos;start - начальный символ в метках дополнительных таблицах (в основных — это &quot;$&quot;, в таблицах для, например, беты — это &quot;β&quot;)
+Sub CreateTablesFromTemplateCustom(count as integer, tname as String, bdName as String, bdNameRight as String, start as String)
+	dim i as integer
+	findAndRename(start + &quot;1-&quot;, start + count + &quot;-&quot;)
+	findAndRename(&quot;$&quot; + bdName + &quot;1$&quot;, &quot;$&quot; + bdName + count + &quot;$&quot;)
+	for i=count to 2 step -1
+		CopyTableAndPasteAfter(tname, start + i + &quot;-&quot;, start + (i-1) + &quot;-&quot;, &quot;$&quot; + bdName + i + &quot;$&quot;, &quot;$&quot; + bdName + (i-1) + &quot;$&quot;)
+	next i
+	findAndRename(&quot;$&quot; + bdName, &quot;$&quot; + bdNameRight)
+End Sub	
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод похож на CopyTableAndPasteAfter, только копипастит пару таблиц, которые идут попарно друг за другом (например в 2503 и 3509), 
+&apos;в отличии от, например, БДКН, где сразу идут все основные таблицы, затем все второстепенные, здесь же идет основная, затем второстепенная, затем основная для следующего БД, затем второстепенная и т.д.
+Sub CopyTwoTablesAndPasteAfter(firstName As String, secondName As String, oldName as String, newName as String, oldName2 as String, newName2 as String, oldName3 as String, newName3 as String, oldName4 as String, newName4 as String)
+	Dim oTable1        &apos;Table to copy
+	Dim oTable2        &apos;Table to copy
+	Dim oText         &apos;Document&apos;s text object
+	Dim oFrame        &apos;Current frame to use with the dispatcher
+	Dim oVCursor      &apos;Current view cursor
+	Dim oDispatcher   &apos;Dispatcher for clipboard commands
+	oVCursor = ThisComponent.CurrentController.getViewCursor()
+	oText = ThisComponent.getText()
+	oFrame = ThisComponent.CurrentController.Frame
+	oDispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	If NOT ThisComponent.getTextTables().hasByName(firstName) Then
+		&apos;MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
+		Exit Sub
+	End If
+	oTable1 = ThisComponent.getTextTables().getByName(firstName)
+	oTable2 = ThisComponent.getTextTables().getByName(secondName)
+	&apos;Выбрал вторую таблицу
+	ThisComponent.CurrentController.select(oTable2)
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
+	&apos;Поставить курсор после второй таблицы и вставил скопированную вторую таблицу
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
 
+	&apos;Перименовал
+	findAndRename(oldName3, newName3) 	&apos;&quot;##2-&quot; -&gt; &quot;##1-&quot;
+	findAndRename(oldName4, newName4) 	&apos;&quot;##bd_num2##&quot; -&gt; &quot;##bd_num1##&quot;
+	
+	&apos;вниз после второй таблицы и вставляю копию второй таблицы после оригинальной второй таблицы (оригинал уже с переименованными метками)
+	oVCursor.godown(1,false)
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+	
+	&apos;Выбрал первую таблицу
+	&apos;Поставить курсор после первой таблицы и скопировал первую таблицу
+	ThisComponent.CurrentController.select(oTable1)
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
 
+	&apos;Перименовал
+	findAndRename(oldName, newName) 	&apos;&quot;$2-&quot; -&gt; &quot;$1-&quot;
+	findAndRename(oldName2, newName2) 	&apos;&quot;$bd_num2$&quot; -&gt; &quot;$bd_num1$&quot;
 
+	&apos;НЕ ВСТАВЛЯЯ копию первой таблицы иду в конец второй оригинальной таблицы (акурат перед скопипасченной копией иторой таблицы)
+	ThisComponent.CurrentController.select(oTable2)
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
 
-
-
+	&apos;вставляю копию ПЕРВОЙ таблицы после оригинальной ВТОРОЙ таблицы
+	oVCursor.godown(1,false)
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+End Sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод обертка для метода CopyTwoTablesAndPasteAfter, так гораздо удобнее работать, достаточно подать на вход метода только размер BDList (т.е. кол-во БД)
+Sub CreatePairedTablesFromTemplate(count as integer)
+	dim i as integer
+	findAndRename(&quot;$1-&quot;, &quot;$&quot; + count + &quot;-&quot;)
+	findAndRename(&quot;$bd_num1$&quot;, &quot;$bd_num&quot; + count + &quot;$&quot;)
+	findAndRename(&quot;##1-&quot;, &quot;##&quot; + count + &quot;-&quot;)
+	findAndRename(&quot;##bd_num1##&quot;, &quot;##bd_num&quot; + count + &quot;##&quot;)
+	for i=count to 2 step -1
+		CopyTwoTablesAndPasteAfter(&quot;t1&quot;, &quot;s1&quot;, &quot;$&quot; + i + &quot;-&quot;, &quot;$&quot; + (i-1) + &quot;-&quot;, &quot;$bd_num&quot; + i + &quot;$&quot;, &quot;$bd_num&quot; + (i-1) + &quot;$&quot;, &quot;##&quot; + i + &quot;-&quot;, &quot;##&quot; + (i-1) + &quot;-&quot;, &quot;##bd_num&quot; + i + &quot;##&quot;, &quot;##bd_num&quot; + (i-1) + &quot;##&quot;)
+	next i
+	findAndRename(&quot;##&quot;, &quot;$&quot;)
+End Sub
 
 
 

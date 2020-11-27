@@ -35,13 +35,13 @@ dim path, calibName, techName as string
 dim maxPointCount as integer
 rem---------------------------------------------------------------------------------------------------------
 Sub AT6130_Dialog_Show
-	maxBDCount = 10
+	maxBDCount = 50
 	maxPointCount = 6
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.10 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.11 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -363,10 +363,13 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta&quot;))
 	findAndRename(&quot;$facility_6130e_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
 	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + k)
-		deleteTable(&quot;b&quot; + k)
-	next k
+	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+	&apos;	deleteTable(&quot;t&quot; + k)
+	&apos;	deleteTable(&quot;b&quot; + k)
+	&apos;next k
+		
+	Overall.CreateTablesFromTemplate(BDList.count)
+	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;b1&quot;, &quot;bd_num_b&quot;, &quot;bd_num&quot;, &quot;β&quot;)
 		
 	for i=1 to BDList.count
 		dim point as double

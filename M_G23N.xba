@@ -18,13 +18,13 @@ dim isComboCollection as new Collection
 dim serial_22, serial_23, serial_231 as integer
 &apos;------------------------------------------------------------------------------------------------------------------------
 Sub G23N_Dialog_Show
-	maxBDCount = 10
+	maxBDCount = 50
 	maxPointCount = 9
 
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG23N = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_G23N )
 	oListBox = oDialogG23N.getControl(&quot;bdListBox&quot;)	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.04 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.05 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	
@@ -135,16 +135,16 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
-	next k
+	Overall.CreateTablesFromTemplate(BDList.count)
+	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+	&apos;	deleteTable(&quot;t&quot; + (k))
+	&apos;next k
 	
 	dim bd as new DUnit
 	for i=1 to BDList.count
-		bd = BDList.item(i)
+		&apos;bd = BDList.item(i)
 		Overall.insertToTemplateStep(i)
-		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
+		&apos;findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 	next i
 	
 	Overall.setSerial(&quot;$allSerial&quot;)

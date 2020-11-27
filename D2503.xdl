@@ -18,7 +18,7 @@
   <dlg:text dlg:id="Label9" dlg:tab-index="16" dlg:left="61" dlg:top="105" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="24" dlg:left="6" dlg:top="9" dlg:width="94" dlg:height="207"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="25" dlg:left="104" dlg:top="9" dlg:width="65" dlg:height="207"/>
-  <dlg:text dlg:id="Label15" dlg:tab-index="26" dlg:left="106" dlg:top="205" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во — 12 БД" dlg:align="center"/>
+  <dlg:text dlg:id="Label15" dlg:tab-index="26" dlg:left="106" dlg:top="205" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во — 25 БД" dlg:align="center"/>
   <dlg:numericfield dlg:id="ValueField1-1" dlg:tab-index="4" dlg:left="207" dlg:top="157" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField1-2" dlg:tab-index="5" dlg:left="236" dlg:top="157" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField1-3" dlg:tab-index="6" dlg:left="264" dlg:top="157" dlg:width="25" dlg:height="12" dlg:value="0" dlg:spin="true"/>

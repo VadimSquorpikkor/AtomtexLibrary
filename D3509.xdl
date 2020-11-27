@@ -18,7 +18,7 @@
   <dlg:text dlg:id="Label5" dlg:tab-index="16" dlg:left="60" dlg:top="127" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="24" dlg:left="5" dlg:top="9" dlg:width="95" dlg:height="239"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="25" dlg:left="103" dlg:top="9" dlg:width="65" dlg:height="239"/>
-  <dlg:text dlg:id="Label10" dlg:tab-index="26" dlg:left="105" dlg:top="229" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во -- 12 БД" dlg:align="center"/>
+  <dlg:text dlg:id="Label10" dlg:tab-index="26" dlg:left="105" dlg:top="229" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во — 25 БД" dlg:align="center"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="33" dlg:left="171" dlg:top="5" dlg:width="129" dlg:height="70">
    <dlg:title dlg:value="Параметры генератора"/>
   </dlg:titledbox>
