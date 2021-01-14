@@ -13,7 +13,7 @@
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="31" dlg:left="197" dlg:top="4" dlg:width="105" dlg:height="215"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="32" dlg:left="93" dlg:top="107" dlg:width="101" dlg:height="112"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="33" dlg:left="5" dlg:top="4" dlg:width="85" dlg:height="215"/>
-  <dlg:text dlg:id="Label15" dlg:tab-index="34" dlg:left="19" dlg:top="205" dlg:width="53" dlg:height="7" dlg:value="Mакс кол-во -- 12 БД" dlg:align="center"/>
+  <dlg:text dlg:id="Label15" dlg:tab-index="34" dlg:left="13" dlg:top="205" dlg:width="66" dlg:height="7" dlg:value="Mакс кол-во — 50 БД" dlg:align="center"/>
   <dlg:text dlg:style-id="0" dlg:id="Label16" dlg:tab-index="37" dlg:left="37" dlg:top="23" dlg:width="5" dlg:height="10" dlg:value="." dlg:align="center"/>
   <dlg:button dlg:id="CommandButton7" dlg:tab-index="38" dlg:left="63" dlg:top="22" dlg:width="11" dlg:height="11" dlg:value="+">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G25.incValue?language=Basic&amp;location=application" script:language="Script"/>

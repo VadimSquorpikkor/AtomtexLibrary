@@ -214,7 +214,42 @@ function avaragePointsRndFiveArray(point as double, o_percent as double)
 	avaragePointsRndFiveArray = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-
+function avaragePointsRndTenArray(point as double, o_percent as double)
+	dim deviation as double
+	dim p1 as double
+	dim p2 as double
+	dim p3 as double
+	dim p4 as double
+	dim p5 as double
+	dim p6 as double
+	dim p7 as double
+	dim p8 as double
+	dim p9 as double
+	dim p10 as double
+	dim ar(9) as double 
+	deviation = o_percent/100*point
+	p1 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p2 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p3 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p4 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p5 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p6 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p7 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p8 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p9 = roundTwoDigitAfterDot(randValue(point, deviation))
+	p10 = roundTwoDigitAfterDot(point*10 - p1 - p2 - p3 - p4 - p5 - p6 - p7 - p8 - p9)
+	ar(0) = p1
+	ar(1) = p2
+	ar(2) = p3
+	ar(3) = p4
+	ar(4) = p5
+	ar(5) = p6
+	ar(6) = p7
+	ar(7) = p8
+	ar(8) = p9
+	ar(9) = p10
+	avaragePointsRndTenArray = ar
+end function
 
 
 
