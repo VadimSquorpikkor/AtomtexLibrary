@@ -31,7 +31,7 @@
   </dlg:radiogroup>
   <dlg:img dlg:style-id="0" dlg:id="Image" dlg:tab-index="40" dlg:left="60" dlg:top="12" dlg:width="40" dlg:height="81"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="30" dlg:disabled="true" dlg:left="11" dlg:top="128" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
+   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="30" dlg:left="11" dlg:top="128" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
    <dlg:radio dlg:id="isProtocol" dlg:tab-index="29" dlg:left="11" dlg:top="117" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
    <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="31" dlg:disabled="true" dlg:left="11" dlg:top="139" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>

@@ -28,7 +28,7 @@ Sub AT2140_Dialog_Show
 	oDialogAT2140 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D2140 )
 	oListBox = oDialogAT2140.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, points_count)
+	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, points_count)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionAT2140 = oDialogAT2140.getControl(&quot;isAT2140&quot;)
@@ -109,7 +109,10 @@ sub insertRecordsToTemplate
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
+	
 	findAndRename(&quot;$type&quot;, BDList.item(1).getName)
+	findAndRename(&quot;$min_limit&quot;, BDList.item(1).minLimit)
+	findAndRename(&quot;$max_limit&quot;, BDList.item(1).maxLimit)
 	
 	dim ar(9) as double
 	for i=1 to BDList.count
