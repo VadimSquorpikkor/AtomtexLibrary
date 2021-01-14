@@ -28,7 +28,7 @@ Sub AT2140_Dialog_Show
 	oDialogAT2140 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D2140 )
 	oListBox = oDialogAT2140.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.00 &quot;, oListBox, points_count)
+	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, points_count)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionAT2140 = oDialogAT2140.getControl(&quot;isAT2140&quot;)
@@ -63,9 +63,9 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
-	if oOptionAT2140.state 		then bd.addData(&quot;AT-2140&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;,	Array(0.1,10))
-	if oOptionAT2140a.state 	then bd.addData(&quot;AT-2140A&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
-	if oOptionAT2140a_1.state 	then bd.addData(&quot;AT-2140A/1&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
+	if oOptionAT2140.state 		then bd.addData(&quot;AT-2140&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10))
+	if oOptionAT2140a.state 	then bd.addData(&quot;AT-2140A&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
+	if oOptionAT2140a_1.state 	then bd.addData(&quot;AT-2140A/1&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
 	
 	oDialogAT2140.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialogAT2140.getControl(&quot;bdSerial&quot;).text)
@@ -74,7 +74,7 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	Overall.increment(oDialogAT2140.getControl(&quot;bdSerial&quot;))
-	Overall.makeLayoutFromBD(BDList.item(1))
+	Overall.makeLayoutFromBD_2140(BDList.item(1))
 	layoutPosition = 1
 	setButtonVisibility(layoutPosition)
 end sub
@@ -89,7 +89,7 @@ function listBoxListener
 	Overall.saveCurentBDValue(layoutPosition)
 	selectPos = oListBox.getSelectedItemPos()
 	layoutPosition = selectPos + 1
-	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
+	Overall.makeLayoutFromBD_2140(BDList.item(layoutPosition))
 	setButtonVisibility(layoutPosition)
 end function
 rem---------------------------------------------------------------------------------------------------------

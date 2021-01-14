@@ -3,6 +3,8 @@
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="BaseC" script:language="StarBasic">
 REM  *****  BASIC  *****
 
+&apos;НАДО ВООБЩЕ ВСЁ ПО-ДРУГОМУ СДЕЛАТЬ, ЭТО НЕ ГОДИТСЯ
+
 Option Compatible
 Option ClassModule
 Option Explicit
