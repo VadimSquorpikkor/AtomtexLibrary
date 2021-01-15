@@ -463,6 +463,10 @@ sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
+sub insertToTemplateStepVariation(i)&apos; todo для отклика и вариаций надо будет сделать отдельный tempStep
+	&apos;templateStep(i, &quot;.&quot;)
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String)
 
 	dim bd as new DUnit 
