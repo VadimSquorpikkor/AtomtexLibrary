@@ -33,4 +33,5 @@
  <library:element library:name="b_new"/>
  <library:element library:name="BaseC"/>
  <library:element library:name="M2140"/>
+ <library:element library:name="MWatsNew"/>
 </library:library>

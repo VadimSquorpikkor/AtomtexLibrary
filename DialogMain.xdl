@@ -60,5 +60,8 @@
   <dlg:button dlg:id="CommandButton2140" dlg:tab-index="23" dlg:left="220" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2140.AT2140_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
+  <dlg:button dlg:id="VersionButton" dlg:tab-index="24" dlg:left="235" dlg:top="289" dlg:width="70" dlg:height="10" dlg:value="Список версий">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.MWatsNew.Start?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
  </dlg:bulletinboard>
 </dlg:window>

@@ -124,6 +124,8 @@ function get_activity_Sr(src as string, mdate)
 	get_activity_Sr = activity_0 * exp(-0.693147/SR_90_HALF_LIFE * daysLeft)
 end function
 rem----------------------------------------------------------------
+&apos;Источники 110: 263 ОНА 9ХК 430
+&apos;Источники 130: 9ТН УП4 043 К/СГ3 163
 function sourceDistanceArray(point as double, prefix as string, bdType as string)
 	dim ar(1) as variant
 	&apos;Перерасчет расстояний - 05.11.20
@@ -143,10 +145,10 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 20 	then ar = Array(&quot;9ХК&quot;,&quot;296.4&quot;)
 				if point = 40 	then ar = Array(&quot;9ХК&quot;,&quot;213.3&quot;)
 				if point = 240 	then ar = Array(&quot;9ХК&quot;,&quot;87.8&quot;)
-				if point = 700 	then ar = Array(&quot;К/СГ3&quot;,&quot;80.8&quot;)
+				if point = 700 	then ar = Array(&quot;9ХК&quot;,&quot;51.8&quot;)
 		case &quot;м&quot;
-				if point = 0.5 	then ar = Array(&quot;9TH&quot;,&quot;212.7&quot;)
-				if point = 0.7 	then ar = Array(&quot;К/СГ3&quot;,&quot;80.8&quot;)
+				if point = 0.5 	then ar = Array(&quot;9ХК&quot;,&quot;61.0&quot;)
+				if point = 0.7 	then ar = Array(&quot;9ХК&quot;,&quot;51.8&quot;)
 				if point = 4 	then ar = Array(&quot;043&quot;,&quot;463.3&quot;)
 				if point = 7 	then ar = Array(&quot;043&quot;,&quot;351.3&quot;)
 				if point = 20 	then ar = Array(&quot;043&quot;,&quot;208.5&quot;)
@@ -171,7 +173,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 75	then ar = Array(&quot;263&quot;,&quot;174.7&quot;)
 		case &quot;мк&quot;
 				if point = 0.03	then ar = Array(&quot;263&quot;,&quot;274.9&quot;)
-				if point = 0.075 then ar = Array(&quot;263&quot;,&quot;174.7&quot;)
+				if point = 0.075 then ar= Array(&quot;263&quot;,&quot;174.7&quot;)
 				if point = 0.7	then ar = Array(&quot;0НА&quot;,&quot;212.6&quot;)
 				if point = 0.75	then ar = Array(&quot;0НА&quot;,&quot;205.4&quot;)
 				if point = 7 	then ar = Array(&quot;0НА&quot;,&quot;68.2&quot;)
@@ -180,7 +182,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 75 	then ar = Array(&quot;9ХК&quot;,&quot;142.6&quot;)
 		case &quot;м&quot;
 				if point = 0.5 	then ar = Array(&quot;9XK&quot;,&quot;56.0&quot;)
-				if point = 0.7	then ar = Array(&quot;9TH&quot;, &quot;47.3&quot;)				
+				if point = 0.7	then ar = Array(&quot;9ХК&quot;, &quot;47.3&quot;)				
 				if point = 0.75	then ar = Array(&quot;9XK&quot;, &quot;45.7&quot;)
 				if point = 7	then ar = Array(&quot;9TH&quot;, &quot;53.0&quot;)
 				if point = 7.5 	then ar = Array(&quot;9TH&quot;,&quot;51.2&quot;)
