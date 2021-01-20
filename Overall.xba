@@ -133,6 +133,7 @@ sub initializeDateField(oDateFieldModel as object, oDialog as object)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
+	
 	_layoutPosition = layoutPosition
 	_BDList = BDList
 	_isComboCollection = isComboCollection

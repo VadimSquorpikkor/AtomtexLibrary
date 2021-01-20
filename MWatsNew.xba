@@ -3,6 +3,15 @@
 <script:module xmlns:script="http://openoffice.org/2000/script" script:name="MWatsNew" script:language="StarBasic">REM  *****  BASIC  *****
 
 
+rem 	╔═══════════════════════════════════════════════════╗
+rem		║	Диалог со списком версий						║█
+rem		║	Сам файл со списком версий находится			║█
+rem		║ 	на FileServer — так не нужно скачивать  		║█
+rem		║ 	последнюю версию, чтобы посмотреть, что нового	║█
+rem		╚═══════════════════════════════════════════════════╝█
+rem		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+
 dim Sensor as new Sensor
 dim oDialogAbout as object 
 

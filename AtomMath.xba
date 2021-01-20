@@ -6,7 +6,6 @@ Option Compatible
 Option ClassModule
 Option Explicit
 
-dim Overall as new Overall
 rem---------------------------------------------------------------------------------------------------------
 &apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
 function avgSqrt(Array as variant, avg as double)
@@ -122,11 +121,11 @@ function minimumAndMaximum(one as double, two as double, three as double)
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
-function avarageFivePointsRndArray(coll as Collection)
+function avarageFivePointsRndArray(coll as Collection, percent)
 	dim ar(4) as double
 	&apos;&apos;если приходит одно число -- генерим все пять
 	if coll.count = 1 then
-		ar = avaragePointsRndFiveArray(coll.item(1), Overall.percentOTK)
+		ar = avaragePointsRndFiveArray(coll.item(1), percent)&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;Overall.percentOTK)
 	&apos;&apos;если приходит 3 числа -- генерим оставшиеся 2 по хитрому рандому:	
 	else
 		&apos;TODO может есть смысл сделать функцию не на 5 значений, а на любое (тогда point будет складываться через for)

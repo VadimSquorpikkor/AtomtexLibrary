@@ -68,7 +68,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.08 &quot;, oListBox, 5)
+	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.09 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -442,7 +442,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
-		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j))
+		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j), Overall.percentOTK)
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)
