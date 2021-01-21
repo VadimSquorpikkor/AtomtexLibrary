@@ -7,9 +7,9 @@ dim Overall as new Overall
 dim oDialog1121 as object
 dim oDateFieldModel as object
 dim oListBox as object
-dim oOptionButtonPr as object
-dim oOptionButtonSr as object
-dim oOptionButtonSe as object
+&apos;dim oOptionButtonPr as object
+&apos;dim oOptionButtonSr as object
+&apos;dim oOptionButtonSe as object
 dim oOption1103 as object
 dim oOption1121 as object
 dim oOption1123 as object
@@ -24,7 +24,7 @@ Sub AT1121_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
 	oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.18 &quot;, oListBox, 9)
+	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.19 &quot;, oListBox, 9)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 
@@ -56,6 +56,13 @@ sub setButtonEnabled
 	else
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 	end if	
+	
+	&apos;ВРЕМЕННО, ПОКА НОВЫЙ СЕРТИФИКАТ ТОЛЬКО ДЛЯ 1121
+	if oOption1121.state then
+		oDialog1121.getControl(&quot;isSertificateEngNew&quot;).setEnable(true)
+	else
+		oDialog1121.getControl(&quot;isSertificateEngNew&quot;).setEnable(false)
+	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -157,12 +164,6 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	
-	&apos;dim bd as new DUnit
-	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-	&apos;	deleteTable(&quot;t&quot; + (k))
-	&apos;next k
-	
 	Overall.CreateTablesFromTemplate(BDList.count)
 	
 	for i=1 to BDList.count

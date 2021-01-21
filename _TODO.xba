@@ -20,4 +20,10 @@
 &apos; и НЕ НУЖНО инициализировать комбоБоксы сертификатов (Overall.initializeSertificateCombo(oComboBox1, oComboBox2)). 
 &apos; В этих методах всё уже инициализировано
 
+
+&apos;	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
+&apos;		_oDialog.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
+&apos;		insertButton = _oDialog.getControl(&quot;insertButton&quot;)
+&apos;		insertButton.visible = false
+&apos;	end if
 </script:module>

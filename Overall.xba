@@ -27,6 +27,11 @@ dim _layoutPosition as integer
 dim _oOptionButtonPr as object
 dim _oOptionButtonSe as object
 dim _oOptionButtonSr as object
+
+dim _oOptionButtonPrNew as object
+dim _oOptionButtonSeNew as object
+dim _oOptionButtonSrNew as object
+
 dim _calibName, _techName as string
 dim _maxPointsCount as integer 	&apos;сколько максимально может отображаться точек (полей) в форме. Отличается от количества точек в БД -- в форме могут отображаться 
 								&apos;несколько типов БД на выбор (БДКГ-22 и БДКГ-23), у которых кол-во точек различается, кол-во точек на форме одинаково для каждого
@@ -174,6 +179,9 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 	_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
 	_oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
 	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
+	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
 	_oOptionButtonPr.State = 1
 		
 	dim insertButton as object
@@ -209,6 +217,9 @@ sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version
 	_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
 	_oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
 	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
+	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
 	_oOptionButtonPr.State = 1
 end sub	
 &apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
@@ -359,6 +370,28 @@ function PathForProtocol(bdName as string)
 		calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 		techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 		PathForProtocol = bdName &amp; &quot;_se.odt&quot;
+	end if
+	
+	if NOT isNull(_oOptionButtonPrNew) then
+		if _oOptionButtonPrNew.State then
+			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
+			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			PathForProtocol = bdName &amp; &quot;_n.odt&quot;
+		end if	
+	end if
+	if NOT isNull(_oOptionButtonSrNew) then
+		if _oOptionButtonSrNew.State then
+			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
+			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			PathForProtocol = bdName &amp; &quot;_sr_n.odt&quot;
+		end if	
+	end if
+	if NOT isNull(_oOptionButtonSeNew) then
+		if _oOptionButtonSeNew.State then
+			calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
+			techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			PathForProtocol = bdName &amp; &quot;_se_n.odt&quot;
+		end if	
 	end if
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
