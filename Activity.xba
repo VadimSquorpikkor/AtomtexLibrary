@@ -44,11 +44,11 @@ public const BETA_6905_BQ as double  = 10.1
 public const BETA_0661_BQ as double  = 247
 public const BETA_0662_BQ as double  = 2253.5
 &apos;-------------------------------------------------------------
-public const CS_137_HALF_LIFE as double = 365.25 * 30.17
+public const CS_137_HALF_LIFE as double = 365.25 * 30.167
 public const SR_90_HALF_LIFE as double = 365.25 * 28.796 &apos;Стронций-90
 &apos;-------------------------------------------------------------
 function get_activity(src as double, mdate)
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,10,13)
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,10,12) &apos;12-го Октября
 	get_activity = src * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------
@@ -215,6 +215,10 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 	end if
 	sourceDistanceArray = ar
 end function
+
+&apos;function getDistance(r0 as double, )
+&apos;	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,1,23) &apos;23-го Января -- день перепроверки расстояний до источников
+&apos;end function	
 
 &apos;бета источники на 1 марта 2020
 &apos;
