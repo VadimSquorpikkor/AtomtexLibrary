@@ -126,7 +126,10 @@ end function
 rem----------------------------------------------------------------
 &apos;Источники 110: 263 ОНА 9ХК 430
 &apos;Источники 130: 9ТН УП4 043 К/СГ3 163
-function sourceDistanceArray(point as double, prefix as string, bdType as string)
+function sourceDistanceArray(point as double, prefix as string, bdType as string, mDate)
+	dim koef as double
+	koef = getDistanceKoef(mDate, CS_137_HALF_LIFE)
+	&apos;msgbox koef
 	dim ar(1) as variant
 	&apos;Перерасчет расстояний - 05.11.20
 	ar = Array(&quot;Неизв&quot;,&quot;Неизв&quot;) rem если точка не будет найдена, останется значение по умолчанию -- не найдено
@@ -151,6 +154,11 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 0.7 	then ar = Array(&quot;9ХК&quot;,&quot;51.8&quot;)
 				if point = 4 	then ar = Array(&quot;043&quot;,&quot;463.3&quot;)
 				if point = 7 	then ar = Array(&quot;043&quot;,&quot;351.3&quot;)
+				&apos;if point = 7 	then ar = Array(&quot;043&quot;, getDistance(351.3, mDate, CS_137_HALF_LIFE))
+				&apos;if point = 7 	then ar = Array(&quot;043&quot;, Format(koef*351.3, &quot;0.0&quot;)
+				&apos;&apos;&apos;&apos;&apos;так надо&apos;&apos;&apos;&apos;&apos;if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, koef)
+				&apos;if point = 7 	then ar = Array(&quot;043&quot;, Format(351.3*koef, &quot;0.0&quot;))
+				&apos;if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, mDate, CS_137_HALF_LIFE))
 				if point = 20 	then ar = Array(&quot;043&quot;,&quot;208.5&quot;)
 				if point = 70 	then ar = Array(&quot;043&quot;,&quot;112.3&quot;)
 				if point = 80 	then ar = Array(&quot;043&quot;,&quot;105.1&quot;)
@@ -215,11 +223,48 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 	end if
 	sourceDistanceArray = ar
 end function
-
-&apos;function getDistance(r0 as double, )
-&apos;	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,1,23) &apos;23-го Января -- день перепроверки расстояний до источников
-&apos;end function	
-
+rem----------------------------------------------------------------
+&apos;Метод возвращает расстояние до источника на выбранную дату, 
+&apos;по выбранной дате (mdate - это DateField, из которого получается дата), начальному расстоянию до источника и периоду полураспада
+&apos;	╔═══════════════════════════════╗
+&apos;	║	R = R0 * 2^( -ΔT/Tpol )		║█
+&apos;	╚═══════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+function getDistance(r0 as double, mdate, t_pol)
+	dim daysLeft as double
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,1,23) &apos;23-го Января -- день перепроверки расстояний до источников
+	
+	getDistance = Format(r0 * (2 ^ (-1*( daysleft / (2*t_pol) ))), &quot;0.0&quot;
+end function	
+rem----------------------------------------------------------------
+&apos; В отличии от getDistance возвращает не само расстояние, а коэффициент, на которое нужно домножить R0, чтобы получить R
+&apos; Сделан, чтобы не засорять метод sourceDistanceArray, иначе получается длинная строка в кейзе: 
+&apos; с getDistance:  if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, mDate, CS_137_HALF_LIFE))
+&apos; с этим методом: if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, koef)
+&apos; в методе sourceDistanceArray вызывается в начале и присвается переменной koef
+function getDistanceKoef(mdate, t_pol) as double
+	dim daysLeft as double
+	dim koef as double
+	dim i as integer
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,1,23) &apos;23-го Января -- день перепроверки расстояний до источников
+	
+	koef = 2 ^ (-1.0*( daysleft/(2*t_pol) ) )
+	
+	getDistanceKoef = koef
+end function
+rem----------------------------------------------------------------
+&apos;Обертка, чтобв сократить строку:
+&apos; без обертки:  if point = 7 	then ar = Array(&quot;043&quot;, Format(koef*351.3, &quot;0.0&quot;) и это без замены &quot;,&quot; на &quot;.&quot;
+&apos; с оберткой: 	if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, koef)
+function dynDistanceAr(name as string, dist as double, koef as double)
+	dim ar(1) as string
+	ar(0) = name
+	ar(1) = Math.round(dist*koef, 1) &apos;округление до 1 знака после запятой
+	ar(1) = Replace (ar(1),&quot;,&quot;,&quot;.&quot;) &apos;345,6 -&gt; 345.6
+	
+	dynDistanceAr = ar
+end function
+rem----------------------------------------------------------------
 &apos;бета источники на 1 марта 2020
 &apos;
 &apos;Тип	№		Ак,		ПовАк,	ВнешИз,	п/п,	ВнИз 6130

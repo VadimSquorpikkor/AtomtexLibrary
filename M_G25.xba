@@ -109,13 +109,7 @@ sub insertRecordsToTemplate
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
-	
-	&apos;dim bd as new DUnit
-	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-	&apos;	deleteTable(&quot;t&quot; + (k))
-	&apos;next k
-	
-	
+
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
 		Overall.insertToTemplateStep(i)

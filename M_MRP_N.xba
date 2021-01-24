@@ -11,17 +11,18 @@ dim oOptionBDKG35 as object
 dim oNumericFieldModel as object
 dim oActivityCombo as object
 dim bd as new CUnit
+dim	isComboCollection as new Collection
 rem---------------------------------------------------------------------------------------------------------
 Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
+	
 	oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
-	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
-	oDateFieldModel.Date = cDateToIso(Now)
+	Overall.dialogSimpleInitialize(oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, isComboCollection, BDList)
+	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+	
 	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;
-	
-	oDialogMRP.getControl(&quot;versionLabel&quot;).text = &quot;Версия 2.04 &quot;	
-	
+
 	oActivityCombo = oDialogMRP.getControl(&quot;SourceCombo&quot;)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
@@ -32,10 +33,15 @@ Sub MRP920_Dialog_Show
 	oDialogMRP.getControl(&quot;DoneButton&quot;).setEnable(false)
 	oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text = &quot;Тип МРП&quot;
 	
+	
 	oOptionBDKG11 = oDialogMRP.Model.getByName(&quot;isBDKG11&quot;)
 	oOptionBDKG19 = oDialogMRP.Model.getByName(&quot;isBDKG19&quot;)
 	oOptionBDKG35 = oDialogMRP.Model.getByName(&quot;isBDKG35&quot;)
 	oOptionBDKG11.State = 1
+	isComboCollection.add(oOptionBDKG11)
+	isComboCollection.add(oOptionBDKG19)
+	isComboCollection.add(oOptionBDKG35)
+
 	addNewBD
 	
 	oDialogMain.endexecute()   

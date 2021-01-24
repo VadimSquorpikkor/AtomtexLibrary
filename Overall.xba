@@ -52,7 +52,7 @@ dim additionalBGValue as double 	rem к каждому последующему 
 rem									фона (так как БД будет ближе к опущенному, но все-таки немного фонящему источнику) В идеале, это не совсем так, источники могут быть разными от точки к точке, 
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 
-dim oDateFieldModel as object
+dim _oDateFieldModel as object
 &apos;------------------------------------------------------------------------------------------------------------------------
 public function getPercentOtk as double
 	getPercentOtk = percentOtk
@@ -65,19 +65,19 @@ end sub
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
 		case &quot;№516&quot;
-		NumericField.value = get_activity(act516, DateField)
+		NumericField.value = get_activity(act516, _DateField)
 		case &quot;№517&quot;
-		NumericField.value = get_activity(act517, DateField)
+		NumericField.value = get_activity(act517, _DateField)
 		case &quot;№518&quot;
-		NumericField.value = get_activity(act518, DateField)
+		NumericField.value = get_activity(act518, _DateField)
 		case &quot;№519&quot;
-		NumericField.value = get_activity(act519, DateField)
+		NumericField.value = get_activity(act519, _DateField)
 		case &quot;№520&quot;
-		NumericField.value = get_activity(act520, DateField)
+		NumericField.value = get_activity(act520, _DateField)
 		case &quot;№521&quot;
-		NumericField.value = get_activity(act521, DateField)
+		NumericField.value = get_activity(act521, _DateField)
 		case &quot;№2910&quot;
-		NumericField.value = get_activity2910(DateField)
+		NumericField.value = get_activity2910(_DateField)
 	end select	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -112,19 +112,21 @@ sub initializeActivityCombo(oActivityCombo as object)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
-	REM first remove all old items from the list
-  	oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
-  	oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
-  	REM add new items to the list
-  	rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot; )
-  	engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot; )
-  	oComboBox1.addItems( rusItems1, 0 )
-	oComboBox1.text = rusItems1(0)
-	&apos;msgbox oComboBox1.SELECTION
-  	rusItems2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;В. Тарасенко&quot; )
-  	engItems2 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;V. Tarasenko&quot; )
-  	oComboBox2.addItems( rusItems2, 0 )
-	oComboBox2.text = rusItems2(0)
+	if NOT isNull(oComboBox1) OR NOT isNull(oComboBox1) then
+		REM first remove all old items from the list
+  		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
+  		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
+  		REM add new items to the list
+  		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot; )
+  		engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot; )
+  		oComboBox1.addItems( rusItems1, 0 )
+		oComboBox1.text = rusItems1(0)
+		&apos;msgbox oComboBox1.SELECTION
+  		rusItems2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;В. Тарасенко&quot; )
+  		engItems2 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;V. Tarasenko&quot; )
+  		oComboBox2.addItems( rusItems2, 0 )
+		oComboBox2.text = rusItems2(0)
+	end if	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;sub initializeCertificateCombo
@@ -135,6 +137,10 @@ sub initializeDateField(oDateFieldModel as object, oDialog as object)
 	oDateFieldModel = oDialog.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
+	
+	_oDateFieldModel = oDateFieldModel
+	
+	&apos;msgbox cdatefromiso(_oDateFieldModel.date)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
@@ -176,9 +182,12 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 	_oDialog.getControl(&quot;serialLabel&quot;).text = &quot;S/N&quot;
 	_oDialog.getControl(&quot;typeLabel&quot;).text = &quot;тип блока&quot;
 	
-	_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
-	_oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
-	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
+	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then 
+		_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
+		_oOptionButtonPr.State = 1
+	end if
+	if _oDialog.Model.hasByName(&quot;isSertificateRus&quot;) 	then _oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateEng&quot;) 	then _oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
 	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
@@ -214,13 +223,16 @@ sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version
 	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
 	initializeSertificateCombo(oComboBox1, oComboBox2)
 	
-	_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
-	_oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
-	_oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
+	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then 
+		_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
+		_oOptionButtonPr.State = 1
+	end if	
+	if _oDialog.Model.hasByName(&quot;isSertificateRus&quot;) 	then _oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
+	if _oDialog.Model.hasByName(&quot;isSertificateEng&quot;) 	then _oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
 	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
-	_oOptionButtonPr.State = 1
+	
 end sub	
 &apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightStep(d as double) rem расчет правильного Step-а 
@@ -445,8 +457,11 @@ sub templateStep(i as integer, strokeEnd as string)
 			prefix =  bd.pointTextList.item(j+1)
 			threePointArray = avaragePointsRndArray(m_point, percentOtk)
 			
-			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
-			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника
+			&apos;msgbox (cdatefromiso(_oDateFieldModel.date) - DateSerial(2021,1,23))
+			&apos;msgbox cdatefromiso(_oDateFieldModel.date)
+			
+			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(0)) rem название источника
+			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(1)) rem расстояние до источника
 
 			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), getRightFormat(m_point))) rem измерение 1
 			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), getRightFormat(m_point))) rem измерение 2

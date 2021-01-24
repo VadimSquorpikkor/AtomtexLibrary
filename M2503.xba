@@ -285,7 +285,6 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	msgbox Overall.percentOtk
 	Overall.CreatePairedTablesFromTemplate(BDList.count)
 	
 	for i=1 to BDList.count
@@ -362,16 +361,16 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	next k	
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
 	
 	&apos;ТОЧКА (40 мкЗв/ч)
-	findAndRename((&quot;$&quot; + i + &quot;-dn_1&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd_1&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn_1&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_1&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;, oDateFieldModel)(1)) rem расстояние до источника
 
 	&apos;ТОЧКА (40 мЗв/ч) (которая была изначально)
-	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, &quot;gamma&quot;, oDateFieldModel)(1)) rem расстояние до источника
 
 		&apos;resList — это сгенерированные 8 точек С ВЫЧЕТОМ ФОНА
 
@@ -432,8 +431,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		cont_point = bd.pointList.item(j)
 		prefix =  bd.pointTextList.item(j)
 	
-		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
-		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
+		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, oDateFieldModel)(0)) rem название источника
+		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
 		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j), Overall.percentOTK)

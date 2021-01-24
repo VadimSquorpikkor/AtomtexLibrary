@@ -372,8 +372,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
 	
 	&apos;то же самое. Для Нр(0.07). Все остальные точки - это Нр(10), чтобы не добавлять новый тип БД в 3509, просто перед записью остальных точек записываю 
 	&apos;нестандартную точку, когда будут записываться стандартные, эта точка в протоколе уже будет записана вместо метки (&quot;$i-n3&quot;), поэтому будет пропущена
@@ -381,20 +381,20 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	num = -1
 	if is3509B.state then num=3
 	if is3509C.state then num=4
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + num + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;, oDateFieldModel)(1)) rem расстояние до источника	
 
 	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (40 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
-	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_2&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gammaHp007&quot;, oDateFieldModel)(1)) rem расстояние до источника
 	
 	&apos;В 3509  ТОЧКА (40 мкЗв/ч), ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ (ХОТЯ ОНА И ЕСТЬ)
-	findAndRename((&quot;$&quot; + i + &quot;-dn_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd_3&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;, oDateFieldModel)(1)) rem расстояние до источника
 	
 	&apos;В 3509  ПРИ РАСЧЕТЕ ДОЗЫ ИСПОЛЬЗУЕТСЯ ТОЧКА (80 мкЗв/ч), КОТОРОЙ НЕТ В СПИСКЕ ТОЧЕК ДЛЯ БД (В МЕТОДЕ bd.addDataWithMultiPoint), ПОЭТОМУ ЗАПИСЫВАЕМ ЕЁ В ОТДЕЛЬНОЙ СТРОКЕ
-	findAndRename((&quot;$&quot; + i + &quot;-dn&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-dd&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType)(1)) rem расстояние до источника
+	findAndRename((&quot;$&quot; + i + &quot;-dn&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-dd&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника
 
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		relativeErr = RelativeError(sum3/8, 0.8)
@@ -438,8 +438,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		cont_point = bd.pointList.item(j)
 		prefix =  bd.pointTextList.item(j)
 	
-		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(0)) rem название источника
-		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType)(1)) rem расстояние до источника	
+		findAndRename((&quot;$&quot; + i + &quot;-n&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, oDateFieldModel)(0)) rem название источника
+		findAndRename((&quot;$&quot; + i + &quot;-d&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
 		
 		&apos;ТЕПЕРЬ ЭТО ПЯТЬ ЗНАЧЕНИЙ ИЗМЕРЕНИЙ ПО КОТОРЫМ БУДУТ СЧИТАТЬСЯ ПОГРЕШНОСТИ
 		fivePointArray = Math.avarageFivePointsRndArray(bd.getMultiValueList.item(j), Overall.percentOTK)
