@@ -603,12 +603,17 @@ sub saveCurentBDBetaValues(num as integer)
 	_BDList.item(num).setBetaValues(newValues)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub removeLastBD(layoutPosition as integer)&apos;&apos;&apos;&apos;&apos;, BDList as Collection, oDialog as object, oListBox as object, isComboCollection as Collection, maxBDCount as integer)
+sub removeLastBD(layoutPosition as integer)
 	if layoutPosition = _BDList.count then layoutPosition = layoutPosition - 1
 	_oListBox.removeItems(_oListBox.getItemCount()-1, 1 )
 	_BDList.remove(_BDList.count)
 	if _oListBox.getItemCount()=0 then
 		_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
+		dim i as integer
+		for i=1 to _maxPointsCount &apos;_BDList.item(layoutPosition).valueList.count
+			_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
+			_oDialog.getControl(&quot;Label&quot; + i).setVisible(false)
+		next i
 	else 
 		makeLayoutFromBD(_BDList.item(_BDList.count))
 	end if
@@ -949,7 +954,32 @@ sub deleteTable(name as string)
      	ThisComponent.Text.removeTextContent(ThisComponent.TextTables().getByName(name))
      end if
 end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub createCertificate(position, path)
+	saveCurentBDValue(position)
 
-
+	OpenTemplate(sertPath &amp; path)
+	insertFacilitiesText
+	insertParametersToTemplate
+	CreateTablesFromTemplate(_BDList.count)
+	
+	dim i as integer
+	for i=1 to _BDList.count
+		insertToTemplateStep(i)
+	next i
+	
+	findAndRename(&quot;$type&quot;, _BDList.item(1).getName)
+	setSerial(&quot;$allSerial&quot;)
+	msgbox &quot;Готово!&quot;
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+function listBoxListener(layoutPosition as integer)
+	Dim selectPos As Integer
+	saveCurentBDValue(layoutPosition)
+	selectPos = _oListBox.getSelectedItemPos()
+	layoutPosition = selectPos + 1
+	makeLayoutFromBD(_BDList.item(layoutPosition))
+	setButtonVisibility(layoutPosition)
+end function
 
 </script:module>

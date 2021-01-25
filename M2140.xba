@@ -28,7 +28,7 @@ Sub AT2140_Dialog_Show
 	oDialogAT2140 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D2140 )
 	oListBox = oDialogAT2140.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.03 &quot;, oListBox, points_count)
+	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, points_count)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionAT2140 = oDialogAT2140.getControl(&quot;isAT2140&quot;)
@@ -72,21 +72,15 @@ sub addNewBD
 	Overall.increment(oDialogAT2140.getControl(&quot;bdSerial&quot;))
 	Overall.makeLayoutFromBD_2140(BDList.item(1))
 	layoutPosition = 1
-	setButtonVisibility(layoutPosition)
+	Overall.setButtonVisibility(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	Overall.removeLastBD(layoutPosition, BDList, oDialogAT2140, oListBox, isComboCollection, maxBDCount)
-	setButtonVisibility(layoutPosition)
+	Overall.removeLastBD(layoutPosition)
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
-	Dim selectPos As Integer
-	Overall.saveCurentBDValue(layoutPosition)
-	selectPos = oListBox.getSelectedItemPos()
-	layoutPosition = selectPos + 1
-	Overall.makeLayoutFromBD_2140(BDList.item(layoutPosition))
-	setButtonVisibility(layoutPosition)
+	Overall.listBoxListener(layoutPosition)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
@@ -133,21 +127,5 @@ rem-----------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
 end function
-rem---------------------------------------------------------------------------------------------------------
-sub setButtonVisibility(layoutPosition as integer)
-	Overall.setButtonVisibility(layoutPosition)
-	if BDList.count = 0 then
-		oOptionAT2140.setEnable(true)
-		oOptionAT2140a.setEnable(true)
-		oOptionAT2140a_1.setEnable(true)
-		for i=1 to pointCount
-			oDialogAT2140.getControl(&quot;Label&quot; + i).text = &quot;&quot;
-		next i
-	end if
-	if BDList.count &lt;&gt; 0 then
-		oOptionAT2140.setEnable(false)
-		oOptionAT2140a.setEnable(false)
-		oOptionAT2140a_1.setEnable(false)
-	end if
-end sub
+
 </script:module>

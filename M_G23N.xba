@@ -125,27 +125,10 @@ sub showPrevBD
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
-	Overall.saveCurentBDValue(layoutPosition)
-	dim path as string
-	
 	if oOptionBDKG22.state  then path = Overall.getPathAndSetName(&quot;bdkg22-23\bdkg22&quot;, &quot;БДКГ-22&quot;)
 	if oOptionBDKG23.state  then path = Overall.getPathAndSetName(&quot;bdkg22-23\bdkg23&quot;, &quot;БДКГ-23&quot;)
 	if oOptionBDKG231.state then path = Overall.getPathAndSetName(&quot;bdkg22-23\bdkg231&quot;, &quot;БДМГ-231&quot;)
-
-	OpenTemplate(sertPath &amp; path)
-	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate
-	Overall.CreateTablesFromTemplate(BDList.count)
-	
-	dim bd as new DUnit
-	for i=1 to BDList.count
-		&apos;bd = BDList.item(i)
-		Overall.insertToTemplateStep(i)
-		&apos;findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
-	next i
-	
-	Overall.setSerial(&quot;$allSerial&quot;)
-	msgbox &quot;Готово!&quot;
+	Overall.createCertificate(layoutPosition, path)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub setSerialNumberToForm

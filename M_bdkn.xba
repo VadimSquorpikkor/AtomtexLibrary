@@ -108,18 +108,19 @@ sub increment as string
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
-	oListBox.removeItems(oListBox.getItemCount()-1, 1 )
-	BDList.remove(BDList.count)
-	if oListBox.getItemCount()=0 then
-		oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(false)
-		for i=1 to 5
-			oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
-			oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
-		next i
-	else 
-		makeLayoutFromBD(BDList.item(BDList.count))
-	end if
+	Overall.removeLastBD(layoutPosition)
+	&apos;if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
+	&apos;oListBox.removeItems(oListBox.getItemCount()-1, 1 )
+	&apos;BDList.remove(BDList.count)
+	&apos;if oListBox.getItemCount()=0 then
+	&apos;	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(false)
+	&apos;	for i=1 to 5
+	&apos;		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
+	&apos;		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
+	&apos;	next i
+	&apos;else 
+	&apos;	makeLayoutFromBD(BDList.item(BDList.count))
+	&apos;end if
 	setButtonVisibility
 end Sub
 rem---------------------------------------------------------------------------------------------------------
@@ -186,13 +187,7 @@ sub insertRecordsToTemplate
 	
 	dim bd as new DUnit
 	dim bdkn as new NUnit
-&apos;&apos;&apos;&apos;&apos;&apos;	dim threePointArray(2) as double
-	
-&apos;	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-&apos;		deleteTable(&quot;t&quot; + (k))
-&apos;		deleteTable(&quot;tf&quot; + (k))
-&apos;	next k
-	
+
 	for i=1 to BDList.count
 		bd = BDList.item(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;

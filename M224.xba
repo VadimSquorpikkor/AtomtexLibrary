@@ -21,7 +21,6 @@ dim BDList as new Collection
 dim layoutPosition as integer
 dim maxBDCount as integer
 dim isComboCollection as new Collection
-dim path, calibName, techName as string
 rem---------------------------------------------------------------------------------------------------------
 Sub G224_Dialog_Show
 	maxBDCount = 100 &apos;В принципе ограничено только ресурсами компа, времени и integer. Поставил 100 просто для красоты
@@ -29,7 +28,7 @@ Sub G224_Dialog_Show
 	oDialogG224 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D224 )
 	oListBox = oDialogG224.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.17 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.18 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
@@ -77,16 +76,11 @@ sub addNewBD
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	Overall.removeLastBD(layoutPosition, BDList, oDialogG224, oListBox, isComboCollection, maxBDCount)
+	Overall.removeLastBD(layoutPosition)
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
-	Dim selectPos As Integer
-	Overall.saveCurentBDValue(layoutPosition)
-	selectPos = oListBox.getSelectedItemPos()
-	layoutPosition = selectPos + 1
-	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
-	Overall.setButtonVisibility(layoutPosition)
+	Overall.listBoxListener(layoutPosition)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
@@ -98,23 +92,12 @@ sub showPrevBD
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
-	Overall.saveCurentBDValue(layoutPosition)
 	path = Overall.getPathAndSetName(&quot;bdkg224\bdkg224&quot;, &quot;БДКГ-224&quot;)
-
-	OpenTemplate(sertPath &amp; path)
-	Overall.insertFacilitiesText
-	Overall.insertParametersToTemplate
-	Overall.CreateTablesFromTemplate(BDList.count)
-	
-	for i=1 to BDList.count
-		Overall.insertToTemplateStep(i)
-	next i
-	
-	Overall.setSerial(&quot;$allSerial&quot;)
-	msgbox &quot;Готово!&quot;
+	Overall.createCertificate(layoutPosition, path)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
 end function
+
 </script:module>

@@ -19,13 +19,13 @@
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="35" dlg:left="115" dlg:top="4" dlg:width="65" dlg:height="207"/>
   <dlg:text dlg:id="Label15" dlg:tab-index="36" dlg:left="118" dlg:top="201" dlg:width="60" dlg:height="7" dlg:value="Mаксимум — 100 БД" dlg:align="center"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:style-id="0" dlg:id="isAT2140" dlg:tab-index="3" dlg:left="9" dlg:top="33" dlg:width="45" dlg:height="8" dlg:value="AT2140">
+   <dlg:radio dlg:style-id="0" dlg:id="isAT2140" dlg:tab-index="3" dlg:left="9" dlg:top="32" dlg:width="49" dlg:height="8" dlg:value="AT2140">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2140.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="isAT2140a" dlg:tab-index="4" dlg:left="9" dlg:top="44" dlg:width="45" dlg:height="8" dlg:value="AT2140A">
+   <dlg:radio dlg:style-id="0" dlg:id="isAT2140a" dlg:tab-index="4" dlg:left="9" dlg:top="44" dlg:width="49" dlg:height="8" dlg:value="AT2140A">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2140.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="0" dlg:id="isAT2140a_1" dlg:tab-index="5" dlg:left="9" dlg:top="57" dlg:width="45" dlg:height="8" dlg:value="AT2140A/1">
+   <dlg:radio dlg:style-id="0" dlg:id="isAT2140a_1" dlg:tab-index="5" dlg:left="9" dlg:top="56" dlg:width="49" dlg:height="8" dlg:value="AT2140A/1">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2140.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
   </dlg:radiogroup>
