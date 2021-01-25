@@ -69,7 +69,7 @@ Sub G2503_Dialog_Show
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.11 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.11 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -360,6 +360,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(Math.round(devList(k), 2), &quot;0.00&quot;))
 	next k	
 		
+		
+		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
@@ -376,7 +378,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		&apos;msgbox &quot;avrg = &quot; + sum3/8
-		relativeErr = RelativeError(sum3/8, 0.8)
+		relativeErr = Math.RelativeError(sum3/8, 0.8)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(Math.round(relativeErr, 2), &quot;0.00&quot;))
 		
 		&apos;msgbox &quot;0-&quot; + resList(0) + &quot;1-&quot; + resList(1) + &quot;2-&quot; + resList(2) + &quot;3-&quot; + resList(3) 
@@ -459,7 +461,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;поэтому я заполняю в таблице и процент отклика и относительную погрешность результатом рассчета относительной погрешности
 		
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
-		relativeErr = RelativeError(avg, cont_point)
+		relativeErr = Math.RelativeError(avg, cont_point)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
 		&apos;--------------------------------------------------------------------
@@ -530,7 +532,7 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 	
 		&apos;относительная погрешность измерения
 		dim otnosit as double
-		otnosit = otn_pogreshnost(deviceCountRes, 4)
+		otnosit = Math.RelativeError(deviceCountRes, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-o_pog&quot; + strokeEnd), Format(otnosit, &quot;0.00&quot;))
 	
 		
@@ -560,7 +562,7 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 	
 		&apos;доверительная граница
 		dim dov_gr as double
-		dov_gr = dov_granica(otnosit, 4)
+		dov_gr = Math.ConfidenceLimit(otnosit, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
 end sub
 

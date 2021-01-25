@@ -225,7 +225,7 @@ rem----------------------------------------------------------------
 &apos;Метод возвращает расстояние до источника на выбранную дату, 
 &apos;по выбранной дате (mdate - это DateField, из которого получается дата), начальному расстоянию до источника и периоду полураспада
 &apos;	╔═══════════════════════════════╗
-&apos;	║	R = R0 * 2^( -ΔT/Tpol )		║█
+&apos;	║	R = R0 * 2^( -ΔT / 2*Tpol )	║█
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 function getDistance(r0 as double, mdate, t_pol)
@@ -243,7 +243,7 @@ rem----------------------------------------------------------------
 &apos; с этим методом: if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 351.3, koef)
 &apos; в методе sourceDistanceArray вызывается в начале и присвается переменной koef
 &apos;	╔═══════════════════════════╗
-&apos;	║	k = 2^( -ΔT/Tpol )		║█
+&apos;	║	k = 2^( -ΔT/ 2*Tpol )	║█
 &apos;	╚═══════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 function getDistanceKoef(mdate, t_pol) as double
@@ -267,7 +267,7 @@ function dynDistanceAr(name as string, dist as double, koef as double)
 	ar(0) = name
 	ar(1) = Math.round(dist*koef, 1) &apos;округление до 1 знака после запятой
 	ar(1) = Replace (ar(1),&quot;,&quot;,&quot;.&quot;) &apos;345,6 -&gt; 345.6
-	
+	ar(1) = Format(ar(1), &quot;0.0&quot;) &apos;68 -&gt; 68.0
 	dynDistanceAr = ar
 end function
 rem----------------------------------------------------------------

@@ -48,10 +48,6 @@ sub setButtonEnabled
 	oDialogAT2140.getControl(&quot;addButton&quot;).setEnable(true)
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub incValue
-	Overall.increment(oDialogAT2140.getControl(&quot;bdSerial&quot;))
-end sub	
-rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
 	dim bdName as string
 	dim nCount as integer

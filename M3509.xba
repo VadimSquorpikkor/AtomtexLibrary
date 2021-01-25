@@ -68,7 +68,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitializeWithoutValueField(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.09 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.09 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -286,15 +286,6 @@ sub insertRecordsToTemplate
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
 	Overall.CreatePairedTablesFromTemplate(BDList.count)
-
-	&apos;dim bd as new DUnit
-	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-	&apos;	deleteTable(&quot;t&quot;  + (k))
-	&apos;next k
-	&apos;почему-то если делаю удаление таблиц в одном цикле -- падает весь офис
-	&apos;for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-	&apos;	deleteTable(&quot;s&quot;  + (k))
-	&apos;next k
 	
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; divider &amp; BDList.item(i).getSerial
@@ -368,8 +359,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
 		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
 	next k	
-	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+	&apos;findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
+	&apos;findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
@@ -397,7 +388,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	findAndRename((&quot;$&quot; + i + &quot;-dd&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника
 
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
-		relativeErr = RelativeError(sum3/8, 0.8)
+		relativeErr = Math.RelativeError(sum3/8, 0.8)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
@@ -469,7 +460,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
 		
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
-		relativeErr = RelativeError(avg, cont_point)
+		relativeErr = Math.RelativeError(avg, cont_point)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + j + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
 		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
@@ -514,12 +505,12 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 	
 		&apos;относительная погрешность измерения
 		dim otnosit as double
-		otnosit = otn_pogreshnost(deviceCountRes, 4)
+		otnosit = Math.RelativeError(deviceCountRes, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-o_pog&quot; + strokeEnd), Format(otnosit, &quot;0.00&quot;))
 	
 		&apos;доверительная граница
 		dim dov_gr as double
-		dov_gr = dov_granica(otnosit, 4)
+		dov_gr = Math.ConfidenceLimit(otnosit, 4)
 		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
 end sub
 </script:module>

@@ -306,9 +306,9 @@ end function
 
 rem ВСЁ ЧТО ДАЛЬШЕ НЕ НУЖНО
 rem=======================================================================================
-function otn_pogreshnost(meas as double, contr_point as double)
-	otn_pogreshnost = ((meas - contr_point) / contr_point) * 100
-end function
+&apos;function otn_pogreshnost(meas as double, contr_point as double)
+&apos;	otn_pogreshnost = ((meas - contr_point) / contr_point) * 100
+&apos;end function
 rem=======================================================================================
 &apos;function dov_granica(pogr as double, percent as integer)
 &apos;	dov_granica = 1.1 * sqr(percent*percent + pogr*pogr)
@@ -316,27 +316,27 @@ rem=============================================================================
 rem=======================================================================================
 
 rem относительная погрешность измерения
-public function getRelativeError as Collection
-	dim i as integer
-	for i=1 to _pointValue.count
-		_relativeError.add (otn_pogreshnost(_measuredValue.item(i), _pointValue.item(i)))
-	next i
-	getRelativeError = _relativeError
-end function
+&apos;public function getRelativeError as Collection
+&apos;	dim i as integer
+&apos;	for i=1 to _pointValue.count
+&apos;		_relativeError.add (otn_pogreshnost(_measuredValue.item(i), _pointValue.item(i)))
+&apos;	next i
+&apos;	getRelativeError = _relativeError
+&apos;end function
 
 rem доверительная граница для 110 и 130 поверочной установки -- только для гамма (для БДКН и БДПА/Б результат не предсказуем)
-public function getConfidenceLimit as Collection
-	dim percent as integer
-	dim i as integer
-	for i=1 to _pointValue.count
-		if AbsoluteValue(_pointValue.item(i), _pointText.item(i))&lt;1000 then
-		percent = 5
-		else
-		percent = 4
-		end if
-		_confidenceLimit.add (dov_granica(_relativeError.item(i), percent))
-	next i
-	getConfidenceLimit = _confidenceLimit
-end function
+&apos;public function getConfidenceLimit as Collection
+&apos;	dim percent as integer
+&apos;	dim i as integer
+&apos;	for i=1 to _pointValue.count
+&apos;		if AbsoluteValue(_pointValue.item(i), _pointText.item(i))&lt;1000 then
+&apos;		percent = 5
+&apos;		else
+&apos;		percent = 4
+&apos;		end if
+&apos;		_confidenceLimit.add (dov_granica(_relativeError.item(i), percent))
+&apos;	next i
+&apos;	getConfidenceLimit = _confidenceLimit
+&apos;end function
 
 </script:module>

@@ -226,7 +226,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$srk_serial&quot;, srk_serial)
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		deleteTable(&quot;t&quot; + (k))
+		Overall.deleteTable(&quot;t&quot; + (k))
 	next k
 		
 	for i=1 to BDList.count

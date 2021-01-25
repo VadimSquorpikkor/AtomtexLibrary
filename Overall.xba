@@ -53,6 +53,7 @@ rem									фона (так как БД будет ближе к опущенн
 rem									соответственно, расстояние может и увеличиваться. Поэтому нужно, чтобы метод добавлял надбавку к фону в зависимости от расстояния от источника (брать в классе Activity)
 
 dim _oDateFieldModel as object
+dim NULL as object
 &apos;------------------------------------------------------------------------------------------------------------------------
 public function getPercentOtk as double
 	getPercentOtk = percentOtk
@@ -65,19 +66,19 @@ end sub
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
 		case &quot;№516&quot;
-		NumericField.value = get_activity(act516, _DateField)
+		NumericField.value = get_activity(act516, _oDateFieldModel)
 		case &quot;№517&quot;
-		NumericField.value = get_activity(act517, _DateField)
+		NumericField.value = get_activity(act517, _oDateFieldModel)
 		case &quot;№518&quot;
-		NumericField.value = get_activity(act518, _DateField)
+		NumericField.value = get_activity(act518, _oDateFieldModel)
 		case &quot;№519&quot;
-		NumericField.value = get_activity(act519, _DateField)
+		NumericField.value = get_activity(act519, _oDateFieldModel)
 		case &quot;№520&quot;
-		NumericField.value = get_activity(act520, _DateField)
+		NumericField.value = get_activity(act520, _oDateFieldModel)
 		case &quot;№521&quot;
-		NumericField.value = get_activity(act521, _DateField)
+		NumericField.value = get_activity(act521, _oDateFieldModel)
 		case &quot;№2910&quot;
-		NumericField.value = get_activity2910(_DateField)
+		NumericField.value = get_activity2910(_oDateFieldModel)
 	end select	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -129,22 +130,15 @@ sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
 	end if	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-&apos;sub initializeCertificateCombo
-&apos;	initializeSertificateCombo(_oDialog.getControl(&quot;provCombo&quot;), _oDialog.getControl(&quot;techCombo&quot;))
-&apos;end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeDateField(oDateFieldModel as object, oDialog as object)
 	oDateFieldModel = oDialog.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
 	
 	_oDateFieldModel = oDateFieldModel
-	
-	&apos;msgbox cdatefromiso(_oDateFieldModel.date)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
-	
 	_layoutPosition = layoutPosition
 	_BDList = BDList
 	_isComboCollection = isComboCollection
@@ -152,17 +146,17 @@ end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldModel as object, version as string, oListBox as object, pointCount as integer)
 	_oDialog = oDialog
+	
+	&apos;если в диалоге ксть поля &quot;ValueField&quot;, то они будут проинициализированы. 
+	&apos;В 2503 и 3509 нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 , в этих диалогах инициализация пропускается
+	if _oDialog.Model.hasByName(&quot;ValueField1&quot;) then
 	dim i as integer
 	for i=1 to pointCount
 		_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
 		_oDialog.getControl(&quot;ValueField&quot; + i).value = 0
 	next i
-	dialogShowInitializeWithoutValueField(maxBDCount, oDialog, oDateFieldModel, version, oListBox, pointCount)
-end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
-rem Для 2503 и 3509 -- в этих диалогах нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 
-sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as object, oDateFieldModel as object, version as string, oListBox as object, pointCount as integer)
-	_oDialog = oDialog
+	end if
+	
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
 	_maxPointsCount = pointCount
@@ -174,24 +168,21 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 
 	initializeSertificateCombo(oComboBox1, oComboBox2)
 
-	_oDialog.getControl(&quot;addButton&quot;).setEnable(false)	
-	_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
-	_oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
-	_oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
-	_oDialog.getControl(&quot;doneButton&quot;).setEnable(false)
-	_oDialog.getControl(&quot;serialLabel&quot;).text = &quot;S/N&quot;
-	_oDialog.getControl(&quot;typeLabel&quot;).text = &quot;тип блока&quot;
+	if _oDialog.Model.hasByName(&quot;addButton&quot;) 	then _oDialog.getControl(&quot;addButton&quot;).setEnable(false)	
+	if _oDialog.Model.hasByName(&quot;removeButton&quot;) then _oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
+	if _oDialog.Model.hasByName(&quot;nextButton&quot;) 	then _oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
+	if _oDialog.Model.hasByName(&quot;prevButton&quot;) 	then _oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
+	if _oDialog.Model.hasByName(&quot;doneButton&quot;) 	then _oDialog.getControl(&quot;doneButton&quot;).setEnable(false)
+	if _oDialog.Model.hasByName(&quot;serialLabel&quot;) 	then _oDialog.getControl(&quot;serialLabel&quot;).text = &quot;S/N&quot;
+	if _oDialog.Model.hasByName(&quot;typeLabel&quot;) 	then _oDialog.getControl(&quot;typeLabel&quot;).text = &quot;тип блока&quot;
 	
-	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then 
-		_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
-		_oOptionButtonPr.State = 1
-	end if
+	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then _oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
+	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then _oOptionButtonPr.State = 1
 	if _oDialog.Model.hasByName(&quot;isSertificateRus&quot;) 	then _oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateEng&quot;) 	then _oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
 	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
 	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
-	_oOptionButtonPr.State = 1
 		
 	dim insertButton as object
 	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
@@ -200,40 +191,8 @@ sub dialogShowInitializeWithoutValueField(maxBDCount as integer, oDialog as obje
 		insertButton.visible = false
 	end if	
 		
-	_oListBox.setEnable(false)
+	if NOT isNull(oListBox) then _oListBox.setEnable(false)
 end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
-sub dialogSimpleInitialize(oDialog as object, oDateFieldModel as object, version as string, isComboCollection as Collection, BDList as Collection)
-	_BDList = BDList
-	_isComboCollection = isComboCollection
-	_oDialog = oDialog
-	initializeDateField(oDateFieldModel, _oDialog)	
-	_oDialog.getControl(&quot;versionLabel&quot;).text = version
-	
-	_oDialog.Model.hasByName(&quot;insertButton&quot;)
-	
-	dim insertButton as object
-	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
-		_oDialog.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
-		insertButton = _oDialog.getControl(&quot;insertButton&quot;)
-		insertButton.visible = false
-	end if	
-	
-	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
-	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
-	initializeSertificateCombo(oComboBox1, oComboBox2)
-	
-	if _oDialog.Model.hasByName(&quot;isProtocol&quot;) 			then 
-		_oOptionButtonPr = _oDialog.Model.getByName(&quot;isProtocol&quot;)
-		_oOptionButtonPr.State = 1
-	end if	
-	if _oDialog.Model.hasByName(&quot;isSertificateRus&quot;) 	then _oOptionButtonSr = _oDialog.Model.getByName(&quot;isSertificateRus&quot;)
-	if _oDialog.Model.hasByName(&quot;isSertificateEng&quot;) 	then _oOptionButtonSe = _oDialog.Model.getByName(&quot;isSertificateEng&quot;)
-	if _oDialog.Model.hasByName(&quot;isProtocolNew&quot;) 		then _oOptionButtonPrNew = _oDialog.Model.getByName(&quot;isProtocolNew&quot;)
-	if _oDialog.Model.hasByName(&quot;isSertificateRusNew&quot;) 	then _oOptionButtonSrNew = _oDialog.Model.getByName(&quot;isSertificateRusNew&quot;)
-	if _oDialog.Model.hasByName(&quot;isSertificateEngNew&quot;) 	then _oOptionButtonSeNew = _oDialog.Model.getByName(&quot;isSertificateEngNew&quot;)
-	
-end sub	
 &apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightStep(d as double) rem расчет правильного Step-а 
 	if              d&gt;10000 then rightStep = 10
@@ -416,29 +375,8 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
-	bg007 = Format(randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
+	bg007 = Format(Math.randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
 end sub	
-&apos;------------------------------------------------------------------------------------------------------------------------
-function randValue(num as double, otklonenie as double)
-	randValue = (num - otklonenie) + rnd()*otklonenie*2
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-function avaragePointsRndArray(point as double, o_percent as double)
-	rem TODO сделать по Гауссу!!!
-	dim deviation as double
-	dim p1 as double
-	dim p2 as double
-	dim p3 as double
-	dim ar(2) as double 
-	deviation = o_percent/100*point
-	p1 = randValue(point, deviation)
-	p2 = randValue(point, deviation)
-	p3 = point*3 - p1 - p2
-	ar(0) = p1
-	ar(1) = p2
-	ar(2) = p3
-	avaragePointsRndArray = ar	
-end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)
 		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
@@ -455,7 +393,7 @@ sub templateStep(i as integer, strokeEnd as string)
 
 			cont_point = bd.pointList.item(j+1)
 			prefix =  bd.pointTextList.item(j+1)
-			threePointArray = avaragePointsRndArray(m_point, percentOtk)
+			threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
 			
 			&apos;msgbox (cdatefromiso(_oDateFieldModel.date) - DateSerial(2021,1,23))
 			&apos;msgbox cdatefromiso(_oDateFieldModel.date)
@@ -494,10 +432,10 @@ sub templateStep(i as integer, strokeEnd as string)
 			percent = FacilityError(m_point, BDType, prefix)
 				
 			dim pogr_point as double
-			pogr_point = RelativeError(m_point, cont_point)
+			pogr_point = Math.RelativeError(m_point, cont_point)
 			MyFormat = &quot;0.00&quot;
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
-			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
 		next j
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 		strokeForSaving = strokeForSaving &amp; divider &amp; bd.getSerial
@@ -531,7 +469,7 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		end if	
 			
 		
-		threePointArray = avaragePointsRndArray(m_point, percentOtk)
+		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
 		
 		findAndRename((sign + i + &quot;-3&quot; + j), betaSourcesList.item(j+1)) rem название источника
 	
@@ -558,10 +496,10 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		percent = 6
 			
 		dim pogr_point as double
-		pogr_point = RelativeError(m_point, cont_point)
+		pogr_point = Math.RelativeError(m_point, cont_point)
 		MyFormat = &quot;0.00&quot;
 		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((sign + i + &quot;-2&quot; + j), Format(ConfidenceLimit(percent, pogr_point), MyFormat))
+		findAndRename((sign + i + &quot;-2&quot; + j), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
 	next j
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -1005,7 +943,12 @@ Sub CreatePairedTablesFromTemplate(count as integer)
 	next i
 	findAndRename(&quot;##&quot;, &quot;$&quot;)
 End Sub
-
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub deleteTable(name as string)
+	 if ThisComponent.TextTables().hasByName(name) then
+     	ThisComponent.Text.removeTextContent(ThisComponent.TextTables().getByName(name))
+     end if
+end sub
 
 
 

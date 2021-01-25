@@ -17,9 +17,12 @@ Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
 	
-	oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
-	Overall.dialogSimpleInitialize(oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, isComboCollection, BDList)
-	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+	&apos;oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
+	&apos;Overall.dialogSimpleInitialize(oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, isComboCollection, BDList)
+	&apos;Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
+	
+	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, Overall.NULL, 0)
+	Overall.initializeParameters(0, BDList, isComboCollection)
 	
 	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;
 

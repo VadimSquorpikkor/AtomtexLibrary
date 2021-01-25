@@ -71,9 +71,9 @@ Sub G02N_Dialog_Show
 	oNumericFieldModelAll.DECIMALACCURACY = 2
 	oNumericFieldModelAll.value = get_activity(act_all, oDateFieldModel)
 	
-	oComboBox1 = oDialogG02N.getControl(&quot;provCombo&quot;)
-	oComboBox2 = oDialogG02N.getControl(&quot;techCombo&quot;)
-	Overall.initializeSertificateCombo(oComboBox1, oComboBox2)
+	&apos;oComboBox1 = oDialogG02N.getControl(&quot;provCombo&quot;)
+	&apos;oComboBox2 = oDialogG02N.getControl(&quot;techCombo&quot;)
+	&apos;Overall.initializeSertificateCombo(oComboBox1, oComboBox2)
 		
 	oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
 	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
@@ -89,9 +89,9 @@ Sub G02N_Dialog_Show
 	oOptionBDMG    = oDialogG02N.Model.getByName(&quot;isBDMG&quot;)
 	oOptionBDKG11  = oDialogG02N.Model.getByName(&quot;isBDKG-11&quot;)
 	oOptionBDKG02.State  = 0
-	oOptionBDKG204.State = 0
-	oOptionBDMG.State    = 0
-	oOptionBDKG11.State  = 0
+	&apos;oOptionBDKG204.State = 0
+	&apos;oOptionBDMG.State    = 0
+	&apos;oOptionBDKG11.State  = 0
 	
 	oListBox.setEnable(false)
 	
@@ -340,7 +340,7 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		&apos;deleteTable(&quot;t&quot; + (k))
-		deleteTable(&quot;tgrad&quot; + (k))
+		Overall.deleteTable(&quot;tgrad&quot; + (k))
 	next k
 	
 	Overall.insertFacilitiesText
@@ -383,16 +383,6 @@ sub BgCheckBoxListener
 		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
 	end if			
 end sub
-rem---------------------------------------------------------------------------------------------------------
-function insertDataToLayout
-	RangeData = FillArrayFromSelection()
-   	dim i as integer
-	oDialogG02N.Model.getByName(&quot;ValueField&quot; + i).value = Format(randValue(7, 0.2), &quot;0.00&quot;)
-	oDialogG02N.Model.getByName(&quot;ValueField&quot; + i).value = Format(randValue(7, 0.2), &quot;0.00&quot;)
-   	for i=3 to 8
-   		oDialogG02N.Model.getByName(&quot;ValueField&quot; + i).value = RangeData(i-2, 0)
-   	next i
-end function
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)

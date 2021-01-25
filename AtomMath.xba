@@ -249,7 +249,42 @@ function avaragePointsRndTenArray(point as double, o_percent as double)
 	ar(9) = p10
 	avaragePointsRndTenArray = ar
 end function
-
+&apos;------------------------------------------------------------------------------------------------------------------------
+function avaragePointsRndArray(point as double, o_percent as double)
+	rem TODO сделать по Гауссу!!!
+	dim deviation as double
+	dim p1 as double
+	dim p2 as double
+	dim p3 as double
+	dim ar(2) as double 
+	deviation = o_percent/100*point
+	p1 = Math.randValue(point, deviation)
+	p2 = Math.randValue(point, deviation)
+	p3 = point*3 - p1 - p2
+	ar(0) = p1
+	ar(1) = p2
+	ar(2) = p3
+	avaragePointsRndArray = ar	
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos; доверительная граница погрешности измерения
+function dov_granica(pogr as double, percent as integer)
+	dov_granica = 1.1 * sqr(percent*percent + pogr*pogr)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos; относительная погрешность измерения
+function RelativeError(meas as double, contr_point as double)
+	RelativeError = ((meas - contr_point) / contr_point) * 100
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;доверительная граница погрешности измерения
+function ConfidenceLimit(pogr as double, percent as long)
+	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function randValue(num as double, otklonenie as double) as double
+	randValue = (num - otklonenie) + rnd()*otklonenie*2
+end function
 
 
 </script:module>

@@ -45,9 +45,9 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	s = n / f * k
 	
 	rem Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
-	threePointArray_1 = Overall.avaragePointsRndArray(p1, 25) &apos;OverAll.percentOtk)
-	threePointArray_2 = Overall.avaragePointsRndArray(p2, 10) &apos;OverAll.percentOtk)
-	threePointArray_3 = Overall.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
+	threePointArray_1 = Math.avaragePointsRndArray(p1, 25) &apos;OverAll.percentOtk)
+	threePointArray_2 = Math.avaragePointsRndArray(p2, 10) &apos;OverAll.percentOtk)
+	threePointArray_3 = Math.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
 	
 	for j=0 to bd.getPointList.count-1
 		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
@@ -69,7 +69,7 @@ sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_
 	
 	for j=0 to bd.getPointList.count-1		
 		m_point = bd.valueList.item(j+1)
-		threePointArray = Overall.avaragePointsRndArray(m_point, 7) &apos;OverAll.getPercentOtk)
+		threePointArray = Math.avaragePointsRndArray(m_point, 7) &apos;OverAll.getPercentOtk)
 			
 		if m_point &lt; 0.1 and m_point &gt; 0  then MyFormat = &quot;0.000&quot;
 		if m_point &lt; 1 and m_point &gt;= 0.1 then MyFormat = &quot;0.00&quot;

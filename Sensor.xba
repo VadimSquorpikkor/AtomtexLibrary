@@ -46,11 +46,12 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Сравнивает параметр с его заданным значением. Фон, например, должен быть от 90 до 100 (95+-5)
 function getRightValue(value as double, param as double, shift as double) as double
+	&apos;msgbox Math.randValue(10, 3)
 	if value &gt;= param - shift AND value &lt;= param + shift then
 		getRightValue = value
 	else
 		msgbox &quot;Параметр задан неверно и будет сгенерирован&quot;
-		getRightValue = randValue(param, shift)
+		getRightValue = Math.randValue(param, shift)
 	end if		
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -94,9 +95,9 @@ function setValues
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function setSensorsRandomly 
-	background  = randValue(BG_AVG, BG_SHIFT) 
-	temperature = randValue(TEMP_AVG, TEMP_SHIFT)
-	humidity    = randValue(HUM_AVG, HUM_SHIFT)
+	background  = Math.randValue(BG_AVG, BG_SHIFT) 
+	temperature = Math.randValue(TEMP_AVG, TEMP_SHIFT)
+	humidity    = Math.randValue(HUM_AVG, HUM_SHIFT)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function sensorsToFile
