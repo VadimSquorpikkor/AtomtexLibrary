@@ -234,8 +234,8 @@ sub addNewBD
 	oListBox.addItem( bdName, nCount )
 	BDList.add(bd)
 	increment
-	makeLayoutFromBD(BDList.item(1)) &apos;BDList.count
-	layoutPosition = 1 &apos;BDList.count
+	layoutPosition = layoutPosition + 1
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 	setButtonVisibility
 end sub
 rem---------------------------------------------------------------------------------------------------------

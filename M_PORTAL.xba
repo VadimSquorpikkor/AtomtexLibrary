@@ -102,8 +102,8 @@ sub addNewBD
 	oListBox.addItem( serial + &quot; ( &quot; + bd.getType + &quot; ) &quot;, nCount )
 	BDList.add(bd)
 	Overall.increment(oDialogPortal.getControl(&quot;TextFieldNUM&quot;))
-	makeLayoutFromBD(BDList.item(1)) &apos;BDList.count
-	layoutPosition = 1 &apos;BDList.count
+	layoutPosition = layoutPosition + 1
+	makeLayoutFromBD(BDList.item(layoutPosition))
 	setButtonVisibility
 end sub
 rem---------------------------------------------------------------------------------------------------------

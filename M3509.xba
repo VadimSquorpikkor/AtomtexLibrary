@@ -169,8 +169,9 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	oDialog3509.getControl(&quot;bdSerial&quot;).value = oDialog3509.getControl(&quot;bdSerial&quot;).value + 1
-	Overall.makeLayoutFromMultiBD(BDList.item(1))
-	layoutPosition = 1
+
+	layoutPosition = layoutPosition + 1
+	Overall.makeLayoutFromMultiBD(BDList.item(layoutPosition))
 
 	setButtonVisibility(layoutPosition)
 end sub

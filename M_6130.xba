@@ -210,8 +210,10 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	Overall.increment(oDialog6130.getControl(&quot;bdSerial&quot;))
-	makeLayoutFromBD(BDList.item(1))
-	layoutPosition = 1
+	
+	layoutPosition = layoutPosition + 1
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
+	
 	setButtonVisibility(layoutPosition)
 end sub
 
