@@ -20,6 +20,15 @@
 &apos; и НЕ НУЖНО инициализировать комбоБоксы сертификатов (Overall.initializeSertificateCombo(oComboBox1, oComboBox2)). 
 &apos; В этих методах всё уже инициализировано
 
+&apos;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+&apos;управление видимостью ValueField и Label теперь добавлена в Overall.setButtonVisibility, во всех приборах надо удалить соответствующие команды, они теперь не нужны
+
+&apos;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+&apos; TODO сделать везде как здесь: layoutPosition + 1 (а не = 1), и только после этого makeLayoutFromBD(), так при добавлении 
+&apos; нового БД лэйаут будет переключаться на этот новый БД, а раньше всегда переключался на первый (см. 2140):
+&apos; layoutPosition = layoutPosition + 1
+&apos; Overall.makeLayoutFromBD(BDList.item(layoutPosition)
+
 
 &apos;	if _oDialog.Model.hasByName(&quot;insertButton&quot;) then
 &apos;		_oDialog.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;

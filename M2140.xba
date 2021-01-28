@@ -28,7 +28,7 @@ Sub AT2140_Dialog_Show
 	oDialogAT2140 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D2140 )
 	oListBox = oDialogAT2140.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, points_count)
+	Overall.dialogShowInitialize(maxBDCount, oDialogAT2140, oDateFieldModel, &quot;Версия 1.06 &quot;, oListBox, points_count)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionAT2140 = oDialogAT2140.getControl(&quot;isAT2140&quot;)
@@ -59,7 +59,7 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
-	if oOptionAT2140.state 		then bd.addData(&quot;AT-2140&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,10))
+	if oOptionAT2140.state 		then bd.addData(&quot;AT-2140&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10))
 	if oOptionAT2140a.state 	then bd.addData(&quot;AT-2140A&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
 	if oOptionAT2140a_1.state 	then bd.addData(&quot;AT-2140A/1&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
 	
@@ -70,30 +70,43 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	Overall.increment(oDialogAT2140.getControl(&quot;bdSerial&quot;))
-	Overall.makeLayoutFromBD_2140(BDList.item(1))
-	layoutPosition = 1
+
+	&apos; TODO сделать везде как здесь: layoutPosition + 1 (а не = 1), и только после этого makeLayoutFromBD(), так при добавлении 
+	&apos; нового БД лэйаут будет переключаться на этот новый БД, а раньше всегда переключался на первый
+	layoutPosition = layoutPosition + 1
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
+	makeSimpleLayoutFromBD_2140(BDList.item(layoutPosition))
+
+	
 	Overall.setButtonVisibility(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
 	Overall.removeLastBD(layoutPosition)
+	if oListBox.getItemCount()&lt;&gt;0 then makeSimpleLayoutFromBD_2140(BDList.item(layoutPosition))
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
 	Overall.listBoxListener(layoutPosition)
+	makeSimpleLayoutFromBD_2140(BDList.item(layoutPosition))
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
 	Overall.showNextBD(layoutPosition)
+	makeSimpleLayoutFromBD_2140(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
 	Overall.showPrevBD(layoutPosition)
+	makeSimpleLayoutFromBD_2140(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	Overall.saveCurentBDValue(layoutPosition)
-	path = Overall.getPathAndSetName(&quot;2140\2140&quot;, &quot;AT2140&quot;)
+
+	if oOptionAT2140.state     then path = Overall.getPathAndSetName(&quot;2140\2140&quot;,  &quot;AT2140&quot;)
+	if oOptionAT2140a.state    then path = Overall.getPathAndSetName(&quot;2140\2140a&quot;, &quot;AT2140А&quot;)
+	if oOptionAT2140a_1.state  then path = Overall.getPathAndSetName(&quot;2140\2140a&quot;, &quot;AT2140А/1&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -127,5 +140,22 @@ rem-----------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
 end function
-
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos; после вызова Overall.makeLayoutFromBD запускается этот метод, чтобы скорректировать Step и Accuracy — эти параметры для 2140 отличаются от стандартных
+sub makeSimpleLayoutFromBD_2140(bd as new DUnit)
+	dim i as integer
+	dim point, nStep, value as double
+	dim MyFormat as string
+	for i=1 to bd.valueList.count
+		point = bd.pointList.item(i)
+		nStep = Overall.rightStep2140(point)
+		value = bd.valueList.item(i)
+	
+		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+		oDialogAT2140.getControl(&quot;ValueField&quot; + i).Text = Format(value, Overall.getRightFormat2140(point))
+		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).valueStep = nStep
+		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = Overall.rightDecimalAccuracy(nStep)
+		oDialogAT2140.getControl(&quot;Label&quot; + i).Text = &quot; &quot; + Format(point, Overall.getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
+	next i
+end sub
 </script:module>

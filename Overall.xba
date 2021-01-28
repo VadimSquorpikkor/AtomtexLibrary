@@ -305,29 +305,6 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 	next i
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub makeLayoutFromBD_2140(bd as new DUnit)
-	_oDialog.getControl(&quot;typeLabel&quot;).text = bd.getName
-	_oDialog.getControl(&quot;serialLabel&quot;).Text = &quot;№ &quot; + bd.getSerial
-	makeSimpleLayoutFromBD_2140(bd, &quot;ValueField&quot;, &quot;Label&quot;)
-end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
-sub makeSimpleLayoutFromBD_2140(bd as new DUnit, valueField as string, labelField as string)
-	dim i as integer
-	dim point, nStep, value as double
-	dim MyFormat as string
-	for i=1 to bd.valueList.count
-		point = bd.pointList.item(i)
-		nStep = rightStep2140(point)
-		value = bd.valueList.item(i)
-	
-		_oDialog.Model.getByName(valueField + i).textColor = RGB(0, 0, 0)
-		_oDialog.getControl(valueField + i).Text = Format(value, getRightFormat2140(point))
-		_oDialog.Model.getByName(valueField + i).valueStep = nStep
-		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(nStep)
-		_oDialog.getControl(labelField + i).Text = &quot; &quot; + Format(point, getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
-	next i
-end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
 function PathForProtocol(bdName as string)
 	if _oOptionButtonPr.State then
 		PathForProtocol = bdName &amp; &quot;.odt&quot;
@@ -527,7 +504,7 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	_oListBox.selectItemPos( layoutPosition-1, True )
-	dim i as integer
+	dim i,j as integer
 	if _BDList.count = 0 then
 		_oDialog.getControl(&quot;nextButton&quot;).setEnable(false)
 		_oDialog.getControl(&quot;prevButton&quot;).setEnable(false)
@@ -542,6 +519,17 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 		if _oDialog.Model.hasByName(&quot;insertButton&quot;) then _oDialog.getControl(&quot;insertButton&quot;).visible = false
 	end if
 	if _BDList.count &lt;&gt; 0 then
+		
+		&apos;altCheckBox.setEnable(true)
+		for j=1 to _BDList.item(layoutPosition).valueList.count
+			if _oDialog.Model.hasByName(&quot;ValueField&quot; + j) then _oDialog.getControl(&quot;ValueField&quot; + j).visible = true
+			if _oDialog.Model.hasByName(&quot;Label&quot; + j) then _oDialog.getControl(&quot;Label&quot; + j).visible = true
+		next j
+		for j=_BDList.item(layoutPosition).valueList.count+1 to _maxPointsCount
+			if _oDialog.Model.hasByName(&quot;ValueField&quot; + j) then _oDialog.getControl(&quot;ValueField&quot; + j).visible = false
+			if _oDialog.Model.hasByName(&quot;Label&quot; + j) then _oDialog.getControl(&quot;Label&quot; + j).visible = false
+		next j
+		
 		_oListBox.setEnable(true)
 		_oDialog.getControl(&quot;doneButton&quot;).setEnable(true)
 		_oDialog.getControl(&quot;removeButton&quot;).setEnable(true)
