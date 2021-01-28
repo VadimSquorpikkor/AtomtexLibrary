@@ -37,10 +37,10 @@ Sub BDKN_Dialog_Show
 	isComboCollection.add(oOption05)
 	oOption02.State = 0
 
-	for i=1 to 5
-		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
-		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
-	next i
+	&apos;for i=1 to 5
+	&apos;	oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
+	&apos;	oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
+	&apos;next i
 
 	oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_all.png&quot;
 
@@ -74,10 +74,10 @@ sub addNewBD
 	if oOption04.state then bd.addData(&quot;БДКН-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10))
 	if oOption05.state then bd.addData(&quot;БДКН-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2))
 
-	for i=1 to bd.getPointList.count
-		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(true)
-		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(true)
-	next i
+	&apos;for i=1 to bd.getPointList.count
+	&apos;	oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(true)
+	&apos;	oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(true)
+	&apos;next i
 	
 	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(true)
 	
@@ -89,11 +89,10 @@ sub addNewBD
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
 	increment
+		
+	layoutPosition = layoutPosition + 1
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 	
-	&apos;Overall.increment(oDialog1121.getControl(&quot;bdSerial&quot;))
-	&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.getControl(&quot;bdSerial&quot;).value = oDialogBDKN.getControl(&quot;bdSerial&quot;).value + 1
-	makeLayoutFromBD(BDList.item(1)) &apos;BDList.count
-	layoutPosition = 1 &apos;BDList.count
 	setButtonVisibility
 end sub
 rem---------------------------------------------------------------------------------------------------------

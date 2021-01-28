@@ -21,10 +21,10 @@
 &apos; В этих методах всё уже инициализировано
 
 &apos;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-&apos;управление видимостью ValueField и Label теперь добавлена в Overall.setButtonVisibility, во всех приборах надо удалить соответствующие команды, они теперь не нужны
+&apos;СДЕЛАНО управление видимостью ValueField и Label теперь добавлена в Overall.setButtonVisibility, во всех приборах надо удалить соответствующие команды, они теперь не нужны
 
 &apos;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-&apos; TODO сделать везде как здесь: layoutPosition + 1 (а не = 1), и только после этого makeLayoutFromBD(), так при добавлении 
+&apos; СДЕЛАНО TODO сделать везде как здесь: layoutPosition + 1 (а не = 1), и только после этого makeLayoutFromBD(), так при добавлении 
 &apos; нового БД лэйаут будет переключаться на этот новый БД, а раньше всегда переключался на первый (см. 2140):
 &apos; layoutPosition = layoutPosition + 1
 &apos; Overall.makeLayoutFromBD(BDList.item(layoutPosition)

@@ -95,10 +95,10 @@ Sub G02N_Dialog_Show
 	
 	oListBox.setEnable(false)
 	
-	for i=1 to 11
-		oDialogG02N.getControl(&quot;ValueField&quot; + i).visible = false
+	&apos;for i=1 to 11
+	&apos;	oDialogG02N.getControl(&quot;ValueField&quot; + i).visible = false
 		&apos;oDialogG02N.getControl(&quot;Label&quot; + i).text = &quot;к. т. &quot;+i
-	next i
+	&apos;next i
 
 	for i=1 to 8
 		oDialogG02N.getControl(&quot;ValueBDMG&quot; + i).visible = false
@@ -181,7 +181,7 @@ sub addNewBD
 		for i=1 to 11
 			oDialogG02N.getControl(&quot;ValueField&quot; + i).visible = true
 			oDialogG02N.getControl(&quot;ValueField&quot; + i).setEnable(true)
-		next i 
+		next i
 		if oOptionBDKG204.state then
 			if BDList.count &lt;&gt; maxBDCount then oDialogG02N.getControl(&quot;addButton&quot;).setEnable(true)
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true

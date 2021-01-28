@@ -150,11 +150,12 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	&apos;если в диалоге ксть поля &quot;ValueField&quot;, то они будут проинициализированы. 
 	&apos;В 2503 и 3509 нет полей ValueField(i), там поля имеют вид ValueField(i)-1, ValueField(i)-2, ValueField(i)-3 , в этих диалогах инициализация пропускается
 	if _oDialog.Model.hasByName(&quot;ValueField1&quot;) then
-	dim i as integer
-	for i=1 to pointCount
-		_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
-		_oDialog.getControl(&quot;ValueField&quot; + i).value = 0
-	next i
+		dim i as integer
+		for i=1 to pointCount
+			&apos;_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
+			_oDialog.getControl(&quot;ValueField&quot; + i).visible = false
+			_oDialog.getControl(&quot;ValueField&quot; + i).value = 0
+		next i
 	end if
 	
 	_maxBDCount = maxBDCount
@@ -522,8 +523,14 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 		
 		&apos;altCheckBox.setEnable(true)
 		for j=1 to _BDList.item(layoutPosition).valueList.count
-			if _oDialog.Model.hasByName(&quot;ValueField&quot; + j) then _oDialog.getControl(&quot;ValueField&quot; + j).visible = true
-			if _oDialog.Model.hasByName(&quot;Label&quot; + j) then _oDialog.getControl(&quot;Label&quot; + j).visible = true
+			if _oDialog.Model.hasByName(&quot;ValueField&quot; + j) then
+				 _oDialog.getControl(&quot;ValueField&quot; + j).visible = true
+				 _oDialog.getControl(&quot;ValueField&quot; + j).setEnable(true)
+			end if	 
+			if _oDialog.Model.hasByName(&quot;Label&quot; + j) then
+			 _oDialog.getControl(&quot;Label&quot; + j).visible = true
+			 _oDialog.getControl(&quot;Label&quot; + j).setEnable(true)
+			end if
 		next j
 		for j=_BDList.item(layoutPosition).valueList.count+1 to _maxPointsCount
 			if _oDialog.Model.hasByName(&quot;ValueField&quot; + j) then _oDialog.getControl(&quot;ValueField&quot; + j).visible = false
@@ -599,8 +606,10 @@ sub removeLastBD(layoutPosition as integer)
 		_oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
 		dim i as integer
 		for i=1 to _maxPointsCount &apos;_BDList.item(layoutPosition).valueList.count
-			_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
-			_oDialog.getControl(&quot;Label&quot; + i).setVisible(false)
+			&apos;_oDialog.getControl(&quot;ValueField&quot; + i).setEnable(false)
+			&apos;_oDialog.getControl(&quot;Label&quot; + i).setVisible(false)
+			_oDialog.getControl(&quot;ValueField&quot; + i).visible = false
+			_oDialog.getControl(&quot;Label&quot; + i).visible = false
 		next i
 	else 
 		makeLayoutFromBD(_BDList.item(_BDList.count))

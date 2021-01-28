@@ -36,9 +36,9 @@ Sub G23N_Dialog_Show
 	isComboCollection.add(oOptionBDKG23)
 	isComboCollection.add(oOptionBDKG231)
 	
-	for i=1 to 9
-		oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(false)
-	next i
+	&apos;for i=1 to 9
+	&apos;	oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(false)
+	&apos;next i
 	
 	serial_22  = 114
 	serial_23  = 222
@@ -59,19 +59,19 @@ sub addNewBD
 	dim bd as new DUnit
 
 
-	if layoutPosition = 0 then
-		for i=1 to 9
-			oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(true)
-			oDialogG23N.getControl(&quot;Label&quot; + i).setEnable(true)
-		next i
-		if oOptionBDKG22.state then
-			oDialogG23N.getControl(&quot;ValueField9&quot;).visible = false
-			oDialogG23N.getControl(&quot;Label9&quot;).visible = false
-		else
-			oDialogG23N.getControl(&quot;ValueField9&quot;).visible = true
-			oDialogG23N.getControl(&quot;Label9&quot;).visible = true
-		end if
-	end if
+	&apos;if layoutPosition = 0 then
+	&apos;	for i=1 to 9
+	&apos;		oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(true)
+	&apos;		oDialogG23N.getControl(&quot;Label&quot; + i).setEnable(true)
+	&apos;	next i
+	&apos;	if oOptionBDKG22.state then
+	&apos;		oDialogG23N.getControl(&quot;ValueField9&quot;).visible = false
+	&apos;		oDialogG23N.getControl(&quot;Label9&quot;).visible = false
+	&apos;	else
+	&apos;		oDialogG23N.getControl(&quot;ValueField9&quot;).visible = true
+	&apos;		oDialogG23N.getControl(&quot;Label9&quot;).visible = true
+	&apos;	end if
+	&apos;end if
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	if oOptionBDKG22.state then bd.addData(&quot;БДКГ-22&quot; , 	 &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0.1,10000)) rem TODO уточнить границы
@@ -91,13 +91,13 @@ sub addNewBD
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	if BDList.count = 1 then
-		for i=1 to 9
-			oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(false)
-			oDialogG23N.getControl(&quot;Label&quot; + i).text = &quot;&quot;
-		next i
-	end if	
-	Overall.removeLastBD(layoutPosition, BDList, oDialogG25, oListBox, isComboCollection, maxBDCount)
+	&apos;if BDList.count = 1 then
+	&apos;	for i=1 to 9
+	&apos;		oDialogG23N.getControl(&quot;ValueField&quot; + i).setEnable(false)
+	&apos;		oDialogG23N.getControl(&quot;Label&quot; + i).text = &quot;&quot;
+	&apos;	next i
+	&apos;end if	
+	Overall.removeLastBD(layoutPosition)
 end Sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function listBoxListener

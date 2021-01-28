@@ -53,9 +53,9 @@ sub addNewBD
 	dim nCount as integer
 	dim bd as new DUnit
 
-	for i=1 to points_count
-		oDialogAT2140.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	next i
+	&apos;for i=1 to points_count
+	&apos;	oDialogAT2140.getControl(&quot;ValueField&quot; + i).setEnable(true)
+	&apos;next i
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)

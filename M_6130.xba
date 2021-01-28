@@ -101,7 +101,7 @@ Sub AT6130_Dialog_Show
 	altCheckBox.setEnable(false)
 	
 	for i=1 to 4
-		oDialog6130.getControl(&quot;betaField&quot; + i).visible = true
+		oDialog6130.getControl(&quot;betaField&quot; + i).visible = false
 		oDialog6130.getControl(&quot;betaField&quot; + i).setEnable(false)
 		oDialog6130.getControl(&quot;altField&quot; + i).visible = false
 	next i
@@ -171,9 +171,9 @@ sub addNewBD
 	&apos;msgbox layoutPosition
 	if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 
-	for i=1 to 6
-		oDialog6130.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	next i
+	&apos;for i=1 to 6
+	&apos;	oDialog6130.getControl(&quot;ValueField&quot; + i).setEnable(true)
+	&apos;next i
 	
 	&apos;для МКС-АТ6130– от 100 нЗв/ч до 10 мЗв/ч;
 	&apos;для МКС-АТ6130 – от 10 ч/см2*мин до 1*104 ч/см2*мин.
@@ -220,14 +220,15 @@ end sub
 &apos;sub insertBetaValuesTo
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
-	if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
-	oListBox.removeItems(oListBox.getItemCount()-1, 1 )
-	BDList.remove(BDList.count)
-	if oListBox.getItemCount()=0 then
-		oDialog6130.getControl(&quot;removeButton&quot;).setEnable(false)
-	else 
-		makeLayoutFromBD(BDList.item(BDList.count))
-	end if
+	&apos;if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
+	&apos;oListBox.removeItems(oListBox.getItemCount()-1, 1 )
+	&apos;BDList.remove(BDList.count)
+	&apos;if oListBox.getItemCount()=0 then
+	&apos;	oDialog6130.getControl(&quot;removeButton&quot;).setEnable(false)
+	&apos;else 
+	&apos;	makeLayoutFromBD(BDList.item(BDList.count))
+	&apos;end if
+	Overall.removeLastBD(layoutPosition)
 	setButtonVisibility
 end Sub
 rem---------------------------------------------------------------------------------------------------------
