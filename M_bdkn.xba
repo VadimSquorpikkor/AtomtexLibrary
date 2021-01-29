@@ -26,7 +26,6 @@ Sub BDKN_Dialog_Show
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
 	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.06 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
-	&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.Model.getByName(&quot;BDKNLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_bg.png&quot;
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
 	oOption04 = oDialogBDKN.getControl(&quot;is04&quot;)
@@ -36,11 +35,6 @@ Sub BDKN_Dialog_Show
 	isComboCollection.add(oOption04)
 	isComboCollection.add(oOption05)
 	oOption02.State = 0
-
-	&apos;for i=1 to 5
-	&apos;	oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
-	&apos;	oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
-	&apos;next i
 
 	oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn_all.png&quot;
 
@@ -73,18 +67,15 @@ sub addNewBD
 	if oOption02.state then bd.addData(&quot;БДКН-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000))
 	if oOption04.state then bd.addData(&quot;БДКН-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10))
 	if oOption05.state then bd.addData(&quot;БДКН-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2))
-
-	&apos;for i=1 to bd.getPointList.count
-	&apos;	oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	&apos;	oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(true)
-	&apos;next i
 	
-	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(true)
+	
 	
 	bdName = oDialogBDKN.getControl(&quot;srkNum&quot;).text &amp; &quot;.&quot; &amp; oDialogBDKN.getControl(&quot;bdNum&quot;).text
 	oDialogBDKN.getControl(&quot;fullNum&quot;).text = oDialogBDKN.getControl(&quot;srkNum&quot;).text + &quot;.&quot; + Left(oDialogBDKN.getControl(&quot;bdNum&quot;).text, 1) + &quot;00&quot;
 	bd.setSerial(bdName)
-	&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;&apos;oDialogBDKN.getControl(&quot;bdType&quot;).text = BDList.item()
+
+	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(true)
+
 	nCount = oListBox.getItemCount()
 	oListBox.addItem( bd.getSerial, nCount )
 	BDList.add(bd)
@@ -108,18 +99,6 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
 	Overall.removeLastBD(layoutPosition)
-	&apos;if layoutPosition = BDList.count then layoutPosition = layoutPosition - 1
-	&apos;oListBox.removeItems(oListBox.getItemCount()-1, 1 )
-	&apos;BDList.remove(BDList.count)
-	&apos;if oListBox.getItemCount()=0 then
-	&apos;	oDialogBDKN.getControl(&quot;removeButton&quot;).setEnable(false)
-	&apos;	for i=1 to 5
-	&apos;		oDialogBDKN.getControl(&quot;ValueField&quot; + i).setEnable(false)
-	&apos;		oDialogBDKN.getControl(&quot;Label&quot; + i).setVisible(false)
-	&apos;	next i
-	&apos;else 
-	&apos;	makeLayoutFromBD(BDList.item(BDList.count))
-	&apos;end if
 	setButtonVisibility
 end Sub
 rem---------------------------------------------------------------------------------------------------------

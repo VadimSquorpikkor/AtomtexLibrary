@@ -55,10 +55,6 @@ sub addNewBD
 	dim nCount as integer
 	dim bd as new DUnit
 	dim serial as string
-
-	&apos;for i=1 to 8
-	&apos;	oDialogG25.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	&apos;next i
 	
 	serial = oDialogG25.getControl(&quot;TextFieldSRK&quot;).text &amp; &quot;.&quot; &amp; oDialogG25.getControl(&quot;TextFieldNUM&quot;).text
 	oDialogG25.getControl(&quot;FULL_NUM&quot;).text = oDialogG25.getControl(&quot;TextFieldSRK&quot;).text + &quot;.&quot; + Left(oDialogG25.getControl(&quot;TextFieldNUM&quot;).text, 1) + &quot;00&quot;

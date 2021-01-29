@@ -96,19 +96,10 @@ end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub altLayoutVisibility(fieldName as String, position as integer, checkBox as object)
 	BDList.item(position).setAlternative(checkbox.state)
-    &apos;if BDList.item(position).isAlternativePoints = true then
-    	for i=1 to BDList.item(position).getPointTextList.count
-    		oDialog1125.getControl(&quot;alt&quot; + fieldName + &quot;Field&quot; + i).Visible = BDList.item(position).isAlternativePoints	
-    		oDialog1125.getControl(fieldName + &quot;Label&quot; + i).Visible = not BDList.item(position).isAlternativePoints
-    	next i
-    &apos;else
-    &apos;	for i=1 to BDList.item(position).getPointTextList.count
-    &apos;		oDialog1125.getControl(&quot;alt&quot; + fieldName + &quot;Field&quot; + i).Visible = false	
-    &apos;		oDialog1125.getControl(fieldName + &quot;Label&quot; + i).Visible  = true
-    &apos;	next i
-    	&apos;Overall.saveCurentBDValue(layoutPosition)
-    	&apos;makeLayout(BDList.item(layoutPosition))
-    &apos;end if
+   	for i=1 to BDList.item(position).getPointTextList.count
+   		oDialog1125.getControl(&quot;alt&quot; + fieldName + &quot;Field&quot; + i).Visible = BDList.item(position).isAlternativePoints	
+   		oDialog1125.getControl(fieldName + &quot;Label&quot; + i).Visible = not BDList.item(position).isAlternativePoints
+   	next i
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub makeBetaLayout(bd as new DUnit)

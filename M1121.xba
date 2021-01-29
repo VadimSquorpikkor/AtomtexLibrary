@@ -73,11 +73,6 @@ sub addNewBD
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 	end if	
 
-	&apos;for i=1 to bd.getPointList.count
-	&apos;	oDialog1121.getControl(&quot;ValueField&quot; + i).setEnable(true)
-	&apos;	oDialog1121.getControl(&quot;Label&quot; + i).setVisible(true)
-	&apos;next i
-	
 	oDialog1121.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog1121.getControl(&quot;bdSerial&quot;).text)
 	

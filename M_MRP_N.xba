@@ -17,10 +17,6 @@ Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
 	
-	&apos;oDateFieldModel = oDialogMRP.Model.getByName(&quot;DateField1&quot;)
-	&apos;Overall.dialogSimpleInitialize(oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, isComboCollection, BDList)
-	&apos;Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
-	
 	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, Overall.NULL, 0)
 	Overall.initializeParameters(0, BDList, isComboCollection)
 	
@@ -35,8 +31,7 @@ Sub MRP920_Dialog_Show
 
 	oDialogMRP.getControl(&quot;DoneButton&quot;).setEnable(false)
 	oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text = &quot;Тип МРП&quot;
-	
-	
+		
 	oOptionBDKG11 = oDialogMRP.Model.getByName(&quot;isBDKG11&quot;)
 	oOptionBDKG19 = oDialogMRP.Model.getByName(&quot;isBDKG19&quot;)
 	oOptionBDKG35 = oDialogMRP.Model.getByName(&quot;isBDKG35&quot;)
