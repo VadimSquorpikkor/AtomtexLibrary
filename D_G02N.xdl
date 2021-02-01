@@ -8,7 +8,6 @@
   <dlg:style dlg:style-id="3" dlg:font-height="10"/>
   <dlg:style dlg:style-id="4" dlg:font-height="8"/>
   <dlg:style dlg:style-id="5" dlg:font-height="24"/>
-  <dlg:style dlg:style-id="6" dlg:font-height="12"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="22" dlg:left="102" dlg:top="35" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
@@ -131,7 +130,7 @@
    <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="78" dlg:left="104" dlg:top="145" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
    <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="79" dlg:left="104" dlg:top="157" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>
-  <dlg:text dlg:style-id="6" dlg:id="typeLabel" dlg:tab-index="80" dlg:left="225" dlg:top="20" dlg:width="60" dlg:height="12" dlg:align="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="typeLabel" dlg:tab-index="80" dlg:left="225" dlg:top="20" dlg:width="60" dlg:height="12" dlg:align="center"/>
   <dlg:radiogroup>
    <dlg:radio dlg:style-id="3" dlg:id="isBDKG-11" dlg:tab-index="45" dlg:left="29" dlg:top="47" dlg:width="43" dlg:height="8" dlg:value="БДКГ-11/1"/>
   </dlg:radiogroup>

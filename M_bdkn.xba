@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.06 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.07 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -46,15 +46,12 @@ sub setButtonEnabled
 	oDialogBDKN.getControl(&quot;addButton&quot;).setEnable(true)
 	if oOption02.state then
 		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn02.png&quot;
-		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(true)
 	end if	
 	if oOption04.state then
 		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn04.png&quot;	
-		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(true)
 	end if	
 	if oOption05.state then
 		oDialogBDKN.Model.getByName(&quot;bdknLogo&quot;).ImageURL = sertPath &amp; &quot;bdkn\bdkn05.png&quot;
-		oDialogBDKN.getControl(&quot;isSertificateEng&quot;).setEnable(false)
 	end if 	
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -67,9 +64,7 @@ sub addNewBD
 	if oOption02.state then bd.addData(&quot;БДКН-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000))
 	if oOption04.state then bd.addData(&quot;БДКН-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10))
 	if oOption05.state then bd.addData(&quot;БДКН-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2))
-	
-	
-	
+		
 	bdName = oDialogBDKN.getControl(&quot;srkNum&quot;).text &amp; &quot;.&quot; &amp; oDialogBDKN.getControl(&quot;bdNum&quot;).text
 	oDialogBDKN.getControl(&quot;fullNum&quot;).text = oDialogBDKN.getControl(&quot;srkNum&quot;).text + &quot;.&quot; + Left(oDialogBDKN.getControl(&quot;bdNum&quot;).text, 1) + &quot;00&quot;
 	bd.setSerial(bdName)
@@ -107,13 +102,9 @@ function listBoxListener
 	saveCurentBDValue(layoutPosition)
 	selectPos = oListBox.getSelectedItemPos()
 	layoutPosition = selectPos + 1
-	makeLayoutFromBD(BDList.item(layoutPosition))
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 	setButtonVisibility
 end function
-rem---------------------------------------------------------------------------------------------------------
-sub makeLayoutFromBD(bd as new DUnit)
-	Overall.makeLayoutFromBD(bd)
-end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
 	dim newValues as new Collection
@@ -127,14 +118,14 @@ sub showNextBD
 	saveCurentBDValue(layoutPosition)
 	layoutPosition = layoutPosition + 1
 	setButtonVisibility	
-	makeLayoutFromBD(BDList.item(layoutPosition))
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
 	saveCurentBDValue(layoutPosition)
 	layoutPosition = layoutPosition - 1
 	setButtonVisibility
-	makeLayoutFromBD(BDList.item(layoutPosition))
+	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function setButtonVisibility
