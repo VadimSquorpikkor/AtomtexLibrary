@@ -122,6 +122,7 @@ end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;функция получает на вход три значения и возвращает пять значений так, что их среднее равно среднему полученных трех 
 function avarageFivePointsRndArray(coll as Collection, percent)
+	dim Overall as new Overall &apos;временно, чтобы работала строуа accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point)). Потом все Overall нужно из Math убрать
 	dim ar(4) as double
 	&apos;&apos;если приходит одно число -- генерим все пять
 	if coll.count = 1 then

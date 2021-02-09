@@ -979,4 +979,35 @@ function listBoxListener(layoutPosition as integer)
 	setButtonVisibility(layoutPosition)
 end function
 
+Sub CopyTableRowAndPasteAfter(sName As String, oldName as String, newName as String, oldName2 as String, newName2 as String)
+	Dim oTable        &apos;Table to copy
+	Dim oText         &apos;Document&apos;s text object
+	Dim oFrame        &apos;Current frame to use with the dispatcher
+	Dim oVCursor      &apos;Current view cursor
+	Dim oDispatcher   &apos;Dispatcher for clipboard commands
+	oVCursor = ThisComponent.CurrentController.getViewCursor()
+	oText = ThisComponent.getText()
+	oFrame = ThisComponent.CurrentController.Frame
+	oDispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	If NOT ThisComponent.getTextTables().hasByName(sName) Then
+		&apos;MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
+		Exit Sub
+	End If
+	oTable = ThisComponent.getTextTables().getByName(sName)
+	REM Place the cursor in the start of the first cell.
+	REM This is very easy!
+	ThisComponent.CurrentController.select(oTable)
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
+	REM Copy the table to the clipboard.
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
+	
+	findAndRename(oldName, newName) 	&apos;&quot;$2-&quot; -&gt; &quot;$1-&quot;
+	findAndRename(oldName2, newName2) 	&apos;&quot;$bd_num2$&quot; -&gt; &quot;$bd_num1$&quot;
+
+	&apos;Поставить курсор после таблицы
+	oVCursor.godown(1,false)
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+End Sub
+
 </script:module>

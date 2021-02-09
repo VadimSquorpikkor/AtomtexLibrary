@@ -449,4 +449,27 @@ rem ----------------------------------------------------------------------
 &apos;═══════════════════════════════════════════════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
+
+
+
+sub pasteRowAndData
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+Dim oVCursor
+
+findAndRename(&quot;$start&quot;, &quot;&quot;)
+
+oVCursor = ThisComponent.CurrentController.getViewCursor()
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+&apos;dispatcher.executeDispatch(document, &quot;.uno:Copy&quot;, &quot;&quot;, 0, Array())
+CopyVariableToClipboard(&quot;qweqwe&quot;)
+dispatcher.executeDispatch(document, &quot;.uno:InsertRows&quot;, &quot;&quot;, 0, Array())
+dispatcher.executeDispatch(document, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+oVCursor.godown(1,false)
+
+end sub
 </script:module>
