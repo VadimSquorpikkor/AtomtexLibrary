@@ -15,7 +15,6 @@
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="7" dlg:left="11" dlg:top="125" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
   <dlg:text dlg:id="Label3" dlg:tab-index="13" dlg:left="21" dlg:top="190" dlg:width="65" dlg:height="8" dlg:value="Проверку произвел:" dlg:align="center"/>
   <dlg:text dlg:id="Label4" dlg:tab-index="15" dlg:left="16" dlg:top="215" dlg:width="75" dlg:height="8" dlg:value="Технический контроль:" dlg:align="center"/>
-  <dlg:text dlg:id="Label5" dlg:tab-index="16" dlg:left="60" dlg:top="127" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="24" dlg:left="5" dlg:top="9" dlg:width="95" dlg:height="239"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="25" dlg:left="103" dlg:top="9" dlg:width="65" dlg:height="239"/>
   <dlg:text dlg:id="Label10" dlg:tab-index="26" dlg:left="105" dlg:top="229" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во — 25 БД" dlg:align="center"/>
@@ -117,5 +116,6 @@
   <dlg:numericfield dlg:id="devCountZero1" dlg:tab-index="44" dlg:left="183" dlg:top="95" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="0" dlg:value-min="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="devCountZero2" dlg:tab-index="66" dlg:left="224" dlg:top="95" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="0" dlg:value-min="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="devCountZero3" dlg:tab-index="69" dlg:left="265" dlg:top="96" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="0" dlg:value-min="0" dlg:spin="true"/>
+  <dlg:text dlg:id="Label51" dlg:tab-index="16" dlg:left="60" dlg:top="127" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
  </dlg:bulletinboard>
 </dlg:window>

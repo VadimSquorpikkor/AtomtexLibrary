@@ -22,4 +22,5 @@
  <library:element library:name="D25"/>
  <library:element library:name="D2140"/>
  <library:element library:name="DWhatsNew"/>
+ <library:element library:name="D_T_NOTE"/>
 </library:library>

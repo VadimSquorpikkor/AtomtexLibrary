@@ -140,9 +140,31 @@ End function
 
 
 
+sub showDateMsg
+  dim sDate as string
+	sDate = &quot;&quot;+cDateToIso(Now+20) &apos; +20 это значит, здесь можно выбирать следующий день (+1) или +20 дней -- макрос сам пересчитает правильную дату (т.е. 31-е число +1 посчитает как 1-е число следующего месяца, а не 32-е число).
+  msgbox sDate + &quot; &quot; + Right(sDate, 2) + &quot;/&quot; + Mid(sDate, 5,2) + &quot;/&quot; + Left(sDate, 4)
+end sub
+
+sub showDateMsgBtn
+  Dim MyDate As Date
+  &apos;MyDate = &quot;24.1.2002&quot;
+  MyDate = getDate(oDialog.Model.getByName(&quot;DateField1&quot;))
+  msgbox &quot;&quot;+MyDate+&quot; &quot;+(MyDate+18)
+end sub
 
 
+function getDateNew(DateFieldModel)
+  dim sDate as string
+  sDate = &quot;&quot;+DateFieldModel.date
+  getDateNew = Right(sDate, 2) + &quot;/&quot; + Mid(sDate, 5,2) + &quot;/&quot; + Left(sDate, 4)
+end function
 
+function getDateNew2(DateFieldModel)&apos;можно (и нужно) добавить optional String (DATA_SLASH, DATA, WEEKDAY, WEEKDAY_NAME и т.д.) и возвращать соответствующую строку. По умолчанию (optional не задан) возвращать дату в виде &quot;03.12.2021&quot;. Заменить getDate 
+	Dim MyDate As Date
+  	MyDate = cdatefromiso(DateFieldModel.date)
+  	getDateNew2 Day(MyDate) + &quot;/&quot; + Month(MyDate) + &quot;/&quot; + Year(MyDate)
+end function
 
 
 
@@ -450,9 +472,45 @@ rem ----------------------------------------------------------------------
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
 
-
-
 sub pasteRowAndData
+	CopyTableAndPasteAfter(&quot;t1&quot;, &quot;$1-&quot;, &quot;$2-&quot;, &quot;$bd_num1$&quot;, &quot;$bd_num2$&quot;)	
+end sub
+
+
+Sub CopyTableAndPasteAfter(sName As String, oldName as String, newName as String, oldName2 as String, newName2 as String)
+	Dim oTable        &apos;Table to copy
+	Dim oText         &apos;Document&apos;s text object
+	Dim oFrame        &apos;Current frame to use with the dispatcher
+	Dim oVCursor      &apos;Current view cursor
+	Dim oDispatcher   &apos;Dispatcher for clipboard commands
+	oVCursor = ThisComponent.CurrentController.getViewCursor()
+	oText = ThisComponent.getText()
+	oFrame = ThisComponent.CurrentController.Frame
+	oDispatcher = createUnoService(&quot;com.sun.star.frame.DispatchHelper&quot;)
+	If NOT ThisComponent.getTextTables().hasByName(sName) Then
+		&apos;MsgBox &quot;Sorry, the document does not contain table &quot; &amp; sName
+		Exit Sub
+	End If
+	oTable = ThisComponent.getTextTables().getByName(sName)
+	REM Place the cursor in the start of the first cell.
+	REM This is very easy!
+	ThisComponent.CurrentController.select(oTable)
+	&apos;&apos;&apos;&apos;&apos;oVCursor.gotoEnd(True)  &apos;Move to the end of the current cell.
+	&apos;&apos;&apos;&apos;&apos;oVCursor.gotoEnd(True)  &apos;Move to the end of the table.
+	REM Copy the table to the clipboard.
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Copy&quot;, &quot;&quot; , 0, Array())
+	
+	findAndRename(oldName, newName) 	&apos;&quot;$2-&quot; -&gt; &quot;$1-&quot;
+	findAndRename(oldName2, newName2) 	&apos;&quot;$bd_num2$&quot; -&gt; &quot;$bd_num1$&quot;
+
+	&apos;Поставить курсор после таблицы
+	oVCursor.godown(1,false)
+	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
+
+end sub
+
+
+sub pasteRowAndData_old
 rem ----------------------------------------------------------------------
 rem define variables
 dim document   as object
@@ -470,6 +528,10 @@ CopyVariableToClipboard(&quot;qweqwe&quot;)
 dispatcher.executeDispatch(document, &quot;.uno:InsertRows&quot;, &quot;&quot;, 0, Array())
 dispatcher.executeDispatch(document, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
 oVCursor.godown(1,false)
+
+
+
+
 
 end sub
 </script:module>
