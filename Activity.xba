@@ -21,10 +21,10 @@ public const ACT521 as double  = 93.5
 public const ACT2910 as double = 67.7
 public const ACT_all as double = 547.7
 
-public const CS_483  as double = 90.1
-public const CS_93   as double = 948
-public const CS_3668 as double = 8232
-public const CS_3663 as double = 88930
+public const CS_483  as double = 88&apos;90.1
+public const CS_93   as double = 892&apos;948
+public const CS_3668 as double = 8048&apos;8232
+public const CS_3663 as double = 82173&apos;88930
 &apos;-------------------------------------------------------------
 public const BETA_0660 as double  = 96
 public const BETA_6905 as double  = 228
@@ -74,7 +74,7 @@ function get_activity_Cs137(src as string, mdate)
 		activity_0 = CS_3663
 	end select
 
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2019,11,28) rem 28 11 19 
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,03,01) &apos;DateSerial(2019,11,28)
 	get_activity_Cs137 = activity_0 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------
