@@ -70,7 +70,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.13 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.14 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -209,14 +209,26 @@ sub addNewBD
 	layoutPosition = layoutPosition + 1
 	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 	
-	setButtonVisibility(layoutPosition)
+	&apos;setButtonVisibility(layoutPosition)
+	setButtonVisibility
+	makeLayoutFromBD(BDList.item(layoutPosition))
 end sub
 
 &apos;sub insertBetaValuesTo
 rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
+
 	Overall.removeLastBD(layoutPosition)
 	setButtonVisibility
+	
+	altCheckBox.state = 0
+	for i=1 to 4
+		oDialog6130.getControl(&quot;altField&quot; + i).Visible = false
+	next i	
+
+
+	&apos;Overall.removeLastBD(layoutPosition)
+	&apos;setButtonVisibility
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
