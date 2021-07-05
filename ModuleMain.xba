@@ -42,6 +42,7 @@ Sub MainDialog_Show
 	users.add(&quot;Rusakevich_AV&quot;)									&apos;	║█
 	users.add(&quot;Tarasenko_VV&quot;)									&apos;	║█
 	users.add(&quot;Stsiapanau_MS&quot;)									&apos;	║█
+	users.add(&quot;Germanenko_II&quot;)									&apos;	║█
 																&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
