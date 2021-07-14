@@ -32,7 +32,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 3.26										&apos;	║█
+	currentVersion = 3.27										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -43,6 +43,7 @@ Sub MainDialog_Show
 	users.add(&quot;Tarasenko_VV&quot;)									&apos;	║█
 	users.add(&quot;Stsiapanau_MS&quot;)									&apos;	║█
 	users.add(&quot;Germanenko_II&quot;)									&apos;	║█
+	users.add(&quot;Feklenkova_PA&quot;)									&apos;	║█
 																&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -141,6 +142,10 @@ sub setUserName(label as String)
 		userName = &quot;Тарасенко В.В.&quot;
 	case &quot;Stsiapanau_MS&quot;
 		userName = &quot;Степанов М.С.&quot;
+	case &quot;Germanenko_II&quot;
+		userName = &quot;Германенко И.И.&quot;
+	case &quot;Feklenkova_PA&quot;
+		userName = &quot;Фекленкова П.А.&quot;		
 	end select
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
