@@ -35,4 +35,5 @@
  <library:element library:name="M2140"/>
  <library:element library:name="MWatsNew"/>
  <library:element library:name="_t_note"/>
+ <library:element library:name="Module1"/>
 </library:library>
