@@ -43,7 +43,7 @@ Sub AT1125_Dialog_Show
 
 	&apos;dim NULL as object
 	&apos;Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.06 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.08 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.09 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 oDialog1125.getControl(&quot;doneButton&quot;).setEnable(true)
 
@@ -178,7 +178,7 @@ sub initializeBD
 	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;&quot;,			Array(58.3,727,6300,62100,186000),	emptyArray,									 &quot;alpha&quot;,		Array(2.4,100))
 	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;&quot;,			Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),	 &quot;beta&quot;,		Array(6,100))
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;Зв/ч&quot;,		Array(0.7,7,70,0.7,7,20),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),			 &quot;gamma&quot;,		Array(0.1,30))
-	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;3663&quot;),			 &quot;gamma-Src&quot;,	Array(0,0))
+	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;516&quot;),			 	 &quot;gamma-Src&quot;,	Array(0,0))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant)
@@ -271,6 +271,11 @@ sub setVisibility
 		enableBDPS(true)
 		enableUA(true)
 	end if
+	rem Если выбран вариант с Маринелли, то в таблице &quot;Удельной активности&quot; только три строки (нет самой маленькой точки)
+	if oCheckBoxSM.state = 1 then
+		oDialog1125.getControl(&quot;uaField1&quot;).setEnable(false)
+		oDialog1125.getControl(&quot;uaLabel1&quot;).setEnable(false)
+	end if
 	if oDialog1125.getControl(&quot;is1125&quot;).state then enable1125A(false)
 	if oDialog1125.getControl(&quot;is1125A&quot;).state then enable1125A(true)
 end sub
@@ -346,6 +351,15 @@ sub insertRecordsToTemplate
 		Overall.deleteTable(&quot;lim_bdps&quot;)
 		Overall.deleteTable(&quot;perc_bdps&quot;)
 	end if
+	
+	
+	if oCheckBoxSM.state = 0 then
+		Overall.deleteTable(&quot;BZsmall&quot;)
+	end if
+	if oCheckBoxSM.state = 1 then
+		Overall.deleteTable(&quot;BZ&quot;)
+	end if
+	
 	
 	Overall.insertToTemplateStep(1)
 	Overall.insertToTemplateStep(2)
