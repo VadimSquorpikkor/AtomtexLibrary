@@ -30,6 +30,7 @@ dim BDList as new collection
 
 dim betaAltCheckBox as object 
 dim alphaAltCheckBox as object
+dim oComboBox as object
 rem---------------------------------------------------------------------------------------------------------
 Sub AT1125_Dialog_Show
 	alphaCount = 5 rem ДЛЯ БДПС
@@ -43,7 +44,7 @@ Sub AT1125_Dialog_Show
 
 	&apos;dim NULL as object
 	&apos;Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.06 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.09 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.10 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 oDialog1125.getControl(&quot;doneButton&quot;).setEnable(true)
 
@@ -71,11 +72,20 @@ Sub AT1125_Dialog_Show
 	enableBDPS(false)
 	enableUA(false)
 	
+	oComboBox = oDialog1125.getControl(&quot;ActivityCombo&quot;)
+	Overall.initializeActivityCombo(oComboBox)
+	
 	initializeBD rem ЗАГРУЗКА БД
 	makeLayout1125
 	oDialogMain.endexecute()   
 	oDialog1125.Execute()
 End Sub
+rem---------------------------------------------------------------------------------------------------------
+sub activityComboChanged
+
+	makeBetaLayout(BDList.item(4))
+	calculateUA(BDList.item(6))
+end sub
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged
 	makeBetaLayout(BDList.item(4))
@@ -134,7 +144,7 @@ sub calculateUA(bd as new DUnit)
 	dim pointList as new collection
 	dim myFormat as string
 	dim point as double
-	for i=1 to bd.getPointTextList.count
+	for i=1 to bd.getPointTextList.count-1
 		point = Activity.get_activity_Cs137(bd.getPointTextList.item(i), oDateFieldModel)
 		if point &lt; 500 then
 			myFormat = &quot;0.0&quot;
@@ -150,6 +160,28 @@ sub calculateUA(bd as new DUnit)
 		pointList.add(point)
 		stroke = stroke + &quot;№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot; &quot;
 	next i
+	
+	&apos;Внимание! 4-я точка удельной активности считается отдельно! (в предыдущем цикле только 3 точки) Эта точка меняется комбобоксом: 516-521 источник, соответственно точка зависит от значения кБокса
+	&apos;Умножение на 1000 так как метод getActivityAll возвращает активность в кБк, а надо в Бк
+	point = Activity.getActivityAll(oComboBox.text, oDateFieldModel)*1000
+		myFormat = &quot;0&quot;
+		oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 1
+		oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 0
+		oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot;
+		oDialog1125.getControl(&quot;uaField&quot; + i).value = Format(point, myFormat)
+		pointList.add(point)
+		stroke = stroke + oComboBox.text
+		
+	&apos;переписываю 4-ю точку, не знаю как сделать, поэтому просто беру три точки из старого массива, добавляю новую 4-ую и перезаписываю массив
+	dim newValues as new Collection
+	newValues.add(bd.getPointTextList.item(1))
+	newValues.add(bd.getPointTextList.item(2))
+	newValues.add(bd.getPointTextList.item(3))
+	dim s as string
+	s = Replace (oComboBox.text,&quot;№&quot;,&quot;&quot;)
+	newValues.add(s)
+	bd.setPointTextList(newValues)
+		
 	bd.setPointList(pointList)
 	oDialog1125.getControl(&quot;SourseText&quot;).text = stroke
 end sub

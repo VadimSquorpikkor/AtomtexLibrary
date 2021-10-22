@@ -404,6 +404,7 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point))) rem среднее по трем измерениям
 		
 			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, getRightFormat(cont_point))) rem активность источника
+			&apos;msgbox src_name+&quot; &quot;+j
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
 			
 			dim percent as integer

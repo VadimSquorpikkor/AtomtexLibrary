@@ -19,6 +19,7 @@ dim layoutPosition as integer
 dim maxBDCount as integer
 dim isComboCollection as new Collection
 dim path, calibName, techName as string
+
 rem---------------------------------------------------------------------------------------------------------
 Sub G25_Dialog_Show
 	maxBDCount = 50
@@ -37,10 +38,13 @@ Sub G25_Dialog_Show
 	isComboCollection.add(oOptionG25)
 		
 	oDialogG25.getControl(&quot;addButton&quot;).setEnable(true)
+
+
 	
 	oDialogMain.endexecute()   
 	oDialogG25.Execute()
 End Sub
+
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
 	oDialogG25.getControl(&quot;addButton&quot;).setEnable(true)

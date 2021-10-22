@@ -260,6 +260,9 @@ End Function
 Public Function getPointTextList As Collection
    getPointTextList = _pointText
 End Function
+Public Function setPointTextList(p_Array as Collection)
+   _pointText = p_Array
+End Function
 
 public function setValueList(measuredValue as Collection)
 	_measuredValue = measuredValue

@@ -57,6 +57,26 @@ function get_activity(src as double, mdate)
 	get_activity = src * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------
+&apos;НОВЫЙ МЕТОД ДЛЯ ВСЕХ ИСТОЧНИКОВ (И CS И CD и бета и т.д.). Пишем имя (может сделаю константы), получаем активность. Пока только для Cs, потом доделаю
+function getActivityAll(srcName as string, oDateFieldModel)
+	select case srcName
+		case &quot;№516&quot;
+		getActivityAll = get_activity(ACT516, oDateFieldModel)
+		case &quot;№517&quot;
+		getActivityAll = get_activity(ACT517, oDateFieldModel)
+		case &quot;№518&quot;
+		getActivityAll = get_activity(ACT518, oDateFieldModel)
+		case &quot;№519&quot;
+		getActivityAll = get_activity(ACT519, oDateFieldModel)
+		case &quot;№520&quot;
+		getActivityAll = get_activity(ACT520, oDateFieldModel)
+		case &quot;№521&quot;
+		getActivityAll = get_activity(ACT521, oDateFieldModel)
+		case &quot;№2910&quot;
+		getActivityAll = get_activity2910(oDateFieldModel)
+	end select
+end function
+&apos;-------------------------------------------------------------
 function get_activity2910(mdate)
 	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,5,17)
 	get_activity2910 = act2910 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
