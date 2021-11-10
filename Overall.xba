@@ -570,7 +570,7 @@ sub saveCurentBDValue(num as integer)
 		dim altValues as new Collection
 		for i=1 to _BDList.item(num).getAltList.count
 			altValues.add(_oDialog.getControl(&quot;altField&quot; + i).Value)
-			if i=1 then msgbox _oDialog.getControl(&quot;altField&quot; + i).Value
+			&apos;if i=1 then msgbox _oDialog.getControl(&quot;altField&quot; + i).Value
 			_BDList.item(num).setAltList(altValues)
 		next i
 	end if
