@@ -49,7 +49,7 @@ dim isComboCollection as new Collection
 &apos;3) самое главное -- все старые приборы, которые не использует индивидуальное значение фона для каждого БД, будут продолжать работать как ни в чем не бывало, для них значение _separateBGround будет всегда = false
 &apos;по сути получается в любой момент времени я сохраняю оба варианта фона и уже при выводе протокола выбираю, какой из вариантов выбрать
 &apos;ТАК НАДО СДЕЛАТЬ ДЛЯ АЛЬТЕРНАТИВНЫХ ТОЧЕК!!!
-
+dim shouldShowGrad as boolean
 rem---------------------------------------------------------------------------------------------------------
 Sub G02N_Dialog_Show
 	maxBDCount = 40
@@ -60,7 +60,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.27 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.28 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -124,6 +124,8 @@ Sub G02N_Dialog_Show
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).value = 15
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).valueStep = 0.1	
 	oDialogG02N.Model.getByName(&quot;ValueBDMG8&quot;).DecimalAccuracy = 1
+		
+	oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(false)	
 		
 	oDialogMain.endexecute()   
 	oDialogG02N.Execute()
@@ -190,7 +192,7 @@ sub addNewBD
 			enableBDMG(false)
 			enableLastTreeFields(false, false, false, false)
 			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
-		end if	
+		end if
 	end if
 	
 	if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
@@ -224,6 +226,7 @@ sub removeLastBD
 	BDList.remove(BDList.count)
 	if oListBox.getItemCount()=0 then
 		oDialogG02N.getControl(&quot;removeButton&quot;).setEnable(false)
+		
 	else 
 		makeLayoutFromBD(BDList.item(BDList.count))
 	end if
@@ -250,6 +253,11 @@ function listBoxListener
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
+	if BDList.count=0 then
+		oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(false)	
+	else	
+		oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(true)	
+	endif
 	Overall.makeLayoutFromBD(bd)
 	oDialogG02N.getControl(&quot;GradValueField&quot;).Text = bd.getGradValue
 	if oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state then
@@ -295,12 +303,24 @@ sub insertRecordsToTemplate
 	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11_1\bdkg11_1&quot;, &quot;БДКГ-11/1&quot;)
 	
 	dim bd as new DUnit
-		
+	
 	OpenTemplate(sertPath &amp; path)
-	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
-		&apos;deleteTable(&quot;t&quot; + (k))
-		Overall.deleteTable(&quot;tgrad&quot; + (k))
-	next k
+		
+	if shouldShowGrad = true then
+		for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
+			&apos;deleteTable(&quot;t&quot; + (k))
+			Overall.deleteTable(&quot;tgrad&quot; + (k))
+		next k
+	else
+		Overall.deleteTable(&quot;tgradtitle&quot;)
+		Overall.deleteTable(&quot;tgradhead&quot;)
+		for k=(0) to maxBDCount
+			Overall.deleteTable(&quot;tgrad&quot; + (k))
+		next k
+	endif
+		
+	
+	
 	
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
@@ -337,10 +357,15 @@ sub BgCheckBoxListener
 	if oDialogG02N.Model.getByName(&quot;BGCheckBox&quot;).state then
 		oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(true)
 		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = BDList.item(layoutPosition).getBdBackground
-	else
-		oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
+	else oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
 		oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
-	end if			
+	end if
+	if oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).state then
+		shouldShowGrad = true
+	else
+		shouldShowGrad = false	
+		&apos;msgbox &quot;on&quot;
+	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()

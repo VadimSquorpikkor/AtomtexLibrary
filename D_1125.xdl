@@ -8,7 +8,6 @@
   <dlg:style dlg:style-id="3" dlg:font-height="8"/>
   <dlg:style dlg:style-id="4" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="28" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
   <dlg:style dlg:style-id="5" dlg:font-height="18"/>
-  <dlg:style dlg:style-id="6" dlg:font-height="8"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="53" dlg:left="24" dlg:top="201" dlg:width="49" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
@@ -146,6 +145,6 @@
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.activityComboChanged?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:combobox>
-  <dlg:text dlg:style-id="6" dlg:id="lab1" dlg:tab-index="102" dlg:left="139" dlg:top="257" dlg:width="72" dlg:height="10" dlg:value="Источник для 4-й точки:" dlg:align="center" dlg:multiline="true"/>
+  <dlg:text dlg:style-id="3" dlg:id="lab1" dlg:tab-index="102" dlg:left="139" dlg:top="257" dlg:width="72" dlg:height="10" dlg:value="Источник для 4-й точки:" dlg:align="center" dlg:multiline="true"/>
  </dlg:bulletinboard>
 </dlg:window>
