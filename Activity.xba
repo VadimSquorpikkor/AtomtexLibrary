@@ -27,6 +27,7 @@ public const CS_93   as double = 880	&apos;892	&apos;948
 public const CS_3668 as double = 7932	&apos;8048	&apos;8232
 &apos;public const CS_3663 as double = 0		&apos;82173	&apos;88930
 public const CS_tmp_516 as double = 81384		&apos;82173	&apos;88930
+public const CS_595 as double = 97.070 &apos;  97070 Бк на 29.07.2021 // 96316 на 29.11.21
 &apos;-------------------------------------------------------------
 public const BETA_0660 as double  = 96
 public const BETA_6905 as double  = 228
@@ -74,12 +75,19 @@ function getActivityAll(srcName as string, oDateFieldModel)
 		getActivityAll = get_activity(ACT521, oDateFieldModel)
 		case &quot;№2910&quot;
 		getActivityAll = get_activity2910(oDateFieldModel)
+		case &quot;№595&quot;
+		getActivityAll = get_activity595(oDateFieldModel)
 	end select
 end function
 &apos;-------------------------------------------------------------
 function get_activity2910(mdate)
 	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,5,17)
 	get_activity2910 = act2910 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
+end function
+&apos;-------------------------------------------------------------
+function get_activity595(mdate)
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,7,29)
+	get_activity595 = CS_595 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------
 function get_activity_Cs137(src as string, mdate)
