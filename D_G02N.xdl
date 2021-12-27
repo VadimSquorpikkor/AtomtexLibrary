@@ -132,7 +132,7 @@
   </dlg:radiogroup>
   <dlg:text dlg:style-id="1" dlg:id="typeLabel" dlg:tab-index="80" dlg:left="225" dlg:top="20" dlg:width="60" dlg:height="12" dlg:align="center"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:style-id="3" dlg:id="isBDKG-11" dlg:tab-index="45" dlg:left="29" dlg:top="47" dlg:width="43" dlg:height="8" dlg:value="БДКГ-11/1"/>
+   <dlg:radio dlg:style-id="3" dlg:id="isBDKG-11" dlg:tab-index="45" dlg:left="29" dlg:top="47" dlg:width="43" dlg:height="8" dlg:value="БДКГ-11"/>
   </dlg:radiogroup>
   <dlg:checkbox dlg:id="BGCheckBox" dlg:tab-index="81" dlg:left="215" dlg:top="208" dlg:width="103" dlg:height="10" dlg:value="Для каждого БД свой фон" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G02N.BgCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
