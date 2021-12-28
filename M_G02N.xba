@@ -60,7 +60,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.29 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.28 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -206,7 +206,7 @@ sub addNewBD
 	if oOptionBDKG02.state  then bd.addData(&quot;БДКГ-02&quot; ,   &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if oOptionBDKG204.state then bd.addData(&quot;БДКГ-204&quot; ,  &quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
 	if oOptionBDMG.state 	then bd.addData(&quot;БДМГ-2343&quot; , &quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDKG11.state  then bd.addData(&quot;БДКГ-11&quot; ,   &quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma&quot;, Array(0.01, 0.1)) 
+	if oOptionBDKG11.state  then bd.addData(&quot;БДКГ-11/1&quot; , &quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma&quot;, Array(0.01, 0.1)) 
 	oDialogG02N.getControl(&quot;typeLabel&quot;).text = bd.getName
 	bd.setSerial(bdName)
 	bd.setBdBackground(100)
@@ -300,7 +300,7 @@ sub insertRecordsToTemplate
 	if oOptionBDKG02.state   then path = Overall.getPathAndSetName(&quot;bdkg02\bdkg02&quot;, &quot;БДКГ-02&quot;)
 	if oOptionBDKG204.state  then path = Overall.getPathAndSetName(&quot;bdkg204\bdkg204&quot;, &quot;БДКГ-204&quot;)
 	if oOptionBDMG.state     then path = Overall.getPathAndSetName(&quot;bdmg2343\bdmg2343&quot;, &quot;БДМГ-2343&quot;)
-	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11\bdkg11&quot;, &quot;БДКГ-11&quot;)
+	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11_1\bdkg11_1&quot;, &quot;БДКГ-11/1&quot;)
 	
 	dim bd as new DUnit
 	
