@@ -17,7 +17,7 @@ Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
 	
-	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.05 &quot;, Overall.NULL, 0)
+	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.06 &quot;, Overall.NULL, 0)
 	Overall.initializeParameters(0, BDList, isComboCollection)
 	
 	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;
@@ -117,7 +117,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$sence&quot; + i, Format(bd.getSensitivity(activity), &quot;0.00&quot;))
 	findAndRename(&quot;$pogr&quot; + i, Format(bd.getDelta - bd.getSensitivity(activity), &quot;0.00&quot;))
 
-	strokeForSaving = &quot;&quot; + srk_serial &amp; &quot; (МРП-&quot; &amp; oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text &amp; &quot;)&quot;
+	strokeForSaving = &quot;&quot; + srk_serial &amp; &quot; (МРП-&quot; &amp; oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text &amp; &quot;) поверка&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub

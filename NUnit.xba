@@ -93,6 +93,7 @@ sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_
 		p3 = 1.1 * sqr(p2 * p2 + percent*percent)
 		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, &quot;0.00&quot;))
 	next n
+	
 
 end sub
 

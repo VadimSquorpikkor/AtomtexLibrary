@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.07 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.08 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -144,9 +144,9 @@ sub insertRecordsToTemplate
 	dim strokeForSaving as string
 	strokeForSaving = &quot;&quot;	
 		
-	if oOption02.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn02&quot;)
-	if oOption04.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn04&quot;)
-	if oOption05.state  then path = Overall.PathForProtocol(&quot;bdkn\bdkn05&quot;)
+	if oOption02.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-02&quot;)
+	if oOption04.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-04&quot;)
+	if oOption05.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-05&quot;)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -168,12 +168,8 @@ sub insertRecordsToTemplate
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 	next i
 	
-	&apos;&apos;&apos;&apos;&apos;&apos;findAndRename(&quot;$type&quot;, BDList.item(1).getName)
 	findAndRename(&quot;$serial&quot;, oDialogBDKN.getControl(&quot;fullNum&quot;).text)
-	if oOption02.state then strokeForSaving = &quot;БДКН-02 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption04.state then strokeForSaving = &quot;БДКН-04 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	if oOption05.state then strokeForSaving = &quot;БДКН-05 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	Overall.setSerialWithStroke(&quot;$serial&quot;, strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------

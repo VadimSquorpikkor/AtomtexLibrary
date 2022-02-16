@@ -37,6 +37,7 @@ dim _maxPointsCount as integer 	&apos;сколько максимально мо
 								&apos;несколько типов БД на выбор (БДКГ-22 и БДКГ-23), у которых кол-во точек различается, кол-во точек на форме одинаково для каждого
 								&apos;для типа БД(по сути равно максимальному кол-ву точек из доступных в форме типов БД), просто некоторые могут быть неактивный для какого-то из БД
 dim _separateBGround as boolean
+dim _stringTypeForCertificate as String &apos;поверка проверка сертификат&apos;
 &apos;------------------------------------------------------------------------------------------------------------------------
 dim m_point, cont_point as double 
 dim prefix, MyFormat as string
@@ -308,14 +309,17 @@ end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function PathForProtocol(bdName as string)
 	if _oOptionButtonPr.State then
+		_stringTypeForCertificate = &quot;поверка&quot;
 		PathForProtocol = bdName &amp; &quot;.odt&quot;
 	end if
 	if _oOptionButtonSr.State then
+		_stringTypeForCertificate = &quot;проверка&quot;
 		calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 		techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 		PathForProtocol = bdName &amp; &quot;_sr.odt&quot;
 	end if
 	if _oOptionButtonSe.State then
+		_stringTypeForCertificate = &quot;сертификат&quot;
 		calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 		techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 		PathForProtocol = bdName &amp; &quot;_se.odt&quot;
@@ -323,6 +327,7 @@ function PathForProtocol(bdName as string)
 	
 	if NOT isNull(_oOptionButtonPrNew) then
 		if _oOptionButtonPrNew.State then
+			_stringTypeForCertificate = &quot;поверка&quot;
 			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 			PathForProtocol = bdName &amp; &quot;_n.odt&quot;
@@ -330,6 +335,7 @@ function PathForProtocol(bdName as string)
 	end if
 	if NOT isNull(_oOptionButtonSrNew) then
 		if _oOptionButtonSrNew.State then
+			_stringTypeForCertificate = &quot;проверка&quot;
 			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 			PathForProtocol = bdName &amp; &quot;_sr_n.odt&quot;
@@ -337,6 +343,7 @@ function PathForProtocol(bdName as string)
 	end if
 	if NOT isNull(_oOptionButtonSeNew) then
 		if _oOptionButtonSeNew.State then
+			_stringTypeForCertificate = &quot;сертификат&quot;
 			calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 			techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 			PathForProtocol = bdName &amp; &quot;_se_n.odt&quot;
@@ -676,7 +683,14 @@ end function
 &apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
 function setSerial(label as String)
 	findAndRename(label, strokeForSaving)
-	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot;
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate
+	CopyVariableToClipboard(strokeForSaving)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;это затыска для нейтрона потом переделаю
+function setSerialWithStroke(label as String, stroke as string)
+	findAndRename(label, strokeForSaving)
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; stroke &amp; &quot;) &quot; &amp; _stringTypeForCertificate
 	CopyVariableToClipboard(strokeForSaving)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
