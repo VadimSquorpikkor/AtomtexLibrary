@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.08 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.09 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -145,8 +145,8 @@ sub insertRecordsToTemplate
 	strokeForSaving = &quot;&quot;	
 		
 	if oOption02.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-02&quot;)
-	if oOption04.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-04&quot;)
-	if oOption05.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-05&quot;)
+	if oOption04.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn04&quot;, &quot;БДКН-04&quot;)
+	if oOption05.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn05&quot;, &quot;БДКН-05&quot;)
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
