@@ -78,6 +78,7 @@ function insertZero(number)
 end function
 rem-------------------------------------------------------------------------
 Sub CopyVariableToClipboard(text as string)
+text = Replace(text, &quot;/&quot;, &quot;_&quot;)
 dim document   as object
 dim dispatcher as object
 dim oDoc, oVC
