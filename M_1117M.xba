@@ -38,7 +38,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;1117Logo&quot;).ImageURL = sertPath &amp; &quot;1117\1117.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.16 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.17 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
