@@ -29,7 +29,7 @@ dim oComboBox, oComboBox1, oComboBox2 as object
 dim Overall as new Overall
 dim Facility as new Facility
 
-dim insertButton as object
+dim insertButton, insertButtonBDMG as object
 dim isComboCollection as new Collection
 &apos;ТАК НАДО СДЕЛАТЬ ДЛЯ АЛЬТЕРНАТИВНЫХ ТОЧЕК!!!
 &apos;на будущее: как я сделал индивидуальное значение фона для каждого БД:
@@ -60,7 +60,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.29 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.30 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -99,6 +99,8 @@ Sub G02N_Dialog_Show
 	oDialogG02N.model.getByName(&quot;insertButton&quot;).ImageURL = sertPath &amp; &quot;imgs/down_arr.png&quot;
 	insertButton = oDialogG02N.getControl(&quot;insertButton&quot;)
 	insertButton.visible = false
+	insertButtonBDMG = oDialogG02N.getControl(&quot;insertButtonBDMG&quot;)
+	insertButtonBDMG.visible = false
 
 	oDialogG02N.Model.getByName(&quot;ValueBDMG1&quot;).value = 80
 	oDialogG02N.Model.getByName(&quot;ValueBDMG1&quot;).valueStep = 0.1	
@@ -158,6 +160,7 @@ sub enableBDMG(visibility as boolean)
 		oDialogG02N.getControl(&quot;LabelBDMG&quot; + i).visible = visibility
 	next i
 	oDialogG02N.getControl(&quot;ActivityAll&quot;).setEnable(visibility)
+	insertButtonBDMG.visible = visibility
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -370,6 +373,14 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+end function
+rem---------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueListBDMG()
+	dim list as new Collection
+    for i=0 to 7
+    	list.add(0)
+    next i
+	Overall.insertClipBoardToBDValueListBDMG(list)
 end function
 
 

@@ -750,6 +750,23 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	next i
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Тупо скопипастил. Этот вариант для диалога &quot;БДКГ-02&quot;, там нужен ещё вторая &quot;волшебная&quot; ввода для БДМГ
+function insertClipBoardToBDValueListBDMG(value_list as Collection)
+	dim i as integer
+	dim list as new Collection
+	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	
+	for i=1 to value_list.count
+		if list.item(i) = 0 then
+			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).textColor = RGB(200, 0, 0)
+			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).value = value_list.item(i)
+		else
+			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).textColor = RGB(0, 0, 0)
+			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).value = list.item(i)
+		end if	
+	next i
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;методу insertClipBoardToBDValueList нужна коллекция значений для формы ПО РАЗМЕРУ СОВПАДАЮЩАЯ С РАЗМЕРОМ КОЛЛЕКЦИИ valueList (значения точек, которые пользователь вводит как измеренные)
 &apos;Другими словами, кол-во элементов в скопированном массиве должен совпадать с количеством полей в форме для записи значений
 &apos;метод get_2nd_ListSizeAs_1st_ListSize приводит размер скопированной коллекции (list_2) к размеру коллекции valueList (list_2)
