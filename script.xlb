@@ -36,4 +36,6 @@
  <library:element library:name="MWatsNew"/>
  <library:element library:name="_t_note"/>
  <library:element library:name="Module1"/>
+ <library:element library:name="m_herm"/>
+ <library:element library:name="Meas"/>
 </library:library>

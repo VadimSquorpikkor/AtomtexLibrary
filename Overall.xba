@@ -831,6 +831,32 @@ function getCollectionFromClipBoard()
     getCollectionFromClipBoard = list
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Если скопировать в Calc ячейки размером x на y, то метод вернет содержимое всех ячеек (как стринги) в виде 2-мерного массива (коллекции)
+function getTwoDimensionalArrayFromClipBoard as Collection
+	dim list as new Collection
+	dim list3 as new Collection
+	list = getCollectionFromClipBoard()
+
+	dim i as integer
+	for i=1 to list.count
+		dim list2 as new Collection
+    	dim s_arr(0) as String
+    	dim sText As String
+	    sText=list.item(i)
+    	s_arr = split(sText, &quot;	&quot;)
+    	dim j as integer
+    	for j=0 to uBound(s_arr)
+    		list2.add(s_arr(j))
+    		list2.item(j+1)
+    	next j
+		list3.add(list2)
+	next i
+	&apos;msgbox list3.count
+	&apos;msgbox list3.item(1).count
+	&apos;msgbox list3.item(1).item(1)
+	getTwoDimensionalArrayFromClipBoard = list3
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Супер метод. Пока его не было, протокол формировался так:
 &apos;В протоколе было изначально десять (иногда 12) таблиц, после нажатии кнопки &quot;Готово&quot; выбранное кол-во таблиц (до 10-ти, по количеству добавленых в диалоге БД)
 &apos;заполняются данными, остальные (не нужные) — удаляются.
