@@ -449,7 +449,7 @@ sub insertRecordsToTemplate
 		Overall.insertToTemplateStep(i)
 	next i
 	
-	Overall.setSerial(&quot;$allSerial&quot;)
+	Overall.setClipboard(&quot;$allSerial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------

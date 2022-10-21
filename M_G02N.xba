@@ -352,7 +352,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$source&quot;, oDialogG02N.getControl(&quot;ActivityCombo&quot;).text)
 	findAndRename(&quot;$serial&quot;, oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text)
 
-	Overall.setSerial(&quot;$serial&quot;)
+	Overall.setClipboardWithType(&quot;$serial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------

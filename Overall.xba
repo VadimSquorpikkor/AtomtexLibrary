@@ -681,11 +681,29 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
 &apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
-function setSerial(label as String)
+&apos;В конце строки добавляет тип документа (поверка, проверка, сертификат)
+function setClipboardWithType(label as String)
 	findAndRename(label, strokeForSaving)
 	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate
 	CopyVariableToClipboard(strokeForSaving)
 end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
+&apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
+function setClipboard(label as String)
+	findAndRename(label, strokeForSaving)
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot;
+	CopyVariableToClipboard(strokeForSaving)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
+&apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
+&apos;@DEPRECATED
+&apos;function setSerial(label as String)
+&apos;	findAndRename(label, strokeForSaving)
+&apos;	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate
+&apos;	CopyVariableToClipboard(strokeForSaving)
+&apos;end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;это затыска для нейтрона потом переделаю
 function setSerialWithStroke(label as String, stroke as string)

@@ -119,7 +119,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$serial&quot;, oDialogG25.getControl(&quot;FULL_NUM&quot;).text)
 	&apos;if oOptionG25.state then strokeForSaving = &quot;БДКГ-25 &quot; &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
 	&apos;CopyVariableToClipboard(strokeForSaving)
-	Overall.setSerial(&quot;$serial&quot;)
+	Overall.setClipboardWithType(&quot;$serial&quot;)
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------
