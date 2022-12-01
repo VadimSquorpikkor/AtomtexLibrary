@@ -294,7 +294,7 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 	dim i as integer
 	dim point, nStep, value as double
 	dim MyFormat as string
-	for i=1 to bd.valueList.count rem СДЕСЬ ИМЕННО VALUE А НЕ POINT -- ТАК НЕ НАДО БУДЕТ ДУМАТЬ КАК СОХРАНИТЬ ЗНАЧЕНИЯ ИЛИ КАК ПРОВЕРЯТЬ -1 ИЛИ НОВОЕ ЗНАЧЕНИЕ 
+	for i=1 to bd.valueList.count rem ЗДЕСЬ ИМЕННО VALUE А НЕ POINT -- ТАК НЕ НАДО БУДЕТ ДУМАТЬ КАК СОХРАНИТЬ ЗНАЧЕНИЯ ИЛИ КАК ПРОВЕРЯТЬ -1 ИЛИ НОВОЕ ЗНАЧЕНИЕ 
 		point = bd.pointList.item(i)
 		nStep = rightStep(point)
 		value = bd.valueList.item(i)

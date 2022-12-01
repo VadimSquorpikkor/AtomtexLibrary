@@ -18,6 +18,12 @@ dim oOptionBDKG02 as object
 dim oOptionBDKG204 as object
 dim oOptionBDMG as object
 dim oOptionBDKG11 as object
+dim oOptionBDKG22 as object
+dim oOptionBDKG23 as object
+dim oOptionBDKG23_1 as object
+dim oOptionBDKG25 as object
+dim oOptionBDKG224 as object
+
 
 dim BDList as new Collection
 dim mainCount as integer
@@ -60,7 +66,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.31 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.32 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -79,15 +85,25 @@ Sub G02N_Dialog_Show
 	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).DecimalAccuracy = 1
 	oDialogG02N.getControl(&quot;ActivityAll&quot;).setEnable(false)
 	
-	oOptionBDKG02  = oDialogG02N.getControl(&quot;isBDKG-02&quot;)
-	oOptionBDKG204 = oDialogG02N.getControl(&quot;isBDKG-204&quot;)
-	oOptionBDMG    = oDialogG02N.getControl(&quot;isBDMG&quot;)
-	oOptionBDKG11  = oDialogG02N.getControl(&quot;isBDKG-11&quot;)
+	oOptionBDKG02   = oDialogG02N.getControl(&quot;isBDKG-02&quot;)
+	oOptionBDKG204  = oDialogG02N.getControl(&quot;isBDKG-204&quot;)
+	oOptionBDMG     = oDialogG02N.getControl(&quot;isBDMG&quot;)
+	oOptionBDKG11   = oDialogG02N.getControl(&quot;isBDKG-11&quot;)
+	oOptionBDKG22   = oDialogG02N.getControl(&quot;isBDKG-22&quot;)
+	oOptionBDKG23   = oDialogG02N.getControl(&quot;isBDKG-23&quot;)
+	oOptionBDKG23_1 = oDialogG02N.getControl(&quot;isBDKG-23_1&quot;)
+	oOptionBDKG25   = oDialogG02N.getControl(&quot;isBDKG-25&quot;)
+	oOptionBDKG224  = oDialogG02N.getControl(&quot;isBDKG-224&quot;)
 	oOptionBDKG02.State  = 1
 	isComboCollection.add(oOptionBDKG02)
 	isComboCollection.add(oOptionBDKG204)
 	isComboCollection.add(oOptionBDMG)
 	isComboCollection.add(oOptionBDKG11)
+	isComboCollection.add(oOptionBDKG22)
+	isComboCollection.add(oOptionBDKG23)
+	isComboCollection.add(oOptionBDKG23_1)
+	isComboCollection.add(oOptionBDKG25)
+	isComboCollection.add(oOptionBDKG224)
 	
 	oListBox.setEnable(false)
 
@@ -181,20 +197,27 @@ sub addNewBD
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
 			enableLastTreeFields(false, false, false, true)
-			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(true)						
+			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(true)
 		end if
 		if oOptionBDMG.state then
 			oDialogG02N.getControl(&quot;addButton&quot;).setEnable(false)
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = false
 			enableBDMG(true)
 			enableLastTreeFields(true, true, true, true)
-			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
+			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)
 		end if
 		if oOptionBDKG11.state then
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
 			enableLastTreeFields(false, false, false, false)
-			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)						
+			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)
+		end if
+		if oOptionBDKG22.state or oOptionBDKG23.state or oOptionBDKG23_1.state or oOptionBDKG25.state or oOptionBDKG224.state then
+			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
+			enableBDMG(false)
+			enableLastTreeFields(false, false, false, false)
+			oDialogG02N.getControl(&quot;GradValueField&quot;).setEnable(false)
+			&apos;oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(false)						
 		end if
 	end if
 	
@@ -206,10 +229,17 @@ sub addNewBD
 	oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text = oDialogG02N.getControl(&quot;TextFieldSRK&quot;).text + &quot;.&quot; + Left(oDialogG02N.getControl(&quot;TextFieldNUM&quot;).text, 1) + &quot;00&quot;
 	
 	dim bd as new DUnit
-	if oOptionBDKG02.state  then bd.addData(&quot;БДКГ-02&quot; ,   &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDKG204.state then bd.addData(&quot;БДКГ-204&quot; ,  &quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDMG.state 	then bd.addData(&quot;БДМГ-2343&quot; , &quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDKG11.state  then bd.addData(&quot;БДКГ-11&quot; ,   &quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma&quot;, Array(0.01, 0.1)) 
+	if oOptionBDKG02.state  then bd.addData(&quot;БДКГ-02&quot; ,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG204.state then bd.addData(&quot;БДКГ-204&quot; ,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDMG.state 	then bd.addData(&quot;БДМГ-2343&quot; ,	&quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG11.state  then bd.addData(&quot;БДКГ-11&quot; ,		&quot;Зв/ч&quot;, Array(0.03,0.07,0.7,7,70),				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),				&quot;gamma&quot;, 	Array(0.01, 0.1)) 
+	
+	if oOptionBDKG22.state  then bd.addData(&quot;БДКГ-22&quot; ,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 		&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG23.state  then bd.addData(&quot;БДКГ-23&quot; , 	&quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG23_1.state then bd.addData(&quot;БДКГ-23/1&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;,	Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG25.state  then bd.addData(&quot;БДКГ-25&quot; ,		&quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7),	  		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 			&quot;gamma&quot;, 	Array(0,0)) rem TODO уточнить границы
+	if oOptionBDKG224.state then bd.addData(&quot;БДКГ-224&quot; , 	&quot;Зв/ч&quot;, Array(0.06,0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
+	
 	oDialogG02N.getControl(&quot;typeLabel&quot;).text = bd.getName
 	bd.setSerial(bdName)
 	bd.setBdBackground(100)
@@ -256,10 +286,10 @@ function listBoxListener
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
-	if BDList.count=0 then
+	if BDList.count=0 or not oOptionBDKG02.state then
 		oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(false)	
-	else	
-		oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(true)	
+	else 
+		oDialogG02N.getControl(&quot;CheckBoxShowGrad&quot;).setEnable(true)
 	endif
 	Overall.makeLayoutFromBD(bd)
 	oDialogG02N.getControl(&quot;GradValueField&quot;).Text = bd.getGradValue
@@ -304,6 +334,11 @@ sub insertRecordsToTemplate
 	if oOptionBDKG204.state  then path = Overall.getPathAndSetName(&quot;bdkg204\bdkg204&quot;, &quot;БДКГ-204&quot;)
 	if oOptionBDMG.state     then path = Overall.getPathAndSetName(&quot;bdmg2343\bdmg2343&quot;, &quot;БДМГ-2343&quot;)
 	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11\bdkg11&quot;, &quot;БДКГ-11&quot;)
+	if oOptionBDKG22.state   then path = Overall.getPathAndSetName(&quot;srk\bdkg22&quot;, &quot;БДКГ-22&quot;)
+	if oOptionBDKG23.state   then path = Overall.getPathAndSetName(&quot;srk\bdkg23&quot;, &quot;БДКГ-23&quot;)
+	if oOptionBDKG23_1.state then path = Overall.getPathAndSetName(&quot;srk\bdkg23_1&quot;, &quot;БДКГ-23/1&quot;)
+	if oOptionBDKG25.state   then path = Overall.getPathAndSetName(&quot;srk\bdkg25&quot;, &quot;БДКГ-25&quot;)
+	if oOptionBDKG224.state  then path = Overall.getPathAndSetName(&quot;srk\bdkg224&quot;, &quot;БДКГ-224&quot;)
 	
 	dim bd as new DUnit
 	
