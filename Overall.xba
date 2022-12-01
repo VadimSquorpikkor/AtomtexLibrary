@@ -119,8 +119,8 @@ sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
   		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
   		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
   		REM add new items to the list
-  		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot; )
-  		engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot; )
+  		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot; )
+  		engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot; )
   		oComboBox1.addItems( rusItems1, 0 )
 		oComboBox1.text = rusItems1(0)
 		&apos;msgbox oComboBox1.SELECTION
