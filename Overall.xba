@@ -361,6 +361,8 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
 	bg007 = Format(Math.randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
+	
+	
 end sub	
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)

@@ -10,12 +10,14 @@ dim oOptionBDKG11 as object
 dim oOptionBDKG19 as object
 dim oOptionBDKG35 as object
 dim oOptionBDRM05 as object
+dim oOptionBDRM05_2000 as object
 dim BDList as new Collection
 dim layoutPosition as integer
 dim maxBDCount as integer
 dim oNumericFieldModel as object
 dim oActivityCombo as object
 dim layoutPosition as integer
+&apos;ВНИМАНИЕ теперь ПОРТАЛЬНИК переделан так, что добавлять в протокол можно только одинаковые блоки (раньше можно было разные)
 rem---------------------------------------------------------------------------------------------------------
 Sub Portal_Dialog_Show
 	maxBDCount = 4
@@ -23,17 +25,13 @@ Sub Portal_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogPortal = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_PORTAL )
 	
-	Overall.initializeDateField(oDateFieldModel, oDialogPortal)
-	oDateFieldModel = oDialogPortal.Model.getByName(&quot;DateField1&quot;)
-	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
-	oDateFieldModel.Date = cDateToIso(Now)
-	
 	oDialogPortal.Model.getByName(&quot;Fura&quot;).ImageURL = sertPath &amp; &quot;portal\fura_transp.png&quot;
 	
-	oDialogPortal.getControl(&quot;Label_version&quot;).text = &quot;Версия 1.08&quot;	
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.09 &quot;, oListBox, 5)
+	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
 	oNumericFieldModel = oDialogPortal.Model.getByName(&quot;ActivityField&quot;)
@@ -52,10 +50,12 @@ Sub Portal_Dialog_Show
 	oOptionBDKG19 = oDialogPortal.Model.getByName(&quot;isBDKG19&quot;)
 	oOptionBDKG35 = oDialogPortal.Model.getByName(&quot;isBDKG35&quot;)
 	oOptionBDRM05 = oDialogPortal.Model.getByName(&quot;isBDRM05&quot;)
+	oOptionBDRM05_2000 = oDialogPortal.Model.getByName(&quot;isBDRM05_2000&quot;)
 	oOptionBDKG11.State = 0
 	oOptionBDKG19.State = 0
 	oOptionBDKG35.State = 0
 	oOptionBDRM05.State = 0
+	oOptionBDRM05_2000.State = 0
 	
 	oListBox.setEnable(false)
 	
@@ -67,6 +67,22 @@ Sub Portal_Dialog_Show
 	oDialogMain.endexecute()   
 	oDialogPortal.Execute()
 End Sub
+rem---------------------------------------------------------------------------------------------------------
+sub remontCheckBoxListener
+	if oDialogPortal.getControl(&quot;forRemont&quot;).state then
+		oDialogPortal.getControl(&quot;isBDKG11&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDKG19&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDKG35&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDRM05&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDRM05_2000&quot;).setEnable(true)
+	else
+		oDialogPortal.getControl(&quot;isBDKG11&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDKG19&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDKG35&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDRM05&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDRM05_2000&quot;).setEnable(false)
+	end if
+end sub
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged
 	Overall.comboChanged(oActivityCombo, oNumericFieldModel, oDateFieldModel)
@@ -82,6 +98,7 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
+		
 	
 	for i=1 to 5
 		oDialogPortal.getControl(&quot;BGField&quot; + i).setEnable(true)
@@ -98,6 +115,7 @@ sub addNewBD
 	if oOptionBDKG19.state  then bd.setAsBDKG19container
 	if oOptionBDKG35.state  then bd.setAsBDKG35container
 	if oOptionBDRM05.state  then bd.setAsBDRM05
+	if oOptionBDRM05_2000.state  then bd.setAsBDRM05_2000
 	
 	bd.setSerial(serial)
 	nCount = oListBox.getItemCount()
@@ -148,6 +166,14 @@ function setButtonVisibility
 	if BDList.count &lt;&gt; 0 then
 		oListBox.setEnable(true)
 		oDialogPortal.getControl(&quot;DoneButton&quot;).setEnable(true)
+		
+		
+		oDialogPortal.getControl(&quot;isBDKG11&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDKG19&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDKG35&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDRM05&quot;).setEnable(false)
+		oDialogPortal.getControl(&quot;isBDRM05_2000&quot;).setEnable(false)
+	
 	end if
 	if BDList.count &gt; layoutPosition then
 		oDialogPortal.getControl(&quot;DoneButton&quot;).setEnable(false)
@@ -167,7 +193,15 @@ function setButtonVisibility
 	end if
 	if BDList.count = maxBDCount then oDialogPortal.getControl(&quot;AddButton&quot;).setEnable(false)
 	if BDList.count &lt;&gt; maxBDCount then oDialogPortal.getControl(&quot;AddButton&quot;).setEnable(true)
-	if BDList.count = 0 then oDialogPortal.getControl(&quot;AddButton&quot;).setEnable(true)
+	if BDList.count = 0 then
+		oDialogPortal.getControl(&quot;AddButton&quot;).setEnable(true)
+		
+		oDialogPortal.getControl(&quot;isBDKG11&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDKG19&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDKG35&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDRM05&quot;).setEnable(true)
+		oDialogPortal.getControl(&quot;isBDRM05_2000&quot;).setEnable(true)
+	end if	
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
@@ -205,6 +239,7 @@ sub removeLastBD
 	setButtonVisibility
 end Sub
 rem---------------------------------------------------------------------------------------------------------
+
 sub insertRecordsToTemplate
 	dim srk_serial, strokeForSaving, path as string
 	srk_serial = oDialogPortal.getControl(&quot;FULL_NUM&quot;).text
@@ -212,20 +247,13 @@ sub insertRecordsToTemplate
 	activity = oDialogPortal.getControl(&quot;ActivityField&quot;).value
 	dim bd as new CUnit
 	saveCurentBDValue(layoutPosition)
-	path = &quot;portal\portal.odt&quot;
+	path = Overall.PathForProtocol(&quot;portal\portal&quot;)
 	
 	OpenTemplate(sertPath &amp; path)
-	Overall.insertFacilitiesText	
-	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
-	percentOtk = 3 rem %
-	 
-	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
-	findAndRename(&quot;$temp&quot;, Format(tempValue,  &quot;0.0&quot;))
-	findAndRename(&quot;$vlag&quot;, Format(vlaghValue,  &quot;0.0&quot;))
-	findAndRename(&quot;$date&quot;, getDate(oDialogPortal.Model.getByName(&quot;DateField1&quot;)))
-	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
-	findAndRename(&quot;$source&quot;, oActivityCombo.text)
-	findAndRename(&quot;$srk_serial&quot;, srk_serial)
+	Overall.insertFacilitiesText
+	Overall.insertParametersToTemplate	
+	&apos;dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
+	&apos;percentOtk = 3 rem %
 	
 	for k=(BDList.count+1) to maxBDCount rem удаление таблиц сделано в отдельном цикле для ускорения поиска по таблицам в основном цикле, не придется перебирать ненужные таблицы
 		Overall.deleteTable(&quot;t&quot; + (k))
@@ -238,15 +266,22 @@ sub insertRecordsToTemplate
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), bd.getBGList.item(j))
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j), bd.getSRCList.item(j))
 		next j
-		findAndRename(&quot;$delt&quot; + i, bd.getDelta)
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
-		findAndRename(&quot;$type&quot; + i, bd.getType)
 		findAndRename(&quot;$bg_avr&quot; + i, Format(bd.getBgAverage, &quot;0.0&quot;))
 		findAndRename(&quot;$sr_avr&quot; + i, Format(bd.getSrcAverage, &quot;0.0&quot;))
-		findAndRename(&quot;$sence&quot; + i, Format(bd.getSensitivity(activity), &quot;0.00&quot;))
 		findAndRename(&quot;$pogr&quot; + i, Format(bd.getDelta - bd.getSensitivity(activity), &quot;0.00&quot;))
-		findAndRename(&quot;$pog_delt&quot; + i, Format(bd.getPogDelta, &quot;0.0&quot;))
+		findAndRename(&quot;$sence&quot; + i, Format(BDList.item(1).getSensitivity(activity), &quot;0.00&quot;))  &apos;Расчетное значение чувствительности БД
 	next i
+
+	&apos;общие для всех блоков в протоколе
+	findAndRename(&quot;$delt&quot;, BDList.item(1).getDelta)	&apos;(таблица &quot;Абсолютная погрешность чувствительности БД...&quot; ==&gt; Чувствительность СРК-АТ2327 к гамма-излучению 137CS типа ОСГИ-3
+	findAndRename(&quot;$type&quot;, BDList.item(1).getType)	&apos;тип БД (БДКГ-11)
+	findAndRename(&quot;$pog_delt&quot;, Format(BDList.item(1).getPogDelta, &quot;0.0&quot;)) &apos;Условие соответствия по ТУ Δ, не более
+	
+	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
+	findAndRename(&quot;$source&quot;, oActivityCombo.text)
+	findAndRename(&quot;$srk_serial&quot;, srk_serial)
+	findAndRename(&quot;$pogdelta&quot;, bd.getPogDelta)
 
 	&apos;если это БД в контейнере, то писать, что в контейнере, если нет — не надо
 	if bd.isContainer then
@@ -256,7 +291,7 @@ sub insertRecordsToTemplate
 	end if
 	findAndRename(&quot;$type&quot;, bd.getType)
 	
-	strokeForSaving = &quot;&quot; + bd.getType &amp; &quot; ( &quot; &amp; srk_serial &amp; &quot; ) поверка&quot;
+	strokeForSaving = &quot;&quot; + bd.getType &amp; &quot; ( &quot; &amp; srk_serial &amp; &quot; ) &quot; &amp; Overall._stringTypeForCertificate
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
