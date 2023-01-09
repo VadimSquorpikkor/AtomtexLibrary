@@ -17,7 +17,7 @@ Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
 	
-	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.07 &quot;, Overall.NULL, 0)
+	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.08 &quot;, Overall.NULL, 0)
 	Overall.initializeParameters(0, BDList, isComboCollection)
 	
 	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;
@@ -29,7 +29,7 @@ Sub MRP920_Dialog_Show
 	oNumericFieldModel.DECIMALACCURACY = 2
 	oNumericFieldModel.value = get_activity(act516, oDateFieldModel)
 
-	oDialogMRP.getControl(&quot;DoneButton&quot;).setEnable(false)
+	oDialogMRP.getControl(&quot;doneButton&quot;).setEnable(false)
 	oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text = &quot;Тип МРП&quot;
 		
 	oOptionBDKG11 = oDialogMRP.Model.getByName(&quot;isBDKG11&quot;)
@@ -60,7 +60,7 @@ sub addNewBD
 		oDialogMRP.getControl(&quot;bgField&quot; + i).value = bd.getBgList.item(i)
 		oDialogMRP.getControl(&quot;srcField&quot; + i).value = bd.getsrcList.item(i)
 	next i
-	oDialogMRP.getControl(&quot;DoneButton&quot;).setEnable(true)
+	oDialogMRP.getControl(&quot;doneButton&quot;).setEnable(true)
 	
 	if oOptionBDKG11.state  then oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text = &quot;AT920&quot;
 	if oOptionBDKG19.state  then oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text = &quot;AT920B&quot;
@@ -78,6 +78,14 @@ function makeSRKNumber(value as long)
 	makeSRKNumber = stroke
 end function
 rem---------------------------------------------------------------------------------------------------------
+sub insertProtokol
+	insertRecordsToTemplate(&quot;mrp\mrp920.odt&quot;)
+end sub
+rem---------------------------------------------------------------------------------------------------------
+sub insertSerfRu
+	insertRecordsToTemplate(&quot;mrp\mrp920_sr.odt&quot;)
+end sub
+rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue
 	dim srk_serial, mrp_serial, bd_serial, strokeForSaving, path as string
@@ -87,17 +95,19 @@ sub insertRecordsToTemplate
 	bd_serial  = makeSRKNumber(oDialogMRP.getControl(&quot;bdSerial&quot;).value)
 	dim bgAverage, srcAverage, sensitivity, activity as double
 	activity = oDialogMRP.getControl(&quot;ActivityField&quot;).value
-	path = &quot;mrp\mrp920.odt&quot;
+	&apos;path = &quot;mrp\mrp920.odt&quot;
+	path = Overall.PathForProtocol(&quot;mrp\mrp920&quot;)
 	
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	dim percentOtk as double rem отклонение от значения точки для рандомайзера трех точек измерения при расчете среднего значения м.д.  
 	percentOtk = 3 rem %
 
-	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
-	findAndRename(&quot;$temp&quot;, Format(tempValue,  &quot;0.0&quot;))
-	findAndRename(&quot;$vlag&quot;, Format(vlaghValue,  &quot;0.0&quot;))
-	findAndRename(&quot;$date&quot;, getDate(oDialogMRP.Model.getByName(&quot;DateField1&quot;)))
+	&apos;findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
+	&apos;findAndRename(&quot;$temp&quot;, Format(tempValue,  &quot;0.0&quot;))
+	&apos;findAndRename(&quot;$vlag&quot;, Format(vlaghValue,  &quot;0.0&quot;))
+	&apos;findAndRename(&quot;$date&quot;, getDate(oDialogMRP.Model.getByName(&quot;DateField1&quot;)))
+	Overall.insertParametersToTemplate
 	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
 	findAndRename(&quot;$source&quot;, oActivityCombo.text)
 	findAndRename(&quot;$srk_serial&quot;, srk_serial)
@@ -116,6 +126,9 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$sr_avr&quot; + i, Format(bd.getSrcAverage, &quot;0.0&quot;))
 	findAndRename(&quot;$sence&quot; + i, Format(bd.getSensitivity(activity), &quot;0.00&quot;))
 	findAndRename(&quot;$pogr&quot; + i, Format(bd.getDelta - bd.getSensitivity(activity), &quot;0.00&quot;))
+	
+	findAndRename(&quot;$delt&quot;, bd.getDelta)	&apos;(таблица &quot;Абсолютная погрешность чувствительности БД...&quot; ==&gt; Чувствительность СРК-АТ2327 к гамма-излучению 137CS типа ОСГИ-3
+	findAndRename(&quot;$pog_delt&quot;, Format(bd.getPogDelta, &quot;0.0&quot;)) &apos;Условие соответствия по ТУ Δ, не более
 
 	strokeForSaving = &quot;&quot; + &quot;МРП-&quot; &amp; oDialogMRP.getControl(&quot;mrpTypeLabel&quot;).text &amp; &quot; ( &quot; &amp; srk_serial &amp; &quot; ) поверка&quot;
 	CopyVariableToClipboard(strokeForSaving)

@@ -64,6 +64,8 @@ Sub Portal_Dialog_Show
 		oDialogPortal.getControl(&quot;SRCField&quot; + i).setEnable(false)		
 	next i
 	
+	remontCheckBoxListener
+	
 	oDialogMain.endexecute()   
 	oDialogPortal.Execute()
 End Sub

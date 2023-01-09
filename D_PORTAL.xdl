@@ -97,7 +97,7 @@
   <dlg:radiogroup>
    <dlg:radio dlg:id="isProtocol" dlg:tab-index="46" dlg:left="9" dlg:top="213" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
    <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="47" dlg:left="9" dlg:top="226" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
-   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="48" dlg:left="9" dlg:top="239" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
+   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="48" dlg:disabled="true" dlg:left="9" dlg:top="239" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="42" dlg:left="13" dlg:top="266" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="44" dlg:left="13" dlg:top="291" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
