@@ -10,11 +10,15 @@ rem			ВСЯКИЕ МЕТОДЫ БУДУТ ХРАНИТЬСЯ ЗДЕСЬ
 &apos;---------------------------------------------------------------------------------------------------------
 rem -------------------------------------------------------------------------------------------
 Sub OpenTemplate(documentURL)
+	On Error Goto ErrorHandler
     Dim Doc As Object
     Dim Url As String
     Dim Dummy() &apos;An (empty) array of PropertyValues
     Url = documentURL
     Doc = StarDesktop.loadComponentFromURL(Url, &quot;_blank&quot;, 0, Dummy)
+    Exit sub
+	ErrorHandler:
+	msgbox &quot;Нет такого файла!!!&quot;
 End Sub
 rem------------------------------------------------------------
 Sub findAndRename(target as String, newName as String)

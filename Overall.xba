@@ -1088,5 +1088,5 @@ Sub CopyTableRowAndPasteAfter(sName As String, oldName as String, newName as Str
 	oVCursor.godown(1,false)
 	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
 End Sub
-
+    
 </script:module>

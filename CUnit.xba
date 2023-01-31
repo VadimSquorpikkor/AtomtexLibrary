@@ -21,6 +21,7 @@ private _pointSrcValue as new Collection	rem 10000 -- скорость счет�
 private _delta as double					rem 110.1 -- дельта
 private _pogDelta as double					rem 12.1 -- погрешность (которая не более +-) вторая дельта
 private _bdtype as string					rem &quot;БДКГ-11/1&quot; -- тип блока, как будет написан в протоколе
+private _bdEngtype as string				rem &quot;BDKG-11/1&quot; -- тип блока, как будет написан в протоколе
 &apos;&apos;private _MEASUREMENT_NUMBER as integer		rem 5
 private _isContainer as boolean				rem в контейнере или нет
 private _minLimit as String					rem минимальная граница
@@ -37,6 +38,10 @@ end function
 
 public function getType	rem &quot;БДКГ-11/1&quot;
 	getType = _bdtype
+end function
+
+public function getEngType	rem &quot;BDKG-11/1&quot;
+	getEngType = _bdEngtype
 end function
 
 public function getSerial	rem &quot;452.000&quot;
@@ -58,7 +63,7 @@ end function
 rem Каждый БД может устанавливаться как в контейнере (со свинцовой защитой), так и без него,
 rem соответственно есть два разных набора параметров для каждого блока
 
-private function setBdType(bdName as string, bgRate as double, srcRate as double, delta as double, pogDelta as double, isContainer as boolean)
+private function setBdType(bdName as string, bdEngName as string, bgRate as double, srcRate as double, delta as double, pogDelta as double, isContainer as boolean)
 	dim i as integer
 	_delta = delta
 	_pogDelta = pogDelta 
@@ -67,6 +72,7 @@ private function setBdType(bdName as string, bgRate as double, srcRate as double
 		_pointSrcValue.add(SrcRate)
 	next i
 	_bdtype = bdName
+	_bdEngtype = bdEngName
 	_isContainer = isContainer
 	&apos;_minLimit = minLimit
 	&apos;_maxLimit = maxLimit
@@ -76,35 +82,35 @@ end function
 
 &apos;БДКГ-11/1 (для МРП АТ920)
 Public Sub setAsBDKG11 &apos;в новом ТУ нет
-	setBdType(&quot;БДКГ-11/1&quot;, 330, 10000, 110.1, 22, false)
+	setBdType(&quot;БДКГ-11/1&quot;, &quot;BDKG-11/1&quot;, 330, 10000, 110.1, 22, false)
 end sub
 &apos;БДКГ-11/1 в контейнере (для портального)
 Public Sub setAsBDKG11container &apos;в новом ТУ нет
-	setBdType(&quot;БДКГ-11/1&quot;, 160, 5200, 60.8, 12.1, true)
+	setBdType(&quot;БДКГ-11/1&quot;, &quot;BDKG-11/1&quot;, 160, 5200, 60.8, 12.1, true)
 end sub
 &apos;БДКГ-19 (для МРП АТ920В)
 Public Sub setAsBDKG19
-	setBdType(&quot;БДКГ-19&quot;, 660, 13000, 147.8, 29.5, false)
+	setBdType(&quot;БДКГ-19&quot;, &quot;BDKG-19&quot;, 660, 13000, 147.8, 29.5, false)
 end sub
 &apos;БДКГ-19 в контейнере (для портального)
 Public Sub setAsBDKG19container &apos;по старому и новому ТУ совпадают
-	setBdType(&quot;БДКГ-19&quot;, 300, 9000, 106.1, 21.2, true)
+	setBdType(&quot;БДКГ-19&quot;, &quot;BDKG-19&quot;, 300, 9000, 106.1, 21.2, true)
 end sub
 &apos;БДКГ-35 (для МРП АТ920Р)
 Public Sub setAsBDKG35
-	setBdType(&quot;БДКГ-35&quot;, 400, 9000, 100, 20, false)
+	setBdType(&quot;БДКГ-35&quot;, &quot;BDKG-35&quot;, 400, 9000, 100, 20, false)
 end sub
 &apos;БДКГ-35 в контейнере (для портального)
 Public Sub setAsBDKG35container &apos;по старому и новому ТУ совпадают
-	setBdType(&quot;БДКГ-35&quot;, 200, 5000, 55, 11, true)
+	setBdType(&quot;БДКГ-35&quot;, &quot;BDKG-35&quot;, 200, 5000, 55, 11, true)
 end sub
 
 Public Sub setAsBDRM05
-	setBdType(&quot;БДРМ-05&quot;, 1700, 13000, 150, 30, false)
+	setBdType(&quot;БДРМ-05&quot;, &quot;BDRM-05&quot;, 1700, 13000, 150, 30, false)
 end sub
 
 Public Sub setAsBDRM05_2000 &apos;для старого ТУ
-	setBdType(&quot;БДРМ-05&quot;, 1700, 13000, 125, 25, false)
+	setBdType(&quot;БДРМ-05&quot;, &quot;BDRM-05&quot;, 1700, 13000, 125, 25, false)
 end sub
 
 public function setBGList(measuredBGValue as Collection)

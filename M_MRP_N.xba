@@ -109,7 +109,7 @@ sub insertRecordsToTemplate
 	&apos;findAndRename(&quot;$date&quot;, getDate(oDialogMRP.Model.getByName(&quot;DateField1&quot;)))
 	Overall.insertParametersToTemplate
 	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
-	findAndRename(&quot;$source&quot;, oActivityCombo.text)
+	findAndRename(&quot;$source&quot;, Replace (oActivityCombo.text,&quot;№&quot;,&quot;&quot;))
 	findAndRename(&quot;$srk_serial&quot;, srk_serial)
 	findAndRename(&quot;$mrp_serial&quot;, mrp_serial)
 	findAndRename(&quot;$bd_serial&quot;, bd_serial)

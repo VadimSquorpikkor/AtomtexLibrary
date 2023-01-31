@@ -349,7 +349,7 @@ sub insertRecordsToTemplate
 	end if
 	
 	findAndRename(&quot;$activity&quot;, oDialogG02N.getControl(&quot;ActivityField&quot;).text)
-	findAndRename(&quot;$source&quot;, oDialogG02N.getControl(&quot;ActivityCombo&quot;).text)
+	findAndRename(&quot;$source&quot;, Replace (oDialogG02N.getControl(&quot;ActivityCombo&quot;).text, &quot;№&quot;, &quot;&quot;))
 	findAndRename(&quot;$serial&quot;, oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text)
 
 	Overall.setClipboardWithType(&quot;$serial&quot;)

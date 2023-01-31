@@ -128,7 +128,7 @@ const RUS_130 as string = &quot; установка дозиметрическа
 const RUS_140 as string = &quot; установка поверочная нейтронного излучения УПН-АТ140 №001, рег. № 63548-16, св. № С-В/10-11-2021/107613107 от 10.11.2021 до 09.11.2023. ФГУП «ВНИИМ им. Д.И. Менделеева». В составе: источники нейтронов ИБН-8-6 зав. №010, ИБН-8-3 зав. №027, НК252М11 зав. №33/21&quot;
 const RUS_ALPHA as string = &quot; образцовые альфа-источники из радионуклида плутоний-239 типа 4П9, 5П9, 6П9, св.№МН0146062-4821 до 03.09.21, РУП«БелГим»&quot;
 const RUS_BETA as string = &quot; образцовые бета-источники из радионуклида стронций-90 + иттрий-90 типа 4С0, 5С0, 6С0, св. №МН0146062-4821 от 03.06.21, РУП «БелГим»&quot;
-const RUS_SOURCE_CS as string = &quot;эталонный источник гамма-излучения типа ОСГИ Cs-137 активностью $activity кБк зав. $source&quot;
+const RUS_SOURCE_CS as string = &quot;эталонный источник гамма-излучения типа ОСГИ Cs-137 активностью $activity кБк зав. №$source&quot;
 const RUS_ETHALON as string = &quot;Эталонные средства измерений:&quot;
 
 const EN_110 as string = &quot; standard dosimetry facility AT-110, N 013 reg. N 40425-09, the Certificate of Compliance N С-В/15-11-2021/112536221 on 15.11.2021 issued by FGUP «D.I.Mendeleyev VNIIM», St. Petersburg, Russia)&quot;	
