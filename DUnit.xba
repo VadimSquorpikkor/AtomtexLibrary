@@ -8,6 +8,7 @@ Option Explicit
 
 REM --- Internal Variables                                                                           
 private _BDname As String
+private _BDnameEn As String
 private _measUnit As String
 private _pointValue as new Collection
 private _pointText as new Collection
@@ -34,6 +35,7 @@ private _doseArray(2) as double
 private _bdTypeArray as new Collection
 private _altValueList as new Collection
 private _bdBackground as double &apos;фон для каждого БД -- в протоколе для каждого БД будет свой фон, а не общий, как в шапке протокола
+private _relLimit as double &apos;погрешность измерения (%)
 
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
 Private Sub Class_Initialize()
@@ -122,6 +124,35 @@ Public Sub addData(ByVal BDname as string, ByVal measUnit as string, ByVal point
 	_isAlternativePoints = false
 	&apos;msgbox &quot;adddata - &quot; + BDName
 	rem msgbox _pointValue.item(2)
+End Sub
+
+&apos; bd.addData(&quot;БДКГ-02&quot; ,   &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;, Array(0.1,10000))
+Public Sub addData2(ByVal BDname as string, ByVal BDnameEn as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal relLimit as double)
+	dim arr(0) as double
+	dim ar2(0) as double
+	dim ar3(1) as double
+	_BDname = BDname
+	_BDnameEn = BDnameEn
+	_measUnit = measUnit
+	_BDType = BDType
+	arr = pointValue
+	ar2 = pointText
+	ar3 = measLimit
+	_measMinLimit = ar3(0)
+	_measMaxLimit = ar3(1)
+	dim i as integer
+	for i=0 to uBound(arr)
+		_pointValue.add(arr(i))
+		_pointText.add(ar2(i))
+		_measuredValue.add(arr(i))
+		_altValueList.add(arr(i))
+	next i
+	_pointCount = uBound(arr)+1
+	_gradValue = 10000
+	_isAlternativePoints = false
+	&apos;msgbox &quot;adddata - &quot; + BDName
+	rem msgbox _pointValue.item(2)
+	_relLimit = relLimit
 End Sub
 
 REM --- CLASS GET/LET/SET PROPERTIES                                                                 
@@ -233,6 +264,10 @@ Public Function measUnit As string
    measUnit = _measUnit
 End Function
 
+Public Function measUnitEn As string
+   measUnitEn = ruToEn(_measUnit)
+End Function
+
 Public Function BDType As string
    BDType = _BDType
 End Function
@@ -260,6 +295,30 @@ End Function
 Public Function getPointTextList As Collection
    getPointTextList = _pointText
 End Function
+rem Список префиксов контрольных точек на английском (&quot;µ&quot;, &quot;m&quot;, ...)
+Public Function getPointTextListEn As Collection
+	dim newList as new Collection
+	for i=1 to _pointCount
+		newList.add(ruToEn(_pointText.item(i)))
+	next i
+   	getPointTextListEn = newList
+End Function
+
+function ruToEn(ru as string)
+	select case ru
+	case &quot;Зв&quot; 
+		ruToEn = &quot;Sv&quot;
+	case &quot;н&quot; 
+		ruToEn = &quot;n&quot;	
+	case &quot;м&quot; 
+		ruToEn = &quot;m&quot;	
+	case &quot;мк&quot; 
+		ruToEn = &quot;µ&quot;	
+	case &quot;Зв/ч&quot; 
+		ruToEn = &quot;Sv/h&quot;
+	end select
+end function
+
 Public Function setPointTextList(p_Array as Collection)
    _pointText = p_Array
 End Function
@@ -305,7 +364,9 @@ public function getBdBackground
 	getBdBackground = _bdBackground
 end function
 
-
+public function getRelLimit
+	getRelLimit = _relLimit
+end function
 
 rem ВСЁ ЧТО ДАЛЬШЕ НЕ НУЖНО
 rem=======================================================================================

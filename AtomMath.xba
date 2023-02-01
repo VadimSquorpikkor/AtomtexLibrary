@@ -286,6 +286,22 @@ end function
 function randValue(num as double, otklonenie as double) as double
 	randValue = (num - otklonenie) + rnd()*otklonenie*2
 end function
-
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos; проверяет, входит ли измеренное значение (meas) в точке (point) в заданную (percent) погрешность измерения
+function isInLimits(point as double, meas as double, percent as double) as boolean
+	dim rel as double
+	rel = RelativeError(meas, point)
+	if rel&lt;0 then
+		rel=rel*-1
+	end if
+	
+	if rel&lt;=percent then
+		isInLimits = true
+		
+	else
+		isInLimits = false
+		
+	end if
+end function
 
 </script:module>

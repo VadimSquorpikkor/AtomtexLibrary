@@ -15,6 +15,8 @@ Option Compatible
 Option ClassModule
 Option Explicit
 
+dim atomMath as new AtomMath
+
 dim rusItems1, engItems1, rusItems2, engItems2 as variant
 
 dim _oDialog as object
@@ -159,6 +161,8 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 		next i
 	end if
 	
+
+	
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
 	_maxPointsCount = pointCount
@@ -300,6 +304,7 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 		value = bd.valueList.item(i)
 	
 		_oDialog.Model.getByName(valueField + i).textColor = RGB(0, 0, 0)
+		_oDialog.Model.getByName(valueField + i).backgroundColor = RGB(255, 255, 255)
 		_oDialog.getControl(valueField + i).Text = Format(value, getRightFormat(point))
 		_oDialog.Model.getByName(valueField + i).valueStep = nStep
 		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(nStep)
@@ -373,7 +378,7 @@ sub templateStep(i as integer, strokeEnd as string)
 		bd = _BDList.item(i)
 		BDtype = bd.BDType
 		dim j, k as integer
-		
+				
 		for j=0 to bd.getPointList.count-1
 			src_name = bd.getPointTextList.item(j+1)
 			m_point = bd.valueList.item(j+1)
@@ -751,6 +756,44 @@ Function getClipboardText() As String
 
 End Function &apos; getClipboardText
 &apos;------------------------------------------------------------------------------------------------------------------------
+sub checkValueForRelativeErrorLimits_old(meas_list as new Collection, point_list as new Collection, percent as double)
+	if _oDialog.Model.hasByName(&quot;RelLimit1&quot;) then
+		dim i as integer
+		for i=1 to point_list.count
+			dim isIn as boolean
+			isIn = AtomMath.isInLimits(point_list.item(i), _oDialog.Model.getByName(&quot;ValueField&quot; + i).value, percent)
+			if isIn then
+				&apos;_oDialog.getControl(&quot;RelLimit&quot; + i).visible = false
+			&apos;else _oDialog.getControl(&quot;RelLimit&quot; + i).visible = true
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+			else
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(200, 0, 0)
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(255, 255, 255)
+			end if
+		next i
+	end if
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub checkValueForRelativeErrorLimits(point_list as new Collection, percent as double)
+	&apos;if _oDialog.Model.hasByName(&quot;RelLimit1&quot;) then
+		dim i as integer
+		for i=1 to point_list.count
+			dim isIn as boolean
+			isIn = AtomMath.isInLimits(point_list.item(i), _oDialog.Model.getByName(&quot;ValueField&quot; + i).value, percent)
+			if isIn then
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
+				if _oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(255, 255, 255) then
+					_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+				end if	
+			else
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(200, 0, 0)
+				_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(255, 255, 255)
+			end if
+		next i
+	&apos;end if
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;метод берет коллекцию из буфера обмена, полученнцю в getCollectionFromClipBoard и вставляет значения в поля формы
 &apos;Если в коллекции попадаются 0, то вместо нуля вставляется значение по умолчанию для текущей ячейки и отмечается красным — так пользователь видит, что значение НЕ ИЗ СКОПИРОВАННОЙ ЯЧЕЙКИ из журнала градуировки
 &apos;С помощью этого метода можно копировать ячейки из EXCEL/Calc (CTRL+C) и вставлять в форму нажатием кнопки на форме
@@ -760,6 +803,7 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
 	
 	for i=1 to value_list.count
+		_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
 		if list.item(i) = 0 then
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(200, 0, 0)
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = value_list.item(i)
@@ -777,6 +821,7 @@ function insertClipBoardToBDValueListBDMG(value_list as Collection)
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
 	
 	for i=1 to value_list.count
+	_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).backgroundColor = RGB(255, 255, 255)
 		if list.item(i) = 0 then
 			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).textColor = RGB(200, 0, 0)
 			_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).value = value_list.item(i)

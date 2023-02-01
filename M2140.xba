@@ -55,7 +55,7 @@ sub addNewBD
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
-	if oOptionAT2140.state 		then bd.addData(&quot;AT2140&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10))
+	if oOptionAT2140.state 		then bd.addData(&quot;AT2140&quot; , 		&quot;Зв/ч&quot;, Array(0.7,7,70,700,7),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 	&quot;gamma&quot;, Array(0.1,10))
 	if oOptionAT2140a.state 	then bd.addData(&quot;AT2140A&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
 	if oOptionAT2140a_1.state 	then bd.addData(&quot;AT2140A/1&quot; , 	&quot;Зв/ч&quot;, Array(0.7,7,70,700,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;, Array(0.1,100))
 	
