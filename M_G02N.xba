@@ -240,13 +240,7 @@ sub removeLastBD
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 sub increment as string
-	dim inc as string
-	dim value as integer
-	value = oDialogG02N.getControl(&quot;TextFieldNUM&quot;).text
-	if value &lt; 9 then inc = (&quot;00&quot; &amp; (value + 1))
-	if value &lt; 99 and value &gt; 8 then inc = &quot;0&quot; &amp; (value + 1)
-	if value &gt; 98 then inc = &quot;&quot; &amp; (value + 1)
-	oDialogG02N.getControl(&quot;TextFieldNUM&quot;).text = inc
+	Overall.increment(oDialogG02N.getControl(&quot;TextFieldNUM&quot;))
 end sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener

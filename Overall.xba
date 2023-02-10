@@ -93,9 +93,9 @@ end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub integerTo3String(value as integer) as string
 	dim inc as string
-	if 	   value &lt; 9  then
+	if 	   value &lt;= 9  then
 		inc = &quot;00&quot; &amp; value
-	elseif value &lt; 99 then
+	elseif value &lt;= 99 then
 		inc = &quot;0&quot;  &amp; value
 	else
 		inc = &quot;&quot;   &amp; value
