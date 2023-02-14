@@ -28,7 +28,7 @@ Sub G224_Dialog_Show
 	oDialogG224 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D224 )
 	oListBox = oDialogG224.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.18 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.19 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
@@ -57,7 +57,7 @@ sub addNewBD
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	&apos;if BDList.count &lt;&gt; 0 then saveCurentBDValue(BDList.count)
-	if oOptionBDKG224.state then bd.addData(&quot;БДКГ-224&quot; , 	&quot;Зв/ч&quot;, Array(0.06,0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG224.state then bd.addData2(&quot;БДКГ-224&quot; , 	&quot;BDKG-224&quot;,	&quot;Зв/ч&quot;, Array(0.06,0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0.1,10000),	15) rem TODO уточнить границы
 	
 	oDialogG224.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialogG224.getControl(&quot;bdSerial&quot;).text)
@@ -94,6 +94,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 
 </script:module>

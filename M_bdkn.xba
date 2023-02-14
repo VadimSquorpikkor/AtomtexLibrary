@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.09 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.10 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -61,9 +61,9 @@ sub addNewBD
 	dim bd as new DUnit
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	if oOption02.state then bd.addData(&quot;БДКН-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000))
-	if oOption04.state then bd.addData(&quot;БДКН-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10))
-	if oOption05.state then bd.addData(&quot;БДКН-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2))
+	if oOption02.state then bd.addData2(&quot;БДКН-02&quot;,	&quot;BDKN-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000),	20)
+	if oOption04.state then bd.addData2(&quot;БДКН-04&quot;,	&quot;BDKN-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10),		20)
+	if oOption05.state then bd.addData2(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2),		20)
 		
 	bdName = oDialogBDKN.getControl(&quot;srkNum&quot;).text &amp; &quot;.&quot; &amp; oDialogBDKN.getControl(&quot;bdNum&quot;).text
 	oDialogBDKN.getControl(&quot;fullNum&quot;).text = oDialogBDKN.getControl(&quot;srkNum&quot;).text + &quot;.&quot; + Left(oDialogBDKN.getControl(&quot;bdNum&quot;).text, 1) + &quot;00&quot;
@@ -175,6 +175,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 
 </script:module>

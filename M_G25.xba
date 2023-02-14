@@ -27,7 +27,7 @@ Sub G25_Dialog_Show
 	oDialogG25 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D25 )
 	oListBox = oDialogG25.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.06 &quot;, oListBox, 7)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG25, oDateFieldModel, &quot;Версия 1.07 &quot;, oListBox, 7)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialogG25.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;bdkg25\bdkg25.png&quot;
 	&apos;В этом классе как бы радиобаттон и коллекция радио не нужны (ведь oOptionG25 только один)
@@ -64,7 +64,7 @@ sub addNewBD
 	oDialogG25.getControl(&quot;FULL_NUM&quot;).text = oDialogG25.getControl(&quot;TextFieldSRK&quot;).text + &quot;.&quot; + Left(oDialogG25.getControl(&quot;TextFieldNUM&quot;).text, 1) + &quot;00&quot;
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	bd.addData(&quot;БДКГ-25&quot; , 	&quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0,0)) rem TODO уточнить границы
+	bd.addData2(&quot;БДКГ-25&quot; , 	&quot;BDKG-25&quot;,	&quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7),	  	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0,0),	30) rem TODO уточнить границы
 	
 	oDialogG25.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(serial)
@@ -125,5 +125,6 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 </script:module>

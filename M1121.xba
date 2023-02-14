@@ -21,7 +21,7 @@ Sub AT1121_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
 	oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.20 &quot;, oListBox, 9)
+	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.21 &quot;, oListBox, 9)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 
@@ -63,9 +63,9 @@ sub addNewBD
 	dim bd as new DUnit
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	if oOption1103.state then bd.addData(&quot;AT1103M&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;)	,					&quot;gamma007&quot;,	Array(0.05,0.1))
-	if oOption1121.state then bd.addData(&quot;AT1121&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
-	if oOption1123.state then bd.addData(&quot;AT1123&quot;, 	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000)) rem TODO уточнить границы
+	if oOption1103.state then bd.addData2(&quot;AT1103M&quot;,	&quot;AT1103M&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;)	,					&quot;gamma007&quot;,	Array(0.05,0.1),	15)
+	if oOption1121.state then bd.addData2(&quot;AT1121&quot;,		&quot;AT1121&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000), 	15) rem TODO уточнить границы
+	if oOption1123.state then bd.addData2(&quot;AT1123&quot;, 	&quot;AT1123&quot;, 	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000), 	15) rem TODO уточнить границы
 
 	if oOption1103.state then
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1103_bg.png&quot;
@@ -112,6 +112,7 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 
 </script:module>

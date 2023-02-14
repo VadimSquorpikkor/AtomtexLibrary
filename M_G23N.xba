@@ -24,7 +24,7 @@ Sub G23N_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG23N = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_G23N )
 	oListBox = oDialogG23N.getControl(&quot;bdListBox&quot;)	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.06 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.07 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	
@@ -55,9 +55,9 @@ sub addNewBD
 	dim bd as new DUnit
 	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	if oOptionBDKG22.state then bd.addData(&quot;БДКГ-22&quot; , 	 &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, 		Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDKG23.state then bd.addData(&quot;БДКГ-23&quot; , 	 &quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000)) rem TODO уточнить границы
-	if oOptionBDKG231.state then bd.addData(&quot;БДКГ-23/1&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;,	Array(0.1,10000)) rem TODO уточнить границы
+	if oOptionBDKG22.state then bd.addData2(&quot;БДКГ-22&quot; , 	&quot;BDKG-22&quot;, 	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.1,10000),	20) rem TODO уточнить границы
+	if oOptionBDKG23.state then bd.addData2(&quot;БДКГ-23&quot; , 	&quot;BDKG-23&quot;, 	&quot;Гр/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000),	20) rem TODO уточнить границы
+	if oOptionBDKG231.state then bd.addData2(&quot;БДКГ-23/1&quot;,	&quot;BDKG-23/1&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7,40),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;,	Array(0.1,10000),	20) rem TODO уточнить границы
 	
 	bd.setSerial(Overall.integerTo3String(oDialogG23N.getControl(&quot;bdSerial&quot;).text))
 	
@@ -112,5 +112,6 @@ end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 </script:module>
