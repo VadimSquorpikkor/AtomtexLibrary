@@ -31,7 +31,7 @@ Sub Portal_Dialog_Show
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.10 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.11 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
@@ -291,7 +291,7 @@ sub insertRecordsToTemplate
 	&apos;если это БД в контейнере, то писать, что в контейнере, если нет — не надо
 	if bd.isContainer then
 		findAndRename(&quot;$container&quot;, &quot; в корпусе герметичного контейнера с защитным экраном&quot;)
-		findAndRename(&quot;$en_container&quot;, &quot; in a sealed container with a protective shield&quot;)
+		findAndRename(&quot;$en_container&quot;, &quot; in sealed container with protective shield&quot;)
 	else
 		findAndRename(&quot;$container&quot;, &quot;&quot;)
 		findAndRename(&quot;$en_container&quot;, &quot;&quot;)
