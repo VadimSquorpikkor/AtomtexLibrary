@@ -31,7 +31,7 @@ Sub Portal_Dialog_Show
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.11 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.12 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	

@@ -60,7 +60,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.34 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.35 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
