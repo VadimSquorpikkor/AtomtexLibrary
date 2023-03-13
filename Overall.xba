@@ -360,6 +360,7 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	percentOtk = 3 rem %
 	
 	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
+	findAndRename(&quot;$rem_bground&quot;, Format(bgValue/10, &quot;0.0&quot;))&apos;фон для ремов: значение делю на 10 (а не умножаю на 100), так как меняю в протоколе ещё и единицы с нано на микро (100nSv = 10urem)
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, &quot;0.0&quot;))
 	findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
@@ -404,15 +405,23 @@ sub templateStep(i as integer, strokeEnd as string)
 				valueOfBg = bgValue
 			end if		
 			
-			if AbsoluteValue(cont_point, prefix)&lt;0.001 then 
-				if bd.getType = &quot;gamma007&quot; then
-					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
-				else
-					&apos;msgbox bground
+			if bd.getType = &quot;gamma-rem&quot; then
+				if AbsoluteValue(cont_point, prefix)&lt;0.1 then 
 					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), Format(valueOfBg, &quot;0.0&quot;)
-				end if		
-			else	
-				findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;—&quot;) 
+				else	
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;—&quot;) 
+				end if
+			else
+				if AbsoluteValue(cont_point, prefix)&lt;0.001 then 
+					if bd.getType = &quot;gamma007&quot; then
+						findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), bg007&apos;&apos;&apos;&apos; + )&apos;&apos;&apos; + rnd()*0.3) rem фон
+					else
+						&apos;msgbox bground
+						findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), Format(valueOfBg, &quot;0.0&quot;)
+					end if		
+				else	
+					findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j + strokeEnd), &quot;—&quot;) 
+				end if
 			end if
 				
 			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point))) rem среднее по трем измерениям
@@ -438,6 +447,11 @@ end sub
 sub insertToTemplateStep(i)
 	templateStep(i, &quot;&quot;)
 end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;sub insertToTemplateStepRem(i)
+&apos;	bgValue = bgValue/100
+&apos;	templateStep(i, &quot;&quot;)
+&apos;end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)

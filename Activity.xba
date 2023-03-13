@@ -166,6 +166,19 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 	dim ar(1) as variant
 	&apos;Перерасчет расстояний - 25.1.2021
 	ar = Array(&quot;Неизв&quot;,&quot;Неизв&quot;) rem если точка не будет найдена, останется значение по умолчанию -- не найдено
+	if bdType = &quot;gamma-rem&quot; then &apos;rem
+		select case prefix
+		case &quot;мк&quot;
+				if point = 70 	then ar = dynDistanceAr(&quot;0НА&quot;, 232.30, koefCs)&apos;===0.7мкЗв
+				if point = 700 	then ar = dynDistanceAr(&quot;0НА&quot;, 74.58,  koefCs)&apos;===7мкЗв
+		case &quot;м&quot;
+				if point = 7	then ar = dynDistanceAr(&quot;9ХК&quot;, 161.37, koefCs)&apos;===70мкЗв
+				if point = 70 	then ar = dynDistanceAr(&quot;9ХК&quot;, 51.81,  koefCs)&apos;===0.7m
+				if point = 700 	then ar = dynDistanceAr(&quot;043&quot;, 348.90, koefCs)&apos;===7m
+		case &quot;&quot;
+				if point = 0.7 	then ar = dynDistanceAr(&quot;043&quot;, 112.10, koefCs)&apos;===70m
+		end select
+	end if
 	rem если это гамма блок:
 	if bdType = &quot;gamma&quot; then &apos;Мощность амбиентной дозы Н*(10) Зв/ч
 		select case prefix

@@ -53,6 +53,8 @@ dim oOption6130a  as object
 dim oOption6130c  as object
 dim oOption6130d  as object
 
+dim oComboSVREM as object
+
 dim BDList as new Collection
 dim layoutPosition as integer
 dim maxBDCount as integer
@@ -70,7 +72,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.14 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -82,6 +84,8 @@ Sub AT6130_Dialog_Show
 	oOption6130c   = oDialog6130.getControl(&quot;is6130c&quot;)
 	oOption6130d   = oDialog6130.getControl(&quot;is6130d&quot;)
 	oOption6130pp.State = 1
+	
+	oComboSVREM    = oDialog6130.getControl(&quot;sv_rem&quot;)
 	
 	PrSwitch  = oDialog6130.getControl(&quot;isProtocol&quot;)
 	SEnSwitch = oDialog6130.getControl(&quot;isSertificateEng&quot;)
@@ -176,14 +180,23 @@ sub addNewBD
 	&apos;для МКС-АТ6130C– от 100 нЗв/ч до 1 мЗв/ч;
 	&apos;для МКС-АТ6130D – от 100 нЗв/ч до 100 мЗв/ч;
 	
-	&apos;if BDList.count &lt;&gt; 0 then Overall.saveCurentBDValue(BDList.count) rem !!!!!НЕ использовать!!! сохраняет значение первого во втором ИСПОЛЬЗОВАТЬ: if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition)
-	if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-	if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
-	if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
-	if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
-	if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
-	if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array())
-	
+	if oComboSVREM.text = &quot;SIEVERT&quot; then
+		&apos;if BDList.count &lt;&gt; 0 then Overall.saveCurentBDValue(BDList.count) rem !!!!!НЕ использовать!!! сохраняет значение первого во втором ИСПОЛЬЗОВАТЬ: if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition)
+		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
+		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
+		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
+		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array()) 
+	else &apos;если в REMах
+		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
+		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
+		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 			&quot;gamma-rem&quot;, Array(0.1,10000), Array())
+		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700,0.7),Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array())
+	end if
+
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
@@ -417,12 +430,21 @@ rem-----------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
 	
-	if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\6130&quot;, 		&quot;6130 пп&quot;)
-	if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\6130cps&quot;, 	&quot;6130 cps&quot;)
-	if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\6130bq&quot;, 	&quot;6130 Бк&quot;)
-	if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\6130a&quot;, 	&quot;6130A&quot;)
-	if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\6130c&quot;, 	&quot;6130C&quot;)
-	if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\6130d&quot;, 	&quot;6130D&quot;)
+	if oComboSVREM.text = &quot;SIEVERT&quot; then
+		if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\6130&quot;, 		&quot;6130 пп&quot;)
+		if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\6130cps&quot;, 	&quot;6130 cps&quot;)
+		if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\6130bq&quot;, 	&quot;6130 Бк&quot;)
+		if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\6130a&quot;, 	&quot;6130A&quot;)
+		if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\6130c&quot;, 	&quot;6130C&quot;)
+		if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\6130d&quot;, 	&quot;6130D&quot;)
+	else	
+		if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\rem\6130&quot;, 	 &quot;6130 пп&quot;)
+		if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\rem\6130cps&quot;,&quot;6130 cps&quot;)
+		if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\rem\6130bq&quot;, &quot;6130 Бк&quot;)
+		if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130a&quot;,  &quot;6130A&quot;)
+		if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130c&quot;,  &quot;6130C&quot;)
+		if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130d&quot;,  &quot;6130D&quot;)
+	end if	
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -433,6 +455,11 @@ sub insertRecordsToTemplate
 		
 	Overall.CreateTablesFromTemplate(BDList.count)
 	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;b1&quot;, &quot;bd_num_b&quot;, &quot;bd_num&quot;, &quot;β&quot;)
+		
+	if oComboSVREM.text = &quot;REM&quot; then
+		bgValue = bgValue/10
+	end if
+		
 		
 	for i=1 to BDList.count
 		dim point as double
@@ -446,7 +473,11 @@ sub insertRecordsToTemplate
 			pointList.add(point)
 		next j
 		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
-		Overall.insertToTemplateStep(i)
+		&apos;if oComboSVREM.text = &quot;SIEVERT&quot; then
+			Overall.insertToTemplateStep(i)
+		&apos;else
+		&apos;	Overall.insertToTemplateStepRem(i)	
+		&apos;end if
 	next i
 	
 	Overall.setClipboard(&quot;$allSerial&quot;)

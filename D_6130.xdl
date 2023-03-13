@@ -90,7 +90,7 @@
   <dlg:numericfield dlg:id="ValueField4" dlg:tab-index="7" dlg:left="251" dlg:top="83" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField6" dlg:tab-index="9" dlg:left="251" dlg:top="105" dlg:width="25" dlg:height="12" dlg:value="70" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField5" dlg:tab-index="8" dlg:left="251" dlg:top="94" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
-  <dlg:img dlg:style-id="5" dlg:id="6130Logo" dlg:tab-index="38" dlg:left="13" dlg:top="9" dlg:width="51" dlg:height="101"/>
+  <dlg:img dlg:style-id="5" dlg:id="6130Logo" dlg:tab-index="38" dlg:left="13" dlg:top="17" dlg:width="47" dlg:height="97"/>
   <dlg:radiogroup>
    <dlg:radio dlg:style-id="5" dlg:id="is6130c" dlg:tab-index="49" dlg:left="80" dlg:top="79" dlg:width="40" dlg:height="8" dlg:value="6130 C">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
@@ -112,5 +112,11 @@
   <dlg:button dlg:id="insertButton" dlg:tab-index="62" dlg:left="276" dlg:top="50" dlg:width="30" dlg:height="36" dlg:image-src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/down_arr.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.insertClipBoardToBDValueList?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
+  <dlg:combobox dlg:id="sv_rem" dlg:tab-index="63" dlg:left="2" dlg:top="2" dlg:width="43" dlg:height="12" dlg:value="SIEVERT" dlg:spin="true">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="SIEVERT"/>
+    <dlg:menuitem dlg:value="REM"/>
+   </dlg:menupopup>
+  </dlg:combobox>
  </dlg:bulletinboard>
 </dlg:window>
