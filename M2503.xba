@@ -25,6 +25,8 @@ dim is2503A as object
 dim is2503B as object
 dim is2503B_1 as object
 dim is2503B_2 as object
+dim is2503B_ru as object
+dim is2503B_1_ru as object
 
 dim BDList as new Collection
 dim layoutPosition as integer
@@ -56,6 +58,21 @@ dim isSinglePoint as boolean
 
 dim doseField1 as object
 dim doseField2 as object
+
+dim is4mkPoint as boolean
+
+public const BG_VALUE_FROM 		as double  = 0.05&apos;фон нижняя граница
+public const BG_VALUE_TO 		as double  = 0.18&apos;фон верхняя граница
+public const MEAS_VALUE_FROM 	as double  = 0.5
+public const MEAS_VALUE_TO 		as double  = 1.1
+public const VALUE_SUB_BG_FROM 	as double  = 0.8
+public const VALUE_SUB_BG_TO 	as double  = 0.9
+public const MEAS_VALUE_NEW_FROM 	as double  = 3.7
+public const MEAS_VALUE_NEW_TO 		as double  = 4.2
+public const VALUE_SUB_BG_NEW_FROM 	as double  = 4.0
+public const VALUE_SUB_BG_NEW_TO 	as double  = 4.1
+public const POINT_VALUE	 	as double  = 0.8
+public const POINT_VALUE_NEW 	as double  = 4
 rem---------------------------------------------------------------------------------------------------------
 Sub G2503_Dialog_Show
 	maxBDCount = 25
@@ -68,8 +85,10 @@ Sub G2503_Dialog_Show
 	oListBox = oDialog2503.getControl(&quot;bdListBox&quot;)
 	
 	oDialog2503.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;2503\2503.png&quot;
+	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
+	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.12 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.13 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -92,9 +111,13 @@ Sub G2503_Dialog_Show
 	is2503B = oDialog2503.Model.getByName(&quot;is2503B&quot;)
 	is2503B_1 = oDialog2503.Model.getByName(&quot;is2503B_1&quot;)
 	is2503B_2 = oDialog2503.Model.getByName(&quot;is2503B_2&quot;)
+	is2503B_ru = oDialog2503.Model.getByName(&quot;is2503B_r&quot;)&apos;на россию, потом на ремонтные
+	is2503B_1_ru = oDialog2503.Model.getByName(&quot;is2503B_1_r&quot;)&apos;на россию, потом на ремонтные
 	is2503.state = 1
 
 	oDialog2503.getControl(&quot;addButton&quot;).setEnable(true)
+	
+	is4mkPoint = false
 	
 	from1 = oDialog2503.Model.getByName(&quot;from1&quot;)
 	to1 = oDialog2503.Model.getByName(&quot;to1&quot;)
@@ -110,6 +133,7 @@ Sub G2503_Dialog_Show
 	from3.valueStep = 0.01
 	to3.valueStep   = 0.01
 	
+&apos;ВАРИАНТ ГЕНЕРИРУЕМОЙ ПЕРВОЙ ТОЧКИ (0.8 мк) ДЛЯ ПОСТАВОК НА РОССИЮ ИЛИ (В БУДУЩЕМ) ДЛЯ РЕМОНТНЫХ
 &apos;═══════════════════════════════════════════════════════════════════╗
 &apos;		ПАРАМЕТРЫ ГЕНЕРАЦИИ ФОНА И ПЕРВОЙ ТОЧКИ -- 0.80 мкЗв/ч		║█
 &apos;							ДЛЯ ДКГ-АТ2503							║█
@@ -124,7 +148,28 @@ Sub G2503_Dialog_Show
 			from3.value = 0.8									&apos;	║█
 			to3.value   = 0.9									&apos;	║█
 &apos;				ИСПОЛЬЗУЕТСЯ ТОЛЬКО ОДНО ЗНАЧЕНИЕ ТОЧКИ				║█
-			isSinglePoint = true								&apos;	║█			
+			isSinglePoint = true								&apos;	║█
+&apos;																	║█
+&apos;═══════════════════════════════════════════════════════════════════╝█
+&apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+&apos;ВАРИАНТ ГЕНЕРИРУЕМОЙ ПЕРВОЙ ТОЧКИ (4 мк) ДЛЯ ПОСТАВОК В БЕЛАРУСЬ ДЛЯ 2503В И 2503В/1
+&apos;ВНИМАНИЕ! ЭТИ ЗНАЧЕНИЯ ОБЯЗАТЕЛЬНО СДЕЛАТЬ В СООТВЕТСТВИИ С РЕАЛЬНЫМИ ИЗМЕРЕНИЯМИ, ПОКА ВЗЯТЫ ОТ БАЛДЫ
+&apos;═══════════════════════════════════════════════════════════════════╗
+&apos;		ПАРАМЕТРЫ ГЕНЕРАЦИИ ФОНА И ПЕРВОЙ ТОЧКИ -- 4 мкЗв/ч		    ║█
+&apos;							ДЛЯ ДКГ-АТ2503							║█
+&apos;																	║█
+&apos;				ФОН:											&apos;	║█
+&apos;			from1.value = 0.05									&apos;	║█
+&apos;			to1.value   = 0.18									&apos;	║█		
+&apos;				ПОКАЗАНИЯ ПРИБОРА:								&apos;	║█
+&apos;			from2.value = 3.7									&apos;	║█
+&apos;			to2.value   = 4.2									&apos;	║█
+&apos;				ИЗМЕРЕНИЕ С УЧЕТОМ ВЫЧЕТА ФОНА:					&apos;	║█
+&apos;			from3.value = 4.0									&apos;	║█
+&apos;			to3.value   = 4.1									&apos;	║█
+&apos;				ИСПОЛЬЗУЕТСЯ ТОЛЬКО ОДНО ЗНАЧЕНИЕ ТОЧКИ				║█
+&apos;			isSinglePoint = true								&apos;	║█			
 &apos;																	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -137,6 +182,7 @@ End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
 	oDialog2503.getControl(&quot;addButton&quot;).setEnable(true)
+	setPoint
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
@@ -153,17 +199,21 @@ sub addNewBD
 	&apos;В диалоге точка идет последней
 	&apos;Диапазон: мк-м
 	if oDialog2503.getControl(&quot;isSinglePoint&quot;).state = 1 then
-		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
-		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
-		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
-		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503.state  		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
+		if is2503A.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
+		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
+		if is2503B_1.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
+		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503B_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(1,1000))&apos;уточнить границы
+		if is2503B_1_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(1,200))&apos;уточнить границы
 	else
-		if is2503.state  	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(3,3,3,3), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
-		if is2503A.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
-		if is2503B.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
-		if is2503B_1.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3,3,3),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,,&quot;м&quot;&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503.state  		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(3,3,3,3), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
+		if is2503A.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
+		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
+		if is2503B_1.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
+		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3,3,3),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,,&quot;м&quot;&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503B_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(1,1000))&apos;уточнить границы
+		if is2503B_1_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(1,200))&apos;уточнить границы
 	end if	
 	
 	oDialog2503.getControl(&quot;removeButton&quot;).setEnable(true)
@@ -188,6 +238,8 @@ sub setButtonVisibility(layoutPosition as integer)
 		oDialog2503.getControl(&quot;is2503B&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;is2503B_1&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;is2503B_2&quot;).setEnable(true)
+		oDialog2503.getControl(&quot;is2503B_r&quot;).setEnable(true)
+		oDialog2503.getControl(&quot;is2503B_1_r&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;isSinglePoint&quot;).setEnable(true)
 		for i=1 to pointCount
 			oDialog2503.getControl(&quot;labelField&quot; + i).text = &quot;&quot;
@@ -205,6 +257,8 @@ sub setButtonVisibility(layoutPosition as integer)
 		oDialog2503.getControl(&quot;is2503B&quot;).setEnable(false)
 		oDialog2503.getControl(&quot;is2503B_1&quot;).setEnable(false)
 		oDialog2503.getControl(&quot;is2503B_2&quot;).setEnable(false)
+		oDialog2503.getControl(&quot;is2503B_r&quot;).setEnable(false)
+		oDialog2503.getControl(&quot;is2503B_1_r&quot;).setEnable(false)
 		oDialog2503.getControl(&quot;isSinglePoint&quot;).setEnable(false)
 		oDialog2503.Model.getByName(&quot;labelField&quot; + BDList.item(1).getMultiValueList.count).textColor = RGB(0, 0, 200)
 	end if
@@ -279,9 +333,11 @@ sub insertRecordsToTemplate
 	divider = &quot;&quot;
 	if is2503.state  	then path = Overall.PathForProtocol(&quot;2503\2503&quot;)
 	if is2503A.state 	then path = Overall.PathForProtocol(&quot;2503\2503a&quot;)
-	if is2503B.state 	then path = Overall.PathForProtocol(&quot;2503\2503b&quot;)
-	if is2503B_1.state 	then path = Overall.PathForProtocol(&quot;2503\2503b1&quot;)
+	if is2503B.state 	then path = Overall.PathForProtocol(&quot;2503\2503b_new&quot;)
+	if is2503B_1.state 	then path = Overall.PathForProtocol(&quot;2503\2503b1_new&quot;)
 	if is2503B_2.state 	then path = Overall.PathForProtocol(&quot;2503\2503b2&quot;)
+	if is2503B_ru.state 	then path = Overall.PathForProtocol(&quot;2503\2503b&quot;)
+	if is2503B_1_ru.state 	then path = Overall.PathForProtocol(&quot;2503\2503b1&quot;)
 
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
@@ -300,6 +356,8 @@ sub insertRecordsToTemplate
 	if is2503B.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B&quot;
 	if is2503B_1.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/1&quot;
 	if is2503B_2.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/2&quot;
+	if is2503B_ru.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B&quot;
+	if is2503B_1_ru.state 	then strokeForSaving = strokeForSaving &amp; &quot; - 2503B/1&quot;
 	CopyVariableToClipboard(strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
@@ -341,6 +399,28 @@ sub startGenerator()
 	oDialog2503.getControl(&quot;count&quot;).text = k
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub setPoint
+	if is2503.state 	then is4mkPoint = false
+	if is2503A.state 	then is4mkPoint = false
+	if is2503B.state 	then is4mkPoint = true
+	if is2503B_1.state 	then is4mkPoint = true
+	if is2503B_2.state 	then is4mkPoint = false
+	if is2503B_ru.state 	then is4mkPoint = false
+	if is2503B_1_ru.state 	then is4mkPoint = false
+	
+	if is4mkPoint then
+		from2.value = MEAS_VALUE_NEW_FROM
+		to2.value   = MEAS_VALUE_NEW_TO
+		from3.value = VALUE_SUB_BG_NEW_FROM
+		to3.value   = VALUE_SUB_BG_NEW_TO
+	else
+		from2.value = MEAS_VALUE_FROM
+		to2.value   = MEAS_VALUE_TO
+		from3.value = VALUE_SUB_BG_FROM
+		to3.value   = VALUE_SUB_BG_TO
+	end if			
+end sub
+rem---------------------------------------------------------------------------------------------------------
 sub templateMultiStep(i as integer, strokeEnd as string)
 	dim src_name as string
 	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
@@ -350,6 +430,14 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	BDtype = bd.getType
 	dim j as integer
 	dim facilityPercent as integer
+	
+	dim firstPoint as double
+	
+	if is4mkPoint then
+		firstPoint = 4
+	else
+		firstPoint = 0.8
+	endif
 
 	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
@@ -364,8 +452,8 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
-	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
-	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
+	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(firstPoint, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
+	findAndRename((&quot;$&quot; + i + &quot;-d&quot; + 0 + strokeEnd), sourceDistanceArray(firstPoint, &quot;мк&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника	
 	
 	&apos;ТОЧКА (40 мкЗв/ч)
 	findAndRename((&quot;$&quot; + i + &quot;-dn_1&quot; + strokeEnd), sourceDistanceArray(40, &quot;мк&quot;, &quot;gamma&quot;, oDateFieldModel)(0)) rem название источника
@@ -379,7 +467,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
 		&apos;msgbox &quot;avrg = &quot; + sum3/8
-		relativeErr = Math.RelativeError(sum3/8, 0.8)
+		relativeErr = Math.RelativeError(sum3/8, firstPoint)
 		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(Math.round(relativeErr, 2), &quot;0.00&quot;))
 		
 		&apos;msgbox &quot;0-&quot; + resList(0) + &quot;1-&quot; + resList(1) + &quot;2-&quot; + resList(2) + &quot;3-&quot; + resList(3) 
@@ -409,7 +497,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
-		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
+		facilityPercent = Overall.FacilityError(firstPoint, BDType, &quot;мк&quot;)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
 		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
