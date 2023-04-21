@@ -63,14 +63,14 @@ dim is4mkPoint as boolean
 
 public const BG_VALUE_FROM 		as double  = 0.05&apos;фон нижняя граница
 public const BG_VALUE_TO 		as double  = 0.18&apos;фон верхняя граница
-public const MEAS_VALUE_FROM 	as double  = 0.5
-public const MEAS_VALUE_TO 		as double  = 1.1
-public const VALUE_SUB_BG_FROM 	as double  = 0.8
-public const VALUE_SUB_BG_TO 	as double  = 0.9
-public const MEAS_VALUE_NEW_FROM 	as double  = 3.7
-public const MEAS_VALUE_NEW_TO 		as double  = 4.2
-public const VALUE_SUB_BG_NEW_FROM 	as double  = 4.0
-public const VALUE_SUB_BG_NEW_TO 	as double  = 4.1
+public const MEAS_VALUE_FROM 	as double  = 0.5&apos;измерение в точке 0.8 мк нижняя граница
+public const MEAS_VALUE_TO 		as double  = 1.1&apos;измерение в точке 0.8 мк верхняя граница
+public const VALUE_SUB_BG_FROM 	as double  = 0.8&apos;измерение в точке 0.8 мк с вычетом фона нижняя граница
+public const VALUE_SUB_BG_TO 	as double  = 0.9&apos;измерение в точке 0.8 мк с вычетом фона верхняя граница
+public const MEAS_VALUE_NEW_FROM 	as double  = 3.8&apos;3.7&apos;измерение в точке 4 мк нижняя граница
+public const MEAS_VALUE_NEW_TO 		as double  = 4.4&apos;4.2&apos;измерение в точке 4 мк верхняя граница
+public const VALUE_SUB_BG_NEW_FROM 	as double  = 3.7&apos;4.0&apos;измерение в точке 4 мк с вычетом фона нижняя граница
+public const VALUE_SUB_BG_NEW_TO 	as double  = 4.3&apos;4.1&apos;измерение в точке 4 мк с вычетом фона верхняя граница
 public const POINT_VALUE	 	as double  = 0.8
 public const POINT_VALUE_NEW 	as double  = 4
 rem---------------------------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.13 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -201,7 +201,7 @@ sub addNewBD
 	if oDialog2503.getControl(&quot;isSinglePoint&quot;).state = 1 then
 		if is2503.state  		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
 		if is2503A.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
-		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
+		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,800,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,1000))
 		if is2503B_1.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
 		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
 		if is2503B_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(1,1000))&apos;уточнить границы
