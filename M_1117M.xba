@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.20 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.21 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -114,7 +114,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;BDPB-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;0663/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5),	20)
 	&apos;addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,					Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),			&quot;n-PP&quot;,		Array(0.1,0.2))
 	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,		Array(2.1, 11.60, 91.0, 261, 913),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,0.2),		20)
-	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
+	&apos;addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
+	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.647,9.92, 86.7, 321, 1296),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
 	addBDtoCollection(&quot;БОИ-5&quot;,	&quot;PU-5 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20)
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
@@ -564,6 +565,7 @@ sub neutron_01(i as integer, bd as BUnit)
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_03(i as integer, bd as BUnit)
+	&apos;(0.45,9.5, 88, 330, 1350),	
 	neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
@@ -571,8 +573,8 @@ sub neutron_05(i as integer, bd as BUnit)
 	neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 57, 235, 986))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
-sub neutron_06(i as integer, bd as BUnit)&apos;ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
-	neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
+sub neutron_06(i as integer, bd as BUnit)
+	neutron(i,bd,Array(0.886, 0.866, 0.970, 0.993),Array(9, 75, 309, 1301))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
