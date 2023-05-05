@@ -26,7 +26,7 @@ public const CS_483  as double = 86.8 &apos;87		&apos;88		&apos;90.1
 public const CS_93   as double = 880	&apos;892	&apos;948
 public const CS_3668 as double = 7932	&apos;8048	&apos;8232
 public const CS_832  as double = 9494
-&apos;public const CS_3663 as double = 0		&apos;82173	&apos;88930
+&apos;public const CS_3663 as double = 0		&apos;82173	&apos;88930 -ЗАХОРОНИЛИ
 public const CS_tmp_516 as double = 81384		&apos;82173	&apos;88930
 public const CS_595 as double = 95.588 &apos;97.070 &apos;  97070 Бк на 29.07.2021 // 96316 на 29.11.21
 &apos;-------------------------------------------------------------
@@ -91,6 +91,7 @@ function get_activity595(mdate)
 	get_activity595 = CS_595 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------
+&apos;активность (Бк) по Cs. Используется (пока) только для Удельной Активности для 1125
 function get_activity_Cs137(src as string, mdate)
 	dim activity_0 as double
 	
@@ -107,7 +108,7 @@ function get_activity_Cs137(src as string, mdate)
 		activity_0 = CS_832	
 	end select
 
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,10,13)&apos;13 октября  &apos; DateSerial(2021,03,01) &apos;DateSerial(2019,11,28)
+	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,10,13)&apos;последняя корректировка на 14.04.23 число, дату не менял, просто скоректировал значения нулевой активности &apos;13 октября  &apos; DateSerial(2021,03,01) &apos;DateSerial(2019,11,28)
 	get_activity_Cs137 = activity_0 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
 &apos;-------------------------------------------------------------

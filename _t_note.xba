@@ -104,6 +104,10 @@ function isWorkingDay(myDate as Date)
 	
 	workingWeekend.add(DateSerial (2022, 3, 12))
 	workingWeekend.add(DateSerial (2022, 5, 14))
+	
+	workingWeekend.add(DateSerial (2023, 4, 29))
+	workingWeekend.add(DateSerial (2023, 5, 13))
+	workingWeekend.add(DateSerial (2023, 11, 11))
 	&apos;Нерабочие будни---------------------------
 	dim nonWorkingDays as new Collection
 	nonWorkingDays.add(DateSerial (2020, 1, 1))
@@ -128,6 +132,18 @@ function isWorkingDay(myDate as Date)
 	nonWorkingDays.add(DateSerial (2022, 5, 3))
 	nonWorkingDays.add(DateSerial (2022, 5, 9))
 	nonWorkingDays.add(DateSerial (2022, 11, 7))
+	
+	nonWorkingDays.add(DateSerial (2023, 1, 2))
+	nonWorkingDays.add(DateSerial (2023, 3, 8))
+	nonWorkingDays.add(DateSerial (2023, 4, 24))
+	nonWorkingDays.add(DateSerial (2023, 4, 25))
+	nonWorkingDays.add(DateSerial (2023, 5, 1))
+	nonWorkingDays.add(DateSerial (2023, 5, 8))
+	nonWorkingDays.add(DateSerial (2023, 5, 9))
+	nonWorkingDays.add(DateSerial (2023, 7, 3))
+	nonWorkingDays.add(DateSerial (2023, 11, 6))
+	nonWorkingDays.add(DateSerial (2023, 11, 7))
+	nonWorkingDays.add(DateSerial (2023, 12, 25))
 	&apos;------------------------------------------
 	dim i as integer
 	dim state as boolean
