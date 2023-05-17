@@ -88,7 +88,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.15 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer

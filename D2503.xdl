@@ -12,7 +12,7 @@
   <dlg:style dlg:style-id="7" dlg:font-height="15"/>
  </dlg:styles>
  <dlg:bulletinboard>
-  <dlg:datefield dlg:id="DateField1" dlg:tab-index="7" dlg:left="18" dlg:top="151" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
+  <dlg:datefield dlg:id="DateField1" dlg:tab-index="7" dlg:left="13" dlg:top="151" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="24" dlg:left="5" dlg:top="142" dlg:width="101" dlg:height="126"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="25" dlg:left="110" dlg:top="9" dlg:width="65" dlg:height="259"/>
   <dlg:text dlg:id="Label15" dlg:tab-index="26" dlg:left="112" dlg:top="253" dlg:width="60" dlg:height="7" dlg:value="Mакс кол-во — 25 БД" dlg:align="center"/>
@@ -35,12 +35,12 @@
    <dlg:radio dlg:style-id="0" dlg:id="is2503A" dlg:tab-index="55" dlg:left="15" dlg:top="37" dlg:width="45" dlg:height="8" dlg:value="2503A">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:id="isProtocol" dlg:tab-index="20" dlg:left="19" dlg:top="172" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
-   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="21" dlg:left="19" dlg:top="183" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
-   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="22" dlg:left="19" dlg:top="196" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
+   <dlg:radio dlg:id="isProtocol" dlg:tab-index="20" dlg:left="14" dlg:top="172" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
+   <dlg:radio dlg:id="isSertificateRus" dlg:tab-index="21" dlg:left="14" dlg:top="184" dlg:width="85" dlg:height="10" dlg:value="Калибровочный сертификат"/>
+   <dlg:radio dlg:id="isSertificateEng" dlg:tab-index="22" dlg:left="14" dlg:top="196" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate"/>
   </dlg:radiogroup>
-  <dlg:combobox dlg:id="provCombo" dlg:tab-index="12" dlg:left="28" dlg:top="220" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
-  <dlg:combobox dlg:id="techCombo" dlg:tab-index="14" dlg:left="28" dlg:top="245" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
+  <dlg:combobox dlg:id="provCombo" dlg:tab-index="12" dlg:left="23" dlg:top="220" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
+  <dlg:combobox dlg:id="techCombo" dlg:tab-index="14" dlg:left="23" dlg:top="245" dlg:width="65" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:menulist dlg:style-id="1" dlg:id="bdListBox" dlg:tab-index="1" dlg:left="115" dlg:top="64" dlg:width="55" dlg:height="182">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
@@ -64,10 +64,10 @@
   <dlg:text dlg:style-id="2" dlg:id="versionLabel" dlg:tab-index="23" dlg:left="278" dlg:top="1" dlg:width="32" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:text dlg:style-id="3" dlg:id="typeLabel" dlg:tab-index="3" dlg:left="213" dlg:top="115" dlg:width="61" dlg:height="12" dlg:value="TYPE" dlg:align="center"/>
   <dlg:text dlg:style-id="4" dlg:id="serialLabel" dlg:tab-index="8" dlg:left="196" dlg:top="127" dlg:width="91" dlg:height="22" dlg:value="123" dlg:align="center"/>
-  <dlg:numericfield dlg:id="from1" dlg:tab-index="34" dlg:left="204" dlg:top="24" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="from1" dlg:tab-index="34" dlg:left="204" dlg:top="25" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="from2" dlg:tab-index="35" dlg:left="204" dlg:top="43" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="from3" dlg:tab-index="36" dlg:left="204" dlg:top="61" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="to1" dlg:tab-index="37" dlg:left="241" dlg:top="24" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="to1" dlg:tab-index="37" dlg:left="241" dlg:top="25" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="to2" dlg:tab-index="38" dlg:left="241" dlg:top="43" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="to3" dlg:tab-index="39" dlg:left="241" dlg:top="61" dlg:width="25" dlg:height="10" dlg:value="0" dlg:spin="true"/>
   <dlg:text dlg:id="labelField1" dlg:tab-index="17" dlg:left="182" dlg:top="158" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
@@ -77,7 +77,7 @@
   <dlg:text dlg:id="Label11" dlg:tab-index="49" dlg:left="271" dlg:top="15" dlg:width="32" dlg:height="8" dlg:value="Счетчик" dlg:align="center"/>
   <dlg:titledbox dlg:id="FrameControl4" dlg:tab-index="50" dlg:left="178" dlg:top="111" dlg:width="129" dlg:height="157"/>
   <dlg:numericfield dlg:style-id="6" dlg:id="bdSerial" dlg:tab-index="51" dlg:left="115" dlg:top="13" dlg:width="55" dlg:height="14" dlg:decimal-accuracy="0" dlg:value="30682" dlg:spin="true"/>
-  <dlg:img dlg:style-id="0" dlg:id="Image" dlg:tab-index="52" dlg:left="72" dlg:top="13" dlg:width="27" dlg:height="59"/>
+  <dlg:img dlg:style-id="0" dlg:id="Image" dlg:tab-index="52" dlg:left="69" dlg:top="13" dlg:width="27" dlg:height="59"/>
   <dlg:checkbox dlg:id="isSinglePoint" dlg:tab-index="53" dlg:left="115" dlg:top="28" dlg:width="55" dlg:height="10" dlg:value="1 измер. в точке" dlg:checked="false"/>
   <dlg:radiogroup>
    <dlg:radio dlg:style-id="0" dlg:id="is2503B" dlg:tab-index="56" dlg:left="12" dlg:top="115" dlg:width="45" dlg:height="9" dlg:value="2503B">
@@ -111,15 +111,15 @@
   <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="79" dlg:left="178" dlg:top="80" dlg:width="129" dlg:height="26">
    <dlg:title dlg:value="Накопленная доза"/>
   </dlg:titledbox>
-  <dlg:text dlg:id="Label111" dlg:tab-index="46" dlg:left="205" dlg:top="14" dlg:width="58" dlg:height="8" dlg:value="Фон:"/>
-  <dlg:text dlg:id="Label211" dlg:tab-index="47" dlg:left="204" dlg:top="33" dlg:width="64" dlg:height="8" dlg:value="Показания прибора:"/>
+  <dlg:text dlg:id="Label111" dlg:tab-index="46" dlg:left="205" dlg:top="16" dlg:width="58" dlg:height="8" dlg:value="Фон:"/>
+  <dlg:text dlg:id="Label211" dlg:tab-index="47" dlg:left="204" dlg:top="34" dlg:width="64" dlg:height="8" dlg:value="Показания прибора:"/>
   <dlg:text dlg:id="Label611" dlg:tab-index="48" dlg:left="204" dlg:top="53" dlg:width="89" dlg:height="8" dlg:value="Среднее  изм. с вычетом фона:"/>
   <dlg:text dlg:id="Label101" dlg:tab-index="45" dlg:left="186" dlg:top="91" dlg:width="30" dlg:height="8" dlg:value="4мкЗв" dlg:align="center" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label121" dlg:tab-index="74" dlg:left="244" dlg:top="92" dlg:width="30" dlg:height="8" dlg:value="4мЗв" dlg:align="center" dlg:tabstop="true"/>
-  <dlg:text dlg:id="Label911" dlg:tab-index="16" dlg:left="67" dlg:top="154" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
-  <dlg:text dlg:id="Label711" dlg:tab-index="13" dlg:left="28" dlg:top="211" dlg:width="65" dlg:height="8" dlg:value="Проверку произвел:" dlg:align="center"/>
-  <dlg:text dlg:id="Label811" dlg:tab-index="15" dlg:left="23" dlg:top="236" dlg:width="75" dlg:height="8" dlg:value="Технический контроль:" dlg:align="center"/>
-  <dlg:text dlg:style-id="7" dlg:id="Label311" dlg:tab-index="40" dlg:left="230" dlg:top="19" dlg:width="10" dlg:height="14" dlg:value="÷" dlg:align="center"/>
+  <dlg:text dlg:id="Label911" dlg:tab-index="16" dlg:left="62" dlg:top="154" dlg:width="37" dlg:height="8" dlg:value="Дата поверки"/>
+  <dlg:text dlg:id="Label711" dlg:tab-index="13" dlg:left="23" dlg:top="211" dlg:width="65" dlg:height="8" dlg:value="Проверку произвел:" dlg:align="center"/>
+  <dlg:text dlg:id="Label811" dlg:tab-index="15" dlg:left="18" dlg:top="236" dlg:width="75" dlg:height="8" dlg:value="Технический контроль:" dlg:align="center"/>
+  <dlg:text dlg:style-id="7" dlg:id="Label311" dlg:tab-index="40" dlg:left="230" dlg:top="20" dlg:width="10" dlg:height="14" dlg:value="÷" dlg:align="center"/>
   <dlg:text dlg:style-id="7" dlg:id="Label411" dlg:tab-index="41" dlg:left="230" dlg:top="40" dlg:width="10" dlg:height="14" dlg:value="÷" dlg:align="center"/>
   <dlg:text dlg:style-id="7" dlg:id="Label511" dlg:tab-index="42" dlg:left="230" dlg:top="57" dlg:width="10" dlg:height="14" dlg:value="÷" dlg:align="center"/>
   <dlg:img dlg:style-id="0" dlg:id="flag_by" dlg:tab-index="80" dlg:left="23" dlg:top="97" dlg:width="20" dlg:height="15"/>
