@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.11 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.12 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -147,16 +147,16 @@ sub insertRecordsToTemplate
 	if oOption02.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn02&quot;, &quot;БДКН-02&quot;)
 	if oOption04.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn04&quot;, &quot;БДКН-04&quot;)
 	if oOption05.state  then path = Overall.getPathAndSetName(&quot;bdkn\bdkn05&quot;, &quot;БДКН-05&quot;)
+
+	dim bd as new DUnit
+	dim bdkn as new NUnit
 		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
-	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;tf1&quot;, &quot;bd_num_n&quot;, &quot;bd_num&quot;, &quot;$&quot;)
+	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;tf1&quot;, &quot;bd_num_n&quot;, &quot;bd_num&quot;, &quot;$f&quot;)
 	
-	dim bd as new DUnit
-	dim bdkn as new NUnit
-
 	for i=1 to BDList.count
 		bd = BDList.item(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
