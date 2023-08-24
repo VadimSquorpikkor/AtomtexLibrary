@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.21 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.22 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -561,16 +561,19 @@ sub insertDataToTemplate
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_01(i as integer, bd as BUnit)
-	neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 57, 235, 986))
+	&apos;neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 57, 235, 986))
+	neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 53, 220, 924))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_03(i as integer, bd as BUnit)
 	&apos;(0.45,9.5, 88, 330, 1350),	
-	neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
+	&apos;neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
+	neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(9, 75, 309, 1301))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_05(i as integer, bd as BUnit)
-	neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 57, 235, 986))
+	&apos;neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 57, 235, 986))
+	neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 53, 220, 924))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_06(i as integer, bd as BUnit)
@@ -594,6 +597,13 @@ sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
 		p3 = 1.1 * sqr(p2 * p2 + 5*5)
 		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
+		
+		&apos;значения коэффициентов в шапку таблицы
+		findAndRename((&quot;$&quot; + i + &quot;-br&quot; + &quot;&quot; + n), point_br_array(n-1))
+		findAndRename((&quot;$&quot; + i + &quot;-fi&quot; + &quot;&quot; + n), point_fio_array(n-1))
+		
+		&apos;обнуляем фон. для НЕ первой точки вычитать фон НЕ НУЖНО, это Гуринович объяснял, там в других точках толи другой уже будет фон, то ли что, короче по методике — не нужно
+		fon = 0
 	next n
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
