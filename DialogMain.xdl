@@ -23,7 +23,7 @@
   <dlg:button dlg:id="CommandButton6130" dlg:tab-index="6" dlg:left="190" dlg:top="75" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/6130s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.AT6130_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButtonBDKN" dlg:tab-index="7" dlg:left="252" dlg:top="75" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/BDKNs.png">
+  <dlg:button dlg:id="CommandButtonBDKN" dlg:tab-index="7" dlg:left="252" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/BDKNs.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_BDKN.BDKN_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="CommandButton02" dlg:tab-index="8" dlg:left="4" dlg:top="145" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/02s.png">
@@ -38,13 +38,13 @@
   <dlg:button dlg:id="CommandButton25" dlg:tab-index="12" dlg:left="252" dlg:top="145" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/25s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G25.G25_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButton224" dlg:tab-index="13" dlg:left="34" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/224s.png">
+  <dlg:button dlg:id="CommandButton224" dlg:tab-index="13" dlg:left="4" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/224s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M224.G224_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButton2503" dlg:tab-index="14" dlg:left="96" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/2503s.png">
+  <dlg:button dlg:id="CommandButton2503" dlg:tab-index="14" dlg:left="66" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/2503s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.G2503_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="CommandButton3509" dlg:tab-index="15" dlg:left="158" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
+  <dlg:button dlg:id="CommandButton3509" dlg:tab-index="15" dlg:left="128" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.G3509_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:img dlg:style-id="0" dlg:id="ImageControlHEAD" dlg:tab-index="0" dlg:left="0" dlg:top="-2" dlg:width="316" dlg:height="77" dlg:page="-1" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/MAIN_FORM_7.png" dlg:tabstop="false"/>
@@ -57,7 +57,7 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_PORTAL.Portal_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:text dlg:style-id="1" dlg:id="newVersionLabel" dlg:tab-index="22" dlg:left="92" dlg:top="62" dlg:width="120" dlg:height="10"/>
-  <dlg:button dlg:id="CommandButton2140" dlg:tab-index="23" dlg:left="220" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
+  <dlg:button dlg:id="CommandButton2140" dlg:tab-index="23" dlg:left="190" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2140.AT2140_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="VersionButton" dlg:tab-index="24" dlg:left="253" dlg:top="289" dlg:width="58" dlg:height="12" dlg:value="Список версий">
@@ -68,6 +68,9 @@
   </dlg:button>
   <dlg:button dlg:id="herm_butt" dlg:tab-index="26" dlg:left="4" dlg:top="289" dlg:width="57" dlg:height="12" dlg:value="Герметичность">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.m_herm.calcherm?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:button dlg:id="CommandButton6131" dlg:tab-index="27" dlg:left="252" dlg:top="75" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/BDKNs.png">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.AT6131_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
  </dlg:bulletinboard>
 </dlg:window>
