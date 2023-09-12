@@ -41,7 +41,7 @@ Sub AT6131_Dialog_Show
 	oDialog6131 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6131 )
 	oListBox = oDialog6131.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.00 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6131.Model.getByName(&quot;6131Logo&quot;).ImageURL = sertPath &amp; &quot;6131\6131.png&quot;
@@ -49,7 +49,7 @@ Sub AT6131_Dialog_Show
 	oOption6131  = oDialog6131.getControl(&quot;is6131&quot;)
 	oOption6131a = oDialog6131.getControl(&quot;is6131a&quot;)
 	oOption6131b = oDialog6131.getControl(&quot;is6131b&quot;)
-	oOption6131a.State = 1
+	oOption6131.State = 1
 	
 	PrSwitch  = oDialog6131.getControl(&quot;isProtocol&quot;)
 	SEnSwitch = oDialog6131.getControl(&quot;isSertificateEng&quot;)
@@ -63,8 +63,8 @@ Sub AT6131_Dialog_Show
 	altCheckBox = oDialog6131.getControl(&quot;altCheckBox&quot;)
 
 	oDialog6131.getControl(&quot;addButton&quot;).setEnable(true)	
-	altCheckBox.setEnable(false)
-	oOption6131.setEnable(false)
+	&apos;altCheckBox.setEnable(false)
+	&apos;oOption6131.setEnable(false)
 	oOption6131b.setEnable(false)
 	oDialog6131.getControl(&quot;betaLabel&quot;).visible = false&apos;временно
 	
@@ -114,6 +114,15 @@ sub addNewBD
 	if oOption6131.state   then bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
 	if oOption6131a.state  then bd.addDataWithSrc(&quot;6131A&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),&quot;gamma&quot;, Array(0.1,100000), Array()) 						&apos;границы от 0.1 мкЗв/ч до 100 мЗв/ч
 	if oOption6131b.state  then bd.addDataWithSrc(&quot;6131B&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
+
+	if oOption6131.state OR oOption6131b.state then
+		dim list as new Collection
+		for i=1 to bd.getBetaValues.count
+			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
+		next i	
+		bd.setBetaValues(list)
+		bd.setAltList(list)
+	end if
 
 	oDialog6131.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog6131.getControl(&quot;bdSerial&quot;).text)
@@ -207,7 +216,7 @@ rem-----------------------------------------------------------------------------
 &apos;Если значения уже были сохранены (значения altValuesForAll не = 0), то в поля альтернативных значений диалога (НЕ В ПЕРЕМЕННЫЕ) будут занесены 
 sub trySetSavedAlternateValues
 	for i=1 to BDList.item(layoutPosition).getAltList.count
-		if altValuesForAll(i-1) &lt;&gt; 0 then oDialog6130.getControl(&quot;altField&quot; + i).value = altValuesForAll(i-1)
+		if altValuesForAll(i-1) &lt;&gt; 0 then oDialog6131.getControl(&quot;altField&quot; + i).value = altValuesForAll(i-1)
 	next i
 	BDList.item(layoutPosition).getAltList
 end sub
@@ -267,17 +276,30 @@ function setButtonVisibility
 	oDialog6131.getControl(&quot;betaField4&quot;).visible = false
 	oDialog6131.getControl(&quot;betaLabel4&quot;).visible = false
 	
-	&apos;&apos;&apos;&apos;&apos;if oDialog6131.getControl(&quot;is6131a&quot;).state then	
+	if oDialog6131.getControl(&quot;is6131a&quot;).state then	
 		oDialog6131.getControl(&quot;betaLabel&quot;).visible = false
 		for i=1 to 4
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = false
 		next i
-	&apos;&apos;&apos;&apos;end if
-		
+	end if
+	if oDialog6131.getControl(&quot;is6131&quot;).state then	
+		oDialog6131.getControl(&quot;betaLabel&quot;).visible = true
+		for i=1 to 3
+			oDialog6131.getControl(&quot;betaField&quot; + i).visible = true 
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = true
+		next i
+	end if
+	if oDialog6131.getControl(&quot;is6131b&quot;).state then	
+		oDialog6131.getControl(&quot;betaLabel&quot;).visible = true
+		for i=1 to 3
+			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = false
+		next i
+	end if	
 	
 	if BDList.count&gt;0 then
-		&apos;&apos;&apos;&apos;&apos;&apos;&apos;altCheckBox.setEnable(true)
+		altCheckBox.setEnable(true)
 		for j=1 to BDList.item(layoutPosition).valueList.count
 			oDialog6131.getControl(&quot;ValueField&quot; + j).visible = true
 			oDialog6131.getControl(&quot;Label&quot; + j).visible = true
@@ -294,7 +316,8 @@ function setButtonVisibility
 	if BDList.count=0 then
 		altCheckBox.setEnable(false)
 		for i=1 to 4
-			oDialog6131.getControl(&quot;betaField&quot; + i).setEnable(false)
+			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = false
 		next i
 	end if	
 end function
