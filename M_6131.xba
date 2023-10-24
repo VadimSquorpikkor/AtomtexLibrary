@@ -41,7 +41,7 @@ Sub AT6131_Dialog_Show
 	oDialog6131 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6131 )
 	oListBox = oDialog6131.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.01 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6131.Model.getByName(&quot;6131Logo&quot;).ImageURL = sertPath &amp; &quot;6131\6131.png&quot;
@@ -65,7 +65,7 @@ Sub AT6131_Dialog_Show
 	oDialog6131.getControl(&quot;addButton&quot;).setEnable(true)	
 	&apos;altCheckBox.setEnable(false)
 	&apos;oOption6131.setEnable(false)
-	oOption6131b.setEnable(false)
+	&apos;oOption6131b.setEnable(false)
 	oDialog6131.getControl(&quot;betaLabel&quot;).visible = false&apos;временно
 	
 	for i=1 to 4
@@ -73,6 +73,10 @@ Sub AT6131_Dialog_Show
 		oDialog6131.getControl(&quot;betaField&quot; + i).setEnable(false)
 		oDialog6131.getControl(&quot;altField&quot; + i).visible = false
 	next i
+	
+	oDialog6131.getControl(&quot;alphaField1&quot;).visible = false
+	oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = false
+	oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	
 	&apos;oDialog6131.getControl(&quot;AttentionLabel&quot;).visible = false
 			
@@ -111,9 +115,9 @@ sub addNewBD
 	&apos;для МКС-АТ6131B – от 0,1 мкЗв/ч до 10  мЗв/ч;
 	
 	&apos;TODO ТОЧКИ ДЛЯ БЕТЫ СЕЙЧАС ОТ БАЛДЫ НАДО ПОСТАВИТЬ РЕАЛЬНЫЕ
-	if oOption6131.state   then bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
-	if oOption6131a.state  then bd.addDataWithSrc(&quot;6131A&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),&quot;gamma&quot;, Array(0.1,100000), Array()) 						&apos;границы от 0.1 мкЗв/ч до 100 мЗв/ч
-	if oOption6131b.state  then bd.addDataWithSrc(&quot;6131B&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
+	if oOption6131.state   then       bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
+	if oOption6131a.state  then       bd.addDataWithSrc(&quot;6131A&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),&quot;gamma&quot;, Array(0.1,100000), Array()) 						&apos;границы от 0.1 мкЗв/ч до 100 мЗв/ч
+	if oOption6131b.state  then bd.addDataWithBetaAlpha(&quot;6131B&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;), Array(&quot;2131&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
 
 	if oOption6131.state OR oOption6131b.state then
 		dim list as new Collection
@@ -122,6 +126,15 @@ sub addNewBD
 		next i	
 		bd.setBetaValues(list)
 		bd.setAltList(list)
+	end if
+	
+	if oOption6131b.state then
+		dim list2 as new Collection
+		for i=1 to bd.getAlphaValues.count
+			list2.add(Activity.get_activity_alpha(bd.getAlphaSources.item(i)))
+		next i	
+		bd.setAlphaValues(list2)
+		bd.setAlphaAltList(list2)
 	end if
 
 	oDialog6131.getControl(&quot;removeButton&quot;).setEnable(true)
@@ -182,6 +195,29 @@ sub altCheckBoxListener(oEvent As Object)
     end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub setAlphaLayout(bd as new DUnit)
+	dim pointList as new collection
+	dim point as double
+	for i=1 to bd.getAlphaSources.count
+		&apos;if bd.isAlternativePoints then
+		&apos;	point = bd.getAlphaAltList.item(i)
+		&apos;	oDialog6131.Model.getByName(&quot;alphaLabel&quot; + i).textColor = RGB(0, 0, 200)
+		&apos;else
+			point = Activity.get_activity_alpha(bd.getAlphaSources.item(i))
+		&apos;	oDialog6131.Model.getByName(&quot;alphaLabel&quot; + i).textColor = RGB(0, 0, 0)
+		&apos;end if
+	
+		oDialog6131.getControl(&quot;alphaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; &quot;
+		&apos;oDialog6131.Model.getByName(&quot;alphaField&quot; + i).valueStep = 0.1
+		&apos;oDialog6131.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 1
+		oDialog6131.getControl(&quot;alphaField&quot; + i).value = bd.getAlphaValues.item(i)
+		&apos;oDialog6131.getControl(&quot;altField&quot; + i).value = bd.getAltList.item(i)
+		pointList.add(point)
+		&apos;oDialog6131.getControl(&quot;altAlphaField&quot; + i).Visible = false
+	next i
+end sub
+rem---------------------------------------------------------------------------------------------------------
+rem---------------------------------------------------------------------------------------------------------
 sub setBetaLayout(bd as new DUnit)
 	dim pointList as new collection
 	dim point as double
@@ -190,6 +226,8 @@ sub setBetaLayout(bd as new DUnit)
 	else	
 		altCheckBox.state = 0
 	end if	
+
+	&apos;msgbox bd.getBetaSources.count
 
 	for i=1 to bd.getBetaSources.count
 		
@@ -249,12 +287,14 @@ rem-----------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
 	Overall.makeLayoutFromBD(bd)
 	setBetaLayout(bd)
+	setAlphaLayout(bd)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
 	trySaveAlternateValues
 	Overall.saveCurentBDValue(num)
 	Overall.saveCurentBDBetaValues(num)
+	Overall.saveCurentBDAlphaValues(num)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
@@ -282,20 +322,24 @@ function setButtonVisibility
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = false
 		next i
+		oDialog6131.getControl(&quot;alphaField1&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	end if
-	if oDialog6131.getControl(&quot;is6131&quot;).state then	
+	if oDialog6131.getControl(&quot;is6131&quot;).state OR oDialog6131.getControl(&quot;is6131b&quot;).state then	
 		oDialog6131.getControl(&quot;betaLabel&quot;).visible = true
 		for i=1 to 3
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = true 
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = true
 		next i
+		oDialog6131.getControl(&quot;alphaField1&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	end if
 	if oDialog6131.getControl(&quot;is6131b&quot;).state then	
-		oDialog6131.getControl(&quot;betaLabel&quot;).visible = true
-		for i=1 to 3
-			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
-			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = false
-		next i
+		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = true
+		oDialog6131.getControl(&quot;alphaField1&quot;).visible = true
+		oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = true
 	end if	
 	
 	if BDList.count&gt;0 then
@@ -339,15 +383,25 @@ sub insertRecordsToTemplate
 		
 	Overall.CreateTablesFromTemplate(BDList.count)
 	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;b1&quot;, &quot;bd_num_b&quot;, &quot;bd_num&quot;, &quot;β&quot;)
+	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;a1&quot;, &quot;bd_num_a&quot;, &quot;bd_num&quot;, &quot;α&quot;)
 		
 	for i=1 to BDList.count
 		dim point as double
+		dim alphaPoint as double
 		dim pointList as new Collection 
 		for j=1 to BDList.item(1).getBetaSources.count
 			point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
 			pointList.add(point)
 		next j
+		&apos;альфа точка толька одна, поэтому не заморачивался с циклом
+		dim pointAlphaList as new Collection
+		for j=1 to BDList.item(1).getAlphaSources.count
+			alphaPoint = Activity.get_activity_alpha(BDList.item(i).getAlphaSources.item(j))
+			pointAlphaList.add(alphaPoint)
+		next j	
+		
 		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
+		Overall.insertAlphaToTemplateStep(i, BDList.item(i).getAlphaSources, pointAlphaList, BDList.item(i).getAlphaValues, &quot;α&quot;)
 		Overall.insertToTemplateStep(i)
 	next i
 	
@@ -358,4 +412,5 @@ rem-----------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
 end function
+
 </script:module>

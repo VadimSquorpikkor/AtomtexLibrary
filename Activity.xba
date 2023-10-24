@@ -12,6 +12,9 @@
 &apos;	╚═══════════════════════════════════════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
+&apos;-------------------------------------------------------------
+public const ALPHA_2131 as double = 846 &apos;Бк
+&apos;-------------------------------------------------------------
 public const ACT516 as double  = 91.3
 public const ACT517 as double  = 88.8
 public const ACT518 as double  = 94.6
@@ -78,6 +81,13 @@ function getActivityAll(srcName as string, oDateFieldModel)
 		getActivityAll = get_activity2910(oDateFieldModel)
 		case &quot;№595&quot;
 		getActivityAll = get_activity595(oDateFieldModel)
+	end select
+end function
+&apos;-------------------------------------------------------------
+function get_activity_alpha(srcName as string)
+	select case srcName
+		case &quot;2131&quot;
+		get_activity_alpha = ALPHA_2131
 	end select
 end function
 &apos;-------------------------------------------------------------

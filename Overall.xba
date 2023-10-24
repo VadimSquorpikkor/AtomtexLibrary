@@ -461,8 +461,50 @@ sub insertToTemplateStepVariation(i)&apos; todo для отклика и вар�
 	&apos;templateStep(i, &quot;.&quot;)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String)
+sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList as Collection, alphaValueList as Collection, sign as String)
+	dim bd as new DUnit 
+	bd = _BDList.item(i)
+	dim j as integer
+	for j=0 to alphaValueList.count-1
+		m_point = alphaValueList.item(j+1)
+		
+		&apos;if bd.isAlternativePoints then
+		&apos;	cont_point = bd.getAltList.item(j+1)
+		&apos;else
+			cont_point = alphaPointsList.item(j+1)
+		&apos;end if	
+			
+		
+		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)&apos;TODO процент
+		
+		&apos;findAndRename((sign + i + &quot;-3&quot; + j), betaSourcesList.item(j+1)) rem название источника
+	
+		if cont_point&lt;500  then findAndRename((sign + i + &quot;-0&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
+		if cont_point&gt;=500 then findAndRename((sign + i + &quot;-0&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
+				
+		rem TODO сделать через select case
+		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
+		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
+				
+		findAndRename((sign + i + &quot;-1&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		findAndRename((sign + i + &quot;-2&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		findAndRename((sign + i + &quot;-3&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+				
+		findAndRename((sign + i + &quot;-4&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+				
+		dim percent as integer
+		percent = 6
+			
 
+		dim epsilon  as double
+		epsilon = m_point/cont_point
+			
+		MyFormat = &quot;0.00&quot;
+		findAndRename((sign + i + &quot;-5&quot; + j), Format(epsilon, MyFormat))
+	next j
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String)
 	dim bd as new DUnit 
 	bd = _BDList.item(i)
 	dim j as integer
@@ -626,6 +668,15 @@ sub saveCurentBDBetaValues(num as integer)
 		newValues.add(_oDialog.getControl(&quot;betaField&quot; + i).Value)
 	next i
 	_BDList.item(num).setBetaValues(newValues)
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub saveCurentBDAlphaValues(num as integer)
+	dim newValues as new Collection
+	dim i as integer
+	for i=1 to _BDList.item(num).getAlphaValues.count
+		newValues.add(_oDialog.getControl(&quot;alphaField&quot; + i).Value)
+	next i
+	_BDList.item(num).setAlphaValues(newValues)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub removeLastBD(layoutPosition as integer)

@@ -37,6 +37,11 @@ private _altValueList as new Collection
 private _bdBackground as double &apos;фон для каждого БД -- в протоколе для каждого БД будет свой фон, а не общий, как в шапке протокола
 private _relLimit as double &apos;погрешность измерения (%)
 
+private _alphaSources as new Collection
+private _alphaValues as new Collection
+private _alphaPoints as new Collection
+private _altAlphaValueList as new Collection
+
 REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
 Private Sub Class_Initialize()
 	
@@ -76,6 +81,20 @@ public sub addDataWithMultiPoint(ByVal BDname as string, ByVal multiMeasCount as
 	next i
 	_pointCount = uBound(arr)+1
 	_dose = 0 
+end sub
+
+&apos;для приборов с альа/бета/гамма (6131B например)
+public sub addDataWithBetaAlpha(ByVal BDname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal betaSources as variant, ByVal alphaSources as variant)
+	addDataWithSrc(BDname, measUnit, pointValue, pointText, BDType, measLimit, betaSources)
+	dim arr(0) as double
+	arr = alphaSources
+	dim i as integer
+	for i=0 to uBound(arr)
+		_alphaSources.add(arr(i))
+		_altAlphaValueList.add(arr(i))
+		_alphaValues.add(0)
+	next i
+	_alphaSources.count
 end sub
 
 public sub addDataWithSrc(ByVal BDname as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal betaSources as variant)
@@ -198,6 +217,33 @@ end function
   
 public function getDose()
 	getDose = _dose
+end function
+
+
+
+
+public function getAlphaSources as Collection
+	getAlphaSources = _alphaSources
+end function
+
+public function getAlphaValues as Collection
+	getAlphaValues = _alphaValues
+end function
+
+public function getAlphaPoints as Collection
+	getAlphaPoints = _alphaPoints
+end function
+
+public function setAlphaPoints(points as Collection)
+	_alphaPoints = points
+end function
+
+public function setAlphaValues(alphaValues as Collection)
+	_alphaValues = alphaValues
+end function
+
+public function setAlphaAltList(list as Collection)
+	_altAlphaValueList = list
 end function
 
 
