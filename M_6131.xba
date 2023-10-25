@@ -33,6 +33,8 @@ dim path, calibName, techName as string
 dim maxPointCount as integer
 
 dim altValuesForAll(3) as double &apos;общие альтернативные значения беты для всех БД 
+
+dim oComboBETAUnit as object
 rem---------------------------------------------------------------------------------------------------------
 Sub AT6131_Dialog_Show
 	maxBDCount = 50
@@ -41,11 +43,11 @@ Sub AT6131_Dialog_Show
 	oDialog6131 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6131 )
 	oListBox = oDialog6131.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.02 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.03 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
+	oDialog6131.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;6131\blackcat.png&quot;
 	oDialog6131.Model.getByName(&quot;6131Logo&quot;).ImageURL = sertPath &amp; &quot;6131\6131.png&quot;
-	&apos;oDialog6131.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;6130\blackcat.png&quot;
 	oOption6131  = oDialog6131.getControl(&quot;is6131&quot;)
 	oOption6131a = oDialog6131.getControl(&quot;is6131a&quot;)
 	oOption6131b = oDialog6131.getControl(&quot;is6131b&quot;)
@@ -78,7 +80,10 @@ Sub AT6131_Dialog_Show
 	oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = false
 	oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	
-	&apos;oDialog6131.getControl(&quot;AttentionLabel&quot;).visible = false
+	oDialog6131.getControl(&quot;gammaLabel&quot;).visible = false
+	altCheckBox.visible = false
+	
+	oComboBETAUnit = oDialog6131.getControl(&quot;betaUnitCombo&quot;)
 			
 	oDialogMain.endexecute()   
 	oDialog6131.Execute()
@@ -91,11 +96,15 @@ sub comboChanged
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
-	if oOption6131a.state then
+	if oComboBETAUnit.text = &quot;П/П&quot; then
 		PrSwitch.setEnable(true)
 		SRuSwitch.setEnable(true)
 		PrSwitch.state = 1
-		altCheckBox.visible = false
+	else 
+		PrSwitch.setEnable(false)
+		SRuSwitch.setEnable(false)
+		SEnSwitch.state = 1
+		&apos;altCheckBox.visible = true
 	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -113,16 +122,30 @@ sub addNewBD
 	&apos;для МКС-АТ6131  – от 0,1 мкЗв/ч до 10  мЗв/ч;
 	&apos;для МКС-АТ6131А – от 0,1 мкЗв/ч до 100 мЗв/ч;
 	&apos;для МКС-АТ6131B – от 0,1 мкЗв/ч до 10  мЗв/ч;
-	
+		
 	&apos;TODO ТОЧКИ ДЛЯ БЕТЫ СЕЙЧАС ОТ БАЛДЫ НАДО ПОСТАВИТЬ РЕАЛЬНЫЕ
-	if oOption6131.state   then       bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
+	dim betaArray as object
+	if oComboBETAUnit.text = &quot;П/П&quot; then
+		betaArray = Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)
+	elseif oComboBETAUnit.text = &quot;CPS&quot; then
+		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
+	else
+		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;)
+	endif	
+	
+	if oOption6131.state   then       bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  betaArray) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
 	if oOption6131a.state  then       bd.addDataWithSrc(&quot;6131A&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),&quot;gamma&quot;, Array(0.1,100000), Array()) 						&apos;границы от 0.1 мкЗв/ч до 100 мЗв/ч
-	if oOption6131b.state  then bd.addDataWithBetaAlpha(&quot;6131B&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;), Array(&quot;2131&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
-
+	if oOption6131b.state  then bd.addDataWithBetaAlpha(&quot;6131B&quot;,&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  betaArray, Array(&quot;2131&quot;)) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
+	
 	if oOption6131.state OR oOption6131b.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
-			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
+			&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
+			if oComboBETAUnit.text = &quot;CPS&quot; then
+				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
+			else
+				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
+			end if
 		next i	
 		bd.setBetaValues(list)
 		bd.setAltList(list)
@@ -207,7 +230,7 @@ sub setAlphaLayout(bd as new DUnit)
 		&apos;	oDialog6131.Model.getByName(&quot;alphaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		&apos;end if
 	
-		oDialog6131.getControl(&quot;alphaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; &quot;
+		oDialog6131.getControl(&quot;alphaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк&quot;
 		&apos;oDialog6131.Model.getByName(&quot;alphaField&quot; + i).valueStep = 0.1
 		&apos;oDialog6131.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 1
 		oDialog6131.getControl(&quot;alphaField&quot; + i).value = bd.getAlphaValues.item(i)
@@ -236,12 +259,22 @@ sub setBetaLayout(bd as new DUnit)
 			point = bd.getAltList.item(i)
 			oDialog6131.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 200)
 		else
-			point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			if oComboBETAUnit.text = &quot;CPS&quot; then
+				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel) * 1.426
+			else	
+				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
+			end if
 			oDialog6131.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
-
-		oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; &quot;
+		if oComboBETAUnit.text = &quot;Bq&quot; then
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк/см2 &quot;
+		elseif oComboBETAUnit.text = &quot;CPS&quot; then
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; cps &quot;
+		else
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; &quot;
+		end if
+		
 		oDialog6131.Model.getByName(&quot;betaField&quot; + i).valueStep = 0.1
 		oDialog6131.Model.getByName(&quot;betaField&quot; + i).DecimalAccuracy = 1
 		oDialog6131.getControl(&quot;betaField&quot; + i).value = bd.getBetaValues.item(i)  &apos;Format(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel), &quot;0.0&quot;)
@@ -327,8 +360,13 @@ function setButtonVisibility
 		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	end if
 	if oDialog6131.getControl(&quot;is6131&quot;).state OR oDialog6131.getControl(&quot;is6131b&quot;).state then	
+		altCheckBox.visible = true
 		oDialog6131.getControl(&quot;betaLabel&quot;).visible = true
-		for i=1 to 3
+		dim betaSourceCount as integer
+		if oComboBETAUnit.text = &quot;CPS&quot; then betaSourceCount = 4
+		if oComboBETAUnit.text = &quot;П/П&quot; then betaSourceCount = 3
+		if oComboBETAUnit.text = &quot;Bq&quot; then betaSourceCount = 3
+		for i=1 to betaSourceCount
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = true 
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = true
 		next i
@@ -337,12 +375,16 @@ function setButtonVisibility
 		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
 	end if
 	if oDialog6131.getControl(&quot;is6131b&quot;).state then	
+		altCheckBox.visible = true
 		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = true
 		oDialog6131.getControl(&quot;alphaField1&quot;).visible = true
+		oDialog6131.getControl(&quot;alphaLabel1&quot;).visible = true
 		oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = true
 	end if	
 	
 	if BDList.count&gt;0 then
+		oDialog6131.getControl(&quot;gammaLabel&quot;).visible = true
+		oComboBETAUnit.setEnable(false)
 		altCheckBox.setEnable(true)
 		for j=1 to BDList.item(layoutPosition).valueList.count
 			oDialog6131.getControl(&quot;ValueField&quot; + j).visible = true
@@ -358,6 +400,14 @@ function setButtonVisibility
 	end if
 	
 	if BDList.count=0 then
+		oComboBETAUnit.setEnable(true)
+		oDialog6131.getControl(&quot;gammaLabel&quot;).visible = false
+		oDialog6131.getControl(&quot;betaLabel&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaLabel&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaLabel1&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaField1&quot;).visible = false
+		oDialog6131.getControl(&quot;alphaSourceLabel&quot;).visible = false
+		altCheckBox.visible = false
 		altCheckBox.setEnable(false)
 		for i=1 to 4
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = false
@@ -369,11 +419,20 @@ rem-----------------------------------------------------------------------------
 sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
 	
-	if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131&quot;, &quot;6131&quot;)
-	if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
-	if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b&quot;,&quot;6131B&quot;)
-
-	
+	if oComboBETAUnit.text = &quot;П/П&quot; then
+		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131&quot;, &quot;6131&quot;)
+		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
+		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b&quot;,&quot;6131B&quot;)
+	elseif oComboBETAUnit.text = &quot;CPS&quot; then
+		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131cps&quot;, &quot;6131 cps&quot;)
+		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
+		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b_cps&quot;,&quot;6131B cps&quot;)
+	else &apos;if oComboBETAUnit.text = &quot;Bq&quot; then
+		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131bq&quot;, &quot;6131 Бк&quot;)
+		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
+		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b_bq&quot;,&quot;6131B Бк&quot;)
+	end if	
+		
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
@@ -390,7 +449,11 @@ sub insertRecordsToTemplate
 		dim alphaPoint as double
 		dim pointList as new Collection 
 		for j=1 to BDList.item(1).getBetaSources.count
-			point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
+			if oComboBETAUnit.text = &quot;CPS&quot; then
+				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel) * 1.426
+			else	
+				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
+			end if
 			pointList.add(point)
 		next j
 		&apos;альфа точка толька одна, поэтому не заморачивался с циклом

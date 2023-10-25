@@ -18,7 +18,7 @@ Sub OpenTemplate(documentURL)
     Doc = StarDesktop.loadComponentFromURL(Url, &quot;_blank&quot;, 0, Dummy)
     Exit sub
 	ErrorHandler:
-	msgbox &quot;Нет такого файла!!!&quot;
+	msgbox &quot;Нет такого файла!!! &quot;+documentURL
 End Sub
 rem------------------------------------------------------------
 Sub findAndRename(target as String, newName as String)

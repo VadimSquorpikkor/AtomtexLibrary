@@ -2,14 +2,14 @@
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
 <dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D_6131" dlg:left="135" dlg:top="36" dlg:width="311" dlg:height="231" dlg:closeable="true" dlg:moveable="true" dlg:title="МКС-АТ6131  Протоколы поверки и сертификаты">
  <dlg:styles>
-  <dlg:style dlg:style-id="0" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="28" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
-  <dlg:style dlg:style-id="1" dlg:border="none" dlg:font-height="12"/>
-  <dlg:style dlg:style-id="2" dlg:font-height="18"/>
-  <dlg:style dlg:style-id="3" dlg:font-height="11"/>
-  <dlg:style dlg:style-id="4" dlg:font-height="8"/>
-  <dlg:style dlg:style-id="5" dlg:font-height="14"/>
-  <dlg:style dlg:style-id="6" dlg:font-height="24"/>
-  <dlg:style dlg:style-id="7" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="24" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
+  <dlg:style dlg:style-id="0" dlg:border="none" dlg:font-height="12"/>
+  <dlg:style dlg:style-id="1" dlg:font-height="18"/>
+  <dlg:style dlg:style-id="2" dlg:font-height="11"/>
+  <dlg:style dlg:style-id="3" dlg:font-height="8"/>
+  <dlg:style dlg:style-id="4" dlg:font-height="14"/>
+  <dlg:style dlg:style-id="5" dlg:font-height="24"/>
+  <dlg:style dlg:style-id="6" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="24" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
+  <dlg:style dlg:style-id="7" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="28" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="16" dlg:left="9" dlg:top="123" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
@@ -21,15 +21,14 @@
   <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="36" dlg:left="210" dlg:top="17" dlg:width="98" dlg:height="211"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="37" dlg:left="133" dlg:top="17" dlg:width="75" dlg:height="211"/>
   <dlg:titledbox dlg:id="FrameControl7" dlg:tab-index="40" dlg:left="3" dlg:top="115" dlg:width="128" dlg:height="113"/>
-  <dlg:text dlg:style-id="0" dlg:id="Label18" dlg:tab-index="47" dlg:left="283" dlg:top="85" dlg:width="15" dlg:height="23" dlg:value="γ" dlg:align="center"/>
   <dlg:radiogroup>
-   <dlg:radio dlg:style-id="1" dlg:id="is6131" dlg:tab-index="41" dlg:left="75" dlg:top="43" dlg:width="50" dlg:height="8" dlg:value="6131">
+   <dlg:radio dlg:style-id="0" dlg:id="is6131" dlg:tab-index="41" dlg:left="75" dlg:top="43" dlg:width="50" dlg:height="8" dlg:value="6131">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="1" dlg:id="is6131a" dlg:tab-index="42" dlg:left="75" dlg:top="55" dlg:width="51" dlg:height="8" dlg:value="6131A">
+   <dlg:radio dlg:style-id="0" dlg:id="is6131a" dlg:tab-index="42" dlg:left="75" dlg:top="55" dlg:width="51" dlg:height="8" dlg:value="6131A">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
-   <dlg:radio dlg:style-id="1" dlg:id="is6131b" dlg:tab-index="43" dlg:left="75" dlg:top="66" dlg:width="51" dlg:height="8" dlg:value="6131B">
+   <dlg:radio dlg:style-id="0" dlg:id="is6131b" dlg:tab-index="43" dlg:left="75" dlg:top="66" dlg:width="51" dlg:height="8" dlg:value="6131B">
     <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
    </dlg:radio>
    <dlg:radio dlg:id="isProtocol" dlg:tab-index="32" dlg:left="9" dlg:top="146" dlg:width="85" dlg:height="10" dlg:value="Протокол поверки" dlg:checked="true"/>
@@ -38,22 +37,22 @@
   </dlg:radiogroup>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="21" dlg:left="9" dlg:top="202" dlg:width="57" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="23" dlg:left="68" dlg:top="202" dlg:width="57" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
-  <dlg:img dlg:style-id="1" dlg:id="catImage" dlg:tab-index="46" dlg:left="96" dlg:top="127" dlg:width="32" dlg:height="49"/>
-  <dlg:textfield dlg:style-id="2" dlg:id="bdSerial" dlg:tab-index="39" dlg:left="143" dlg:top="23" dlg:width="55" dlg:height="18" dlg:align="center" dlg:value="12345"/>
+  <dlg:img dlg:style-id="0" dlg:id="catImage" dlg:tab-index="46" dlg:left="96" dlg:top="127" dlg:width="32" dlg:height="49"/>
+  <dlg:textfield dlg:style-id="1" dlg:id="bdSerial" dlg:tab-index="39" dlg:left="143" dlg:top="23" dlg:width="55" dlg:height="18" dlg:align="center" dlg:value="12345"/>
   <dlg:button dlg:id="addButton" dlg:tab-index="0" dlg:left="143" dlg:top="42" dlg:width="55" dlg:height="12" dlg:value="Добавить">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.addNewBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:button dlg:id="removeButton" dlg:tab-index="2" dlg:left="143" dlg:top="55" dlg:width="55" dlg:height="12" dlg:value="Удалить последний">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.removeLastBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:menulist dlg:style-id="3" dlg:id="bdListBox" dlg:tab-index="1" dlg:left="143" dlg:top="71" dlg:width="55" dlg:height="143">
+  <dlg:menulist dlg:style-id="2" dlg:id="bdListBox" dlg:tab-index="1" dlg:left="143" dlg:top="71" dlg:width="55" dlg:height="143">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:text dlg:style-id="4" dlg:id="versionLabel" dlg:tab-index="35" dlg:left="272" dlg:top="4" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
-  <dlg:text dlg:style-id="5" dlg:id="typeLabel" dlg:tab-index="3" dlg:left="224" dlg:top="19" dlg:width="66" dlg:height="12" dlg:value="TYPE" dlg:align="center"/>
-  <dlg:text dlg:style-id="6" dlg:id="serialLabel" dlg:tab-index="17" dlg:left="219" dlg:top="31" dlg:width="75" dlg:height="20" dlg:value="123" dlg:align="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="35" dlg:left="272" dlg:top="4" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
+  <dlg:text dlg:style-id="4" dlg:id="typeLabel" dlg:tab-index="3" dlg:left="224" dlg:top="19" dlg:width="66" dlg:height="12" dlg:value="TYPE" dlg:align="center"/>
+  <dlg:text dlg:style-id="5" dlg:id="serialLabel" dlg:tab-index="17" dlg:left="219" dlg:top="28" dlg:width="75" dlg:height="20" dlg:value="123" dlg:align="center"/>
   <dlg:text dlg:id="Label1" dlg:tab-index="26" dlg:left="213" dlg:top="55" dlg:width="35" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label6" dlg:tab-index="13" dlg:left="213" dlg:top="109" dlg:width="35" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="betaLabel1" dlg:tab-index="14" dlg:left="212" dlg:top="133" dlg:width="36" dlg:height="8" dlg:align="right"/>
@@ -90,14 +89,24 @@
   <dlg:button dlg:id="doneButton" dlg:tab-index="20" dlg:left="274" dlg:top="208" dlg:width="30" dlg:height="14" dlg:value="Готово">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:img dlg:style-id="1" dlg:id="6131Logo" dlg:tab-index="38" dlg:left="22" dlg:top="6" dlg:width="48" dlg:height="107"/>
+  <dlg:img dlg:style-id="0" dlg:id="6131Logo" dlg:tab-index="38" dlg:left="22" dlg:top="6" dlg:width="48" dlg:height="107"/>
   <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="49" dlg:left="225" dlg:top="122" dlg:width="72" dlg:height="10" dlg:value="Свои значения для β" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.altCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:text dlg:style-id="7" dlg:id="betaLabel" dlg:tab-index="48" dlg:left="283" dlg:top="141" dlg:width="15" dlg:height="28" dlg:value="β" dlg:align="center"/>
-  <dlg:text dlg:style-id="0" dlg:id="alphaLabel" dlg:tab-index="55" dlg:left="284" dlg:top="183" dlg:width="15" dlg:height="20" dlg:value="α" dlg:align="center"/>
+  <dlg:text dlg:style-id="6" dlg:id="betaLabel" dlg:tab-index="48" dlg:left="283" dlg:top="141" dlg:width="15" dlg:height="28" dlg:value="β" dlg:align="center"/>
+  <dlg:text dlg:style-id="7" dlg:id="alphaLabel" dlg:tab-index="55" dlg:left="284" dlg:top="183" dlg:width="15" dlg:height="20" dlg:value="α" dlg:align="center"/>
   <dlg:numericfield dlg:id="alphaField1" dlg:tab-index="56" dlg:left="251" dlg:top="192" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="0" dlg:value="846" dlg:spin="true"/>
   <dlg:text dlg:id="alphaSourceLabel" dlg:tab-index="57" dlg:left="224" dlg:top="182" dlg:width="63" dlg:height="10" dlg:value="Источник α — 2131" dlg:align="center"/>
-  <dlg:text dlg:id="alphaLabel1" dlg:tab-index="58" dlg:left="221" dlg:top="194" dlg:width="28" dlg:height="10" dlg:align="center"/>
+  <dlg:text dlg:id="alphaLabel1" dlg:tab-index="58" dlg:left="214" dlg:top="194" dlg:width="35" dlg:height="10" dlg:align="right"/>
+  <dlg:text dlg:style-id="7" dlg:id="gammaLabel" dlg:tab-index="47" dlg:left="283" dlg:top="85" dlg:width="15" dlg:height="23" dlg:value="γ" dlg:align="center"/>
+  <dlg:combobox dlg:id="betaUnitCombo" dlg:tab-index="59" dlg:left="78" dlg:top="19" dlg:width="47" dlg:height="12" dlg:value="П/П" dlg:spin="true">
+   <dlg:menupopup>
+    <dlg:menuitem dlg:value="П/П"/>
+    <dlg:menuitem dlg:value="CPS"/>
+    <dlg:menuitem dlg:value="Bq"/>
+   </dlg:menupopup>
+   <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:combobox>
+  <dlg:text dlg:id="Label10" dlg:tab-index="60" dlg:left="68" dlg:top="9" dlg:width="68" dlg:height="10" dlg:value="Единицы измерения β" dlg:align="center"/>
  </dlg:bulletinboard>
 </dlg:window>
