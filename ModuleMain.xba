@@ -32,7 +32,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 3.75										&apos;	║█
+	currentVersion = 3.76										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -114,7 +114,7 @@ sub startMacro(sertPath as String)
 	oDialogMain.Model.getByName(&quot;CommandButton3509&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;3509s.png&quot;	
 	oDialogMain.Model.getByName(&quot;CommandButton2140&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;2140s.png&quot;
 	
-	oDialogMain.Model.getByName(&quot;ImageControlHEAD&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;MAIN_FORM_7.png&quot;
+	oDialogMain.Model.getByName(&quot;ImageControlHEAD&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;MAIN_FORM_8.png&quot;
 	oDialogMain.Model.getByName(&quot;ImageControlLOGO&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp;&quot;logo.png&quot;
 	
 	
