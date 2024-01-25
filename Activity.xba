@@ -15,6 +15,19 @@
 &apos;-------------------------------------------------------------
 public const ALPHA_2131 as double = 846 &apos;Бк
 &apos;-------------------------------------------------------------
+&apos; альфа, плотность потока частиц, част/(см^2*мин)
+&apos; бдпс-02 и альфа-01
+public const ALPHA_0645 as double = 62.7
+public const ALPHA_0646 as double = 681
+public const ALPHA_0773 as double = 8655
+public const ALPHA_0648 as double = 61800
+public const ALPHA_0774 as double = 201000 &apos;только бдпс-02
+&apos; альфа-02
+public const ALPHA_0651 as double = 73.2
+public const ALPHA_0652 as double = 624
+public const ALPHA_0653 as double = 5136
+public const ALPHA_0655 as double = 36120
+&apos;-------------------------------------------------------------
 public const ACT516 as double  = 91.3
 public const ACT517 as double  = 88.8
 public const ACT518 as double  = 94.6

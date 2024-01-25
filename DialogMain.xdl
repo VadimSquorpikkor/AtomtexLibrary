@@ -47,7 +47,7 @@
   <dlg:button dlg:id="CommandButton3509" dlg:tab-index="15" dlg:left="128" dlg:top="215" dlg:width="60" dlg:height="67" dlg:image-src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/3509s.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M3509.G3509_Dialog_Show?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:img dlg:style-id="0" dlg:id="ImageControlHEAD" dlg:tab-index="0" dlg:left="0" dlg:top="-2" dlg:width="316" dlg:height="77" dlg:page="-1" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/MAIN_FORM_7.png" dlg:tabstop="false"/>
+  <dlg:img dlg:style-id="0" dlg:id="ImageControlHEAD" dlg:tab-index="0" dlg:left="0" dlg:top="-2" dlg:width="316" dlg:height="77" dlg:page="-1" dlg:src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/MAIN_FORM_8.png" dlg:tabstop="false"/>
   <dlg:img dlg:style-id="0" dlg:id="ImageControlLOGO" dlg:tab-index="17" dlg:left="120" dlg:top="283" dlg:width="130" dlg:height="20" dlg:src="file:///C:/Users/Serikov_VA/Desktop/MACRO%20pics/logo.png"/>
   <dlg:text dlg:style-id="1" dlg:id="bgLabel" dlg:tab-index="18" dlg:left="12" dlg:top="22" dlg:width="44" dlg:height="10"/>
   <dlg:text dlg:style-id="1" dlg:id="tempLabel" dlg:tab-index="19" dlg:left="12" dlg:top="33" dlg:width="44" dlg:height="10"/>

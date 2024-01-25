@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.22 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.23 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -92,8 +92,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;BDPA-01&quot;,	&quot;&quot;,		Array(78.3,743,6300,62100),				emptyArray,										&quot;alpha&quot;,	Array(0.1,10),		20)	&apos;№12
-	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;BDPA-02&quot;,	&quot;&quot;,		Array(74.4,630,5140,35600),				emptyArray,										&quot;alpha&quot;,	Array(0.05,5),		20)
+	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;BDPA-01&quot;,	&quot;&quot;,		Array(62.7, 681, 8655, 61800),			emptyArray,										&quot;alpha&quot;,	Array(0.1,10),		20)	&apos;№12
+	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;BDPA-02&quot;,	&quot;&quot;,		Array(73.2, 624, 5136, 36120),			emptyArray,										&quot;alpha&quot;,	Array(0.05,5),		20)
 	addBDtoCollection(&quot;БДПБ-01&quot;,	&quot;BDPB-01&quot;,	&quot;&quot;,		Array(96,228,5591,51010,370350),		Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),		&quot;beta&quot;,		Array(1,50),		20)  &apos; для беты 	Array(96,228,5591,51010,370350) -- НЕ ИСПОЛЬЗУЕТСЯ
 	addBDtoCollection(&quot;БДПБ-02&quot;,	&quot;BDPB-02&quot;,	&quot;&quot;,		Array(14.2,74.4,514,6290,56800),		Array(&quot;0663&quot;,&quot;0664&quot;,&quot;0665&quot;,&quot;0666&quot;,&quot;0667&quot;),		&quot;beta&quot;,		Array(0.5,15),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,7 +103,7 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКР-01&quot;,	&quot;BDKR-01&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma007&quot;,	Array(0.05,0.1),	20) &apos;ТИП БД -- НАПРАВЛЕННЫЙ ЭКВИВАЛЕНТ
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		Array(58.3,727,6300,62100,186000),		emptyArray,										&quot;alpha&quot;,	Array(2.4,100),		20)
+	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		Array(62.7, 681, 8655, 61800, 201000),	emptyArray,										&quot;alpha&quot;,	Array(2.4,100),		20)
 	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;BDPS-02 β&quot;,&quot;&quot;,		Array(97,232,5700,52000,377100),		Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),		&quot;beta&quot;,		Array(6,100),		20)
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;BDPS-02 γ&quot;,&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,20),				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),				&quot;gamma&quot;,	Array(0.1,30),		20)
 	&apos;-------старые БОИ с сбм--------------------------------------------------------------------------------------------------------------------------------------
