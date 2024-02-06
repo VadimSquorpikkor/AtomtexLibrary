@@ -52,6 +52,7 @@ dim oOption6130bq  as object
 dim oOption6130a  as object
 dim oOption6130c  as object
 dim oOption6130d  as object
+dim oOption6130japan  as object
 
 dim oComboSVREM as object
 
@@ -72,7 +73,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.16 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -83,6 +84,7 @@ Sub AT6130_Dialog_Show
 	oOption6130a   = oDialog6130.getControl(&quot;is6130a&quot;)
 	oOption6130c   = oDialog6130.getControl(&quot;is6130c&quot;)
 	oOption6130d   = oDialog6130.getControl(&quot;is6130d&quot;)
+	oOption6130japan = oDialog6130.getControl(&quot;is6130japan&quot;)
 	oOption6130pp.State = 1
 	
 	oComboSVREM    = oDialog6130.getControl(&quot;sv_rem&quot;)
@@ -97,6 +99,7 @@ Sub AT6130_Dialog_Show
 	isComboCollection.add(oOption6130a)
 	isComboCollection.add(oOption6130c)
 	isComboCollection.add(oOption6130d)
+	isComboCollection.add(oOption6130japan)
 
 	image6130   = oDialog6130.Model.getByName(&quot;6130Logo&quot;)
 	altCheckBox = oDialog6130.getControl(&quot;altCheckBox&quot;)
@@ -161,6 +164,12 @@ sub setButtonEnabled
 		SEnSwitch.state = 1
 		altCheckBox.visible = true
 	end if
+	if oOption6130japan.state then
+		PrSwitch.setEnable(false)
+		SRuSwitch.setEnable(false)
+		SEnSwitch.state = 1
+		altCheckBox.visible = true
+	end if
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub incValue
@@ -188,6 +197,7 @@ sub addNewBD
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array()) 
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	else &apos;если в REMах
 		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
 		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
@@ -195,9 +205,10 @@ sub addNewBD
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 			&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700,0.7),Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array())
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;rem/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	end if
 
-	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state then
+	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state OR oOption6130japan.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
 			&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
@@ -237,6 +248,8 @@ sub removeLastBD
 	altCheckBox.state = 0
 	for i=1 to 4
 		oDialog6130.getControl(&quot;altField&quot; + i).Visible = false
+		oDialog6130.getControl(&quot;betaField&quot; + i).Visible = false
+		oDialog6130.getControl(&quot;betaLabel&quot; + i).Visible = false
 	next i	
 
 
@@ -304,7 +317,7 @@ sub setBetaLayout(bd as new DUnit)
 			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
-		if oOption6130bq.state then
+		if oOption6130bq.state OR oOption6130japan.state then
 			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк/см2 &quot;
 		elseif oOption6130cps.state then
 			oDialog6130.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; cps &quot;
@@ -396,6 +409,13 @@ function setButtonVisibility
 			oDialog6130.getControl(&quot;betaLabel&quot; + i).visible = true
 		next i
 	end if
+	if oDialog6130.getControl(&quot;is6130japan&quot;).state then	
+		oDialog6130.getControl(&quot;betaLabel&quot;).visible = true
+		for i=1 to 4
+			oDialog6130.getControl(&quot;betaField&quot; + i).visible = true 
+			oDialog6130.getControl(&quot;betaLabel&quot; + i).visible = true
+		next i
+	end if
 	if oDialog6130.getControl(&quot;is6130a&quot;).state OR oDialog6130.getControl(&quot;is6130c&quot;).state OR oDialog6130.getControl(&quot;is6130d&quot;).state then	
 		oDialog6130.getControl(&quot;betaLabel&quot;).visible = false
 		for i=1 to 4
@@ -431,19 +451,21 @@ sub insertRecordsToTemplate
 	saveCurentBDValue(layoutPosition)
 	
 	if oComboSVREM.text = &quot;SIEVERT&quot; then
-		if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\6130&quot;, 		&quot;6130 пп&quot;)
-		if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\6130cps&quot;, 	&quot;6130 cps&quot;)
-		if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\6130bq&quot;, 	&quot;6130 Бк&quot;)
-		if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\6130a&quot;, 	&quot;6130A&quot;)
-		if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\6130c&quot;, 	&quot;6130C&quot;)
-		if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\6130d&quot;, 	&quot;6130D&quot;)
+		if oOption6130pp.state    then path = Overall.getPathAndSetName(&quot;6130\6130&quot;, 	&quot;6130 пп&quot;)
+		if oOption6130cps.state   then path = Overall.getPathAndSetName(&quot;6130\6130cps&quot;, &quot;6130 cps&quot;)
+		if oOption6130bq.state    then path = Overall.getPathAndSetName(&quot;6130\6130bq&quot;, 	&quot;6130 Бк&quot;)
+		if oOption6130a.state     then path = Overall.getPathAndSetName(&quot;6130\6130a&quot;, 	&quot;6130A&quot;)
+		if oOption6130c.state     then path = Overall.getPathAndSetName(&quot;6130\6130c&quot;, 	&quot;6130C&quot;)
+		if oOption6130d.state     then path = Overall.getPathAndSetName(&quot;6130\6130d&quot;, 	&quot;6130D&quot;)
+		if oOption6130japan.state then path = Overall.getPathAndSetName(&quot;6130\6130bq_japan&quot;, 	&quot;6130 Бк (Япония)&quot;)
 	else	
-		if oOption6130pp.state  then path = Overall.getPathAndSetName(&quot;6130\rem\6130&quot;, 	 &quot;6130 пп&quot;)
-		if oOption6130cps.state then path = Overall.getPathAndSetName(&quot;6130\rem\6130cps&quot;,&quot;6130 cps&quot;)
-		if oOption6130bq.state  then path = Overall.getPathAndSetName(&quot;6130\rem\6130bq&quot;, &quot;6130 Бк&quot;)
-		if oOption6130a.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130a&quot;,  &quot;6130A&quot;)
-		if oOption6130c.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130c&quot;,  &quot;6130C&quot;)
-		if oOption6130d.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130d&quot;,  &quot;6130D&quot;)
+		if oOption6130pp.state    then path = Overall.getPathAndSetName(&quot;6130\rem\6130&quot;, &quot;6130 пп&quot;)
+		if oOption6130cps.state   then path = Overall.getPathAndSetName(&quot;6130\rem\6130cps&quot;,&quot;6130 cps&quot;)
+		if oOption6130bq.state    then path = Overall.getPathAndSetName(&quot;6130\rem\6130bq&quot;, &quot;6130 Бк&quot;)
+		if oOption6130a.state     then path = Overall.getPathAndSetName(&quot;6130\rem\6130a&quot;, &quot;6130A&quot;)
+		if oOption6130c.state     then path = Overall.getPathAndSetName(&quot;6130\rem\6130c&quot;, &quot;6130C&quot;)
+		if oOption6130d.state     then path = Overall.getPathAndSetName(&quot;6130\rem\6130d&quot;, &quot;6130D&quot;)
+		if oOption6130japan.state then path = Overall.getPathAndSetName(&quot;6130\rem\6130bq_japan&quot;, 	&quot;6130 Бк (Япония)&quot;)
 	end if	
 
 	OpenTemplate(sertPath &amp; path)
@@ -465,7 +487,7 @@ sub insertRecordsToTemplate
 		dim point as double
 		dim pointList as new Collection 
 		for j=1 to BDList.item(1).getBetaSources.count
-			if oOption6130cps.state then
+			if oOption6130cps.state OR oOption6130japan.state then
 				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel) * 1.426
 			else	
 				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
