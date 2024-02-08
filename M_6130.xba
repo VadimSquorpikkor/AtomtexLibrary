@@ -73,7 +73,7 @@ Sub AT6130_Dialog_Show
 	oDialog6130 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6130 )
 	oListBox = oDialog6130.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.16 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6130, oDateFieldModel, &quot;Версия 2.17 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6130.Model.getByName(&quot;6130Logo&quot;).ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -197,7 +197,7 @@ sub addNewBD
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array()) 
-		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	else &apos;если в REMах
 		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
 		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
@@ -205,7 +205,7 @@ sub addNewBD
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 			&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;rem/ч&quot;, Array(70,700,7,70,700,0.7),Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array())
-		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;rem/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;rem/ч&quot;, Array(0.7,7,70,0.7,7), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	end if
 
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state OR oOption6130japan.state then
