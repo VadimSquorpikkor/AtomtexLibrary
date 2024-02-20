@@ -199,6 +199,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 70 	then ar = dynDistanceAr(&quot;0НА&quot;, 232.30, koefCs)&apos;===0.7мкЗв
 				if point = 700 	then ar = dynDistanceAr(&quot;0НА&quot;, 74.58,  koefCs)&apos;===7мкЗв
 		case &quot;м&quot;
+				if point = 0.7	then ar = dynDistanceAr(&quot;0НА&quot;, 74.58,  koefCs)&apos;===7мкЗв
 				if point = 7	then ar = dynDistanceAr(&quot;9ХК&quot;, 161.37, koefCs)&apos;===70мкЗв
 				if point = 70 	then ar = dynDistanceAr(&quot;9ХК&quot;, 51.81,  koefCs)&apos;===0.7m
 				if point = 700 	then ar = dynDistanceAr(&quot;043&quot;, 348.90, koefCs)&apos;===7m
