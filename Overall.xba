@@ -900,6 +900,48 @@ function insertClipBoardToBDValueListBDMG(value_list as Collection)
 	next i
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Этот вариант для 1117-&gt;БДПС-02. Из Excel копируется таблица с данными (альфа точки + показания) + (бета точки + показания) одним столбиком. Итого 4 типа данных. 
+&apos;Если тип 0 — значит это альфа и, значит, вставляются данные для альфа. Для беты — аналогично, тип 1.
+&apos;Вставляются сразу и контрольные точки, и измеренные значения
+&apos;Итого по работе: копируем в Excel таблицу (со всеми значениями), открываем 1117-&gt;БДПС-&gt;вкладка альфа-&gt;жмём кнопку, вкладка бета-&gt;опять жмём кнопку (ЗАНОВО КОПИРОВАТЬ ТАБЛИЦУ НЕ НУЖНО!)
+function insertClipBoardToBDValueListAlphaBeta(point_list as Collection, value_list as Collection, bd_type as integer)
+	dim i as integer
+	dim list as new Collection
+	&apos;list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	list = getCollectionFromClipBoard
+	if list.count=21 then
+		if bd_type=0 then
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 1).value = list.item(2)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 2).value = list.item(4)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 3).value = list.item(6)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 4).value = list.item(8)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 5).value = list.item(10)
+			_oDialog.Model.getByName(&quot;altField&quot; + 1).value = list.item(1)
+			_oDialog.Model.getByName(&quot;altField&quot; + 2).value = list.item(3)
+			_oDialog.Model.getByName(&quot;altField&quot; + 3).value = list.item(5)
+			_oDialog.Model.getByName(&quot;altField&quot; + 4).value = list.item(7)
+			_oDialog.Model.getByName(&quot;altField&quot; + 5).value = list.item(9)
+		else
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 1).value = list.item(13)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 2).value = list.item(15)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 3).value = list.item(17)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 4).value = list.item(19)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + 5).value = list.item(21)
+			_oDialog.Model.getByName(&quot;altField&quot; + 1).value = list.item(12)
+			_oDialog.Model.getByName(&quot;altField&quot; + 2).value = list.item(14)
+			_oDialog.Model.getByName(&quot;altField&quot; + 3).value = list.item(16)
+			_oDialog.Model.getByName(&quot;altField&quot; + 4).value = list.item(18)
+			_oDialog.Model.getByName(&quot;altField&quot; + 5).value = list.item(20)			
+		endif	
+	else
+		dim oDialog as object	
+		DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+		oDialog = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DError )
+		oDialog.model.getByName(&quot;img&quot;).ImageURL = sertPath &amp; &quot;imgs/alphaerror.jpg&quot;
+		oDialog.Execute()	
+	endif
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;методу insertClipBoardToBDValueList нужна коллекция значений для формы ПО РАЗМЕРУ СОВПАДАЮЩАЯ С РАЗМЕРОМ КОЛЛЕКЦИИ valueList (значения точек, которые пользователь вводит как измеренные)
 &apos;Другими словами, кол-во элементов в скопированном массиве должен совпадать с количеством полей в форме для записи значений
 &apos;метод get_2nd_ListSizeAs_1st_ListSize приводит размер скопированной коллекции (list_2) к размеру коллекции valueList (list_2)

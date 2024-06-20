@@ -24,4 +24,5 @@
  <library:element library:name="DWhatsNew"/>
  <library:element library:name="D_T_NOTE"/>
  <library:element library:name="D_6131"/>
+ <library:element library:name="DError"/>
 </library:library>

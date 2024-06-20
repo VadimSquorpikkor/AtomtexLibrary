@@ -32,7 +32,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 3.80										&apos;	║█
+	currentVersion = 3.81										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -44,7 +44,7 @@ Sub MainDialog_Show
 	users.add(&quot;Stsiapanau_MS&quot;)									&apos;	║█
 	users.add(&quot;Germanenko_II&quot;)									&apos;	║█
 	users.add(&quot;Feklenkova_PA&quot;)									&apos;	║█
-																&apos;	║█
+	users.add(&quot;Karuk_IA&quot;)   									&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 	userName = &quot;Неизвестный&quot;
@@ -79,6 +79,7 @@ End sub
 sub startMacro(sertPath as String)
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	
+	On Error Goto ErrorHandler
 	Sensor.setValues
 	Sensor.getVersionFromFile
 	
@@ -125,6 +126,9 @@ sub startMacro(sertPath as String)
 	oDialogMain.getControl(&quot;LabelNAME&quot;).text = userName
 
 	oDialogMain.Execute()
+	Exit sub
+	ErrorHandler:
+	msgbox &quot;Что-то пошло не так. Попробуйте ещё раз&quot;
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub setUserName(label as String)
@@ -148,7 +152,9 @@ sub setUserName(label as String)
 	case &quot;Germanenko_II&quot;
 		userName = &quot;Германенко И.И.&quot;
 	case &quot;Feklenkova_PA&quot;
-		userName = &quot;Фекленкова П.А.&quot;		
+		userName = &quot;Фекленкова П.А.&quot;
+	case &quot;Karuk_IA&quot;
+		userName = &quot;Карук И.А.&quot;			
 	end select
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------

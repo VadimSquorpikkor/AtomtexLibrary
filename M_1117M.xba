@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.23 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.24 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -607,8 +607,25 @@ sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
 	next n
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
+&apos;для БДПС-02 альфа и бета вставка из буфера работает по другому, нежели для остальных БД. В Excel сразу копируются все данные (альфа точки + показания) + (бета точки + показания)
+&apos;одним столбиком. Один раз вставить для альфы, один для беты (второй раз копировать УЖЕ НЕ НУЖНО!)
 function insertClipBoardToBDValueList()
-	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
+	if BDList.item(layoutPosition).BdName=&quot;БДПС-02 α&quot; then
+		Overall.insertClipBoardToBDValueListAlphaBeta(BDList.item(layoutPosition).getValueList, BDList.item(layoutPosition).getValueList, 0)
+	elseif BDList.item(layoutPosition).BdName=&quot;БДПС-02 β&quot; then
+		Overall.insertClipBoardToBDValueListAlphaBeta(BDList.item(layoutPosition).getValueList, BDList.item(layoutPosition).getValueList, 1)
+	else
+		Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)	
+	endif	
+	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
+end function
+&apos;---------------------------------------------------------------------------------------------------------
+&apos;не используется
+function insertClipBoardToAlphaBeta()
+	dim bd_type as integer
+	if BDList.item(layoutPosition).BdName=&quot;БДПС-02 α&quot; then	bd_type=0
+	if BDList.item(layoutPosition).BdName=&quot;БДПС-02 β&quot; then	bd_type=1
+	Overall.insertClipBoardToBDValueListAlphaBeta(BDList.item(layoutPosition).getValueList, BDList.item(layoutPosition).getValueList, bd_type)
 	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 
