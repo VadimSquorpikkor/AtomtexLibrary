@@ -8,6 +8,8 @@
   <dlg:style dlg:style-id="3" dlg:font-height="8"/>
   <dlg:style dlg:style-id="4" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="28" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
   <dlg:style dlg:style-id="5" dlg:font-height="18"/>
+  <dlg:style dlg:style-id="6" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="22" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
+  <dlg:style dlg:style-id="7" dlg:font-height="8"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="53" dlg:left="24" dlg:top="201" dlg:width="49" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
@@ -101,39 +103,35 @@
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:textfield dlg:style-id="5" dlg:id="bdSerial" dlg:tab-index="74" dlg:left="91" dlg:top="4" dlg:width="38" dlg:height="18" dlg:value="1234"/>
-  <dlg:text dlg:style-id="4" dlg:id="Label14" dlg:tab-index="84" dlg:left="200" dlg:top="216" dlg:width="11" dlg:height="34" dlg:value="γ" dlg:align="center"/>
-  <dlg:text dlg:id="Label15" dlg:tab-index="85" dlg:left="56" dlg:top="4" dlg:width="34" dlg:height="17" dlg:value="Серийный номер: " dlg:align="right" dlg:multiline="true"/>
-  <dlg:numericfield dlg:id="uaField1" dlg:tab-index="76" dlg:left="167" dlg:top="210" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField2" dlg:tab-index="77" dlg:left="167" dlg:top="221" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField3" dlg:tab-index="78" dlg:left="167" dlg:top="232" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="uaField4" dlg:tab-index="79" dlg:left="167" dlg:top="243" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:text dlg:id="uaLabel1" dlg:tab-index="80" dlg:left="137" dlg:top="212" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel2" dlg:tab-index="81" dlg:left="137" dlg:top="223" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel3" dlg:tab-index="82" dlg:left="137" dlg:top="234" dlg:width="28" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:id="uaLabel4" dlg:tab-index="83" dlg:left="136" dlg:top="245" dlg:width="29" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:style-id="5" dlg:id="uaLabel" dlg:tab-index="75" dlg:left="139" dlg:top="160" dlg:width="72" dlg:height="36" dlg:value="Удельная активность" dlg:align="center" dlg:multiline="true"/>
-  <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="86" dlg:left="136" dlg:top="156" dlg:width="78" dlg:height="126"/>
-  <dlg:checkbox dlg:style-id="1" dlg:id="isMarin" dlg:tab-index="87" dlg:left="13" dlg:top="141" dlg:width="118" dlg:height="12" dlg:value="Уд. активность с сосудом Маринелли" dlg:checked="false">
+  <dlg:text dlg:style-id="6" dlg:id="Label14" dlg:tab-index="80" dlg:left="200" dlg:top="156" dlg:width="11" dlg:height="22" dlg:value="γ" dlg:align="center"/>
+  <dlg:text dlg:id="Label15" dlg:tab-index="81" dlg:left="56" dlg:top="4" dlg:width="34" dlg:height="17" dlg:value="Серийный номер: " dlg:align="right" dlg:multiline="true"/>
+  <dlg:numericfield dlg:id="uaField1" dlg:tab-index="76" dlg:left="178" dlg:top="210" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField2" dlg:tab-index="77" dlg:left="178" dlg:top="221" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField3" dlg:tab-index="78" dlg:left="178" dlg:top="232" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaField4" dlg:tab-index="79" dlg:left="178" dlg:top="243" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:text dlg:style-id="5" dlg:id="uaLabel" dlg:tab-index="75" dlg:left="139" dlg:top="156" dlg:width="72" dlg:height="36" dlg:value="Удельная активность" dlg:align="center" dlg:multiline="true"/>
+  <dlg:titledbox dlg:id="FrameControl5" dlg:tab-index="82" dlg:left="136" dlg:top="156" dlg:width="78" dlg:height="126"/>
+  <dlg:checkbox dlg:style-id="1" dlg:id="isMarin" dlg:tab-index="83" dlg:left="13" dlg:top="141" dlg:width="118" dlg:height="12" dlg:value="Уд. активность с сосудом Маринелли" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.setSM?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:text dlg:id="SourseText" dlg:tab-index="88" dlg:left="139" dlg:top="198" dlg:width="72" dlg:height="11" dlg:align="center" dlg:multiline="true"/>
-  <dlg:numericfield dlg:id="altalphaField1" dlg:tab-index="89" dlg:left="220" dlg:top="62" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:checkbox dlg:id="altAlphaCheckBox" dlg:tab-index="99" dlg:left="220" dlg:top="53" dlg:width="72" dlg:height="9" dlg:value="Свои значения для α" dlg:checked="false">
+  <dlg:text dlg:id="SourseText" dlg:tab-index="84" dlg:left="139" dlg:top="192" dlg:width="72" dlg:height="11" dlg:align="center" dlg:multiline="true"/>
+  <dlg:numericfield dlg:id="altalphaField1" dlg:tab-index="85" dlg:left="220" dlg:top="62" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:checkbox dlg:id="altAlphaCheckBox" dlg:tab-index="95" dlg:left="220" dlg:top="53" dlg:width="72" dlg:height="9" dlg:value="Свои значения для α" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.altAlphaCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:checkbox dlg:id="altBetaCheckBox" dlg:tab-index="100" dlg:left="220" dlg:top="120" dlg:width="72" dlg:height="9" dlg:value="Свои значения для β" dlg:checked="false">
+  <dlg:checkbox dlg:id="altBetaCheckBox" dlg:tab-index="96" dlg:left="220" dlg:top="120" dlg:width="72" dlg:height="9" dlg:value="Свои значения для β" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.altBetaCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:numericfield dlg:id="altalphaField2" dlg:tab-index="90" dlg:left="220" dlg:top="73" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altalphaField3" dlg:tab-index="91" dlg:left="220" dlg:top="84" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altalphaField4" dlg:tab-index="92" dlg:left="220" dlg:top="95" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altalphaField5" dlg:tab-index="93" dlg:left="220" dlg:top="106" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altbetaField1" dlg:tab-index="94" dlg:left="220" dlg:top="129" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altbetaField2" dlg:tab-index="95" dlg:left="220" dlg:top="140" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altbetaField3" dlg:tab-index="96" dlg:left="220" dlg:top="151" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altbetaField4" dlg:tab-index="97" dlg:left="220" dlg:top="162" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altbetaField5" dlg:tab-index="98" dlg:left="220" dlg:top="173" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:combobox dlg:id="ActivityCombo" dlg:tab-index="101" dlg:left="154" dlg:top="267" dlg:width="43" dlg:height="12" dlg:spin="true" dlg:linecount="8">
+  <dlg:numericfield dlg:id="altalphaField2" dlg:tab-index="86" dlg:left="220" dlg:top="73" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField3" dlg:tab-index="87" dlg:left="220" dlg:top="84" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField4" dlg:tab-index="88" dlg:left="220" dlg:top="95" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altalphaField5" dlg:tab-index="89" dlg:left="220" dlg:top="106" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField1" dlg:tab-index="90" dlg:left="220" dlg:top="129" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField2" dlg:tab-index="91" dlg:left="220" dlg:top="140" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField3" dlg:tab-index="92" dlg:left="220" dlg:top="151" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField4" dlg:tab-index="93" dlg:left="220" dlg:top="162" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altbetaField5" dlg:tab-index="94" dlg:left="220" dlg:top="173" dlg:width="30" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:combobox dlg:id="ActivityCombo" dlg:tab-index="97" dlg:left="154" dlg:top="267" dlg:width="43" dlg:height="12" dlg:spin="true" dlg:linecount="8">
    <dlg:menupopup>
     <dlg:menuitem dlg:value="595"/>
     <dlg:menuitem dlg:value="516"/>
@@ -146,6 +144,12 @@
    </dlg:menupopup>
    <script:event script:event-name="on-itemstatechange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_1125.activityComboChanged?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:combobox>
-  <dlg:text dlg:style-id="3" dlg:id="lab1" dlg:tab-index="102" dlg:left="139" dlg:top="257" dlg:width="72" dlg:height="10" dlg:value="Источник для 4-й точки:" dlg:align="center" dlg:multiline="true"/>
+  <dlg:text dlg:style-id="3" dlg:id="lab1" dlg:tab-index="98" dlg:left="139" dlg:top="257" dlg:width="72" dlg:height="10" dlg:value="Источник для 4-й точки:" dlg:align="center" dlg:multiline="true"/>
+  <dlg:numericfield dlg:id="uaLabel1" dlg:tab-index="99" dlg:left="139" dlg:top="210" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaLabel2" dlg:tab-index="100" dlg:left="139" dlg:top="221" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaLabel3" dlg:tab-index="101" dlg:left="139" dlg:top="232" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="uaLabel4" dlg:tab-index="102" dlg:left="139" dlg:top="243" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
+  <dlg:text dlg:style-id="7" dlg:id="Label9" dlg:tab-index="103" dlg:left="139" dlg:top="202" dlg:width="32" dlg:height="10" dlg:value="Источник" dlg:align="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="Label10" dlg:tab-index="104" dlg:left="177" dlg:top="202" dlg:width="34" dlg:height="10" dlg:value="Измерение" dlg:align="center"/>
  </dlg:bulletinboard>
 </dlg:window>

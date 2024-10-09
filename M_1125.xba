@@ -55,7 +55,7 @@ Sub AT1125_Dialog_Show
 
 	&apos;dim NULL as object
 	&apos;Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.06 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.13 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.14 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 oDialog1125.getControl(&quot;doneButton&quot;).setEnable(true)
 
@@ -161,12 +161,17 @@ sub calculateUA(bd as new DUnit)
 			myFormat = &quot;0.0&quot;
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 0.1
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 1
+			oDialog1125.Model.getByName(&quot;uaLabel&quot; + i).valueStep = 0.1
+			oDialog1125.Model.getByName(&quot;uaLabel&quot; + i).DecimalAccuracy = 1
 		else
 			myFormat = &quot;0&quot;
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 1
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 0
+			oDialog1125.Model.getByName(&quot;uaLabel&quot; + i).valueStep = 1
+			oDialog1125.Model.getByName(&quot;uaLabel&quot; + i).DecimalAccuracy = 0
 		end if
-		oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot; &apos; &amp; &quot; (№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot;) &quot;
+		&apos;oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot; &apos; &amp; &quot; (№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot;) &quot;
+		oDialog1125.getControl(&quot;uaLabel&quot; + i).Value = Format(point, myFormat)&amp; &quot; &quot; &apos; &amp; &quot; (№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot;) &quot;
 		oDialog1125.getControl(&quot;uaField&quot; + i).value = Format(point, myFormat) rem ЕСЛИ ЕСЛИ БЫ НУЖНО БЫЛО СОХРАНЕНИЕ, ТОГДА getValueList.item(i)
 		pointList.add(point)
 		stroke = stroke + &quot;№&quot; &amp; BDList.item(6).getPointTextList.item(i) &amp; &quot; &quot;
@@ -178,7 +183,8 @@ sub calculateUA(bd as new DUnit)
 		myFormat = &quot;0&quot;
 		oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 1
 		oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 0
-		oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot;
+		&apos;oDialog1125.getControl(&quot;uaLabel&quot; + i).Text = Format(point, myFormat)&amp; &quot; &quot;
+		oDialog1125.getControl(&quot;uaLabel&quot; + i).Value = Format(point, myFormat)&amp; &quot; &quot;
 		oDialog1125.getControl(&quot;uaField&quot; + i).value = Format(point, myFormat)
 		pointList.add(point)
 		stroke = stroke + oComboBox.text
@@ -331,6 +337,17 @@ sub saveAllBD
 	saveCurentBD(4, &quot;betaField&quot;)
 	saveCurentBD(5, &quot;gammaField&quot;)
 	saveCurentBD(6, &quot;uaField&quot;)
+	
+	
+	&apos;отдельно сделал типа saveCurentBD только для своих значений активности источников удельной активности. сложность в том, что там это не valueList, как для остальных точек, а pointList. Потом сделаю нормально
+	dim newValues as new Collection
+	dim altValues as new Collection
+	dim i as integer
+	dim ALT as string
+	for i=1 to BDList.item(6).valueList.count
+		newValues.add(oDialog1125.getControl(&quot;uaLabel&quot; + i).Value)
+	next i
+	BDList.item(6).setPointList(newValues)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub saveCurentBD(num as integer, VALUE_FIELD as string)
@@ -344,6 +361,7 @@ sub saveCurentBD(num as integer, VALUE_FIELD as string)
 	next i
 	if BDList.item(num).isAlternativePoints then BDList.item(num).setPointList(altValues)
 	BDList.item(num).setValueList(newValues)
+	
 end sub
 rem---------------------------------------------------------------------------------------------------------
 &apos;sub replacePointValueWithAltValue(int i, VALUE_FIELD as String, ALT_VALUE_FIELD as String)
@@ -411,7 +429,7 @@ sub insertRecordsToTemplate
 	Overall.insertToTemplateStep(4)
 	Overall.insertToTemplateStep(5)
 	Overall.insertToTemplateStep(6)
-	
+		
 	serial = oDialog1125.getControl(&quot;bdSerial&quot;).text
 		
 	findAndRename(&quot;$serial&quot;, serial)
