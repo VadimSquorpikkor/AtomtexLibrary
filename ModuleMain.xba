@@ -32,7 +32,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 3.85										&apos;	║█
+	currentVersion = 3.86										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -45,6 +45,7 @@ Sub MainDialog_Show
 	users.add(&quot;Germanenko_II&quot;)									&apos;	║█
 	users.add(&quot;Feklenkova_PA&quot;)									&apos;	║█
 	users.add(&quot;Karuk_IA&quot;)   									&apos;	║█
+	users.add(&quot;Bohush_SG&quot;)   									&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 	userName = &quot;Неизвестный&quot;

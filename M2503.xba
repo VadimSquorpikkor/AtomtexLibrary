@@ -75,12 +75,19 @@ public const POINT_VALUE	 	as double  = 0.8
 public const POINT_VALUE_NEW 	as double  = 4
 &apos;---------------------------------------------------------------------------------------------------------
 &apos;═══════════════════════════════════════════════════════════════════╗
-&apos;	Расчет предела основной относительной погрешности, %:			║█
+&apos;	Расчет предела основной относительной погрешности МД, %:		║█
 &apos;																	║█
 &apos; 	±(15+k1/H+k2*H)%, (для ДКГ-АТ2503В, ДКГ-АТ2503В1),				║█
 &apos; 	±(15+k1/H+k3*H)%, (для ДКГ-АТ2503В/2),							║█
 &apos; 	где H — значение мощности дозы в мЗв-1*ч;						║█
 &apos; 	k1=0.015 мЗв-1*ч; k2=0.005 мЗв-1*ч; k3=0.001 мЗв-1*ч.			║█
+&apos;																	║█
+&apos;	Расчет предела основной относительной погрешности дозы, %:		║█
+&apos; 	±(15+k1*H)%, (для ДКГ-АТ2503В, ДКГ-АТ2503В1),					║█
+&apos; 	±(15+k2*H)%, (для ДКГ-АТ2503В/2),								║█
+&apos; 	где H — значение мощности дозы в мЗв-1*ч;						║█
+&apos; 	k1=0.005 мЗв-1*ч; k2=0.001 мЗв-1*ч.								║█
+&apos;	точка 1 — 40мкЗв/ч, точка 2 — 80мЗв/ч							║█	
 &apos;																	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -99,7 +106,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.17 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.18 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -526,7 +533,11 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		&apos;insertDose(дозиметр, номер_в_списке, постфикс_для_таблицы, номер_в_списке_значения_в_контрольной_точке, на_что_делим_чтобы_перевести_из_МД_в_дозу, начальная_доза)
 		&apos;Первая строка дозы  4 мкЗв Нр(10) СЧИТАЕТСЯ ОТ ТОЧКИ 40 мкЗв/ч, которая не выводится в протоколе
 		insertDose(bd, i, &quot;_1&quot;, bd.getPointList.count, 10, bd.getDoseArray()(0)) &apos;bd.getPointList.count - выбираю последнюю точку, это точка 40мкЗв, она ВСЕГДА идет последней
-		insertDose(bd, i, &quot;_2&quot;, 2, 20, bd.getDoseArray()(1))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек	
+		if is2503B_2.state 	then
+			insertDose(bd, i, &quot;_2&quot;, 3, 20, bd.getDoseArray()(1))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек	
+		else
+			insertDose(bd, i, &quot;_2&quot;, 2, 20, bd.getDoseArray()(1))&apos; 20 -- это 1 / (180/3600) -- перевод из мэд в дозу за 180 сек	
+		endif
 		
 		&apos;-----------------ЗАПОЛНЕНИЕ ГЛАВНОЙ (БОЛЬШОЙ) ТАБЛИЦЫ-------------------------------------
 		dim MyFormat as string
