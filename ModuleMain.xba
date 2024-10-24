@@ -32,7 +32,7 @@ Sub MainDialog_Show
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 																&apos;	║█
-	currentVersion = 3.84										&apos;	║█
+	currentVersion = 3.85										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -155,6 +155,8 @@ sub setUserName(label as String)
 		userName = &quot;Фекленкова П.А.&quot;
 	case &quot;Karuk_IA&quot;
 		userName = &quot;Карук И.А.&quot;			
+	case &quot;Bohush_SG&quot;
+		userName = &quot;Богуш Сабрина&quot;	
 	end select
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------

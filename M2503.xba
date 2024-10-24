@@ -73,7 +73,18 @@ public const VALUE_SUB_BG_NEW_FROM 	as double  = 3.7&apos;4.0&apos;измере�
 public const VALUE_SUB_BG_NEW_TO 	as double  = 4.3&apos;4.1&apos;измерение в точке 4 мк с вычетом фона верхняя граница
 public const POINT_VALUE	 	as double  = 0.8
 public const POINT_VALUE_NEW 	as double  = 4
-rem---------------------------------------------------------------------------------------------------------
+&apos;---------------------------------------------------------------------------------------------------------
+&apos;═══════════════════════════════════════════════════════════════════╗
+&apos;	Расчет предела основной относительной погрешности, %:			║█
+&apos;																	║█
+&apos; 	±(15+k1/H+k2*H)%, (для ДКГ-АТ2503В, ДКГ-АТ2503В1),				║█
+&apos; 	±(15+k1/H+k3*H)%, (для ДКГ-АТ2503В/2),							║█
+&apos; 	где H — значение мощности дозы в мЗв-1*ч;						║█
+&apos; 	k1=0.015 мЗв-1*ч; k2=0.005 мЗв-1*ч; k3=0.001 мЗв-1*ч.			║█
+&apos;																	║█
+&apos;═══════════════════════════════════════════════════════════════════╝█
+&apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+&apos;---------------------------------------------------------------------------------------------------------
 Sub G2503_Dialog_Show
 	maxBDCount = 25
 	pointCount = 7
@@ -88,7 +99,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.16 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.17 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -199,11 +210,12 @@ sub addNewBD
 	&apos;В диалоге точка идет последней
 	&apos;Диапазон: мк-м
 	if oDialog2503.getControl(&quot;isSinglePoint&quot;).state = 1 then
+		&apos;if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))&apos;старый вариант
 		if is2503.state  		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503&quot;, 	Array(1,1,1,1), 	 	&quot;Зв/ч&quot;, Array(4,80,400,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,500))
 		if is2503A.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
 		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,800,40),			Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 			&quot;gamma&quot;, Array(0.1,1000))
 		if is2503B_1.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1,1,1),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(1,1,1,1,1,1),		&quot;Зв/ч&quot;, Array(8,4,80,800,8, 40),	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))&apos;уточнить границы
 		if is2503B_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(1,1,1,1,1,1),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(1,1000))&apos;уточнить границы
 		if is2503B_1_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(1,1,1),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(1,200))&apos;уточнить границы
 	else
@@ -211,7 +223,7 @@ sub addNewBD
 		if is2503A.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503A&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),	  			Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,100))
 		if is2503B.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(0.1,1000))
 		if is2503B_1.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(0.1,200))
-		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3,3,3),	&quot;Зв/ч&quot;, Array(4,80,400,800,4,8,40),	Array(&quot;м&quot;,&quot;м&quot;,,&quot;м&quot;&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))
+		if is2503B_2.state 		then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/2&quot;, 	Array(3,3,3,3,3,3),		&quot;Зв/ч&quot;, Array(8,4,80,800,8, 40),	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;мк&quot;),	&quot;gamma&quot;, Array(1,10000))&apos;уточнить границы
 		if is2503B_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B&quot;, 	Array(3,3,3,3,3,3),  	&quot;Зв/ч&quot;, Array(4,80,400,800,40),		Array(&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 		&quot;gamma&quot;, Array(1,1000))&apos;уточнить границы
 		if is2503B_1_ru.state 	then bd.addDataWithMultiPoint(&quot;ДКГ-АТ2503B/1&quot;, 	Array(3,3,3),  		 	&quot;Зв/ч&quot;, Array(4,80,40),				Array(&quot;м&quot;,&quot;м&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, Array(1,200))&apos;уточнить границы
 	end if	
