@@ -73,7 +73,7 @@
   <dlg:text dlg:id="labelField1" dlg:tab-index="17" dlg:left="182" dlg:top="158" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="labelField2" dlg:tab-index="18" dlg:left="182" dlg:top="170" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="labelField3" dlg:tab-index="19" dlg:left="182" dlg:top="182" dlg:width="30" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:style-id="5" dlg:id="count" dlg:tab-index="43" dlg:left="278" dlg:top="23" dlg:width="17" dlg:height="16" dlg:value="0" dlg:align="center"/>
+  <dlg:text dlg:style-id="5" dlg:id="count" dlg:tab-index="43" dlg:left="268" dlg:top="23" dlg:width="29" dlg:height="16" dlg:value="0" dlg:align="right"/>
   <dlg:text dlg:id="Label11" dlg:tab-index="49" dlg:left="271" dlg:top="15" dlg:width="32" dlg:height="8" dlg:value="Счетчик" dlg:align="center"/>
   <dlg:titledbox dlg:id="FrameControl4" dlg:tab-index="50" dlg:left="178" dlg:top="111" dlg:width="129" dlg:height="157"/>
   <dlg:numericfield dlg:style-id="6" dlg:id="bdSerial" dlg:tab-index="51" dlg:left="115" dlg:top="13" dlg:width="55" dlg:height="14" dlg:decimal-accuracy="0" dlg:value="30682" dlg:spin="true"/>
@@ -133,5 +133,8 @@
    </dlg:radio>
   </dlg:radiogroup>
   <dlg:text dlg:id="att" dlg:tab-index="82" dlg:left="8" dlg:top="75" dlg:width="95" dlg:height="20" dlg:value="Внимание! Протоколы на Россию и Беларусь различаются!" dlg:align="center" dlg:multiline="true"/>
+  <dlg:button dlg:id="PasteButton" dlg:tab-index="83" dlg:left="274" dlg:top="113" dlg:width="30" dlg:height="36" dlg:image-src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/down_arr.png">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M2503.insertClipBoardToBDValueList?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
  </dlg:bulletinboard>
 </dlg:window>

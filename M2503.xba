@@ -106,7 +106,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.18 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.19 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -117,6 +117,8 @@ Sub G2503_Dialog_Show
 			oDialog2503.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = 0
 		next j
 	next i
+
+	oDialog2503.getControl(&quot;PasteButton&quot;).visible = false
 
 	&apos;doseField = oDialog2503.getControl(&quot;devCountZero&quot;)
 	doseField1 = oDialog2503.getControl(&quot;devCountZero1&quot;)
@@ -203,6 +205,11 @@ sub setButtonEnabled
 	setPoint
 end sub
 rem---------------------------------------------------------------------------------------------------------
+function insertClipBoardToBDValueList()
+	Overall.insertClipBoardToBDValueList2503(BDList.item(layoutPosition).getMultiValueList)
+	Overall.checkValueForRelativeErrorLimits2503(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
+end function
+rem---------------------------------------------------------------------------------------------------------
 sub addNewBD
 	dim bdName as string
 	dim nCount as integer
@@ -252,6 +259,8 @@ rem-----------------------------------------------------------------------------
 sub setButtonVisibility(layoutPosition as integer)
 	Overall.setButtonVisibility(layoutPosition)
 	if BDList.count = 0 then
+	
+		oDialog2503.getControl(&quot;PasteButton&quot;).visible = false
 		oDialog2503.getControl(&quot;is2503&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;is2503A&quot;).setEnable(true)
 		oDialog2503.getControl(&quot;is2503B&quot;).setEnable(true)
@@ -271,6 +280,7 @@ sub setButtonVisibility(layoutPosition as integer)
 		next i	
 	end if
 	if BDList.count &lt;&gt; 0 then
+		oDialog2503.getControl(&quot;PasteButton&quot;).visible = true
 		oDialog2503.getControl(&quot;is2503&quot;).setEnable(false)
 		oDialog2503.getControl(&quot;is2503A&quot;).setEnable(false)
 		oDialog2503.getControl(&quot;is2503B&quot;).setEnable(false)

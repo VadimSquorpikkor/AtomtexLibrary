@@ -9,7 +9,6 @@
   <dlg:style dlg:style-id="4" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="28" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
   <dlg:style dlg:style-id="5" dlg:font-height="18"/>
   <dlg:style dlg:style-id="6" dlg:text-color="0x66cc" dlg:font-name="Times New Roman" dlg:font-height="22" dlg:font-stylename="Обычный" dlg:font-family="roman"/>
-  <dlg:style dlg:style-id="7" dlg:font-height="8"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="53" dlg:left="24" dlg:top="201" dlg:width="49" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true">
@@ -149,7 +148,7 @@
   <dlg:numericfield dlg:id="uaLabel2" dlg:tab-index="100" dlg:left="139" dlg:top="221" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="uaLabel3" dlg:tab-index="101" dlg:left="139" dlg:top="232" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
   <dlg:numericfield dlg:id="uaLabel4" dlg:tab-index="102" dlg:left="139" dlg:top="243" dlg:width="33" dlg:height="12" dlg:value="0" dlg:spin="true"/>
-  <dlg:text dlg:style-id="7" dlg:id="Label9" dlg:tab-index="103" dlg:left="139" dlg:top="202" dlg:width="32" dlg:height="10" dlg:value="Источник" dlg:align="center"/>
+  <dlg:text dlg:style-id="3" dlg:id="Label9" dlg:tab-index="103" dlg:left="139" dlg:top="202" dlg:width="32" dlg:height="10" dlg:value="Источник" dlg:align="center"/>
   <dlg:text dlg:style-id="3" dlg:id="Label10" dlg:tab-index="104" dlg:left="177" dlg:top="202" dlg:width="34" dlg:height="10" dlg:value="Измерение" dlg:align="center"/>
  </dlg:bulletinboard>
 </dlg:window>
