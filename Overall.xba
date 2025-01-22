@@ -398,10 +398,10 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j + strokeEnd), Format(threePointArray(2), getRightFormat(m_point))) rem измерение 3
 			
 			dim valueOfBg as double
-			if _separateBGround = true then &apos; Если стоит флаг &quot;раздельный фон для каждого БД&quot;, то беру фон от каждого БД, если флаг не стоит -- для всех блоков ставлю фон, который общий для всех приборов
+			if _separateBGround = true then &apos; Если стоит флаг &quot;раздельный фон для каждого БД&quot;, то беру фон от каждого БД, если флаг не стоит -- для каждого БД заново генерю фон (типа каждый БД заново его измеряет) &apos;раньше было так: для всех блоков ставлю фон, который общий для всех приборов (bgValue)
 				valueOfBg = bd.getBdBackground
 			else
-				valueOfBg = bgValue
+				valueOfBg = Math.randValue(95, 4)&apos;раньше было bgValue
 			end if		
 			
 			if bd.getType = &quot;gamma-rem&quot; then
