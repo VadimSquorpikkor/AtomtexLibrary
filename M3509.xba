@@ -68,7 +68,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.12 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.13 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -180,7 +180,8 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList2503(BDList.item(layoutPosition).getMultiValueList)
-	Overall.checkValueForRelativeErrorLimits2503(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
+	Overall.checkValueForRelativeErrorLimits2503(BDList.item(layoutPosition).getPointList, 10)
+	&apos;Overall.checkValueForRelativeErrorLimits2503(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonVisibility(layoutPosition as integer)
