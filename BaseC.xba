@@ -137,6 +137,7 @@ sub dialogInitializeWithoutValueField(maxBDCount as integer, version as string, 
 	
 	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
 	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
+	
 
 	initializeSertificateCombo(oComboBox1, oComboBox2)
 

@@ -115,21 +115,27 @@ sub initializeActivityCombo(oActivityCombo as object)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
-	if NOT isNull(oComboBox1) OR NOT isNull(oComboBox1) then
-		REM first remove all old items from the list
+	if NOT isNull(oComboBox1) then
   		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
-  		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
-  		REM add new items to the list
   		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
   		engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
   		oComboBox1.addItems( rusItems1, 0 )
 		oComboBox1.text = rusItems1(0)
-		&apos;msgbox oComboBox1.SELECTION
+	end if	
+	if NOT isNull(oComboBox2) then
+		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
   		rusItems2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
   		engItems2 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;P. Feklenkova&quot; )
   		oComboBox2.addItems( rusItems2, 0 )
 		oComboBox2.text = rusItems2(0)
 	end if	
+	&apos;if NOT isNull(oComboBox3) then
+	&apos;	oComboBox3.removeItems( 0, oComboBox3.getItemCount() )  	
+  	&apos;	rusItems3 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
+  	&apos;	engItems3 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;P. Feklenkova&quot; )
+  	&apos;	oComboBox3.addItems( rusItems2, 0 )
+	&apos;	oComboBox3.text = rusItems2(0)
+	&apos;end if	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeDateField(oDateFieldModel as object, oDialog as object)
