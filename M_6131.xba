@@ -43,7 +43,7 @@ Sub AT6131_Dialog_Show
 	oDialog6131 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6131 )
 	oListBox = oDialog6131.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.04 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6131.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;6131\blackcat.png&quot;
@@ -129,8 +129,10 @@ sub addNewBD
 		betaArray = Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)
 	elseif oComboBETAUnit.text = &quot;CPS&quot; then
 		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
-	else
+	elseif oComboBETAUnit.text = &quot;Bq&quot; then
 		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;)
+	else
+		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
 	endif	
 	
 	if oOption6131.state   then       bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  betaArray) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
@@ -269,6 +271,8 @@ sub setBetaLayout(bd as new DUnit)
 	
 		if oComboBETAUnit.text = &quot;Bq&quot; then
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк/см2 &quot;
+		elseif oComboBETAUnit.text = &quot;Bq (Япония)&quot; then
+			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; Бк/см2 &quot;	
 		elseif oComboBETAUnit.text = &quot;CPS&quot; then
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).Text = Format(point, &quot;0.0&quot;) &amp; &quot; cps &quot;
 		else
@@ -366,6 +370,7 @@ function setButtonVisibility
 		if oComboBETAUnit.text = &quot;CPS&quot; then betaSourceCount = 4
 		if oComboBETAUnit.text = &quot;П/П&quot; then betaSourceCount = 3
 		if oComboBETAUnit.text = &quot;Bq&quot; then betaSourceCount = 3
+		if oComboBETAUnit.text = &quot;Bq (Япония)&quot; then betaSourceCount = 4
 		for i=1 to betaSourceCount
 			oDialog6131.getControl(&quot;betaField&quot; + i).visible = true 
 			oDialog6131.getControl(&quot;betaLabel&quot; + i).visible = true
@@ -427,10 +432,14 @@ sub insertRecordsToTemplate
 		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131cps&quot;, &quot;6131 cps&quot;)
 		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
 		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b_cps&quot;,&quot;6131B cps&quot;)
-	else &apos;if oComboBETAUnit.text = &quot;Bq&quot; then
+	elseif oComboBETAUnit.text = &quot;Bq&quot; then
 		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131bq&quot;, &quot;6131 Бк&quot;)
 		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
 		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b_bq&quot;,&quot;6131B Бк&quot;)
+	else &apos;if oComboBETAUnit.text = &quot;Bq (Япония)&quot; then
+		if oOption6131.state   then path = Overall.getPathAndSetName(&quot;6131\6131bq_jp&quot;, &quot;6131 Бк (Япония)&quot;)
+		if oOption6131a.state  then path = Overall.getPathAndSetName(&quot;6131\6131a&quot;,&quot;6131A&quot;)
+		if oOption6131b.state  then path = Overall.getPathAndSetName(&quot;6131\6131b_bq&quot;,&quot;6131B Бк&quot;)	
 	end if	
 		
 	OpenTemplate(sertPath &amp; path)

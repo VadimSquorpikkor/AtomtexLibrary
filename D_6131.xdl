@@ -104,6 +104,7 @@
     <dlg:menuitem dlg:value="П/П"/>
     <dlg:menuitem dlg:value="CPS"/>
     <dlg:menuitem dlg:value="Bq"/>
+    <dlg:menuitem dlg:value="Bq (Япония)"/>
    </dlg:menupopup>
    <script:event script:event-name="on-textchange" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6131.setButtonEnabled?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:combobox>
