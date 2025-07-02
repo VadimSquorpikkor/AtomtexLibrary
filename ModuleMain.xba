@@ -31,8 +31,9 @@ Sub MainDialog_Show
 &apos;═══════════════════════════════════════════════════════════════════╗
 &apos;		Список пользователь. Если надо добавить нового --   		║█
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
+&apos;	там внизу ещё в setUserName добавить надо						║█
 																&apos;	║█
-	currentVersion = 3.92										&apos;	║█
+	currentVersion = 3.93										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -46,8 +47,14 @@ Sub MainDialog_Show
 	users.add(&quot;Feklenkova_PA&quot;)									&apos;	║█
 	users.add(&quot;Karuk_IA&quot;)   									&apos;	║█
 	users.add(&quot;Bohush_SG&quot;)   									&apos;	║█
+	users.add(&quot;Vialutsich_ES&quot;) 									&apos;	║█
+	users.add(&quot;Sidorenko_AA&quot;)  									&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+
+
+
 	userName = &quot;Неизвестный&quot;
 	sertPath = &quot;&quot;
 	i=0
@@ -158,6 +165,10 @@ sub setUserName(label as String)
 		userName = &quot;Карук И.А.&quot;			
 	case &quot;Bohush_SG&quot;
 		userName = &quot;Богуш Сабрина&quot;	
+	case &quot;Vialutsich_ES&quot;
+		userName = &quot;Велютич Егор&quot;	
+	case &quot;Sidorenko_AA&quot;
+		userName = &quot;Сидоренко Артем&quot;		
 	end select
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
