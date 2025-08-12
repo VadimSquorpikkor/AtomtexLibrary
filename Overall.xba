@@ -226,17 +226,25 @@ function rightStep2140(d as double) rem расчет правильного Step
 	if d&lt;10    				then rightStep2140 = 0.01	
 end function
 &apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
-function rightDecimalAccuracy(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
-	if nStep = 0.001 then rightDecimalAccuracy = 3
-	if nStep = 0.01  then rightDecimalAccuracy = 2
-	if nStep = 0.1 	 then rightDecimalAccuracy = 1
-	if nStep &gt;= 1 	 then rightDecimalAccuracy = 0
+function rightDecimalAccuracy_old(nStep as double) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от шага при изменении значения
+	if nStep = 0.001 then rightDecimalAccuracy_old = 3
+	if nStep = 0.01  then rightDecimalAccuracy_old = 2
+	if nStep = 0.1 	 then rightDecimalAccuracy_old = 1
+	if nStep &gt;= 1 	 then rightDecimalAccuracy_old = 0
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function rightDecimalAccuracy(f as string) rem сколько знаков после запятой при выборе значения точки в форме -- зависит от формата
+	if f = &quot;0.0000&quot; then rightDecimalAccuracy = 4
+	if f = &quot;0.000&quot;  then rightDecimalAccuracy = 3
+	if f = &quot;0.00&quot;   then rightDecimalAccuracy = 2
+	if f = &quot;0.0&quot; 	 then rightDecimalAccuracy = 1
+	if f = &quot;0&quot; 	 then rightDecimalAccuracy = 0
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;   TODO Изменены границы для Overall.getRightFormat — по аналогии с 2503 (как-то логичнее) теперь: &quot;6.90&quot;, было &quot;6.9&quot;. 
 &apos;   Если такой формат понравится Наташе и Антохе, надо будет удалить Overall.getRightFormat2503 (сейчас методы идентичны)
 &apos;   и переделать метод rightStep по образу rightStep2140
-function getRightFormat(point as double)
+function getRightFormat_old(point as double)
 &apos;	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
 &apos;	if point &lt; 1   and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 &apos;	if point &lt; 100 and point &gt;= 1	then getRightFormat = &quot;0.0&quot;
@@ -245,6 +253,26 @@ function getRightFormat(point as double)
 	if point &lt; 10  and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 	if point &lt; 100 and point &gt;= 10	then getRightFormat = &quot;0.0&quot;
 	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getRightFormat(point as double)
+	dim epsilon as double
+	dim mformat as string
+	dim formatted as double 
+	epsilon = 0.00001  &apos; Допустимая погрешность
+
+	if point &lt; 0.1 and point &gt;  0	then mformat = &quot;0.000&quot;
+	if point &lt; 10  and point &gt;= 0.1 then mformat = &quot;0.00&quot;
+	if point &lt; 100 and point &gt;= 10	then mformat = &quot;0.0&quot;
+	if point &gt;= 100               	then mformat = &quot;0&quot;
+	
+	formatted = Format(point, mformat)
+		
+	if Abs(formatted-point)&gt;epsilon then
+		mformat = mformat+&quot;0&quot;
+	end if
+	
+	getRightFormat = mformat
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function getRightFormat2140(point as double)
@@ -290,10 +318,9 @@ sub makeLayoutFromMultiBD(bd as new DUnit)
 			
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).setEnable(true)
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).visible = true
-			&apos;msgbox &quot;&quot; + i + &quot;, &quot; + j
 			_oDialog.getControl(&quot;ValueField&quot; + i + &quot;-&quot; + j).value = value
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).valueStep = nStep
-			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(nStep)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-&quot; + j).DecimalAccuracy = rightDecimalAccuracy(MyFormat)
 			_oDialog.getControl(&quot;labelField&quot; + i).Text = Format(point, MyFormat) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
 		next j
 	next i
@@ -307,12 +334,13 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 		point = bd.pointList.item(i)
 		nStep = rightStep(point)
 		value = bd.valueList.item(i)
+		MyFormat = getRightFormat(value)
 	
 		_oDialog.Model.getByName(valueField + i).textColor = RGB(0, 0, 0)
 		_oDialog.Model.getByName(valueField + i).backgroundColor = RGB(255, 255, 255)
-		_oDialog.getControl(valueField + i).Text = Format(value, getRightFormat(point))
+		_oDialog.getControl(valueField + i).Text = Format(value, MyFormat)
 		_oDialog.Model.getByName(valueField + i).valueStep = nStep
-		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(nStep)
+		_oDialog.Model.getByName(valueField + i).DecimalAccuracy = rightDecimalAccuracy(MyFormat)
 		_oDialog.getControl(labelField + i).Text = &quot; &quot; + Format(point, getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
 	next i
 end sub
@@ -432,7 +460,6 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point))) rem среднее по трем измерениям
 		
 			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, getRightFormat(cont_point))) rem активность источника
-			&apos;msgbox src_name+&quot; &quot;+j
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
 			
 			dim percent as integer
@@ -901,6 +928,7 @@ function insertClipBoardToBDValueList(value_list as Collection)
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = value_list.item(i)
 		else
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+			_oDialog.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = rightDecimalAccuracy(getRightFormat(list.item(i)))
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = list.item(i)
 		end if	
 	next i
@@ -1034,8 +1062,6 @@ function getCollectionFromClipBoard()
     
     &apos;sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
     sText = Trim (sText)
-    
-    &apos;msgbox sText
     
     dim list as new Collection
     dim s_arr(0) as String

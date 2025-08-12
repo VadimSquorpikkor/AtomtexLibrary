@@ -148,7 +148,7 @@ function avarageFivePointsRndArray(coll as Collection, percent)
 
 		&apos;СКОЛЬКО ЦИФР ПОСЛЕ ЗАПЯТОЙ -- ОТРЕЗАЕТ ЛИШНИЕ ЦИФРЫ В СГЕНЕРИРОВАННОМ ЧИСЛЕ В ЗАВИСИМОСТИ ОТ НУЖНОГО КОЛИЧЕСТВА ЗНАКОВ ПОСЛЕ ЗАПЯТОЙ (4.123784253... -&gt; 4.12, 80.17852463... -&gt; 80.1, 398.758463812.... -&gt; 398)  
 		dim accuracy as integer
-		accuracy = Overall.rightDecimalAccuracy(Overall.rightStep2503(point))
+		accuracy = Overall.rightDecimalAccuracy_old(Overall.rightStep2503(point))
 		dim temp as double
 		temp = p4
 		p4 = round(p4, accuracy)
@@ -275,11 +275,13 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos; относительная погрешность измерения
 function RelativeError(meas as double, contr_point as double)
+	&apos;msgbox &quot;relative error = &quot;+ (((meas - contr_point) / contr_point) * 100)
 	RelativeError = ((meas - contr_point) / contr_point) * 100
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;доверительная граница погрешности измерения
-function ConfidenceLimit(pogr as double, percent as long)
+function ConfidenceLimit(pogr as double, percent as double)
+	&apos;msgbox &quot;процент = &quot;+percent+&quot;, погрешность = &quot;+pogr	
 	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------

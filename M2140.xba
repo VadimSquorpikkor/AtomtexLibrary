@@ -144,11 +144,12 @@ sub makeSimpleLayoutFromBD_2140(bd as new DUnit)
 		point = bd.pointList.item(i)
 		nStep = Overall.rightStep2140(point)
 		value = bd.valueList.item(i)
+		MyFormat = Overall.getRightFormat2140(point)
 	
 		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
-		oDialogAT2140.getControl(&quot;ValueField&quot; + i).Text = Format(value, Overall.getRightFormat2140(point))
+		oDialogAT2140.getControl(&quot;ValueField&quot; + i).Text = Format(value, MyFormat)
 		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).valueStep = nStep
-		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = Overall.rightDecimalAccuracy(nStep)
+		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = Overall.rightDecimalAccuracy(MyFormat)
 		oDialogAT2140.getControl(&quot;Label&quot; + i).Text = &quot; &quot; + Format(point, Overall.getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
 	next i
 end sub
