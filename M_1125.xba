@@ -55,7 +55,7 @@ Sub AT1125_Dialog_Show
 
 	&apos;dim NULL as object
 	&apos;Overall.dialogSimpleInitialize(oDialog1125, oDateFieldModel, &quot;Версия 1.06 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.14 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1125, oDateFieldModel, &quot;Версия 1.15 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 oDialog1125.getControl(&quot;doneButton&quot;).setEnable(true)
 
@@ -441,7 +441,7 @@ sub insertRecordsToTemplate
 		strokeForSaving = &quot;1125A №&quot; &amp; serial
 		findAndRename(&quot;$type&quot;, &quot;AT1125A&quot;)
 	end if	
-	CopyVariableToClipboard(strokeForSaving)
+	CopyVariableToClipboard(strokeForSaving+&quot; - &quot;+getCurrentDateString())
 	msgbox &quot;Готово!&quot;
 end sub
 

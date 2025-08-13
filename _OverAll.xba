@@ -72,6 +72,18 @@ function getDateSlash(DateFieldModel) &apos;YYYYMMDD
 	year = dnum \ 10000
 	getDateSlash = insertZero(day) &amp;&quot;/&quot;&amp; insertZero(month) &amp;&quot;/&quot;&amp; year
 end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getCurrentDateString()
+    Dim currentDate As Date
+    Dim dateString As String
+    
+    currentDate = Now() &apos; или Date()
+    
+    &apos; Форматируем дату в нужный формат: год.месяц(число).день
+    dateString = Format(currentDate, &quot;yyyy.mm.dd&quot;)
+        
+    getCurrentDateString = dateString
+End function
 &apos;--------------------------------------------------------------------	
 function insertZero(number)
 	if number &gt; 9 then

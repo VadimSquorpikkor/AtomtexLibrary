@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.25 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.26 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -552,7 +552,7 @@ sub insertDataToTemplate
 	&apos;------------------------------------------------------------
 	insertMeasLimits
 	strokeForSaving = &quot;1117 M &quot; &amp; serial &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot;)&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	CopyVariableToClipboard(strokeForSaving+&quot; - &quot;+getCurrentDateString())
 	&apos;сброс массива пределов измерений для возможного следующего протокола иначе с каждым последующим выводом протокола пределы будут накапливаться
 	for i=0 to uBound(measLimitsArray)
 		measLimitsArray(i) = 0

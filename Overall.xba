@@ -145,6 +145,7 @@ sub initializeDateField(oDateFieldModel as object, oDialog as object)
 	
 	_oDateFieldModel = oDateFieldModel
 end sub
+
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
 	_layoutPosition = layoutPosition
@@ -786,12 +787,12 @@ function setStrokeForSaving(stroke as String)
 	deviceNameForSavingStroke = stroke
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-&apos;в первой строке заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
-&apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
-&apos;В конце строки добавляет тип документа (поверка, проверка, сертификат)
 function setClipboardWithType(label as String)
+	&apos;заменяет в протоколе метку строкой: &quot;452.002; 452.003; 452.004; 452.005; 452.006&quot;
 	findAndRename(label, strokeForSaving)
-	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate
+	&apos;добавление к строке названия прибора и добавляет тип документа (поверка, проверка, сертификат)
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate &amp; &quot; - &quot; &amp; getCurrentDateString()
+	&apos;и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
 	CopyVariableToClipboard(strokeForSaving)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -799,7 +800,7 @@ end function
 &apos;во второй и третей - добавление к строке названия прибора и сохранение полученой строки в буфер обмена: &quot;БДКГ-02 ( 452.002; 452.003; 452.004; 452.005; 452.006 )&quot;
 function setClipboard(label as String)
 	findAndRename(label, strokeForSaving)
-	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot;
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; )&quot; &amp; &quot; - &quot; &amp; getCurrentDateString()
 	CopyVariableToClipboard(strokeForSaving)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -808,14 +809,14 @@ end function
 &apos;@DEPRECATED но без неё будет ошибка при вызове Overall.createCertificate
 function setSerial(label as String)
 	findAndRename(label, strokeForSaving)
-	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; strokeForSaving &amp; &quot; ) &quot; &amp; _stringTypeForCertificate &amp; &quot; - &quot; &amp; getCurrentDateString()
 	CopyVariableToClipboard(strokeForSaving)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;это затыска для нейтрона потом переделаю
 function setSerialWithStroke(label as String, stroke as string)
 	findAndRename(label, strokeForSaving)
-	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; stroke &amp; &quot;) &quot; &amp; _stringTypeForCertificate
+	strokeForSaving = deviceNameForSavingStroke &amp; &quot; ( &quot; &amp; stroke &amp; &quot;) &quot; &amp; _stringTypeForCertificate &amp; &quot; - &quot; &amp; getCurrentDateString()
 	CopyVariableToClipboard(strokeForSaving)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------

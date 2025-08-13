@@ -31,7 +31,7 @@ Sub Portal_Dialog_Show
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.13 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
@@ -299,7 +299,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$type&quot;, bd.getType)
 	
 	strokeForSaving = &quot;&quot; + bd.getType &amp; &quot; ( &quot; &amp; srk_serial &amp; &quot; ) &quot; &amp; Overall._stringTypeForCertificate
-	CopyVariableToClipboard(strokeForSaving)
+	CopyVariableToClipboard(strokeForSaving+&quot; - &quot;+getCurrentDateString())
 	msgbox &quot;Готово!&quot;
 end sub
 rem---------------------------------------------------------------------------------------------------------

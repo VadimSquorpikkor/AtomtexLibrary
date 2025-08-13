@@ -68,7 +68,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.13 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -308,8 +308,8 @@ sub insertRecordsToTemplate
 	if is3509.state  then strokeForSaving = strokeForSaving &amp; &quot; - 3509&quot;
 	if is3509A.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509A&quot;
 	if is3509B.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509B&quot;
-	if is3509C.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509C&quot;
-	CopyVariableToClipboard(strokeForSaving)
+	if is3509C.state then strokeForSaving = strokeForSaving &amp; &quot; - 3509C&quot;	
+	CopyVariableToClipboard(strokeForSaving+&quot; - &quot;+getCurrentDateString())
 	msgbox &quot;Готово!&quot;
 	&apos;&apos;&apos;&apos;&apos;oDialog3509.endexecute()
 end sub
