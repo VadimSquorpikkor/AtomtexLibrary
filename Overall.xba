@@ -245,7 +245,7 @@ end function
 &apos;   TODO Изменены границы для Overall.getRightFormat — по аналогии с 2503 (как-то логичнее) теперь: &quot;6.90&quot;, было &quot;6.9&quot;. 
 &apos;   Если такой формат понравится Наташе и Антохе, надо будет удалить Overall.getRightFormat2503 (сейчас методы идентичны)
 &apos;   и переделать метод rightStep по образу rightStep2140
-function getRightFormat_old(point as double)
+function getRightFormat(point as double)
 &apos;	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
 &apos;	if point &lt; 1   and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 &apos;	if point &lt; 100 and point &gt;= 1	then getRightFormat = &quot;0.0&quot;
@@ -256,7 +256,7 @@ function getRightFormat_old(point as double)
 	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-function getRightFormat(point as double)
+function getRightFormat_din_length(point as double)
 	dim epsilon as double
 	dim mformat as string
 	dim formatted as double 

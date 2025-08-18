@@ -269,7 +269,7 @@ function avaragePointsRndArray(point as double, o_percent as double)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos; доверительная граница погрешности измерения
-function dov_granica(pogr as double, percent as integer)
+function dov_granica(pogr as double, percent as double)
 	dov_granica = 1.1 * sqr(percent*percent + pogr*pogr)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
