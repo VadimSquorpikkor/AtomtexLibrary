@@ -466,7 +466,7 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, getRightFormat(cont_point))) rem активность источника
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
 			
-			dim percent as integer
+			dim percent as double
 			percent = FacilityError(m_point, BDType, prefix)
 				
 			dim pogr_point as double
@@ -528,7 +528,7 @@ sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList
 				
 		findAndRename((sign + i + &quot;-4&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
 				
-		dim percent as integer
+		dim percent as double
 		percent = 6
 			
 
@@ -580,7 +580,7 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 				
 		findAndRename((sign + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
 				
-		dim percent as integer
+		dim percent as double
 		percent = 6
 			
 		dim pogr_point as double
@@ -594,22 +594,36 @@ end sub
 function FacilityError(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
-	case &quot;gamma&quot;, &quot;gamma-Gy&quot;, &quot;gamma007&quot;
+	&apos;амбиентный эквивалент и направленная доза ------------
+	case &quot;gamma&quot;, &quot;gamma007&quot;
+		&apos;раньше для удг-110 и удг-130 были разные погрешности
 		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = 5 rem 110
+			FacilityError = 2.9 &apos;(5) удг-110
 		else
-			FacilityError = 4 rem 130
+			FacilityError = 2.9 &apos;(4) удг-130
 		end if
+	&apos;Керма ------------------------------------------------
+	case &quot;gamma-Gy&quot;
+		if AbsoluteValue(point, prefix)&lt;1 then
+			FacilityError = 2 &apos;удг-110
+		else
+			FacilityError = 2 &apos;удг-130
+		end if
+	&apos;140 плотность потока ---------------------------------
 	case &quot;n-PP&quot;
-			FacilityError = 5 rem `140
+			FacilityError = 5
+	&apos;140 мощность дозы ------------------------------------
 	case &quot;n-MD&quot;
-			FacilityError = 5 rem `140				
+			FacilityError = 5
+	&apos;альфа ------------------------------------------------
 	case &quot;alpha&quot;
-			FacilityError = 6 rem `alpha
+			FacilityError = 6
+	&apos;бета -------------------------------------------------		
 	case &quot;beta&quot;
-			FacilityError = 6 rem `beta
+			FacilityError = 6
+	&apos;для уд.активности для 1125 ---------------------------
 	case &quot;gamma-Src&quot;
-			FacilityError = 10 rem `beta		
+			FacilityError = 10 
 	end select
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------

@@ -281,7 +281,7 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;доверительная граница погрешности измерения
 function ConfidenceLimit(pogr as double, percent as double)
-	&apos;msgbox &quot;процент = &quot;+percent+&quot;, погрешность = &quot;+pogr	
+	&apos;msgbox &quot;процент = &quot;+percent+&quot;, погрешность = &quot;+pogr	+&quot; &quot;+(pogr*pogr)
 	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
