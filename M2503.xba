@@ -564,7 +564,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 				
 		for m=0 to 4
 			m_point = fivePointArray(m)
-			MyFormat = Overall.getRightFormat2503(fivePointArray(m))	
+			MyFormat = Overall.getRightFormat(fivePointArray(m))	
 			findAndRename((&quot;$&quot; + i + &quot;-m&quot; + j + m + strokeEnd), Format(fivePointArray(m), MyFormat))
 		next m
 
@@ -575,7 +575,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 			avg = avg + fivePointArray(p)
 		next p
 		avg = avg/5
-		MyFormat = Overall.getRightFormat2503(avg)
+		MyFormat = Overall.getRightFormat(avg)
 		findAndRename((&quot;$&quot; + i + &quot;-av&quot; + j + strokeEnd), Format(avg, MyFormat))
 
 		&apos;ОТКЛИК (Rw%)

@@ -144,7 +144,7 @@ sub makeSimpleLayoutFromBD_2140(bd as new DUnit)
 		point = bd.pointList.item(i)
 		nStep = Overall.rightStep2140(point)
 		value = bd.valueList.item(i)
-		MyFormat = Overall.getRightFormat2140(point)
+		MyFormat = Overall.getRightFormat(point)
 	
 		oDialogAT2140.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
 		oDialogAT2140.getControl(&quot;ValueField&quot; + i).Text = Format(value, MyFormat)

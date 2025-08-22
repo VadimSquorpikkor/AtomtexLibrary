@@ -256,6 +256,7 @@ function getRightFormat(point as double)
 	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;не используется
 function getRightFormat_din_length(point as double)
 	dim epsilon as double
 	dim mformat as string
@@ -276,12 +277,14 @@ function getRightFormat_din_length(point as double)
 	getRightFormat = mformat
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;не используется
 function getRightFormat2140(point as double)
 	if point &lt; 10  and point &gt; 	0 	then getRightFormat2140 = &quot;0.00&quot;&apos;7 
 	if point &lt; 100 and point &gt;= 10	then getRightFormat2140 = &quot;0.0&quot; &apos;70
 	if point &gt;= 100               	then getRightFormat2140 = &quot;0&quot;   &apos;700
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;не используется
 function getRightFormat2503(point as double)
 	if point &lt; 0.1 and point &gt;  0	then getRightFormat2503 = &quot;0.000&quot;
 	if point &lt; 10   and point &gt;= 0.1 then getRightFormat2503 = &quot;0.00&quot;
@@ -922,6 +925,8 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	dim list as new Collection
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
 	
+	list = formatList(list)
+	
 	for i=1 to value_list.count
 		_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
 		if list.item(i) = 0 then
@@ -935,10 +940,24 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	next i
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;приведение значений списка к правильному виду, числа округляются до заданного форматом кол-ва цифр после запятой
+function formatList(list as Collection)
+	dim i as integer
+	dim list_result as new Collection
+	for i=1 to list.count
+		MyFormat = getRightFormat(list.item(i))
+		list_result.add(Format(list.item(i), MyFormat))
+		&apos;msgbox &quot;before = &quot;+list.item(i)+&quot; after = &quot;+Format(list.item(i), MyFormat)
+	next i
+	formatList = list_result
+end function 
+&apos;------------------------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList2503(value_list as Collection)
 	dim i as integer
 	dim list as new Collection
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	
+	list = formatList(list)
 	
 	for i=1 to value_list.count
 		_oDialog.Model.getByName(&quot;ValueField&quot; + i + &quot;-1&quot;).backgroundColor = RGB(255, 255, 255)
@@ -957,6 +976,8 @@ function insertClipBoardToBDValueListBDMG(value_list as Collection)
 	dim i as integer
 	dim list as new Collection
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	
+	list = formatList(list)
 	
 	for i=1 to value_list.count
 	_oDialog.Model.getByName(&quot;ValueBDMG&quot; + i).backgroundColor = RGB(255, 255, 255)
@@ -979,6 +1000,9 @@ function insertClipBoardToBDValueListAlphaBeta(point_list as Collection, value_l
 	dim list as new Collection
 	&apos;list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
 	list = getCollectionFromClipBoard
+	
+	list = formatList(list)
+	
 	if list.count=21 then
 		if bd_type=0 then
 			_oDialog.Model.getByName(&quot;ValueField&quot; + 1).value = list.item(2)
