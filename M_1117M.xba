@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.26 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.27 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -568,7 +568,8 @@ end sub
 sub neutron_03(i as integer, bd as BUnit)
 	&apos;(0.45,9.5, 88, 330, 1350),	
 	&apos;neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
-	neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(9, 75, 309, 1301))
+	&apos;neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(9, 75, 309, 1301))
+	neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(8, 75.8, 313, 1320))
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub neutron_05(i as integer, bd as BUnit)
