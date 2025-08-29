@@ -250,6 +250,9 @@ function getRightFormat(point as double)
 &apos;	if point &lt; 1   and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 &apos;	if point &lt; 100 and point &gt;= 1	then getRightFormat = &quot;0.0&quot;
 &apos;	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
+
+	&apos;ТОЛЬКО С ТОЧКОЙ!!! С ЗАПЯТОЙ НЕПРАВИЛЬНО БУДЕТ ФОРМАТИРОВАТЬ ПРИ ВЫБОРЕ ЛОКАЛИ ЯЗЫКА ОФИСА РУССКОГО!!!
+
 	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
 	if point &lt; 10  and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 	if point &lt; 100 and point &gt;= 10	then getRightFormat = &quot;0.0&quot;
@@ -611,10 +614,10 @@ function FacilityError(point as double, BDType as string, prefix as string)
 		end if
 	&apos;140 плотность потока ---------------------------------
 	case &quot;n-PP&quot;
-			FacilityError = 5
+			FacilityError = 4
 	&apos;140 мощность дозы ------------------------------------
 	case &quot;n-MD&quot;
-			FacilityError = 5
+			FacilityError = 4
 	&apos;альфа ------------------------------------------------
 	case &quot;alpha&quot;
 			FacilityError = 6
@@ -940,13 +943,16 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
 	
 	list = formatList(list)
-	
+
+	&apos;msgbox &quot;&quot;+list.item(1)+&quot; &quot;+list.item(2)+&quot; &quot;+list.item(3)+&quot; &quot;+list.item(4)+&quot; &quot;+list.item(5)+&quot; &quot;+list.item(6)+&quot; &quot;+list.item(7)+&quot; &quot;+list.item(8)+&quot; &quot;+list.item(9)
+		
 	for i=1 to value_list.count
 		_oDialog.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
 		if list.item(i) = 0 then
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(200, 0, 0)
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = value_list.item(i)
 		else
+			&apos;msgbox 
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = rightDecimalAccuracy(getRightFormat(list.item(i)))
 			_oDialog.Model.getByName(&quot;ValueField&quot; + i).value = list.item(i)
@@ -954,14 +960,29 @@ function insertClipBoardToBDValueList(value_list as Collection)
 	next i
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function getDbFromStringByLocale(s as string)
+	dim d as double
+	if CDbl(&quot;3,3&quot;) = 3.3 then
+   		s = Replace (s,&quot;.&quot;,&quot;,&quot;)
+ 	else
+   		s = Replace (s,&quot;,&quot;,&quot;.&quot;)
+    end if
+	d = cdbl(s)
+	getDbFromStringByLocale = d
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;приведение значений списка к правильному виду, числа округляются до заданного форматом кол-ва цифр после запятой
 function formatList(list as Collection)
 	dim i as integer
+	dim MyFormat as string
+	dim preformatted as string
+	dim value as double
 	dim list_result as new Collection
+	
 	for i=1 to list.count
 		MyFormat = getRightFormat(list.item(i))
-		list_result.add(Format(list.item(i), MyFormat))
-		&apos;msgbox &quot;before = &quot;+list.item(i)+&quot; after = &quot;+Format(list.item(i), MyFormat)
+		preformatted = Format(list.item(i), MyFormat)
+		list_result.add(CDbl(preformatted))
 	next i
 	formatList = list_result
 end function 
@@ -1098,8 +1119,7 @@ function getCollectionFromClipBoard()
     else
     	sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
     end if
-    
-    &apos;sText = Replace (sText,&quot;,&quot;,&quot;.&quot;)
+
     sText = Trim (sText)
     
     dim list as new Collection
