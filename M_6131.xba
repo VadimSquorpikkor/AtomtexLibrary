@@ -126,13 +126,13 @@ sub addNewBD
 	&apos;TODO ТОЧКИ ДЛЯ БЕТЫ СЕЙЧАС ОТ БАЛДЫ НАДО ПОСТАВИТЬ РЕАЛЬНЫЕ
 	dim betaArray as object
 	if oComboBETAUnit.text = &quot;П/П&quot; then
-		betaArray = Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)
+		betaArray = Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)
 	elseif oComboBETAUnit.text = &quot;CPS&quot; then
-		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
+		betaArray = Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;)
 	elseif oComboBETAUnit.text = &quot;Bq&quot; then
-		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;)
+		betaArray = Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;)
 	else
-		betaArray = Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
+		betaArray = Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;)
 	endif	
 	
 	if oOption6131.state   then       bd.addDataWithSrc(&quot;6131&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	  &quot;gamma&quot;, Array(0.1,10000),  betaArray) 	&apos;границы от 0.1 мкЗв/ч до 10 мЗв/ч
@@ -142,12 +142,7 @@ sub addNewBD
 	if oOption6131.state OR oOption6131b.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
-			&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-			if oComboBETAUnit.text = &quot;CPS&quot; then
-				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
-			else
-				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
-			end if
+			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
 		next i	
 		bd.setBetaValues(list)
 		bd.setAltList(list)
@@ -261,11 +256,7 @@ sub setBetaLayout(bd as new DUnit)
 			point = bd.getAltList.item(i)
 			oDialog6131.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 200)
 		else
-			if oComboBETAUnit.text = &quot;CPS&quot; then
-				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel) * 1.426
-			else	
-				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
-			end if
+			point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
 			oDialog6131.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
@@ -458,11 +449,7 @@ sub insertRecordsToTemplate
 		dim alphaPoint as double
 		dim pointList as new Collection 
 		for j=1 to BDList.item(1).getBetaSources.count
-			if oComboBETAUnit.text = &quot;CPS&quot; then
-				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel) * 1.426
-			else	
-				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
-			end if
+			point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
 			pointList.add(point)
 		next j
 		&apos;альфа точка толька одна, поэтому не заморачивался с циклом

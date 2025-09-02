@@ -191,36 +191,45 @@ sub addNewBD
 	
 	if oComboSVREM.text = &quot;SIEVERT&quot; then
 		&apos;if BDList.count &lt;&gt; 0 then Overall.saveCurentBDValue(BDList.count) rem !!!!!НЕ использовать!!! сохраняет значение первого во втором ИСПОЛЬЗОВАТЬ: if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition)
-		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
-		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
+		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;))
+		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;))
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70), 	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array()) 
-		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	else &apos;если в REMах
-		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),			&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
-		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;))
+		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),			&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;))
+		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;))
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;rem/ч&quot;, Array(70,0.7,7,70), 		Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 			&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130d.state   then bd.addDataWithSrc(&quot;6130D&quot;,		&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
-		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;&quot;),&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;6905Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
+		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;&quot;),&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	end if
-
+	
 	if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state OR oOption6130japan.state then
 		dim list as new Collection
 		for i=1 to bd.getBetaValues.count
-			&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-			if oOption6130cps.state then
-				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
-			else
-				list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
-			end if		
+			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
 		next i	
 		bd.setBetaValues(list)
 		bd.setAltList(list)
 	end if
+	
+	&apos;if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state OR oOption6130japan.state then
+	&apos;	dim list as new Collection
+	&apos;	for i=1 to bd.getBetaValues.count
+	&apos;		&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
+	&apos;		if oOption6130cps.state then
+	&apos;			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
+	&apos;		else
+	&apos;			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
+	&apos;		end if		
+	&apos;	next i	
+	&apos;	bd.setBetaValues(list)
+	&apos;	bd.setAltList(list)
+	&apos;end if
 	
 	oDialog6130.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog6130.getControl(&quot;bdSerial&quot;).text)
@@ -309,11 +318,11 @@ sub setBetaLayout(bd as new DUnit)
 			point = bd.getAltList.item(i)
 			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 200)
 		else
-			if oOption6130cps.state then
-				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel) * 1.426
-			else	
+			&apos;if oOption6130cps.state then
+			&apos;	point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel) * 1.426
+			&apos;else	
 				point = Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)
-			end if	
+			&apos;end if	
 			oDialog6130.Model.getByName(&quot;betaLabel&quot; + i).textColor = RGB(0, 0, 0)
 		end if
 	
@@ -487,11 +496,7 @@ sub insertRecordsToTemplate
 		dim point as double
 		dim pointList as new Collection 
 		for j=1 to BDList.item(1).getBetaSources.count
-			if oOption6130cps.state OR oOption6130japan.state then
-				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel) * 1.426
-			else	
-				point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
-			end if
+			point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
 			pointList.add(point)
 		next j
 		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)

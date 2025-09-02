@@ -217,7 +217,7 @@ sub initializeBD_short rem НЕ РАБОТАЕТ
 	BDList.add(bd.addData(&quot;AT1125&quot;,	&quot;Зв/ч&quot;,		Array(0.24,0.7,7,70,240),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 			 &quot;gamma&quot;,	Array(0.3,0.3)))
 	BDList.add(bd.addData(&quot;AT1125A&quot;,&quot;Зв/ч&quot;,		Array(0.24,0.7,7,70,240,0.7,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;,	Array(0.3,100)))
 	BDList.add(bd.addData(&quot;БДПС-02 α&quot;,	&quot;&quot;,		Array(62.7,681,8655,61800,201000),	emptyArray,									 &quot;alpha&quot;,	Array(2.4,100)))
-	BDList.add(bd.addData(&quot;БДПС-02 β&quot;,	&quot;&quot;,		Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),	 &quot;beta&quot;,	Array(6,100)))
+	BDList.add(bd.addData(&quot;БДПС-02 β&quot;,	&quot;&quot;,		Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;0580&quot;),	 &quot;beta&quot;,	Array(6,100)))
 	BDList.add(bd.addData(&quot;БДПС-02 γ&quot;,	&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,20),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),			 &quot;gamma&quot;,	Array(0.1,30)))
 end sub
 rem---------------------------------------------------------------------------------------------------------
@@ -225,7 +225,7 @@ sub initializeBD
 	addBDtoCollection(&quot;AT1125&quot;,		&quot;Зв/ч&quot;,		Array(0.24,0.7,7,70,240),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 			 &quot;gamma&quot;,		Array(0.3,0.3))
 	addBDtoCollection(&quot;AT1125A&quot;,	&quot;Зв/ч&quot;,		Array(0.24,0.7,7,70,240,0.7,7,70),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), &quot;gamma&quot;,		Array(0.3,100))
 	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;&quot;,			Array(62.7,681,8655,61800,201000),	emptyArray,									 &quot;alpha&quot;,		Array(2.4,100))
-	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;&quot;,			Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;6905&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;15014&quot;),	 &quot;beta&quot;,		Array(6,100))
+	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;&quot;,			Array(97,232,5700,52000,377100),	Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;0580&quot;),	 &quot;beta&quot;,		Array(6,100))
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;Зв/ч&quot;,		Array(0.7,7,70,0.7,7,20),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),			 &quot;gamma&quot;,		Array(0.1,30))
 	&apos;addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;3668&quot;,&quot;595&quot;),			 	 &quot;gamma-Src&quot;,	Array(0,0))
 	addBDtoCollection(&quot;УА&quot;,			&quot;&quot;,			Array(100,1000,10000,100000),		Array(&quot;483&quot;,&quot;93&quot;,&quot;832&quot;,&quot;595&quot;),			 	 &quot;gamma-Src&quot;,	Array(0,0))
