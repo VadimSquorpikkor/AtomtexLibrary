@@ -33,7 +33,7 @@ Sub MainDialog_Show
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 &apos;	там внизу ещё в setUserName добавить надо						║█
 																&apos;	║█
-	currentVersion = 4.03										&apos;	║█
+	currentVersion = 4.04										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█

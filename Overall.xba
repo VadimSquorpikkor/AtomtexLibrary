@@ -64,6 +64,8 @@ end function
 sub setSeparateBG(state as boolean)
 	_separateBGround = state
 end sub
+&apos;-------------------------------------------------------------------------
+
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
 	select case Combo.text
@@ -115,6 +117,7 @@ sub initializeActivityCombo(oActivityCombo as object)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
+	&apos;msgbox &quot;initializeSertificateCombo&quot;
 	if NOT isNull(oComboBox1) then
   		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
   		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
