@@ -33,7 +33,7 @@ Sub MainDialog_Show
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 &apos;	там внизу ещё в setUserName добавить надо						║█
 																&apos;	║█
-	currentVersion = 4.01										&apos;	║█
+	currentVersion = 4.03										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -87,6 +87,7 @@ End sub
 sub startMacro(sertPath as String)
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	
+	
 	On Error Goto ErrorHandler
 	Sensor.setValues
 	Sensor.getVersionFromFile
@@ -126,12 +127,9 @@ sub startMacro(sertPath as String)
 	oDialogMain.Model.getByName(&quot;ImageControlHEAD&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp; &quot;MAIN_FORM_8.png&quot;
 	oDialogMain.Model.getByName(&quot;ImageControlLOGO&quot;).ImageURL = sertPath &amp; &quot;imgs/&quot; &amp;&quot;logo.png&quot;
 	
-	
-	
-	
-	
-	
 	oDialogMain.getControl(&quot;LabelNAME&quot;).text = userName
+
+	initSources()
 
 	oDialogMain.Execute()
 	Exit sub

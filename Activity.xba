@@ -16,12 +16,16 @@
 
 &apos;═══════════════════════════════════════════════════════════════════════════════╗
 																			&apos;	║█
-&apos;Период распада для Цезий-137												&apos;	║█
+&apos;Период полураспада для Цезий-137											&apos;	║█
 public const CS_137_HALF_LIFE as double = 365.2425 * 30.167					&apos;	║█
-&apos;Период распада для Стронций-90												&apos;	║█
+&apos;Период полураспада для Стронций-90											&apos;	║█
 public const SR_90_HALF_LIFE as double  = 365.2425 * 28.7967 				&apos;	║█
-&apos;Период распада для Америций												&apos;	║█
+&apos;Период полураспада для Америций											&apos;	║█
 public const AM_241_HALF_LIFE as double = 365.2425 * 432.6					&apos;	║█
+																			&apos;	║█
+public const CD_109_HALF_LIFE = 461.4										&apos;	║█
+																			&apos;	║█
+public const BA_133_HALF_LIFE = 365.2425 * 10.5156							&apos;	║█
 																			&apos;	║█
 &apos;Активность на выбранный день												&apos;	║█
 &apos;	a0 — активность на день поверки, 										&apos;	║█
@@ -42,6 +46,74 @@ end function																&apos;	║█
 											 								&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+
+&apos;Класс радиоактивного элемента
+Type Element
+	&apos;Название химического элемента
+	ename as string
+	&apos;Период полураспада
+	halflife as double
+end type
+&apos; Конструктор
+Function newElement(ename as string, halflife as double) as Element
+    Dim r As Element
+    r.ename = ename
+    r.halflife = halflife
+    newElement = r
+End Function
+
+dim SC_137 as Element
+dim SR_90 as Element
+
+dim BETA_0660 as new RASrc
+dim BETA_0661 as new RASrc
+dim BETA_0662 as new RASrc
+dim BETA_0663 as new RASrc
+dim BETA_0664 as new RASrc
+dim BETA_0665 as new RASrc
+dim BETA_0666 as new RASrc
+dim BETA_0667 as new RASrc
+dim BETA_2124 as new RASrc
+dim BETA_2125 as new RASrc
+dim BETA_2126 as new RASrc
+dim BETA_2127 as new RASrc
+dim BETA_2128 as new RASrc
+dim BETA_2129 as new RASrc
+dim BETA_0578 as new RASrc
+dim BETA_0579 as new RASrc
+dim BETA_0580 as new RASrc
+dim BETA_0581 as new RASrc
+
+&apos;dim GAMMA_516 as new RASrc
+&apos;dim GAMMA_517 as new RASrc
+&apos;dim GAMMA_518 as new RASrc
+&apos;dim GAMMA_519 as new RASrc
+
+sub initSources()
+	SC_137 = newElement(&quot;Cs-137&quot;, CS_137_HALF_LIFE)
+	SR_90 = newElement(&quot;Sr-90&quot;, SR_90_HALF_LIFE)
+	&apos;бета-источники	
+	BETA_0660.initBeta(&quot;0660&quot;, &quot;2025.07.22&quot;, SR_90, 154,     58.2,    40)
+	BETA_0661.initBeta(&quot;0661&quot;, &quot;2025.07.22&quot;, SR_90, 9070,    3420,    40)
+	BETA_0662.initBeta(&quot;0662&quot;, &quot;2025.07.22&quot;, SR_90, 85500,   32300,   40)
+	BETA_0663.initBeta(&quot;0663&quot;, &quot;2021.06.01&quot;, SR_90, 73.3,    21.4,    100)
+	BETA_0664.initBeta(&quot;0664&quot;, &quot;2024.07.30&quot;, SR_90, 272,     101,     100)
+	BETA_0665.initBeta(&quot;0665&quot;, &quot;2023.09.06&quot;, SR_90, 2020,    762,     100)
+	BETA_0666.initBeta(&quot;0666&quot;, &quot;2025.01.29&quot;, SR_90, 22800,   8570,    100)
+	BETA_0667.initBeta(&quot;0667&quot;, &quot;2023.09.06&quot;, SR_90, 211000,  79900,   100)
+	BETA_2124.initBeta(&quot;2124&quot;, &quot;2025.01.29&quot;, SR_90, 11.3,    4.26,    1)
+	BETA_2125.initBeta(&quot;2125&quot;, &quot;2025.01.29&quot;, SR_90, 1070,    401,     1)
+	BETA_2126.initBeta(&quot;2126&quot;, &quot;2025.01.29&quot;, SR_90, 58.4,    21.9,    10)
+	BETA_2127.initBeta(&quot;2127&quot;, &quot;2025.01.29&quot;, SR_90, 589,     222,     10)
+	BETA_2128.initBeta(&quot;2128&quot;, &quot;2025.01.29&quot;, SR_90, 6680,    2520,    10)
+	BETA_2129.initBeta(&quot;2129&quot;, &quot;2025.01.29&quot;, SR_90, 66.3,    25,      100)
+	BETA_0578.initBeta(&quot;0578&quot;, &quot;2025.01.29&quot;, SR_90, 504,     191,     40)
+	BETA_0579.initBeta(&quot;0579&quot;, &quot;2025.01.29&quot;, SR_90, 302000,  113000,  40)
+	BETA_0580.initBeta(&quot;0580&quot;, &quot;2025.01.29&quot;, SR_90, 736000,  277000,  40)
+	BETA_0581.initBeta(&quot;0581&quot;, &quot;2025.01.29&quot;, SR_90, 3010000, 1130000, 40)
+	
+	&apos;GAMME_516.initGamma(&quot;&quot;, &quot;2025.01.29&quot;, SR_90, 3010000, 1130000, 40)
+end sub
 
 &apos;-------------------------------------------------------------
 &apos;Из строки вида &quot;2016.12.22&quot; возвращает int массив [год, месяц, день]
@@ -115,132 +187,80 @@ end function
 function get_activity_Sr(src as string, nowDate)
 	&apos;msgbox &quot;get_activity_Sr - &quot;+src
 	select case src
-	&apos;—————————————————————————————————————————————————————————————————
 	&apos;плотность потока
-		case &quot;0660&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 58.2,    40, nowDate)
-		case &quot;0661&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 3420,    40, nowDate)
-		case &quot;0662&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 32300,   40, nowDate)
-		case &quot;0663&quot;
-			get_activity_Sr = Sr90_pp(&quot;2021.06.01&quot;, 21.4,    100, nowDate)
-		case &quot;0664&quot;
-			get_activity_Sr = Sr90_pp(&quot;2024.07.30&quot;, 101,     100, nowDate)
-		case &quot;0665&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 762,     100, nowDate)
-		case &quot;0666&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 8570,    100, nowDate)
-		case &quot;0667&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 79900,   100, nowDate)
-		case &quot;2124&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 4.26,    1, nowDate)
-		case &quot;2125&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 401,     1, nowDate)
-		case &quot;2126&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 21.9,    10, nowDate)
-		case &quot;2127&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 222,     10, nowDate)
-		case &quot;2128&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 2520,    10, nowDate)				
-		case &quot;2129&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 25,      100, nowDate)
-		case &quot;0578&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 191,     40, nowDate)	
-		case &quot;0579&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 113000,  40, nowDate)	
-		case &quot;0580&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 277000,  40, nowDate)	
-		case &quot;0581&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 1130000, 40, nowDate)				
-		&apos;—————————————————————————————————————————————————————————————————
-		&apos;поверхностная активность
-		case &quot;0660Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 154,    40, nowDate)
-		case &quot;0661Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 9070,   40, nowDate)
-		case &quot;0662Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 85500,  40, nowDate)
-		case &quot;0664Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 272,    100, nowDate)
-		case &quot;0665Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 2020,   100, nowDate)
-		case &quot;0666Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 22800,  100, nowDate)
-		case &quot;0667Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 211000, 100, nowDate)
-		case &quot;2129Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 66.33,  100, nowDate)
-		case &quot;0578Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 504,    40, nowDate)	
-		case &quot;0579Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 302000, 40, nowDate)	
-		case &quot;0580Bq&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 736000, 40, nowDate)	
-		&apos;—————————————————————————————————————————————————————————————————
-		&apos;активность (нигде не используется, так, на всякий)
-		case &quot;0660Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 154,     nowDate)
-		case &quot;0661Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 9070,    nowDate)
-		case &quot;0662Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.07.22&quot;, 85500,   nowDate)
-		case &quot;0663Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2021.06.01&quot;, 73.3,    nowDate)
-		case &quot;0664Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2024.07.30&quot;, 272,     nowDate)
-		case &quot;0665Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 2020,    nowDate)
-		case &quot;0666Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 22800,   nowDate)
-		case &quot;0667Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 211000,  nowDate)
-		case &quot;2124Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 11.3,    nowDate)
-		case &quot;2125Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 1070,    nowDate)
-		case &quot;2126Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 58.4,    nowDate)
-		case &quot;2127Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 589,     nowDate)
-		case &quot;2128Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 6680,    nowDate)				
-		case &quot;2129Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 66.3,    nowDate)
-		case &quot;0578Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 504,     nowDate)	
-		case &quot;0579Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 302000,  nowDate)	
-		case &quot;0580Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 736000,  nowDate)	
-		case &quot;0581Act&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 3010000, nowDate)
-		&apos;—————————————————————————————————————————————————————————————————
-		&apos;плотность потока для БДПБ-03. источник меньше чем бета, поэтому при расчете делится на 2.83
-		case &quot;2129/S&quot;
-			&apos;get_activity_Sr = get_activity_Sr(&quot;2129&quot;) / 2.83 &apos; ХЗ почему не работает рекурсия. затыкается на 	get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 25, 100, nowDate) в кейсе &quot;2129&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 25,    100, nowDate) / 2.83
-		case &quot;0664/S&quot;
-			get_activity_Sr = Sr90_pp(&quot;2024.07.30&quot;, 101,   100, nowDate) / 2.83
-		case &quot;0665/S&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 762,   100, nowDate) / 2.83
-		case &quot;0666/S&quot;
-			get_activity_Sr = Sr90_pp(&quot;2025.01.29&quot;, 8570,  100, nowDate) / 2.83
-		case &quot;0667/S&quot;
-			get_activity_Sr = Sr90_pp(&quot;2023.09.06&quot;, 79900, 100, nowDate) / 2.83
-		&apos;—————————————————————————————————————————————————————————————————	
-		&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-		case &quot;0660BqCps&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 154,   40, nowDate)*1.426
-		case &quot;0661BqCps&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 9070,  40, nowDate)*1.426
-		case &quot;0662BqCps&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 85500, 40, nowDate)*1.426
-		case &quot;0578BqCps&quot;
-			get_activity_Sr = Sr90_s_act(&quot;2025.01.29&quot;, 504,   40, nowDate)*1.426	
-		&apos;—————————————————————————————————————————————————————————————————		
-		case else
-			get_activity_Sr = 0.0
+		case &quot;0660&quot;: get_activity_Sr = BETA_0660.getFDensity(nowDate)
+		case &quot;0661&quot;: get_activity_Sr = BETA_0661.getFDensity(nowDate)
+		case &quot;0662&quot;: get_activity_Sr = BETA_0662.getFDensity(nowDate)
+		case &quot;0663&quot;: get_activity_Sr = BETA_0663.getFDensity(nowDate)
+		case &quot;0664&quot;: get_activity_Sr = BETA_0664.getFDensity(nowDate)
+		case &quot;0665&quot;: get_activity_Sr = BETA_0665.getFDensity(nowDate)
+		case &quot;0666&quot;: get_activity_Sr = BETA_0666.getFDensity(nowDate)
+		case &quot;0667&quot;: get_activity_Sr = BETA_0667.getFDensity(nowDate)
+		case &quot;2124&quot;: get_activity_Sr = BETA_2124.getFDensity(nowDate)
+		case &quot;2125&quot;: get_activity_Sr = BETA_2125.getFDensity(nowDate)
+		case &quot;2126&quot;: get_activity_Sr = BETA_2126.getFDensity(nowDate)
+		case &quot;2127&quot;: get_activity_Sr = BETA_2127.getFDensity(nowDate)
+		case &quot;2128&quot;: get_activity_Sr = BETA_2128.getFDensity(nowDate)				
+		case &quot;2129&quot;: get_activity_Sr = BETA_2129.getFDensity(nowDate)
+		case &quot;0578&quot;: get_activity_Sr = BETA_0578.getFDensity(nowDate)	
+		case &quot;0579&quot;: get_activity_Sr = BETA_0579.getFDensity(nowDate)	
+		case &quot;0580&quot;: get_activity_Sr = BETA_0580.getFDensity(nowDate)	
+		case &quot;0581&quot;: get_activity_Sr = BETA_0581.getFDensity(nowDate)				
+	&apos;—————————————————————————————————————————————————————————————————
+	&apos;поверхностная активность
+		case &quot;0660Bq&quot;: get_activity_Sr = BETA_0660.getSurActivity(nowDate)
+        case &quot;0661Bq&quot;: get_activity_Sr = BETA_0661.getSurActivity(nowDate)
+        case &quot;0662Bq&quot;: get_activity_Sr = BETA_0662.getSurActivity(nowDate)
+        case &quot;0663Bq&quot;: get_activity_Sr = BETA_0663.getSurActivity(nowDate)
+        case &quot;0664Bq&quot;: get_activity_Sr = BETA_0664.getSurActivity(nowDate)
+        case &quot;0665Bq&quot;: get_activity_Sr = BETA_0665.getSurActivity(nowDate)
+        case &quot;0666Bq&quot;: get_activity_Sr = BETA_0666.getSurActivity(nowDate)
+        case &quot;0667Bq&quot;: get_activity_Sr = BETA_0667.getSurActivity(nowDate)
+        case &quot;2124Bq&quot;: get_activity_Sr = BETA_2124.getSurActivity(nowDate)
+        case &quot;2125Bq&quot;: get_activity_Sr = BETA_2125.getSurActivity(nowDate)
+        case &quot;2126Bq&quot;: get_activity_Sr = BETA_2126.getSurActivity(nowDate)
+        case &quot;2127Bq&quot;: get_activity_Sr = BETA_2127.getSurActivity(nowDate)
+        case &quot;2128Bq&quot;: get_activity_Sr = BETA_2128.getSurActivity(nowDate)				
+        case &quot;2129Bq&quot;: get_activity_Sr = BETA_2129.getSurActivity(nowDate)
+        case &quot;0578Bq&quot;: get_activity_Sr = BETA_0578.getSurActivity(nowDate)	
+        case &quot;0579Bq&quot;: get_activity_Sr = BETA_0579.getSurActivity(nowDate)	
+        case &quot;0580Bq&quot;: get_activity_Sr = BETA_0580.getSurActivity(nowDate)	
+        case &quot;0581Bq&quot;: get_activity_Sr = BETA_0581.getSurActivity(nowDate)
+	&apos;—————————————————————————————————————————————————————————————————
+	&apos;активность (нигде не используется, так, на всякий)
+		case &quot;0660Act&quot;: get_activity_Sr = BETA_0660.getActivity(nowDate)
+        case &quot;0661Act&quot;: get_activity_Sr = BETA_0661.getActivity(nowDate)
+        case &quot;0662Act&quot;: get_activity_Sr = BETA_0662.getActivity(nowDate)
+        case &quot;0663Act&quot;: get_activity_Sr = BETA_0663.getActivity(nowDate)
+        case &quot;0664Act&quot;: get_activity_Sr = BETA_0664.getActivity(nowDate)
+        case &quot;0665Act&quot;: get_activity_Sr = BETA_0665.getActivity(nowDate)
+        case &quot;0666Act&quot;: get_activity_Sr = BETA_0666.getActivity(nowDate)
+        case &quot;0667Act&quot;: get_activity_Sr = BETA_0667.getActivity(nowDate)
+        case &quot;2124Act&quot;: get_activity_Sr = BETA_2124.getActivity(nowDate)
+        case &quot;2125Act&quot;: get_activity_Sr = BETA_2125.getActivity(nowDate)
+        case &quot;2126Act&quot;: get_activity_Sr = BETA_2126.getActivity(nowDate)
+        case &quot;2127Act&quot;: get_activity_Sr = BETA_2127.getActivity(nowDate)
+        case &quot;2128Act&quot;: get_activity_Sr = BETA_2128.getActivity(nowDate)				
+        case &quot;2129Act&quot;: get_activity_Sr = BETA_2129.getActivity(nowDate)
+        case &quot;0578Act&quot;: get_activity_Sr = BETA_0578.getActivity(nowDate)	
+        case &quot;0579Act&quot;: get_activity_Sr = BETA_0579.getActivity(nowDate)	
+        case &quot;0580Act&quot;: get_activity_Sr = BETA_0580.getActivity(nowDate)	
+        case &quot;0581Act&quot;: get_activity_Sr = BETA_0581.getActivity(nowDate)
+	&apos;—————————————————————————————————————————————————————————————————
+	&apos;плотность потока для БДПБ-03. источник меньше чем бета, поэтому при расчете делится на 2.83
+		case &quot;2129/S&quot;: get_activity_Sr = BETA_2129.getFDensityB3(nowDate)
+		case &quot;0664/S&quot;: get_activity_Sr = BETA_0664.getFDensityB3(nowDate)
+		case &quot;0665/S&quot;: get_activity_Sr = BETA_0665.getFDensityB3(nowDate)
+		case &quot;0666/S&quot;: get_activity_Sr = BETA_0666.getFDensityB3(nowDate)
+		case &quot;0667/S&quot;: get_activity_Sr = BETA_0667.getFDensityB3(nowDate)
+	&apos;—————————————————————————————————————————————————————————————————	
+	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
+		case &quot;0660BqCps&quot;: BETA_0660.getCpsActivity(nowDate)
+		case &quot;0661BqCps&quot;: BETA_0661.getCpsActivity(nowDate)
+		case &quot;0662BqCps&quot;: BETA_0662.getCpsActivity(nowDate)
+		case &quot;0578BqCps&quot;: BETA_0578.getCpsActivity(nowDate)
+	&apos;—————————————————————————————————————————————————————————————————		
+		case else: get_activity_Sr = 0.0
 	end select
 end function
 &apos;-------------------------------------------------------------
@@ -406,15 +426,15 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 7 	then ar = dynDistanceAr(&quot;28C&quot;, 84.435,  koefCs)
 				if point = 8 	then ar = dynDistanceAr(&quot;28C&quot;, 79.002,  koefCs)
 				if point = 70	then ar = dynDistanceAr(&quot;39T&quot;, 215.727, koefCs)
-				if point = 20 	then ar = dynDistanceAr(&quot;28C&quot;, 51.096, koefCs)&apos;&quot;39T&quot; 394.613
+				if point = 20 	then ar = dynDistanceAr(&quot;28C&quot;, 51.096,  koefCs)&apos;&quot;39T&quot; 394.613
 				if point = 40 	then ar = dynDistanceAr(&quot;39T&quot;, 280.515, koefCs)
-				if point = 240 	then ar = dynDistanceAr(&quot;39T&quot;, 117.15, koefCs)
-				if point = 700 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072, koefCs)
+				if point = 240 	then ar = dynDistanceAr(&quot;39T&quot;, 117.15,  koefCs)
+				if point = 700 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072,  koefCs)
 		case &quot;м&quot;
-				if point = 0.5 	then ar = dynDistanceAr(&quot;39T&quot;, 81.679, koefCs)
-				if point = 0.7 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072, koefCs)
+				if point = 0.5 	then ar = dynDistanceAr(&quot;39T&quot;, 81.679,  koefCs)
+				if point = 0.7 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072,  koefCs)
 				&apos;----------------- УДГ-130 -----------------------------------
-				if point = 4 	then ar = dynDistanceAr(&quot;08T&quot;, 78.604, koefCs)&apos;&quot;043&quot; 453.144
+				if point = 4 	then ar = dynDistanceAr(&quot;08T&quot;, 78.604,  koefCs)&apos;&quot;043&quot; 453.144
 				if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 342.625, koefCs)
 				if point = 20 	then ar = dynDistanceAr(&quot;043&quot;, 204.139, koefCs)
 				if point = 70 	then ar = dynDistanceAr(&quot;043&quot;, 109.907, koefCs)
@@ -426,10 +446,10 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 0.35	then ar = dynDistanceAr(&quot;163&quot;, 306.689, koefCs)
 				if point = 0.5 	then ar = dynDistanceAr(&quot;163&quot;, 257.118, koefCs)
 				if point = 0.7 	then ar = dynDistanceAr(&quot;163&quot;, 218.465, koefCs)
-				if point = 4 	then ar = dynDistanceAr(&quot;163&quot;, 92.196, koefCs)
-				if point = 7 	then ar = dynDistanceAr(&quot;163&quot;, 70.323, koefCs)
-				if point = 8 	then ar = dynDistanceAr(&quot;163&quot;, 65.795, koefCs)
-				if point = 40 	then ar = dynDistanceAr(&quot;163&quot;, 30.246, koefCs)
+				if point = 4 	then ar = dynDistanceAr(&quot;163&quot;, 92.196,  koefCs)
+				if point = 7 	then ar = dynDistanceAr(&quot;163&quot;, 70.323,  koefCs)
+				if point = 8 	then ar = dynDistanceAr(&quot;163&quot;, 65.795,  koefCs)
+				if point = 40 	then ar = dynDistanceAr(&quot;163&quot;, 30.246,  koefCs)
 		end select
 	end if
 	&apos;—————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -463,7 +483,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 0.75	then ar = dynDistanceAr(&quot;163&quot;, 192.106, koefCs)
 				if point = 7	then ar = dynDistanceAr(&quot;163&quot;, 63.949,  koefCs)
 				if point = 7.5 	then ar = dynDistanceAr(&quot;163&quot;, 61.786,  koefCs)
-				if point = 40 	then ar = dynDistanceAr(&quot;163&quot;, 27.5,  koefCs)
+				if point = 40 	then ar = dynDistanceAr(&quot;163&quot;, 27.5,    koefCs)
 		end select
 	end if
 	&apos;—————————————————————————————————————————————————————————————————————————————————————————————————————————
@@ -472,10 +492,10 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 		select case prefix
 		case &quot;мк&quot;
 				&apos;----------------- УДГ-110 -----------------------------------
-				if point = 0.07	then ar = dynDistanceAr(&quot;430_3&quot;, 247.287, koefAm)&apos; в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
+				if point = 0.07	then ar = dynDistanceAr(&quot;430_3&quot;, 247.287, koefAm)	&apos; в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
 				if point = 0.7	then ar = dynDistanceAr(&quot;430_3&quot;, 76.971,  koefAm)	&apos; в SourceCalculation выбрать &quot;Am с экраном&quot; -- 3мм
-				if point = 7 	then ar = dynDistanceAr(&quot;430&quot;, 163.04,   koefAm)	&apos; без экрана
-				if point = 40	then ar = dynDistanceAr(&quot;430&quot;, 69.13,    koefAm)	&apos; без экрана
+				if point = 7 	then ar = dynDistanceAr(&quot;430&quot;, 163.04,    koefAm)	&apos; без экрана
+				if point = 40	then ar = dynDistanceAr(&quot;430&quot;, 69.13,     koefAm)	&apos; без экрана
 				if point = 70 	then ar = dynDistanceAr(&quot;430&quot;, 52.106,    koefAm)	&apos; без экрана
 		end select
 	end if

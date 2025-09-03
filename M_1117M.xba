@@ -66,10 +66,9 @@ Sub at1117m_Dialog_Show
 	oDialog1117.getControl(&quot;altCheckBox&quot;).setEnable(false)
 	
 	bgValue2 = bgValue
-	
+		
 	oDialogMain.endexecute()
 	oDialog1117.Execute()
-	
 End Sub
 &apos;---------------------------------------------------------------------------------------------------------
 &apos;Все виды БД, используемых в 1117. 
