@@ -65,25 +65,8 @@ sub setSeparateBG(state as boolean)
 	_separateBGround = state
 end sub
 &apos;-------------------------------------------------------------------------
-
-&apos;------------------------------------------------------------------------------------------------------------------------
 sub comboChanged(Combo as object, NumericField as object, DateField as object)
-	select case Combo.text
-		case &quot;№516&quot;
-		NumericField.value = get_activity(act516, _oDateFieldModel)
-		case &quot;№517&quot;
-		NumericField.value = get_activity(act517, _oDateFieldModel)
-		case &quot;№518&quot;
-		NumericField.value = get_activity(act518, _oDateFieldModel)
-		case &quot;№519&quot;
-		NumericField.value = get_activity(act519, _oDateFieldModel)
-		case &quot;№520&quot;
-		NumericField.value = get_activity(act520, _oDateFieldModel)
-		case &quot;№521&quot;
-		NumericField.value = get_activity(act521, _oDateFieldModel)
-		case &quot;№2910&quot;
-		NumericField.value = get_activity2910(_oDateFieldModel)
-	end select	
+	NumericField.value = Activity.get_activity_cs(Combo.text, _oDateFieldModel)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub increment(TField as object) as string

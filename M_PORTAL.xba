@@ -31,13 +31,13 @@ Sub Portal_Dialog_Show
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.15 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
 	oNumericFieldModel = oDialogPortal.Model.getByName(&quot;ActivityField&quot;)
 	oNumericFieldModel.DECIMALACCURACY = 2
-	oNumericFieldModel.value = get_activity(act516, oDateFieldModel)
+	Overall.comboChanged(oActivityCombo, oNumericFieldModel, oDateFieldModel)
 
 	oDialogPortal.getControl(&quot;RemoveButton&quot;).setEnable(false)
 	oDialogPortal.getControl(&quot;NextButton&quot;).setEnable(false)

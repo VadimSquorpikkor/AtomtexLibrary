@@ -108,22 +108,7 @@ rem-----------------------------------------------------------------------------
 sub comboChanged(activityComboName as String, resultFieldName as String)
     Combo = _oDialog.Model.getByName(activityComboName) &apos;&quot;ActivityField&quot;
     resultField = _oDialog.Model.getByName(resultFieldName) &apos;&quot;ActivityField&quot;
-	select case Combo.text
-		case &quot;№516&quot;
-		resultField.value = get_activity(act516, _oDateFieldModel)
-		case &quot;№517&quot;
-		resultField.value = get_activity(act517, _oDateFieldModel)
-		case &quot;№518&quot;
-		resultField.value = get_activity(act518, _oDateFieldModel)
-		case &quot;№519&quot;
-		resultField.value = get_activity(act519, _oDateFieldModel)
-		case &quot;№520&quot;
-		resultField.value = get_activity(act520, _oDateFieldModel)
-		case &quot;№521&quot;
-		resultField.value = get_activity(act521, _oDateFieldModel)
-		case &quot;№2910&quot;
-		resultField.value = get_activity2910(_oDateFieldModel)
-	end select
+    resultField.value = Activity.get_activity_cs(Combo.text, _oDateFieldModel)
 end sub
 
 

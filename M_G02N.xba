@@ -60,18 +60,18 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.35 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.36 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
 	
 	oNumericFieldModel = oDialogG02N.Model.getByName(&quot;ActivityField&quot;)
 	oNumericFieldModel.DECIMALACCURACY = 2
-	oNumericFieldModel.value = get_activity(act516, oDateFieldModel)
+	Overall.comboChanged(oComboBox, oNumericFieldModel, oDateFieldModel)
 
 	oNumericFieldModelAll = oDialogG02N.Model.getByName(&quot;ActivityAll&quot;)
 	oNumericFieldModelAll.DECIMALACCURACY = 2
-	oNumericFieldModelAll.value = get_activity(act_all, oDateFieldModel)
+	oNumericFieldModelAll.value = get_activity_cs(&quot;all&quot;, oDateFieldModel)
 		
 	oDialogG02N.getControl(&quot;BGValueField&quot;).setEnable(false)
 	oDialogG02N.Model.getByName(&quot;BGValueField&quot;).value = bgValue
@@ -136,7 +136,7 @@ End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub comboChanged
 	Overall.comboChanged(oComboBox, oNumericFieldModel, oDateFieldModel)
-	oNumericFieldModelAll.value = get_activity(act_all, oDateFieldModel)
+	oNumericFieldModelAll.value = get_activity_cs(&quot;all&quot;, oDateFieldModel)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub enableLastTreeFields(visibility1 as boolean, visibility2 as boolean, visibility3 as boolean, visibility4 as boolean)

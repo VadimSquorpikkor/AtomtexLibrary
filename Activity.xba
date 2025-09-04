@@ -16,33 +16,11 @@
 
 &apos;═══════════════════════════════════════════════════════════════════════════════╗
 																			&apos;	║█
-&apos;Период полураспада для Цезий-137											&apos;	║█
 public const CS_137_HALF_LIFE as double = 365.2425 * 30.167					&apos;	║█
-&apos;Период полураспада для Стронций-90											&apos;	║█
 public const SR_90_HALF_LIFE as double  = 365.2425 * 28.7967 				&apos;	║█
-&apos;Период полураспада для Америций											&apos;	║█
 public const AM_241_HALF_LIFE as double = 365.2425 * 432.6					&apos;	║█
-																			&apos;	║█
-public const CD_109_HALF_LIFE = 461.4										&apos;	║█
-																			&apos;	║█
-public const BA_133_HALF_LIFE = 365.2425 * 10.5156							&apos;	║█
-																			&apos;	║█
-&apos;Активность на выбранный день												&apos;	║█
-&apos;	a0 — активность на день поверки, 										&apos;	║█
-&apos;	halfLife — период полураспада, 											&apos;	║█
-&apos;	daysLeft — сколько дней прошло с момента поверки						&apos;	║█
-function getActivity(a0 as double, halfLife as double, daysLeft as double)	&apos;	║█
-	getActivity = a0 * exp(-0.693147/halfLife * daysLeft)					&apos;	║█
-end function																&apos;	║█
-&apos;Активность на выбранный день для Cs-137									&apos;	║█
-function getActivity_Cs137(a0 as double, daysLeft as double)				&apos;	║█
-	getActivity_Cs137 = a0 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)		&apos;	║█
-end function																&apos;	║█
-&apos;Активность на выбранный день для Sr-90										&apos;	║█
-function getActivity_Sr90(a0 as double, daysLeft as double)					&apos;	║█
-	getActivity_Sr90 = a0 * exp(-0.693147/SR_90_HALF_LIFE * daysLeft)		&apos;	║█
-end function																&apos;	║█
-																			&apos;	║█
+public const CD_109_HALF_LIFE as double = 461.4								&apos;	║█
+public const BA_133_HALF_LIFE as double = 365.2425 * 10.5156				&apos;	║█
 											 								&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
@@ -84,13 +62,22 @@ dim BETA_0579 as new RASrc
 dim BETA_0580 as new RASrc
 dim BETA_0581 as new RASrc
 
-&apos;dim GAMMA_516 as new RASrc
-&apos;dim GAMMA_517 as new RASrc
-&apos;dim GAMMA_518 as new RASrc
-&apos;dim GAMMA_519 as new RASrc
+dim GAMMA_516 as new RASrc
+dim GAMMA_517 as new RASrc
+dim GAMMA_518 as new RASrc
+dim GAMMA_519 as new RASrc
+dim GAMMA_520 as new RASrc
+dim GAMMA_521 as new RASrc
+dim GAMMA_2910 as new RASrc
+dim GAMMA_ALL as new RASrc
+dim GAMMA_595 as new RASrc
+dim GAMMA_483 as new RASrc
+dim GAMMA_93 as new RASrc
+dim GAMMA_3668 as new RASrc
+dim GAMMA_832 as new RASrc
 
 sub initSources()
-	SC_137 = newElement(&quot;Cs-137&quot;, CS_137_HALF_LIFE)
+	CS_137 = newElement(&quot;Cs-137&quot;, CS_137_HALF_LIFE)
 	SR_90 = newElement(&quot;Sr-90&quot;, SR_90_HALF_LIFE)
 	&apos;бета-источники	
 	BETA_0660.initBeta(&quot;0660&quot;, &quot;2025.07.22&quot;, SR_90, 154,     58.2,    40)
@@ -112,32 +99,50 @@ sub initSources()
 	BETA_0580.initBeta(&quot;0580&quot;, &quot;2025.01.29&quot;, SR_90, 736000,  277000,  40)
 	BETA_0581.initBeta(&quot;0581&quot;, &quot;2025.01.29&quot;, SR_90, 3010000, 1130000, 40)
 	
-	&apos;GAMME_516.initGamma(&quot;&quot;, &quot;2025.01.29&quot;, SR_90, 3010000, 1130000, 40)
+	GAMMA_516.initGamma (&quot;№516&quot;,  &quot;2016.10.12&quot;, CS_137, 91.3)
+	GAMMA_517.initGamma (&quot;№517&quot;,  &quot;2016.10.12&quot;, CS_137, 88.8)
+	GAMMA_518.initGamma (&quot;№518&quot;,  &quot;2016.10.12&quot;, CS_137, 94.6)
+	GAMMA_519.initGamma (&quot;№519&quot;,  &quot;2016.10.12&quot;, CS_137, 88.2)
+	GAMMA_520.initGamma (&quot;№520&quot;,  &quot;2016.10.12&quot;, CS_137, 91.3)
+	GAMMA_521.initGamma (&quot;№521&quot;,  &quot;2016.10.12&quot;, CS_137, 93.5)
+	GAMMA_2910.initGamma(&quot;№2910&quot;, &quot;2016.05.17&quot;, CS_137, 67.7)
+	GAMMA_ALL.initGamma (&quot;All&quot;,   &quot;2016.10.12&quot;, CS_137, 547.7)&apos;deprecated
+	GAMMA_595.initGamma (&quot;№595&quot;,  &quot;2021.07.29&quot;, CS_137, 95.588)
+	GAMMA_483.initGamma (&quot;483&quot;,   &quot;2021.10.13&quot;, CS_137, 86.8)
+	GAMMA_93.initGamma  (&quot;93&quot;,    &quot;2021.10.13&quot;, CS_137, 880)
+	GAMMA_3668.initGamma(&quot;3669&quot;,  &quot;2021.10.13&quot;, CS_137, 7932)
+	GAMMA_832.initGamma (&quot;832&quot;,   &quot;2021.10.13&quot;, CS_137, 9494)
 end sub
 
-&apos;-------------------------------------------------------------
-&apos;Из строки вида &quot;2016.12.22&quot; возвращает int массив [год, месяц, день]
-Function ParseDateString(dateString As String) As Variant
-    Dim result(2) As Integer
-    
-    If Len(dateString) &lt;&gt; 10 Then
-        ParseDateString = Array(0, 0, 0)
-        Exit Function
-    End If
-    
-    result(0) = CInt(Left(dateString, 4))    &apos; Год
-    result(1) = CInt(Mid(dateString, 6, 2))  &apos; Месяц
-    result(2) = CInt(Mid(dateString, 9, 2))  &apos; День
-        
-    ParseDateString = result
-End Function
-&apos;-------------------------------------------------------------
-function getDaysLeft(povDate as string, nowDate1)
-	Dim dateParts As Variant
-    dateParts = ParseDateString(povDate)
-    getDaysLeft = cdatefromiso(nowDate1.date) - DateSerial(dateParts(0),dateParts(1),dateParts(2))
-end function
+&apos; 	╔═══════════════════════════════╗
+&apos;	║							    ║█
+&apos;	║		АЛЬФА источники			║█
+&apos;	║	________________________	║█
+&apos;	║								║█
+&apos;	╚═══════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
+public const ALPHA_2131 as double = 846 &apos;Бк
+&apos;-------------------------------------------------------------
+&apos; альфа, плотность потока частиц, част/(см^2*мин)
+&apos; бдпс-02 и альфа-01
+public const ALPHA_0645 as double = 62.7
+public const ALPHA_0646 as double = 681
+public const ALPHA_0773 as double = 8655
+public const ALPHA_0648 as double = 61800
+public const ALPHA_0774 as double = 201000 &apos;только бдпс-02
+&apos; альфа-02
+public const ALPHA_0651 as double = 73.2
+public const ALPHA_0652 as double = 624
+public const ALPHA_0653 as double = 5136
+public const ALPHA_0655 as double = 36120
+&apos;-------------------------------------------------------------
+function get_activity_alpha(srcName as string)
+	select case srcName
+		case &quot;2131&quot;: get_activity_alpha = ALPHA_2131
+		case else:   get_activity_alpha = 0.0
+	end select
+end function
 
 &apos; 	╔═══════════════════════════════╗
 &apos;	║							    ║█
@@ -147,36 +152,6 @@ end function
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-&apos;-------------------------------------------------------------
-&apos;Активность бета источника (Sr-90):
-&apos;	povDate — дата поверки в формате &quot;2016.12.22&quot; (String)
-&apos;	a0 — активность на день поверки
-&apos;	nowDate — объект интерфейса с датой (TODO нужно будет потом заменить на строку)
-function Sr90_act(povDate as string, a0 as double, nowDate)
-	Sr90_act = getActivity_Sr90(a0, getDaysLeft(nowDate))
-end function
-&apos;-------------------------------------------------------------
-&apos;Плотность потока (см^2 * мин^-1):
-&apos;	povDate —  дата поверки в формате &quot;2016.12.22&quot; (String)
-&apos;	p0 — поток на день поверки, с-1
-&apos;	s — площадь, см^2
-&apos;	nowDate — объект интерфейса с датой
-function Sr90_pp(povDate as string, p0 as double, s as integer, nowDate)
-	dim nowP as double &apos;поток на сегодня с-1 (в секунду)
-	nowP = getActivity_Sr90(p0, getDaysLeft(povDate, nowDate))
-	Sr90_pp = (nowP * 60 / s)
-end function
-&apos;-------------------------------------------------------------
-&apos;Поверхностная активность:
-&apos;	povDate —  дата поверки в формате &quot;2016.12.22&quot; (String)
-&apos;	a0 — активность на день поверки
-&apos;	s — площадь, см^2
-&apos;	nowDate — объект интерфейса с датой
-function Sr90_s_act(povDate as string, a0 as double, s as integer, nowDate)
-	dim nowA as double
-	nowA = getActivity_Sr90(a0, getDaysLeft(povDate, nowDate))
-	Sr90_s_act = (nowA / s)
-end function
 &apos;-------------------------------------------------------------
 &apos;Функция возвращает расчитанную на выбранную дата величину в зависимости от формата src переменной:
 &apos;	строка вида &quot;0660&quot; 		возвращает ПЛОТНОСТЬ ПОТОКА
@@ -255,10 +230,10 @@ function get_activity_Sr(src as string, nowDate)
 		case &quot;0667/S&quot;: get_activity_Sr = BETA_0667.getFDensityB3(nowDate)
 	&apos;—————————————————————————————————————————————————————————————————	
 	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-		case &quot;0660BqCps&quot;: BETA_0660.getCpsActivity(nowDate)
-		case &quot;0661BqCps&quot;: BETA_0661.getCpsActivity(nowDate)
-		case &quot;0662BqCps&quot;: BETA_0662.getCpsActivity(nowDate)
-		case &quot;0578BqCps&quot;: BETA_0578.getCpsActivity(nowDate)
+		case &quot;0660BqCps&quot;: get_activity_Sr = BETA_0660.getCpsActivity(nowDate)
+		case &quot;0661BqCps&quot;: get_activity_Sr = BETA_0661.getCpsActivity(nowDate)
+		case &quot;0662BqCps&quot;: get_activity_Sr = BETA_0662.getCpsActivity(nowDate)
+		case &quot;0578BqCps&quot;: get_activity_Sr = BETA_0578.getCpsActivity(nowDate)
 	&apos;—————————————————————————————————————————————————————————————————		
 		case else: get_activity_Sr = 0.0
 	end select
@@ -269,118 +244,35 @@ public const BETA_BG as double    = 11.9
 
 &apos; 	╔═══════════════════════════════╗
 &apos;	║							    ║█
-&apos;	║		АЛЬФА источники			║█
-&apos;	║	________________________	║█
-&apos;	║								║█
-&apos;	╚═══════════════════════════════╝█
-&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
-
-public const ALPHA_2131 as double = 846 &apos;Бк
-&apos;-------------------------------------------------------------
-&apos; альфа, плотность потока частиц, част/(см^2*мин)
-&apos; бдпс-02 и альфа-01
-public const ALPHA_0645 as double = 62.7
-public const ALPHA_0646 as double = 681
-public const ALPHA_0773 as double = 8655
-public const ALPHA_0648 as double = 61800
-public const ALPHA_0774 as double = 201000 &apos;только бдпс-02
-&apos; альфа-02
-public const ALPHA_0651 as double = 73.2
-public const ALPHA_0652 as double = 624
-public const ALPHA_0653 as double = 5136
-public const ALPHA_0655 as double = 36120
-&apos;-------------------------------------------------------------
-public const ACT516 as double  = 91.3
-public const ACT517 as double  = 88.8
-public const ACT518 as double  = 94.6
-public const ACT519 as double  = 88.2
-public const ACT520 as double  = 91.3
-public const ACT521 as double  = 93.5
-public const ACT2910 as double = 67.7
-public const ACT_all as double = 547.7
-
-&apos; 	╔═══════════════════════════════╗
-&apos;	║							    ║█
 &apos;	║		ГАММА источники			║█
 &apos;	║	________________________	║█
 &apos;	║								║█
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-&apos;новые значения (почти совпадают, просто для корректировки): на 13.10.21: 483-87Бк, 93-880Бк, 3668-7932Бк, 3663-ЗАХОРОНИЛИ
-public const CS_483  as double = 86.8 &apos;87		&apos;88		&apos;90.1
-public const CS_93   as double = 880	&apos;892	&apos;948
-public const CS_3668 as double = 7932	&apos;8048	&apos;8232
-public const CS_832  as double = 9494
-&apos;public const CS_3663 as double = 0		&apos;82173	&apos;88930 -ЗАХОРОНИЛИ
-public const CS_tmp_516 as double = 81384		&apos;82173	&apos;88930
-public const CS_595 as double = 95.588 &apos;97.070 &apos;  97070 Бк на 29.07.2021 // 96316 на 29.11.21
-&apos;-------------------------------------------------------------
-function get_activity(src as double, mdate)
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,10,12) &apos;12-го Октября
-	get_activity = src * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
-end function
-&apos;-------------------------------------------------------------
-&apos;НОВЫЙ МЕТОД ДЛЯ ВСЕХ ИСТОЧНИКОВ (И CS И CD и бета и т.д.). Пишем имя (может сделаю константы), получаем активность. Пока только для Cs, потом доделаю
-function getActivityAll(srcName as string, oDateFieldModel)
-	select case srcName
-		case &quot;№516&quot;
-		getActivityAll = get_activity(ACT516, oDateFieldModel)
-		case &quot;№517&quot;
-		getActivityAll = get_activity(ACT517, oDateFieldModel)
-		case &quot;№518&quot;
-		getActivityAll = get_activity(ACT518, oDateFieldModel)
-		case &quot;№519&quot;
-		getActivityAll = get_activity(ACT519, oDateFieldModel)
-		case &quot;№520&quot;
-		getActivityAll = get_activity(ACT520, oDateFieldModel)
-		case &quot;№521&quot;
-		getActivityAll = get_activity(ACT521, oDateFieldModel)
-		case &quot;№2910&quot;
-		getActivityAll = get_activity2910(oDateFieldModel)
-		case &quot;№595&quot;
-		getActivityAll = get_activity595(oDateFieldModel)
-	end select
-end function
-&apos;-------------------------------------------------------------
-function get_activity_alpha(srcName as string)
-	select case srcName
-		case &quot;2131&quot;
-		get_activity_alpha = ALPHA_2131
-	end select
-end function
-&apos;-------------------------------------------------------------
-function get_activity2910(mdate)
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2016,5,17)
-	get_activity2910 = act2910 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
-end function
-&apos;-------------------------------------------------------------
-function get_activity595(mdate)
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,7,29)
-	get_activity595 = CS_595 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
-end function
-&apos;-------------------------------------------------------------
-&apos;активность (Бк) по Cs. Используется (пока) только для Удельной Активности для 1125
-function get_activity_Cs137(src as string, mdate)
-	dim activity_0 as double
-	
+function get_activity_Cs(src as string, nowDate)
+	&apos;msgbox &quot;get_activity_Sr - &quot;+src
 	select case src
-	case &quot;483&quot;
-		activity_0 = CS_483
-	case &quot;93&quot;
-		activity_0 = CS_93
-	case &quot;3668&quot;
-		activity_0 = CS_3668
-	case &quot;516&quot;
-		activity_0 = CS_tmp_516
-	case &quot;832&quot;
-		activity_0 = CS_832	
+	&apos;—————————————————————————————————————————————————————————————————		
+	&apos;активность
+		case &quot;№516&quot;:  get_activity_Cs = GAMMA_516.getActivity(nowDate)
+		case &quot;№517&quot;:  get_activity_Cs = GAMMA_517.getActivity(nowDate)
+		case &quot;№518&quot;:  get_activity_Cs = GAMMA_518.getActivity(nowDate)
+		case &quot;№519&quot;:  get_activity_Cs = GAMMA_519.getActivity(nowDate)
+		case &quot;№520&quot;:  get_activity_Cs = GAMMA_520.getActivity(nowDate)
+		case &quot;№521&quot;:  get_activity_Cs = GAMMA_521.getActivity(nowDate)
+		case &quot;№2910&quot;: get_activity_Cs = GAMMA_2910.getActivity(nowDate)
+		case &quot;№595&quot;:  get_activity_Cs = GAMMA_595.getActivity(nowDate)
+		case &quot;483&quot;:   get_activity_Cs = GAMMA_483.getActivity(nowDate)
+		case &quot;93&quot;:    get_activity_Cs = GAMMA_93.getActivity(nowDate)
+		case &quot;3668&quot;:  get_activity_Cs = GAMMA_3668.getActivity(nowDate)
+		case &quot;516&quot;:   get_activity_Cs = GAMMA_516.getActivity(nowDate)
+		case &quot;832&quot;:   get_activity_Cs = GAMMA_832.getActivity(nowDate)
+		case &quot;all&quot;:   get_activity_Cs = GAMMA_ALL.getActivity(nowDate)
+	&apos;—————————————————————————————————————————————————————————————————		
+		case else: get_activity_Cs = 0.0
 	end select
-
-	daysLeft = cdatefromiso(mdate.date) - DateSerial(2021,10,13)&apos;последняя корректировка на 14.04.23 число, дату не менял, просто скоректировал значения нулевой активности &apos;13 октября  &apos; DateSerial(2021,03,01) &apos;DateSerial(2019,11,28)
-	get_activity_Cs137 = activity_0 * exp(-0.693147/CS_137_HALF_LIFE * daysLeft)
 end function
-
 &apos;----------------------------------------------------------------
 &apos;Источники 110: 28C, 39T, 2AA, 430(Am)
 &apos;Источники 130: 7AT 07T 043 08T 163

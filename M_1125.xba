@@ -156,7 +156,7 @@ sub calculateUA(bd as new DUnit)
 	dim myFormat as string
 	dim point as double
 	for i=1 to bd.getPointTextList.count-1
-		point = Activity.get_activity_Cs137(bd.getPointTextList.item(i), oDateFieldModel)
+		point = Activity.get_activity_Cs(bd.getPointTextList.item(i), oDateFieldModel)
 		if point &lt; 500 then
 			myFormat = &quot;0.0&quot;
 			oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 0.1
@@ -178,8 +178,8 @@ sub calculateUA(bd as new DUnit)
 	next i
 	
 	&apos;Внимание! 4-я точка удельной активности считается отдельно! (в предыдущем цикле только 3 точки) Эта точка меняется комбобоксом: 516-521 источник, соответственно точка зависит от значения кБокса
-	&apos;Умножение на 1000 так как метод getActivityAll возвращает активность в кБк, а надо в Бк
-	point = Activity.getActivityAll(oComboBox.text, oDateFieldModel)*1000
+	&apos;Умножение на 1000 так как метод get_activity_Cs возвращает активность в кБк, а надо в Бк
+	point = Activity.get_activity_Cs(oComboBox.text, oDateFieldModel)*1000
 		myFormat = &quot;0&quot;
 		oDialog1125.Model.getByName(&quot;uaField&quot; + i).valueStep = 1
 		oDialog1125.Model.getByName(&quot;uaField&quot; + i).DecimalAccuracy = 0
