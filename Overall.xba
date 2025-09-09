@@ -529,7 +529,10 @@ sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList
 	next j
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String)
+const THREE_POINTS as integer = 3
+const FIVE_POINTS as integer = 5
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String, point_count as integer)
 	dim bd as new DUnit 
 	bd = _BDList.item(i)
 	dim j as integer

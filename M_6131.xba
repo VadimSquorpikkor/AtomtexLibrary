@@ -459,7 +459,7 @@ sub insertRecordsToTemplate
 			pointAlphaList.add(alphaPoint)
 		next j	
 		
-		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
+		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;, THREE_POINTS)
 		Overall.insertAlphaToTemplateStep(i, BDList.item(i).getAlphaSources, pointAlphaList, BDList.item(i).getAlphaValues, &quot;α&quot;)
 		Overall.insertToTemplateStep(i)
 	next i

@@ -99,7 +99,7 @@ end function
 &apos;——————————————————————————————————————————————————————————————————————————————————————
 &apos;активность
 &apos;	nowDate — объект интерфейса с датой
-function getActivity(nowDate)
+function getActivity(nowDate) as double
 	getActivity = _a0 * exp(-0.693147/_element.halflife * getDaysLeft(_povDate, nowDate))
 end function
 &apos;——————————————————————————————————————————————————————————————————————————————————————

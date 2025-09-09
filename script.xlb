@@ -41,4 +41,5 @@
  <library:element library:name="RASrc"/>
  <library:element library:name="DU"/>
  <library:element library:name="_old_MMain"/>
+ <library:element library:name="_src"/>
 </library:library>

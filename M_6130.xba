@@ -499,7 +499,7 @@ sub insertRecordsToTemplate
 			point = Activity.get_activity_Sr(BDList.item(i).getBetaSources.item(j), oDateFieldModel)
 			pointList.add(point)
 		next j
-		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;)
+		Overall.insertBetaToTemplateStep(i, BDList.item(i).getBetaSources, pointList, BDList.item(i).getBetaValues, &quot;β&quot;, THREE_POINTS)
 		&apos;if oComboSVREM.text = &quot;SIEVERT&quot; then
 			Overall.insertToTemplateStep(i)
 		&apos;else

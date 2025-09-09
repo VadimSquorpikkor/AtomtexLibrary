@@ -527,7 +527,7 @@ sub insertDataToTemplate
 			
 			if BDList.item(i).getType = &quot;beta&quot; then				
 				&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
-				Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;)
+				Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;, THREE_POINTS)
 			else
 				Overall.insertToTemplateStep(i)
 			end if	
