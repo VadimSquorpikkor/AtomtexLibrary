@@ -30,29 +30,9 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; &quot;sources.odt&quot;) 
 	
 	findAndRename(&quot;$date&quot;, getDate(oDateFieldModel))
-	
-	dim sList as new Collection
-	sList.add(BETA_0660)
-    sList.add(BETA_0661)
-    sList.add(BETA_0662)
-    sList.add(BETA_0663)
-    sList.add(BETA_0664)
-    sList.add(BETA_0665)
-    sList.add(BETA_0666)
-    sList.add(BETA_0667)
-    sList.add(BETA_2124)
-    sList.add(BETA_2125)
-    sList.add(BETA_2126)
-    sList.add(BETA_2127)
-    sList.add(BETA_2128)
-    sList.add(BETA_2129)
-    sList.add(BETA_0578)
-    sList.add(BETA_0579)
-    sList.add(BETA_0580)
-    sList.add(BETA_0581)
         
-    while i&lt;=sList.count
-    	s = sList.item(i)
+    while i&lt;=Activity.betaSrcMap.count
+    	s = Activity.betaSrcMap.item(i)
   		findAndRename(&quot;$&quot;+i+&quot;-10&quot;, s.getName)
   		findAndRename(&quot;$&quot;+i+&quot;-20&quot;, s.getPovDate)
   		findAndRename(&quot;$&quot;+i+&quot;-30&quot;, s.getA0)
@@ -70,9 +50,6 @@ sub insertRecordsToTemplate
 		findAndRename(&quot;$&quot;+j+&quot;-&quot;+k+&quot;0&quot;, &quot;&quot;)
 		next k
 	next j
-	
-	&apos;Overall.CreateTablesFromTemplate(5)
-	
 		
 	oDialogSources.endexecute()
 	msgbox &quot;Готово!&quot;

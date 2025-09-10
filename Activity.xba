@@ -40,6 +40,8 @@ Function newElement(ename as string, halflife as double) as Element
     newElement = r
 End Function
 
+Dim betaSrcMap As New Collection
+
 dim SC_137 as Element
 dim SR_90 as Element
 
@@ -112,6 +114,25 @@ sub initSources()
 	GAMMA_93.initGamma  (&quot;93&quot;,    &quot;2021.10.13&quot;, CS_137, 880)
 	GAMMA_3668.initGamma(&quot;3669&quot;,  &quot;2021.10.13&quot;, CS_137, 7932)
 	GAMMA_832.initGamma (&quot;832&quot;,   &quot;2021.10.13&quot;, CS_137, 9494)
+	
+	betaSrcMap.add(BETA_0660, &quot;0660&quot;)
+	betaSrcMap.add(BETA_0661, &quot;0661&quot;)
+	betaSrcMap.add(BETA_0662, &quot;0662&quot;)
+	betaSrcMap.add(BETA_0663, &quot;0663&quot;)
+	betaSrcMap.add(BETA_0664, &quot;0664&quot;)
+	betaSrcMap.add(BETA_0665, &quot;0665&quot;)
+	betaSrcMap.add(BETA_0666, &quot;0666&quot;)
+	betaSrcMap.add(BETA_0667, &quot;0667&quot;)
+	betaSrcMap.add(BETA_2124, &quot;2124&quot;)
+	betaSrcMap.add(BETA_2125, &quot;2125&quot;)
+	betaSrcMap.add(BETA_2126, &quot;2126&quot;)
+	betaSrcMap.add(BETA_2127, &quot;2127&quot;)
+	betaSrcMap.add(BETA_2128, &quot;2128&quot;)
+	betaSrcMap.add(BETA_2129, &quot;2129&quot;)
+	betaSrcMap.add(BETA_0578, &quot;0578&quot;)
+	betaSrcMap.add(BETA_0579, &quot;0579&quot;)
+	betaSrcMap.add(BETA_0580, &quot;0580&quot;)
+	betaSrcMap.add(BETA_0581, &quot;0581&quot;)
 end sub
 
 &apos; 	╔═══════════════════════════════╗
@@ -160,83 +181,31 @@ end function
 &apos;	строка вида &quot;0660/S&quot; 	возвращает плотность потока для БДПБ-03
 &apos;	строка вида &quot;0660BqCps&quot; возвращает поверхностную активность для 6130cps
 function get_activity_Sr(src as string, nowDate)
-	&apos;msgbox &quot;get_activity_Sr - &quot;+src
-	select case src
-	&apos;плотность потока
-		case &quot;0660&quot;: get_activity_Sr = BETA_0660.getFDensity(nowDate)
-		case &quot;0661&quot;: get_activity_Sr = BETA_0661.getFDensity(nowDate)
-		case &quot;0662&quot;: get_activity_Sr = BETA_0662.getFDensity(nowDate)
-		case &quot;0663&quot;: get_activity_Sr = BETA_0663.getFDensity(nowDate)
-		case &quot;0664&quot;: get_activity_Sr = BETA_0664.getFDensity(nowDate)
-		case &quot;0665&quot;: get_activity_Sr = BETA_0665.getFDensity(nowDate)
-		case &quot;0666&quot;: get_activity_Sr = BETA_0666.getFDensity(nowDate)
-		case &quot;0667&quot;: get_activity_Sr = BETA_0667.getFDensity(nowDate)
-		case &quot;2124&quot;: get_activity_Sr = BETA_2124.getFDensity(nowDate)
-		case &quot;2125&quot;: get_activity_Sr = BETA_2125.getFDensity(nowDate)
-		case &quot;2126&quot;: get_activity_Sr = BETA_2126.getFDensity(nowDate)
-		case &quot;2127&quot;: get_activity_Sr = BETA_2127.getFDensity(nowDate)
-		case &quot;2128&quot;: get_activity_Sr = BETA_2128.getFDensity(nowDate)				
-		case &quot;2129&quot;: get_activity_Sr = BETA_2129.getFDensity(nowDate)
-		case &quot;0578&quot;: get_activity_Sr = BETA_0578.getFDensity(nowDate)	
-		case &quot;0579&quot;: get_activity_Sr = BETA_0579.getFDensity(nowDate)	
-		case &quot;0580&quot;: get_activity_Sr = BETA_0580.getFDensity(nowDate)	
-		case &quot;0581&quot;: get_activity_Sr = BETA_0581.getFDensity(nowDate)				
-	&apos;—————————————————————————————————————————————————————————————————
+	dim s as string
+	On Error Goto ErrorHandler
 	&apos;поверхностная активность
-		case &quot;0660Bq&quot;: get_activity_Sr = BETA_0660.getSurActivity(nowDate)
-        case &quot;0661Bq&quot;: get_activity_Sr = BETA_0661.getSurActivity(nowDate)
-        case &quot;0662Bq&quot;: get_activity_Sr = BETA_0662.getSurActivity(nowDate)
-        case &quot;0663Bq&quot;: get_activity_Sr = BETA_0663.getSurActivity(nowDate)
-        case &quot;0664Bq&quot;: get_activity_Sr = BETA_0664.getSurActivity(nowDate)
-        case &quot;0665Bq&quot;: get_activity_Sr = BETA_0665.getSurActivity(nowDate)
-        case &quot;0666Bq&quot;: get_activity_Sr = BETA_0666.getSurActivity(nowDate)
-        case &quot;0667Bq&quot;: get_activity_Sr = BETA_0667.getSurActivity(nowDate)
-        case &quot;2124Bq&quot;: get_activity_Sr = BETA_2124.getSurActivity(nowDate)
-        case &quot;2125Bq&quot;: get_activity_Sr = BETA_2125.getSurActivity(nowDate)
-        case &quot;2126Bq&quot;: get_activity_Sr = BETA_2126.getSurActivity(nowDate)
-        case &quot;2127Bq&quot;: get_activity_Sr = BETA_2127.getSurActivity(nowDate)
-        case &quot;2128Bq&quot;: get_activity_Sr = BETA_2128.getSurActivity(nowDate)				
-        case &quot;2129Bq&quot;: get_activity_Sr = BETA_2129.getSurActivity(nowDate)
-        case &quot;0578Bq&quot;: get_activity_Sr = BETA_0578.getSurActivity(nowDate)	
-        case &quot;0579Bq&quot;: get_activity_Sr = BETA_0579.getSurActivity(nowDate)	
-        case &quot;0580Bq&quot;: get_activity_Sr = BETA_0580.getSurActivity(nowDate)	
-        case &quot;0581Bq&quot;: get_activity_Sr = BETA_0581.getSurActivity(nowDate)
-	&apos;—————————————————————————————————————————————————————————————————
+	if InStr(src, &quot;Bq&quot;)&gt;0 then &apos;0660Bq 
+		s = Replace (src,&quot;Bq&quot;,&quot;&quot;)
+		get_activity_Sr = betaSrcMap(s).getSurActivity(nowDate)
 	&apos;активность (нигде не используется, так, на всякий)
-		case &quot;0660Act&quot;: get_activity_Sr = BETA_0660.getActivity(nowDate)
-        case &quot;0661Act&quot;: get_activity_Sr = BETA_0661.getActivity(nowDate)
-        case &quot;0662Act&quot;: get_activity_Sr = BETA_0662.getActivity(nowDate)
-        case &quot;0663Act&quot;: get_activity_Sr = BETA_0663.getActivity(nowDate)
-        case &quot;0664Act&quot;: get_activity_Sr = BETA_0664.getActivity(nowDate)
-        case &quot;0665Act&quot;: get_activity_Sr = BETA_0665.getActivity(nowDate)
-        case &quot;0666Act&quot;: get_activity_Sr = BETA_0666.getActivity(nowDate)
-        case &quot;0667Act&quot;: get_activity_Sr = BETA_0667.getActivity(nowDate)
-        case &quot;2124Act&quot;: get_activity_Sr = BETA_2124.getActivity(nowDate)
-        case &quot;2125Act&quot;: get_activity_Sr = BETA_2125.getActivity(nowDate)
-        case &quot;2126Act&quot;: get_activity_Sr = BETA_2126.getActivity(nowDate)
-        case &quot;2127Act&quot;: get_activity_Sr = BETA_2127.getActivity(nowDate)
-        case &quot;2128Act&quot;: get_activity_Sr = BETA_2128.getActivity(nowDate)				
-        case &quot;2129Act&quot;: get_activity_Sr = BETA_2129.getActivity(nowDate)
-        case &quot;0578Act&quot;: get_activity_Sr = BETA_0578.getActivity(nowDate)	
-        case &quot;0579Act&quot;: get_activity_Sr = BETA_0579.getActivity(nowDate)	
-        case &quot;0580Act&quot;: get_activity_Sr = BETA_0580.getActivity(nowDate)	
-        case &quot;0581Act&quot;: get_activity_Sr = BETA_0581.getActivity(nowDate)
-	&apos;—————————————————————————————————————————————————————————————————
+	elseif InStr(src, &quot;Act&quot;)&gt;0 then &apos;0660Act
+		s = Replace (src,&quot;Act&quot;,&quot;&quot;)
+		get_activity_Sr = betaSrcMap(s).getActivity(nowDate)
 	&apos;плотность потока для БДПБ-03. источник меньше чем бета, поэтому при расчете делится на 2.83
-		case &quot;2129/S&quot;: get_activity_Sr = BETA_2129.getFDensityB3(nowDate)
-		case &quot;0664/S&quot;: get_activity_Sr = BETA_0664.getFDensityB3(nowDate)
-		case &quot;0665/S&quot;: get_activity_Sr = BETA_0665.getFDensityB3(nowDate)
-		case &quot;0666/S&quot;: get_activity_Sr = BETA_0666.getFDensityB3(nowDate)
-		case &quot;0667/S&quot;: get_activity_Sr = BETA_0667.getFDensityB3(nowDate)
-	&apos;—————————————————————————————————————————————————————————————————	
-	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-		case &quot;0660BqCps&quot;: get_activity_Sr = BETA_0660.getCpsActivity(nowDate)
-		case &quot;0661BqCps&quot;: get_activity_Sr = BETA_0661.getCpsActivity(nowDate)
-		case &quot;0662BqCps&quot;: get_activity_Sr = BETA_0662.getCpsActivity(nowDate)
-		case &quot;0578BqCps&quot;: get_activity_Sr = BETA_0578.getCpsActivity(nowDate)
-	&apos;—————————————————————————————————————————————————————————————————		
-		case else: get_activity_Sr = 0.0
-	end select
+	elseif InStr(src, &quot;/S&quot;)&gt;0 then &apos;0660/S
+		s = Replace (src,&quot;/S&quot;,&quot;&quot;)
+		get_activity_Sr = betaSrcMap(s).getFDensityB3(nowDate)
+	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426	
+	elseif InStr(src, &quot;BqCps&quot;)&gt;0 then &apos;0660BqCps
+		s = Replace (src,&quot;BqCps&quot;,&quot;&quot;)
+		get_activity_Sr = betaSrcMap(s).getCpsActivity(nowDate)
+	else &apos;0660Bq
+	&apos;плотность потока
+		get_activity_Sr = betaSrcMap(src).getFDensity(nowDate)
+	end if
+	Exit function
+	ErrorHandler:
+	get_activity_Sr = 0.0
 end function
 &apos;-------------------------------------------------------------
 public const BETA_BG as double    = 11.9
@@ -251,6 +220,34 @@ public const BETA_BG as double    = 11.9
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
 function get_activity_Cs(src as string, nowDate)
+	dim s as string
+	On Error Goto ErrorHandler
+	&apos;поверхностная активность
+	if InStr(src, &quot;Bq&quot;)&gt;0 then &apos;0660Bq 
+		s = Replace (src,&quot;Bq&quot;,&quot;&quot;)
+		get_activity_Sr = sourcesMap(s).getSurActivity(nowDate)
+	&apos;активность (нигде не используется, так, на всякий)
+	elseif InStr(src, &quot;Act&quot;)&gt;0 then &apos;0660Act
+		s = Replace (src,&quot;Act&quot;,&quot;&quot;)
+		get_activity_Sr = sourcesMap(s).getActivity(nowDate)
+	&apos;плотность потока для БДПБ-03. источник меньше чем бета, поэтому при расчете делится на 2.83
+	elseif InStr(src, &quot;/S&quot;)&gt;0 then &apos;0660/S
+		s = Replace (src,&quot;/S&quot;,&quot;&quot;)
+		get_activity_Sr = sourcesMap(s).getFDensityB3(nowDate)
+	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426	
+	elseif InStr(src, &quot;BqCps&quot;)&gt;0 then &apos;0660BqCps
+		s = Replace (src,&quot;BqCps&quot;,&quot;&quot;)
+		get_activity_Sr = sourcesMap(s).getCpsActivity(nowDate)
+	else &apos;0660Bq
+	&apos;плотность потока
+		get_activity_Sr = sourcesMap(src).getFDensity(nowDate)
+	end if
+	Exit function
+	ErrorHandler:
+	get_activity_Sr = 0.0
+end function
+
+function get_activity_Cs_old(src as string, nowDate)
 	&apos;msgbox &quot;get_activity_Sr - &quot;+src
 	select case src
 	&apos;—————————————————————————————————————————————————————————————————		
@@ -457,29 +454,5 @@ function dynDistanceAr(name as string, dist as double, koef as double)
 	endif
 	dynDistanceAr = ar
 end function
-rem----------------------------------------------------------------
-&apos;бета источники на 1 марта 2020
-&apos;
-&apos;Тип	№		Ак,		ПовАк,	ВнешИз,	п/п,	ВнИз 6130
-&apos;ист	ист		Бк		Бк/см2	част/с	ч/см2*м	имп/с
-&apos;--------------------------------------------------------
-&apos;5С0	0663	57.4	0.57	21.7	13.0	
-&apos;5С0	0664	303		3.03	114		68.3
-&apos;4CO	0660	168		4.20	63.4	95		5.99
-&apos;4CO	6905	401		10.0	151		227		14.3
-&apos;5CO	0665	2080	20.8	785		471
-&apos;5CO	0666	25451	255		9611	5767
-&apos;5CO	0661	9835	246		3705	5557	350
-&apos;4CO	0662	89569	2239	33803	50705	3194
-&apos;4CO	16437	260642	6516	98930	148395
-&apos;4CO	15014	654458	16361	245422	368133
-&apos;4CO	0667	229594	2296	86765	52059
-
-&apos;Ак - активность
-&apos;ПовАк - поверхностная активность
-&apos;ВнешИз - внешнее излучение в телесный угол 2пи ср, част/с
-&apos;п/п - плотность потока частиц, част/(см2*мин)
-&apos;ВнИз 6130 - внешнее излучение в телесный угол 2пи ср с учетом чувствительности дозиметра-радиометра МКС-АТ6130, имп/с
-
 
 </script:module>
