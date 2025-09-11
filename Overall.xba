@@ -43,6 +43,7 @@ dim _stringTypeForCertificate as String &apos;поверка проверка с
 dim m_point, cont_point as double 
 dim prefix, MyFormat as string
 dim threePointArray(2) as double
+dim fivePointArray(4) as double
 
 dim strokeForSaving as String
 dim deviceNameForSavingStroke as String
@@ -544,10 +545,7 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		else
 			cont_point = betaPointsList.item(j+1)
 		end if	
-			
-		
-		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
-		
+					
 		dim srcName as string
 		srcName = betaSourcesList.item(j+1)
 		srcName = Replace (srcName,&quot;Bq&quot;,&quot;&quot;)
@@ -559,11 +557,21 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		rem TODO сделать через select case
 		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
 		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
-				
+
+		if j=0 then
+			fivePointArray = Math.avaragePointsRndFiveArray(m_point, percentOtk)
+			findAndRename((sign + i + &quot;-i1&quot; + j), Format(fivePointArray(0), MyFormat)) rem измерение 1
+			findAndRename((sign + i + &quot;-i2&quot; + j), Format(fivePointArray(1), MyFormat)) rem измерение 2
+			findAndRename((sign + i + &quot;-i3&quot; + j), Format(fivePointArray(2), MyFormat)) rem измерение 3
+			findAndRename((sign + i + &quot;-i4&quot; + j), Format(fivePointArray(3), MyFormat)) rem измерение 4
+			findAndRename((sign + i + &quot;-i5&quot; + j), Format(fivePointArray(4), MyFormat)) rem измерение 5
+		endif				
+		
+		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)		
 		findAndRename((sign + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
 		findAndRename((sign + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
 		findAndRename((sign + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
-				
+						
 		if cont_point&lt;150 then 
 			findAndRename((sign + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
 		else	
@@ -773,10 +781,20 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_140&quot;, Facility.getFacilityText(&quot;140&quot;))
 	findAndRename(&quot;$facility_alpha&quot;, Facility.getFacilityText(&quot;alpha&quot;))
 	findAndRename(&quot;$facility_beta&quot;, Facility.getFacilityText(&quot;beta&quot;))
+	
+	findAndRename(&quot;$facility_pp_beta&quot;, Facility.getFacilityText(&quot;betaPP&quot;))
+	findAndRename(&quot;$facility_pp_alpha&quot;, Facility.getFacilityText(&quot;alphaPP&quot;))
+	findAndRename(&quot;$facility_pp_110&quot;, Facility.getFacilityText(&quot;110PP&quot;))
+	findAndRename(&quot;$facility_pp_130&quot;, Facility.getFacilityText(&quot;130PP&quot;))
+	
 	findAndRename(&quot;$facility_13+11rus&quot;, Facility.getFacilityText(&quot;130+110&quot;))
 	findAndRename(&quot;$facility_13+11eng&quot;, Facility.getFacilityText(&quot;130+110eng&quot;))
 	findAndRename(&quot;$facility_src_cs_rus&quot;, Facility.getFacilityText(&quot;sourse_cs_rus&quot;))
 	findAndRename(&quot;$facility_src_cs_eng&quot;, Facility.getFacilityText(&quot;sourse_cs_eng&quot;))
+	
+	findAndRename(&quot;$facility_6130beta&quot;, Facility.getFacilityText(&quot;beta6130&quot;))
+	findAndRename(&quot;$facility_6130r_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta&quot;))
+	findAndRename(&quot;$facility_6130e_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
 	
 	findAndRename(&quot;$eng_facility_110&quot;, Facility.getFacilityText(&quot;110_eng&quot;))
 	findAndRename(&quot;$eng_facility_130&quot;, Facility.getFacilityText(&quot;130_eng&quot;))
@@ -784,9 +802,51 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_alpha&quot;, Facility.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, Facility.getFacilityText(&quot;beta_eng&quot;))
 
-	&apos;findAndReplaceAllUppercase()
+	findAndReplaceAllUppercase()
 end sub
-
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;    регулярное выражение &quot;\$[^\$]+\$&quot; по частям:
+&apos;    \$ - Экранированный символ доллара
+&apos;    $ в regex обычно означает &quot;конец строки&quot;
+&apos;    \$ означает буквально символ доллара
+&apos;    Первое \$ ищет открывающий символ $
+&apos;    [^\$]+ - Содержимое между долларами
+&apos;    [ ] - обозначает набор символов
+&apos;    ^ внутри скобок означает &quot;НЕ&quot; (отрицание)
+&apos;    [^\$] = &quot;любой символ, КРОМЕ доллара&quot;
+&apos;    + = &quot;один или более раз&quot;
+&apos;    Вместе: [^\$]+ = &quot;один или более любых символов, кроме доллара&quot;
+&apos;3. \$ - Закрывающий символ доллара
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;находит все метки типа &quot;$ucaseКАКОЙ-ТО_ТЕКСТ$&quot; и меняет на текст в суперскрипт формате (это нужно для нормального вывода текста в котором есть например хим элемент с индексом)
+Sub findAndReplaceAllUppercase
+    Dim oDoc As Object
+    Dim oSearch As Object
+    Dim oFound As Object
+    
+    oDoc = ThisComponent
+    oSearch = oDoc.createSearchDescriptor()
+    oSearch.SearchString = &quot;\$ucase[^\$]+\$&quot;
+    oSearch.SearchRegularExpression = True
+    
+    oFound = oDoc.findFirst(oSearch)
+    
+    While Not IsNull(oFound)
+        Dim originalText As String
+        originalText = oFound.getString()
+        
+        &apos; Проверяем, что текст действительно между $
+        If Left(originalText, 1) = &quot;$&quot; And Right(originalText, 1) = &quot;$&quot; Then
+            Dim cleanText As String
+            cleanText = Mid(originalText, 7, Len(originalText) - 7)
+        	oFound.CharEscapement = 30 &apos;30% (стандартное значение)
+        	oFound.CharEscapementHeight = 58 &apos;58% — стандартное уменьшение размера шрифта
+            oFound.setString(cleanText)
+        End If
+        
+        oFound = oDoc.findNext(oFound.getEnd(), oSearch)
+    Wend
+End Sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub replaceToUppercase()
 	&apos; &quot;$ucase137$&quot; -&gt; 

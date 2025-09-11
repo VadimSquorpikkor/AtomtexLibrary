@@ -219,34 +219,6 @@ public const BETA_BG as double    = 11.9
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-&apos;НЕ РАБОТАЕТ
-function get_activity_Cs_new(src as string, nowDate)
-	dim s as string
-	On Error Goto ErrorHandler
-	&apos;поверхностная активность
-	if InStr(src, &quot;Bq&quot;)&gt;0 then &apos;0660Bq 
-		s = Replace (src,&quot;Bq&quot;,&quot;&quot;)
-		get_activity_Sr = sourcesMap(s).getSurActivity(nowDate)
-	&apos;активность (нигде не используется, так, на всякий)
-	elseif InStr(src, &quot;Act&quot;)&gt;0 then &apos;0660Act
-		s = Replace (src,&quot;Act&quot;,&quot;&quot;)
-		get_activity_Sr = sourcesMap(s).getActivity(nowDate)
-	&apos;плотность потока для БДПБ-03. источник меньше чем бета, поэтому при расчете делится на 2.83
-	elseif InStr(src, &quot;/S&quot;)&gt;0 then &apos;0660/S
-		s = Replace (src,&quot;/S&quot;,&quot;&quot;)
-		get_activity_Sr = sourcesMap(s).getFDensityB3(nowDate)
-	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426	
-	elseif InStr(src, &quot;BqCps&quot;)&gt;0 then &apos;0660BqCps
-		s = Replace (src,&quot;BqCps&quot;,&quot;&quot;)
-		get_activity_Sr = sourcesMap(s).getCpsActivity(nowDate)
-	else &apos;0660Bq
-	&apos;плотность потока
-		get_activity_Sr = sourcesMap(src).getFDensity(nowDate)
-	end if
-	Exit function
-	ErrorHandler:
-	get_activity_Sr = 0.0
-end function
 &apos;-------------------------------------------------------------
 function get_activity_Cs(src as string, nowDate)
 	&apos;msgbox &quot;get_activity_Sr - &quot;+src
