@@ -574,10 +574,12 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 				
 		dim percent as double
 		percent = 6
-			
+
 		dim pogr_point as double
+		&apos;msgbox m_point +&quot; &quot;+cont_point
 		pogr_point = Math.RelativeError(m_point, cont_point)
 		MyFormat = &quot;0.00&quot;
+		
 		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
 		findAndRename((sign + i + &quot;-2&quot; + j), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
 	next j
@@ -782,7 +784,18 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_alpha&quot;, Facility.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, Facility.getFacilityText(&quot;beta_eng&quot;))
 
-end sub	
+	&apos;findAndReplaceAllUppercase()
+end sub
+
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub replaceToUppercase()
+	&apos; &quot;$ucase137$&quot; -&gt; 
+	dim up as string
+	up = Replace(s, &quot;$ucase&quot;, &quot;&quot;)
+	up = Replace(s, &quot;$&quot;, &quot;&quot;)
+	
+	findAndRename(s, )
+end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function makeSRKNumber(value as long)
 	dim first, second as integer

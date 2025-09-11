@@ -192,7 +192,7 @@ sub addNewBD
 	if oComboSVREM.text = &quot;SIEVERT&quot; then
 		&apos;if BDList.count &lt;&gt; 0 then Overall.saveCurentBDValue(BDList.count) rem !!!!!НЕ использовать!!! сохраняет значение первого во втором ИСПОЛЬЗОВАТЬ: if layoutPosition&lt;&gt;0 then saveCurentBDValue(layoutPosition)
 		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;))
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Cps&quot;,&quot;0578Cps&quot;,&quot;0661Cps&quot;,&quot;0662Cps&quot;))
 		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;))
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;), 		&quot;gamma&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;Зв/ч&quot;, Array(0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;), 			&quot;gamma&quot;, Array(0.1,10000), Array())
@@ -200,7 +200,7 @@ sub addNewBD
 		if oOption6130japan.state then bd.addDataWithSrc(&quot;6130 Бк (Япония)&quot;, &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),	&quot;gamma&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;,&quot;0662Bq&quot;))
 	else &apos;если в REMах
 		if oOption6130pp.state  then bd.addDataWithSrc(&quot;6130 п/п&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),			&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)) rem границы от 0.1 мкЗв/ч до 10 мЗв/ч
-		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;))
+		if oOption6130cps.state then bd.addDataWithSrc(&quot;6130 cps&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Cps&quot;,&quot;0578Cps&quot;,&quot;0661Cps&quot;,&quot;0662Cps&quot;))
 		if oOption6130bq.state  then bd.addDataWithSrc(&quot;6130 Бк&quot;,	&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;))
 		if oOption6130a.state   then bd.addDataWithSrc(&quot;6130A&quot;,		&quot;rem/ч&quot;, Array(70,0.7,7,70,0.7), 	Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;), 		&quot;gamma-rem&quot;, Array(0.1,10000), Array())
 		if oOption6130c.state   then bd.addDataWithSrc(&quot;6130C&quot;,		&quot;rem/ч&quot;, Array(70,0.7,7,70), 		Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;), 			&quot;gamma-rem&quot;, Array(0.1,10000), Array())
@@ -216,20 +216,6 @@ sub addNewBD
 		bd.setBetaValues(list)
 		bd.setAltList(list)
 	end if
-	
-	&apos;if oOption6130pp.state OR oOption6130cps.state OR oOption6130bq.state OR oOption6130japan.state then
-	&apos;	dim list as new Collection
-	&apos;	for i=1 to bd.getBetaValues.count
-	&apos;		&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426
-	&apos;		if oOption6130cps.state then
-	&apos;			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel)*1.426)
-	&apos;		else
-	&apos;			list.add(Activity.get_activity_Sr(bd.getBetaSources.item(i), oDateFieldModel))
-	&apos;		end if		
-	&apos;	next i	
-	&apos;	bd.setBetaValues(list)
-	&apos;	bd.setAltList(list)
-	&apos;end if
 	
 	oDialog6130.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog6130.getControl(&quot;bdSerial&quot;).text)
@@ -480,6 +466,8 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
+	
+	&apos;TODO ПЕРЕДЕЛАТЬ МАРКЕРЫ В ПРОТОКОЛАХ И УДАЛИТЬ ЭТИ № СТРОКИ
 	findAndRename(&quot;$facility_6130beta&quot;, Facility.getFacilityText(&quot;beta6130&quot;))
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta&quot;))
 	findAndRename(&quot;$facility_6130e_13+11+b&quot;, Facility.getFacilityText(&quot;6130_130+110+beta_eng&quot;))

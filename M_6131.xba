@@ -128,7 +128,7 @@ sub addNewBD
 	if oComboBETAUnit.text = &quot;П/П&quot; then
 		betaArray = Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;)
 	elseif oComboBETAUnit.text = &quot;CPS&quot; then
-		betaArray = Array(&quot;0660BqCps&quot;,&quot;0578BqCps&quot;,&quot;0661BqCps&quot;,&quot;0662BqCps&quot;)
+		betaArray = Array(&quot;0660Cps&quot;,&quot;0578Cps&quot;,&quot;0661Cps&quot;,&quot;0662Cps&quot;)
 	elseif oComboBETAUnit.text = &quot;Bq&quot; then
 		betaArray = Array(&quot;0660Bq&quot;,&quot;0578Bq&quot;,&quot;0661Bq&quot;)
 	else

@@ -179,7 +179,7 @@ end function
 &apos;	строка вида &quot;0660Bq&quot; 	возвращает ПОВЕРХНОСТНУЮ АКТИВНОСТЬ (Бк/см2)
 &apos;	строка вида &quot;0660Act&quot; 	возвращает Активность (Бк)
 &apos;	строка вида &quot;0660/S&quot; 	возвращает плотность потока для БДПБ-03
-&apos;	строка вида &quot;0660BqCps&quot; возвращает поверхностную активность для 6130cps
+&apos;	строка вида &quot;0660Cps&quot;   возвращает поверхностную активность для 6130cps
 function get_activity_Sr(src as string, nowDate)
 	dim s as string
 	On Error Goto ErrorHandler
@@ -196,8 +196,8 @@ function get_activity_Sr(src as string, nowDate)
 		s = Replace (src,&quot;/S&quot;,&quot;&quot;)
 		get_activity_Sr = betaSrcMap(s).getFDensityB3(nowDate)
 	&apos;Если 6130cps, то для беты считаем активность с учетом чувствительности 6130: поверхностную активность (Бк/см2) * 1.426: А(6130) = Ап * 1.426	
-	elseif InStr(src, &quot;BqCps&quot;)&gt;0 then &apos;0660BqCps
-		s = Replace (src,&quot;BqCps&quot;,&quot;&quot;)
+	elseif InStr(src, &quot;Cps&quot;)&gt;0 then &apos;0660BqCps
+		s = Replace (src,&quot;Cps&quot;,&quot;&quot;)
 		get_activity_Sr = betaSrcMap(s).getCpsActivity(nowDate)
 	else &apos;0660Bq
 	&apos;плотность потока
@@ -219,7 +219,8 @@ public const BETA_BG as double    = 11.9
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-function get_activity_Cs(src as string, nowDate)
+&apos;НЕ РАБОТАЕТ
+function get_activity_Cs_new(src as string, nowDate)
 	dim s as string
 	On Error Goto ErrorHandler
 	&apos;поверхностная активность
@@ -246,8 +247,8 @@ function get_activity_Cs(src as string, nowDate)
 	ErrorHandler:
 	get_activity_Sr = 0.0
 end function
-
-function get_activity_Cs_old(src as string, nowDate)
+&apos;-------------------------------------------------------------
+function get_activity_Cs(src as string, nowDate)
 	&apos;msgbox &quot;get_activity_Sr - &quot;+src
 	select case src
 	&apos;—————————————————————————————————————————————————————————————————		
