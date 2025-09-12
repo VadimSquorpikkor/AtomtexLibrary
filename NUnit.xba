@@ -8,22 +8,6 @@ Option Explicit
 
 dim Overall as new Overall 
 
-sub neutron_01_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.965), Array(6, 57, 235, 986), 5)
-end sub
-
-sub neutron_02_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.6, 0.6, 0.863, 0.957), Array(5.9, 57, 235, 1019), 5)
-end sub
-
-sub neutron_03_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.922, 0.922, 0.980, 0.995), Array(9, 80, 330, 1460), 7)
-end sub
-
-sub neutron_04_ToTemplateStep(i as integer, bd as BUnit)
-	neutron(i, bd, Array(0.866, 0.866, 0.957, 0.991), Array(8.3, 80, 331, 1434), 7)
-end sub
-
 sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
 	dim m_point, p1, p2, p3 as double
@@ -50,18 +34,24 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	threePointArray_3 = Math.avaragePointsRndArray(p3, 3) &apos;OverAll.percentOtk)
 	
 	for j=0 to bd.getPointList.count-1
-		findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
+		findAndRename((&quot;$f&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
 		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), Format(threePointArray_2(j), &quot;0&quot;)) rem рандом 2
 		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
 	next j		
 	
-	findAndRename((&quot;$&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
+	findAndRename((&quot;$f&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
 	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
 	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
 	findAndRename((&quot;$&quot; + i + &quot;-70&quot;), Format(s,  &quot;0.00&quot;)) 
 end sub
 rem---------------------------------------------------------------------------------------------------------
-sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_array as variant, percent as double)
+sub neutronToTemplateStep(i as integer, bd as BUnit, nData as NeutronData)
+	dim point_br_array(3) as double
+	dim point_fio_array(3) as double
+	point_br_array = nData.br
+	point_fio_array = nData.fio
+	dim percent as double
+	percent = nData.percent
 	dim j, n as integer
  	dim m_point, point, fon, p1, p2, p3 as double
  	dim MyFormat as string
@@ -92,7 +82,12 @@ sub neutron(i as integer, bd as new BUnit, point_br_array as variant, point_fio_
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, &quot;0.00&quot;))
 		p3 = 1.1 * sqr(p2 * p2 + percent*percent)
 		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, &quot;0.00&quot;))
+		
+		&apos;значения коэффициентов в шапку таблицы
+		findAndRename((&quot;$&quot; + i + &quot;-br&quot; + &quot;&quot; + n), point_br_array(n-1))
+		findAndRename((&quot;$&quot; + i + &quot;-fi&quot; + &quot;&quot; + n), point_fio_array(n-1))
 	next n
+	
 	
 
 end sub

@@ -593,6 +593,18 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 	next j
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
+const PERCENT_MAED_110 as double = 2.9
+const PERCENT_MAED_130 as double = 2.9
+const PERCENT_EQV_110 as double = 5
+const PERCENT_EQV_130 as double = 5
+const PERCENT_KERMA_110 as double = 2
+const PERCENT_KERMA_130 as double = 2
+const PERCENT_NEUTRON_PP as double = 4
+const PERCENT_NEUTRON_MD as double = 4
+const PERCENT_ALPHA as double = 6
+const PERCENT_BETA as double = 6
+const PERCENT_ACT_1125 as double = 10
+&apos;------------------------------------------------------------------------------------------------------------------------
 function FacilityError(point as double, BDType as string, prefix as string)
 	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
 	select case BDType
@@ -600,39 +612,39 @@ function FacilityError(point as double, BDType as string, prefix as string)
 	case &quot;gamma&quot;
 		&apos;раньше для удг-110 и удг-130 были разные погрешности
 		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = 2.9 &apos;(5) удг-110
+			FacilityError = PERCENT_MAED_110
 		else
-			FacilityError = 2.9 &apos;(4) удг-130
+			FacilityError = PERCENT_MAED_130
 		end if
 	&apos;направленный эквивалент ——————————————————————————————
 	case &quot;gamma007&quot;
 		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = 5 &apos;удг-110
+			FacilityError = PERCENT_EQV_110
 		else
-			FacilityError = 5 &apos;удг-130
+			FacilityError = PERCENT_EQV_130
 		end if		
 	&apos;Керма ————————————————————————————————————————————————
 	case &quot;gamma-Gy&quot;
 		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = 2 &apos;удг-110
+			FacilityError = PERCENT_KERMA_110
 		else
-			FacilityError = 2 &apos;удг-130
+			FacilityError = PERCENT_KERMA_130
 		end if
 	&apos;140 плотность потока —————————————————————————————————
 	case &quot;n-PP&quot;
-			FacilityError = 4
+			FacilityError = PERCENT_NEUTRON_PP
 	&apos;140 мощность дозы ————————————————————————————————————
 	case &quot;n-MD&quot;
-			FacilityError = 4
+			FacilityError = PERCENT_NEUTRON_MD
 	&apos;альфа ————————————————————————————————————————————————
 	case &quot;alpha&quot;
-			FacilityError = 6
+			FacilityError = PERCENT_ALPHA
 	&apos;бета —————————————————————————————————————————————————
 	case &quot;beta&quot;
-			FacilityError = 6
+			FacilityError = PERCENT_BETA
 	&apos;для уд.активности для 1125 ———————————————————————————
 	case &quot;gamma-Src&quot;
-			FacilityError = 10 
+			FacilityError = PERCENT_ACT_1125
 	end select
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------

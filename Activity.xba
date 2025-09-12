@@ -40,10 +40,32 @@ Function newElement(ename as string, halflife as double) as Element
     newElement = r
 End Function
 
+&apos;Структурка для нейтронника
+Type NeutronData
+	br(3) as double
+	fio(3) as double
+	percent as double
+end type
+&apos; Конструктор
+Function newNeutronData(_br as variant, _fio as variant, _percent as double) as Element
+    Dim n As NeutronData
+    n.br = _br
+    n.fio = _fio
+    n.percent = _percent
+    newNeutronData = n
+End Function
+
 Dim betaSrcMap As New Collection
 
 dim SC_137 as Element
 dim SR_90 as Element
+
+dim NEUTRON_01 as NeutronData
+dim NEUTRON_02 as NeutronData
+dim NEUTRON_03 as NeutronData
+dim NEUTRON_04 as NeutronData
+dim NEUTRON_05 as NeutronData
+dim NEUTRON_06 as NeutronData
 
 dim BETA_0660 as new RASrc
 dim BETA_0661 as new RASrc
@@ -133,6 +155,13 @@ sub initSources()
 	betaSrcMap.add(BETA_0579, &quot;0579&quot;)
 	betaSrcMap.add(BETA_0580, &quot;0580&quot;)
 	betaSrcMap.add(BETA_0581, &quot;0581&quot;)
+	
+	NEUTRON_01 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 53, 220, 924), 	PERCENT_NEUTRON_PP)
+	NEUTRON_02 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 54.0, 222, 938), 	PERCENT_NEUTRON_PP)
+	NEUTRON_03 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995),	Array(8, 75.8, 313, 1320), 	PERCENT_NEUTRON_MD)
+	NEUTRON_04 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995), 	Array(8, 75.8, 313, 1320), 	PERCENT_NEUTRON_MD)
+	NEUTRON_05 = newNeutronData(Array(0.607, 0.607, 0.866, 0.966),	Array(6, 54, 222, 938), 	PERCENT_NEUTRON_PP)
+	NEUTRON_06 = newNeutronData(Array(0.886, 0.866, 0.970, 0.993),	Array(9, 75, 309, 1301), 	PERCENT_NEUTRON_MD)
 end sub
 
 &apos; 	╔═══════════════════════════════╗

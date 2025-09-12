@@ -39,7 +39,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.27 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.28 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -520,10 +520,10 @@ sub insertDataToTemplate
 			strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
 			facilities.addTypeAndLimits(bd.BDType, bd.minLimit, bd.maxLimit)		
 			
-			if bd.BdName=&quot;БДКН-01&quot; then	neutron_01(i, bd)
-			if bd.BdName=&quot;БДКН-03&quot; then	neutron_03(i, bd)
-			if bd.BdName=&quot;БДКН-05&quot; then	neutron_05(i, bd)
-			if bd.BdName=&quot;БДКН-06&quot; then	neutron_06(i, bd)
+			if bd.BdName=&quot;БДКН-01&quot; then	neutron(i,bd,NEUTRON_01)
+			if bd.BdName=&quot;БДКН-03&quot; then	neutron(i,bd,NEUTRON_03)
+			if bd.BdName=&quot;БДКН-05&quot; then	neutron(i,bd,NEUTRON_05)
+			if bd.BdName=&quot;БДКН-06&quot; then	neutron(i,bd,NEUTRON_06)
 			
 			if BDList.item(i).getType = &quot;beta&quot; then				
 				&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
@@ -559,32 +559,13 @@ sub insertDataToTemplate
 	msgbox &quot;Готово!&quot;
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
-sub neutron_01(i as integer, bd as BUnit)
-	&apos;neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 57, 235, 986))
-	neutron(i,bd,Array(0.6, 0.6, 0.863, 0.965),Array(6, 53, 220, 924))
-end sub
-&apos;---------------------------------------------------------------------------------------------------------
-sub neutron_03(i as integer, bd as BUnit)
-	&apos;(0.45,9.5, 88, 330, 1350),	
-	&apos;neutron(i,bd,Array(0.922, 0.866, 0.980, 0.995),Array(9, 80, 330, 1460))
-	&apos;neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(9, 75, 309, 1301))
-	neutron(i,bd,Array(0.922, 0.922, 0.980, 0.995),Array(8, 75.8, 313, 1320))
-end sub
-&apos;---------------------------------------------------------------------------------------------------------
-sub neutron_05(i as integer, bd as BUnit)
-	&apos;neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 57, 235, 986))
-	neutron(i,bd,Array(0.607, 0.607, 0.866, 0.966),Array(6, 53, 220, 924))
-end sub
-&apos;---------------------------------------------------------------------------------------------------------
-sub neutron_06(i as integer, bd as BUnit)
-	neutron(i,bd,Array(0.886, 0.866, 0.970, 0.993),Array(9, 75, 309, 1301))
-end sub
-&apos;---------------------------------------------------------------------------------------------------------
-sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
+sub neutron(i as integer, bd as BUnit, nData as NeutronData)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double
-	point_br_array = br
-	point_fio_array = fio
+	dim percent as double
+	point_br_array = nData.br
+	point_fio_array = nData.fio
+	percent = nData.percent
 	dim fon, p1, p2, p3 as double
 	fon = bd.valueList.item(1)	&apos;фон
 	dim point as double
@@ -595,7 +576,7 @@ sub neutron(i as integer, bd as BUnit, br as variant, fio as variant)
 		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
-		p3 = 1.1 * sqr(p2 * p2 + 5*5)
+		p3 = 1.1 * sqr(p2 * p2 + percent*percent)
 		findAndRename((&quot;$&quot; + i + &quot;-n4&quot; + &quot;&quot; + n), Format(p3, MyFormat))
 		
 		&apos;значения коэффициентов в шапку таблицы
