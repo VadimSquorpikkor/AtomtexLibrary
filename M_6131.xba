@@ -43,7 +43,7 @@ Sub AT6131_Dialog_Show
 	oDialog6131 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_6131 )
 	oListBox = oDialog6131.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.05 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog6131, oDateFieldModel, &quot;Версия 1.06 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oDialog6131.Model.getByName(&quot;catImage&quot;).ImageURL = sertPath &amp; &quot;6131\blackcat.png&quot;

@@ -399,7 +399,6 @@ sub insertParametersToTemplate&apos;(bdName as string)
 end sub	
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)
-		&apos;&apos;&apos;&apos;if i = 1 then additionalBGValue = 0
 		dim src_name as string
 		dim bd as new DUnit
 		dim BDtype as string 
@@ -415,11 +414,18 @@ sub templateStep(i as integer, strokeEnd as string)
 			prefix =  bd.pointTextList.item(j+1)
 			threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
 			
-			&apos;msgbox (cdatefromiso(_oDateFieldModel.date) - DateSerial(2021,1,23))
-			&apos;msgbox cdatefromiso(_oDateFieldModel.date)
-			
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(1)) rem расстояние до источника
+
+			&apos;для варианта когда в точке 5 измерений а не 3 (j=0 — так как 5 измерений может быть только в первой точке, то для других не считаю)
+			if j=0 then
+				fivePointArray = Math.avaragePointsRndFiveArray(m_point, percentOtk)
+				findAndRename((&quot;$&quot; + i + &quot;-i1&quot; + j), Format(fivePointArray(0), MyFormat)) rem измерение 1
+				findAndRename((&quot;$&quot; + i + &quot;-i2&quot; + j), Format(fivePointArray(1), MyFormat)) rem измерение 2
+				findAndRename((&quot;$&quot; + i + &quot;-i3&quot; + j), Format(fivePointArray(2), MyFormat)) rem измерение 3
+				findAndRename((&quot;$&quot; + i + &quot;-i4&quot; + j), Format(fivePointArray(3), MyFormat)) rem измерение 4
+				findAndRename((&quot;$&quot; + i + &quot;-i5&quot; + j), Format(fivePointArray(4), MyFormat)) rem измерение 5
+			endif	
 
 			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j + strokeEnd), Format(threePointArray(0), getRightFormat(m_point))) rem измерение 1
 			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j + strokeEnd), Format(threePointArray(1), getRightFormat(m_point))) rem измерение 2
@@ -814,7 +820,8 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_alpha&quot;, Facility.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, Facility.getFacilityText(&quot;beta_eng&quot;))
 
-	findAndReplaceAllUppercase()
+	findAndReplaceAllSuperscript()
+	findAndReplaceAllSubscript()
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;    регулярное выражение &quot;\$[^\$]+\$&quot; по частям:
@@ -830,15 +837,15 @@ end sub
 &apos;    Вместе: [^\$]+ = &quot;один или более любых символов, кроме доллара&quot;
 &apos;3. \$ - Закрывающий символ доллара
 &apos;------------------------------------------------------------------------------------------------------------------------
-&apos;находит все метки типа &quot;$ucaseКАКОЙ-ТО_ТЕКСТ$&quot; и меняет на текст в суперскрипт формате (это нужно для нормального вывода текста в котором есть например хим элемент с индексом)
-Sub findAndReplaceAllUppercase
+&apos;находит все метки типа &quot;$supКАКОЙ-ТО_ТЕКСТ$&quot; и меняет на текст в суперскрипт формате (это нужно для нормального вывода текста в котором есть например хим элемент с индексом)
+Sub findAndReplaceAllSuperscript
     Dim oDoc As Object
     Dim oSearch As Object
     Dim oFound As Object
     
     oDoc = ThisComponent
     oSearch = oDoc.createSearchDescriptor()
-    oSearch.SearchString = &quot;\$ucase[^\$]+\$&quot;
+    oSearch.SearchString = &quot;\$sup[^\$]+\$&quot;
     oSearch.SearchRegularExpression = True
     
     oFound = oDoc.findFirst(oSearch)
@@ -850,7 +857,7 @@ Sub findAndReplaceAllUppercase
         &apos; Проверяем, что текст действительно между $
         If Left(originalText, 1) = &quot;$&quot; And Right(originalText, 1) = &quot;$&quot; Then
             Dim cleanText As String
-            cleanText = Mid(originalText, 7, Len(originalText) - 7)
+            cleanText = Mid(originalText, 5, Len(originalText) - 5)
         	oFound.CharEscapement = 30 &apos;30% (стандартное значение)
         	oFound.CharEscapementHeight = 58 &apos;58% — стандартное уменьшение размера шрифта
             oFound.setString(cleanText)
@@ -860,14 +867,34 @@ Sub findAndReplaceAllUppercase
     Wend
 End Sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub replaceToUppercase()
-	&apos; &quot;$ucase137$&quot; -&gt; 
-	dim up as string
-	up = Replace(s, &quot;$ucase&quot;, &quot;&quot;)
-	up = Replace(s, &quot;$&quot;, &quot;&quot;)
-	
-	findAndRename(s, )
-end sub
+Sub findAndReplaceAllSubscript
+    Dim oDoc As Object
+    Dim oSearch As Object
+    Dim oFound As Object
+    
+    oDoc = ThisComponent
+    oSearch = oDoc.createSearchDescriptor()
+    oSearch.SearchString = &quot;\$sub[^\$]+\$&quot;
+    oSearch.SearchRegularExpression = True
+    
+    oFound = oDoc.findFirst(oSearch)
+    
+    While Not IsNull(oFound)
+        Dim originalText As String
+        originalText = oFound.getString()
+        
+        &apos; Проверяем, что текст действительно между $
+        If Left(originalText, 1) = &quot;$&quot; And Right(originalText, 1) = &quot;$&quot; Then
+            Dim cleanText As String
+            cleanText = Mid(originalText, 5, Len(originalText) - 5)
+        	oFound.CharEscapement = -25  &apos; -25% — стандартный subscript ВНИМАНИЕ! findAndReplaceAllSuperscript и findAndReplaceAllSubscript различаются только этой строчкой и регулярным выражением
+        	oFound.CharEscapementHeight = 58 &apos;58% — стандартное уменьшение размера шрифта
+            oFound.setString(cleanText)
+        End If
+        
+        oFound = oDoc.findNext(oFound.getEnd(), oSearch)
+    Wend
+End Sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function makeSRKNumber(value as long)
 	dim first, second as integer
