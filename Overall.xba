@@ -101,7 +101,6 @@ sub initializeActivityCombo(oActivityCombo as object)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
-	&apos;msgbox &quot;initializeSertificateCombo&quot;
 	if NOT isNull(oComboBox1) then
   		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
   		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
@@ -116,23 +115,14 @@ sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
   		oComboBox2.addItems( rusItems2, 0 )
 		oComboBox2.text = rusItems2(0)
 	end if	
-	&apos;if NOT isNull(oComboBox3) then
-	&apos;	oComboBox3.removeItems( 0, oComboBox3.getItemCount() )  	
-  	&apos;	rusItems3 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
-  	&apos;	engItems3 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;P. Feklenkova&quot; )
-  	&apos;	oComboBox3.addItems( rusItems2, 0 )
-	&apos;	oComboBox3.text = rusItems2(0)
-	&apos;end if	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeDateField(oDateFieldModel as object, oDialog as object)
 	oDateFieldModel = oDialog.Model.getByName(&quot;DateField1&quot;)
 	oDateFieldModel.dateformat = 7 &apos;в виде dd.mm.yyyy
 	oDateFieldModel.Date = cDateToIso(Now)
-	
 	_oDateFieldModel = oDateFieldModel
 end sub
-
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeParameters(layoutPosition as integer, BDList as Collection, isComboCollection as Collection)
 	_layoutPosition = layoutPosition
@@ -153,9 +143,7 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 			_oDialog.getControl(&quot;ValueField&quot; + i).value = 0
 		next i
 	end if
-	
 
-	
 	_maxBDCount = maxBDCount
 	_oListBox = oListBox
 	_maxPointsCount = pointCount
@@ -233,53 +221,11 @@ end function
 &apos;   Если такой формат понравится Наташе и Антохе, надо будет удалить Overall.getRightFormat2503 (сейчас методы идентичны)
 &apos;   и переделать метод rightStep по образу rightStep2140
 function getRightFormat(point as double)
-&apos;	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
-&apos;	if point &lt; 1   and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
-&apos;	if point &lt; 100 and point &gt;= 1	then getRightFormat = &quot;0.0&quot;
-&apos;	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
-
 	&apos;ТОЛЬКО С ТОЧКОЙ!!! С ЗАПЯТОЙ НЕПРАВИЛЬНО БУДЕТ ФОРМАТИРОВАТЬ ПРИ ВЫБОРЕ ЛОКАЛИ ЯЗЫКА ОФИСА РУССКОГО!!!
-
 	if point &lt; 0.1 and point &gt;  0	then getRightFormat = &quot;0.000&quot;
 	if point &lt; 10  and point &gt;= 0.1 then getRightFormat = &quot;0.00&quot;
 	if point &lt; 100 and point &gt;= 10	then getRightFormat = &quot;0.0&quot;
 	if point &gt;= 100               	then getRightFormat = &quot;0&quot;
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;не используется
-function getRightFormat_din_length(point as double)
-	dim epsilon as double
-	dim mformat as string
-	dim formatted as double 
-	epsilon = 0.00001  &apos; Допустимая погрешность
-
-	if point &lt; 0.1 and point &gt;  0	then mformat = &quot;0.000&quot;
-	if point &lt; 10  and point &gt;= 0.1 then mformat = &quot;0.00&quot;
-	if point &lt; 100 and point &gt;= 10	then mformat = &quot;0.0&quot;
-	if point &gt;= 100               	then mformat = &quot;0&quot;
-	
-	formatted = Format(point, mformat)
-		
-	if Abs(formatted-point)&gt;epsilon then
-		mformat = mformat+&quot;0&quot;
-	end if
-	
-	getRightFormat = mformat
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;не используется
-function getRightFormat2140(point as double)
-	if point &lt; 10  and point &gt; 	0 	then getRightFormat2140 = &quot;0.00&quot;&apos;7 
-	if point &lt; 100 and point &gt;= 10	then getRightFormat2140 = &quot;0.0&quot; &apos;70
-	if point &gt;= 100               	then getRightFormat2140 = &quot;0&quot;   &apos;700
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;не используется
-function getRightFormat2503(point as double)
-	if point &lt; 0.1 and point &gt;  0	then getRightFormat2503 = &quot;0.000&quot;
-	if point &lt; 10   and point &gt;= 0.1 then getRightFormat2503 = &quot;0.00&quot;
-	if point &lt; 100 and point &gt;= 10	then getRightFormat2503 = &quot;0.0&quot;
-	if point &gt;= 100               	then getRightFormat2503 = &quot;0&quot;
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub makeLayoutFromBD(bd as new DUnit)
@@ -394,8 +340,6 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
 	bg007 = Format(Math.randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
-	
-	
 end sub	
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub templateStep(i as integer, strokeEnd as string)
@@ -463,7 +407,7 @@ sub templateStep(i as integer, strokeEnd as string)
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
 			
 			dim percent as double
-			percent = FacilityError(m_point, BDType, prefix)
+			percent = Facility.getError(m_point, BDType, prefix)
 				
 			dim pogr_point as double
 			pogr_point = Math.RelativeError(m_point, cont_point)
@@ -479,11 +423,6 @@ end sub
 sub insertToTemplateStep(i)
 	templateStep(i, &quot;&quot;)
 end sub
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;sub insertToTemplateStepRem(i)
-&apos;	bgValue = bgValue/100
-&apos;	templateStep(i, &quot;&quot;)
-&apos;end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub insertToTemplateStepDoted(i)
 	templateStep(i, &quot;.&quot;)
@@ -599,61 +538,6 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 	next j
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-const PERCENT_MAED_110 as double = 2.9
-const PERCENT_MAED_130 as double = 2.9
-const PERCENT_EQV_110 as double = 5
-const PERCENT_EQV_130 as double = 5
-const PERCENT_KERMA_110 as double = 2
-const PERCENT_KERMA_130 as double = 2
-const PERCENT_NEUTRON_PP as double = 4
-const PERCENT_NEUTRON_MD as double = 4
-const PERCENT_ALPHA as double = 6
-const PERCENT_BETA as double = 6
-const PERCENT_ACT_1125 as double = 10
-&apos;------------------------------------------------------------------------------------------------------------------------
-function FacilityError(point as double, BDType as string, prefix as string)
-	&apos;msgbox &quot;&quot; + point + &quot; &quot; + BDType + &quot; &quot; + prefix
-	select case BDType
-	&apos;амбиентный эквивалент ————————————————————————————————
-	case &quot;gamma&quot;
-		&apos;раньше для удг-110 и удг-130 были разные погрешности
-		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = PERCENT_MAED_110
-		else
-			FacilityError = PERCENT_MAED_130
-		end if
-	&apos;направленный эквивалент ——————————————————————————————
-	case &quot;gamma007&quot;
-		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = PERCENT_EQV_110
-		else
-			FacilityError = PERCENT_EQV_130
-		end if		
-	&apos;Керма ————————————————————————————————————————————————
-	case &quot;gamma-Gy&quot;
-		if AbsoluteValue(point, prefix)&lt;1 then
-			FacilityError = PERCENT_KERMA_110
-		else
-			FacilityError = PERCENT_KERMA_130
-		end if
-	&apos;140 плотность потока —————————————————————————————————
-	case &quot;n-PP&quot;
-			FacilityError = PERCENT_NEUTRON_PP
-	&apos;140 мощность дозы ————————————————————————————————————
-	case &quot;n-MD&quot;
-			FacilityError = PERCENT_NEUTRON_MD
-	&apos;альфа ————————————————————————————————————————————————
-	case &quot;alpha&quot;
-			FacilityError = PERCENT_ALPHA
-	&apos;бета —————————————————————————————————————————————————
-	case &quot;beta&quot;
-			FacilityError = PERCENT_BETA
-	&apos;для уд.активности для 1125 ———————————————————————————
-	case &quot;gamma-Src&quot;
-			FacilityError = PERCENT_ACT_1125
-	end select
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
 function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos;&apos;(oDialog as object, oListBox as object, layoutPosition as integer, BDList as Collection, isComboCollection as Collection, maxBDCount as integer)
 	_oListBox.selectItemPos( layoutPosition-1, True )
 	dim i,j as integer
@@ -704,8 +588,6 @@ function setButtonVisibility(layoutPosition as integer)  &apos;&apos;&apos;&apos
 	if _BDList.count = _maxBDCount then _oDialog.getControl(&quot;addButton&quot;).setEnable(false)
 	if _BDList.count = 0 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
 	if _BDList.count = _maxBDCount-1 then _oDialog.getControl(&quot;addButton&quot;).setEnable(true)
-	
-	
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub saveCurentBDValue(num as integer)
@@ -804,6 +686,7 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_pp_alpha&quot;, Facility.getFacilityText(&quot;alphaPP&quot;))
 	findAndRename(&quot;$facility_pp_110&quot;, Facility.getFacilityText(&quot;110PP&quot;))
 	findAndRename(&quot;$facility_pp_130&quot;, Facility.getFacilityText(&quot;130PP&quot;))
+	findAndRename(&quot;$facility_pp_140&quot;, Facility.getFacilityText(&quot;140PP&quot;))
 	
 	findAndRename(&quot;$facility_13+11rus&quot;, Facility.getFacilityText(&quot;130+110&quot;))
 	findAndRename(&quot;$facility_13+11eng&quot;, Facility.getFacilityText(&quot;130+110eng&quot;))
@@ -1414,9 +1297,9 @@ Sub CreatePairedTablesFromTemplate(count as integer)
 	findAndRename(&quot;##&quot;, &quot;$&quot;)
 End Sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub deleteTable(name as string)
-	 if ThisComponent.TextTables().hasByName(name) then
-     	ThisComponent.Text.removeTextContent(ThisComponent.TextTables().getByName(name))
+sub deleteTable(sname as string)
+	 if ThisComponent.TextTables().hasByName(sname) then
+     	ThisComponent.Text.removeTextContent(ThisComponent.TextTables().getByName(sname))
      end if
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------

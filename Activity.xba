@@ -156,12 +156,13 @@ sub initSources()
 	betaSrcMap.add(BETA_0580, &quot;0580&quot;)
 	betaSrcMap.add(BETA_0581, &quot;0581&quot;)
 	
-	NEUTRON_01 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 53, 220, 924), 	PERCENT_NEUTRON_PP)
-	NEUTRON_02 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 54.0, 222, 938), 	PERCENT_NEUTRON_PP)
-	NEUTRON_03 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995),	Array(8, 75.8, 313, 1320), 	PERCENT_NEUTRON_MD)
-	NEUTRON_04 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995), 	Array(8, 75.8, 313, 1320), 	PERCENT_NEUTRON_MD)
-	NEUTRON_05 = newNeutronData(Array(0.607, 0.607, 0.866, 0.966),	Array(6, 54, 222, 938), 	PERCENT_NEUTRON_PP)
-	NEUTRON_06 = newNeutronData(Array(0.886, 0.866, 0.970, 0.993),	Array(9, 75, 309, 1301), 	PERCENT_NEUTRON_MD)
+	dim f as new Facility
+	NEUTRON_01 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 54, 222, 938), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_02 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(6, 54.0, 222, 938), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_03 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995),	Array(8, 75.8, 313, 1320), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_04 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995), 	Array(8, 75.8, 313, 1320), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_05 = newNeutronData(Array(0.607, 0.607, 0.866, 0.966),	Array(6, 54, 222, 938), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_06 = newNeutronData(Array(0.937, 0.937, 0.983, 0.996),	Array(8, 75.8, 313, 1320), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
 end sub
 
 &apos; 	╔═══════════════════════════════╗
@@ -186,6 +187,13 @@ public const ALPHA_0651 as double = 73.2
 public const ALPHA_0652 as double = 624
 public const ALPHA_0653 as double = 5136
 public const ALPHA_0655 as double = 36120
+
+
+&apos;№0645, ПП=61,65, А=85,8
+&apos;№0577, ПП=612, А=2150 
+&apos;№0773, ПП=8655, А=12100
+&apos;№0648, ПП=61350, А=86700
+&apos;№0774, ПП=201000, А=279000
 &apos;-------------------------------------------------------------
 function get_activity_alpha(srcName as string)
 	select case srcName
@@ -335,6 +343,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 800 	then ar = dynDistanceAr(&quot;163&quot;, 204.488, koefCs)
 		case &quot;&quot;
 				if point = 0.35	then ar = dynDistanceAr(&quot;163&quot;, 306.689, koefCs)
+				if point = 0.4 	then ar = dynDistanceAr(&quot;163&quot;, 287.142, koefCs)
 				if point = 0.5 	then ar = dynDistanceAr(&quot;163&quot;, 257.118, koefCs)
 				if point = 0.7 	then ar = dynDistanceAr(&quot;163&quot;, 218.465, koefCs)
 				if point = 4 	then ar = dynDistanceAr(&quot;163&quot;, 92.196,  koefCs)

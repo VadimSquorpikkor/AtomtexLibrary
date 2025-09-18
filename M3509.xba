@@ -407,7 +407,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
-		facilityPercent = Overall.FacilityError(0.8, BDType, &quot;мк&quot;)
+		facilityPercent = Facility.getError(0.8, BDType, &quot;мк&quot;)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
 		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
@@ -479,7 +479,7 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + j + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
 		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
-		facilityPercent = Overall.FacilityError(cont_point, BDType, prefix)
+		facilityPercent = Facility.getError(cont_point, BDType, prefix)
 		
 		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
 		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)

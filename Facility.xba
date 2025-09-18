@@ -28,40 +28,72 @@ Private Sub Class_Terminate()
 end sub
 &apos;-------------------------------------------------------------
 REM --- CLASS METHODS
+
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getPercent(stype as string)
+	select case stype
+	case &quot;PERCENT_MAED_110&quot;: getPercent = 2.9 
+	case &quot;PERCENT_MAED_130&quot;: getPercent = 2.9
+	case &quot;PERCENT_EQV_110&quot;: getPercent = 5 
+	case &quot;PERCENT_EQV_130&quot;: getPercent = 5
+	case &quot;PERCENT_KERMA_110&quot;: getPercent = 2 
+	case &quot;PERCENT_KERMA_130&quot;: getPercent = 2
+	case &quot;PERCENT_NEUTRON_PP&quot;: getPercent = 4 
+	case &quot;PERCENT_NEUTRON_MD&quot;: getPercent = 4
+	case &quot;PERCENT_ALPHA&quot;: getPercent = 6 
+	case &quot;PERCENT_BETA&quot;: getPercent = 6 
+	case &quot;PERCENT_ACT_1125&quot;: getPercent = 10
+	end select 
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getError(point as double, BDType as string, prefix as string)
+	select case BDType
+	&apos;амбиентный эквивалент ————————————————————————————————
+	case &quot;gamma&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_MAED_110&quot;) else getError = getPercent(&quot;PERCENT_MAED_130&quot;)
+	&apos;направленный эквивалент ——————————————————————————————
+	case &quot;gamma007&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_EQV_110&quot;) else getError = getPercent(&quot;PERCENT_EQV_130&quot;)
+	&apos;Керма ————————————————————————————————————————————————
+	case &quot;gamma-Gy&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_KERMA_110&quot;) else getError = getPercent(&quot;PERCENT_KERMA_130&quot;)
+	&apos;140 плотность потока —————————————————————————————————
+	case &quot;n-PP&quot;: getError = getPercent(&quot;PERCENT_NEUTRON_PP&quot;)
+	&apos;140 мощность дозы ————————————————————————————————————
+	case &quot;n-MD&quot;: getError = getPercent(&quot;PERCENT_NEUTRON_MD&quot;)
+	&apos;альфа ————————————————————————————————————————————————
+	case &quot;alpha&quot;: getError = getPercent(&quot;PERCENT_ALPHA&quot;)
+	&apos;бета —————————————————————————————————————————————————
+	case &quot;beta&quot;: getError = getPercent(&quot;PERCENT_BETA&quot;)
+	&apos;для уд.активности для 1125 ———————————————————————————
+	case &quot;gamma-Src&quot;: getError = getPercent(&quot;PERCENT_ACT_1125&quot;)
+	end select
+end function
 &apos;-------------------------------------------------------------
 public function addTypeAndLimits(bdType as string, min as double, max as double)
 	select case bdType
 	case &quot;gamma&quot; 
-		&apos;msgbox &quot;gamma&quot;
 		_isPrintableR(0) = true
 		if _minLimit(0)=0 or min&lt;_minLimit(0) then _minLimit(0)=min
 		if _maxLimit(0)=0 or max&gt;_maxLimit(0) then _maxLimit(0)=max
 	case &quot;alpha&quot;
-		&apos;msgbox &quot;alpha&quot;
 		_isPrintableR(1) = true
 		if _minLimit(1)=0 or min&lt;_minLimit(1) then _minLimit(1)=min
 		if _maxLimit(1)=0 or max&gt;_maxLimit(1) then _maxLimit(1)=max
 		_isPrintableF(3) = true
 	case &quot;beta&quot;
-		&apos;msgbox &quot;beta&quot;
 		_isPrintableR(2) = true
 		if _minLimit(2)=0 or min&lt;_minLimit(2) then _minLimit(2)=min
 		if _maxLimit(2)=0 or max&gt;_maxLimit(2) then _maxLimit(2)=max
 		_isPrintableF(4) = true
 	case &quot;n-MD&quot;
-		&apos;msgbox &quot;n-MD&quot;
 		_isPrintableR(3) = true
 		if _minLimit(3)=0 or min&lt;_minLimit(3) then _minLimit(3)=min
 		if _maxLimit(3)=0 or max&gt;_maxLimit(3) then _maxLimit(3)=max
 		_isPrintableF(2) = true
 	case &quot;n-PP&quot;
-		&apos;msgbox &quot;n-PP&quot;
 		_isPrintableR(4) = true
 		if _minLimit(4)=0 or min&lt;_minLimit(4) then _minLimit(4)=min
 		if _maxLimit(4)=0 or max&gt;_maxLimit(4) then _maxLimit(4)=max
 		_isPrintableF(2) = true
 	case &quot;gamma-Gy&quot;
-		&apos;msgbox &quot;Gy&quot;
 		_isPrintableR(5) = true
 		if _minLimit(5)=0 or min&lt;_minLimit(5) then _minLimit(5)=min
 		if _maxLimit(5)=0 or max&gt;_maxLimit(5) then _maxLimit(5)=max
@@ -149,6 +181,7 @@ const RUS_BETA as string = &quot; образцовые бета-источник
 const RUS_BETA_NEW_PP as string = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y типа 4СО зав. №660 (св. №0018602-4825-B от 22.07.2025 г.) и зав. №661 (св. №0018603-4825-B от 22.07.2025 г.), типа 4СО-532 зав. №74041.0578 (св. №0008495-4825-В от 29.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95.&quot;
 const RUS_110_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
 const RUS_130_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ130 №015 рег. №44761-10 (свидетельство о поверке №С-В/26-11-2024/407130134 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева») в составе с источниками из радионуклида $sup137$Cs типа ИГИ-Ц-9-1 зав. №163, ИГИ-Ц-5-2 зав. №043, ИГИ-Ц-3-20 зав. №08Т, ИГИ-Ц-3-13 зав. №7АТ; ИГИ-Ц-3-5 зав. №07Т, источником из радионуклида $sup60$Co типа ГИК-2-12 зав. №6К8, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
+const RUS_140_NEW_PP = &quot;на установке поверочной нейтронного излучения УПН-АТ140 №01 рег. №63548-16 (свидетельство о поверке №С-В/19-12-2023/303689471 от 19.12.2023 г. ФГУП «ВНИИМ» им. Д.И. Менделеева) в составе с источниками быстрых нейтронов ИБН-8-6 зав. №010, ИБН-8-3 зав. №027, НК252М11 зав. №33/21, с относительной погрешностью θ$sub0$ = ±4% при доверительной вероятности Р = 0,95;&quot;
 const RUS_ALPHA_NEW_PP = &quot;по образцовому источнику α-излучения из радионуклида $sup239$Pu типа 1П9 зав. №2131.1П9-103.15 (св. №0008477-4825-В от 23.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
 
 const RUS_SOURCE_CS as string = &quot;эталонный источник гамма-излучения типа ОСГИ Cs-137 активностью $activity кБк зав. №$source&quot;
@@ -175,6 +208,7 @@ public function getFacilityText(id as string) as string
 	case &quot;alphaPP&quot;:	 stroke = RUS_ALPHA_NEW_PP
 	case &quot;110PP&quot;:	 stroke = RUS_110_NEW_PP
 	case &quot;130PP&quot;:	 stroke = RUS_130_NEW_PP
+	case &quot;140PP&quot;:	 stroke = RUS_140_NEW_PP
 	
 	case &quot;beta6130&quot;: stroke = RUS_BETA
 	case &quot;130+110&quot;:  stroke = RUS_ETHALON+&quot;;&quot;+RUS_110+&quot;;&quot;+RUS_130
@@ -183,22 +217,14 @@ public function getFacilityText(id as string) as string
 		
 	&apos;--------------АНГЛИЙСКИЙ--------------------------
 	
-	case &quot;110_eng&quot;
-		stroke = EN_110
-	case &quot;130_eng&quot;
-		stroke = EN_130
-	case &quot;140_eng&quot;
-		stroke = EN_140
-	case &quot;alpha_eng&quot;
-		stroke = EN_ALPHA
-	case &quot;beta_eng&quot;
-		stroke = EN_BETA
-	case &quot;130+110eng&quot;
-		stroke = EN_ETHALON+&quot;;&quot;+EN_110+&quot;;&quot;+EN_130
-	case &quot;6130_130+110+beta_eng&quot;
-		stroke = EN_ETHALON+&quot;;&quot;+EN_110+&quot;;&quot;+EN_130+&quot;;&quot;+EN_BETA
-	case &quot;sourse_cs_eng&quot;
-		stroke = EN_SOURCE_CS
+	case &quot;110_eng&quot;:    stroke = EN_110
+	case &quot;130_eng&quot;:    stroke = EN_130
+	case &quot;140_eng&quot;:    stroke = EN_140
+	case &quot;alpha_eng&quot;:  stroke = EN_ALPHA
+	case &quot;beta_eng&quot;:   stroke = EN_BETA
+	case &quot;130+110eng&quot;: stroke = EN_ETHALON+&quot;;&quot;+EN_110+&quot;;&quot;+EN_130
+	case &quot;6130_130+110+beta_eng&quot;: stroke = EN_ETHALON+&quot;;&quot;+EN_110+&quot;;&quot;+EN_130+&quot;;&quot;+EN_BETA
+	case &quot;sourse_cs_eng&quot;: stroke = EN_SOURCE_CS
 	end select
 	getFacilityText = stroke
 end function

@@ -7,7 +7,9 @@ dim oDialog1117 as object
 
 dim typeText as object						&apos;название типа БД
 dim BDList as new Collection 				&apos;коллекция блоков детектирования
-dim emptyArray(6) as string &apos;сделать общим, есть другие БД, которые ссылаются на этот массив
+dim emptyArray(6) as string
+dim bdTypes(6) as string
+dim bdTypesUsed(6) as boolean
 dim measLimitsArray(13) as double &apos;7 типов, каждого по два (min, max) = 14
 
 dim Overall as new Overall
@@ -39,7 +41,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.28 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.29 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -85,8 +87,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БДКГ-11&quot;,	&quot;BDKG-11&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 					&quot;gamma&quot;, 	Array(0.01,0.1),	20)
 	addBDtoCollection(&quot;БДКГ-17&quot;,	&quot;BDKG-17&quot;, 	&quot;Зв/ч&quot;,	Array(7,70,0.7,7,40), 					Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;gamma&quot;,	Array(1000,100000),	20)
 	addBDtoCollection(&quot;БДКГ-24&quot;,	&quot;BDKG-24&quot;, 	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.02,1000),	20)
-	addBDtoCollection(&quot;БДКГ-30&quot;,	&quot;BDKG-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.03,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.02,1),		20)
-	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;BDKG-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.35,0.5),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),	&quot;gamma&quot;,	Array(0.02,500),	20)
+	addBDtoCollection(&quot;БДКГ-30&quot;,	&quot;BDKG-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.02,1),		20)
+	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;BDKG-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.4),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.02,500),	20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)
@@ -116,6 +118,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	&apos;addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
 	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.647,9.92, 86.7, 321, 1296),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
 	addBDtoCollection(&quot;БОИ-5&quot;,	&quot;PU-5 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20)
+	
+	&apos;FillTables()&apos; не работает
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub addBDtoCollection(ByVal bname as string, ByVal bnameEn as string, ByVal measUnit as string, ByVal pointValue as variant, ByVal pointText as variant, ByVal BDType as string, ByVal measLimit as variant, ByVal relLimit as double)
@@ -285,7 +289,7 @@ sub checkBoxListener(oEvent As Object)
     	n = 1
     end if
     setColorIfChecked(oCheckbox)
-    
+	
     if checkedCount = 0 then
     	makeLayout(BDList.item(position)) &apos;ЕСЛИ ПЕРЕД ТЕМ, КАК СЧИТАТЬ СКОЛЬКО БД ОТМЕЧЕНО КОЛ-ВО БЫЛО РАВНО 0, ЭТО ЗНАЧИТ ДОБАВЛЯЕТСЯ САМЫЙ ПЕРВЫЙ БД -- РИСУЕМ ЕГО ЛЭЙАУТ
     	layoutPosition = position
@@ -484,10 +488,12 @@ sub insertDataToTemplate
 	dim path as string
 	path = Overall.PathForProtocol(&quot;1117\1117&quot;)
 	dim point as double
-
+	
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	MyFormat = &quot;0.0&quot;
 	OpenTemplate(sertPath &amp; path)
+
+	&apos;ThisComponent.lockControllers()
 
 	findAndRename(&quot;$bground&quot;, Format(oDialog1117.getControl(&quot;bgField&quot;).value, &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(oDialog1117.getControl(&quot;tempField&quot;).value, &quot;0.0&quot;))
@@ -501,9 +507,21 @@ sub insertDataToTemplate
 	findAndRename(&quot;$b_bg&quot;, Format(Math.randValue(13, 2), &quot;0.0&quot;))
 	findAndRename(&quot;$s_bg&quot;, Format(Math.randValue(0.005, 0.005), &quot;0.00&quot;))
 	findAndRename(&quot;$b2_bg&quot;, Format(Math.randValue(17, 2), &quot;0.0&quot;))
-	
+			
 	for i=1 to BDList.count
+		&apos;ThisComponent.lockControllers()
 		if BDList.item(i).isPrintable then
+		
+			select case BDList.item(i).getType
+				case &quot;gamma&quot; : bdTypesUsed(0) = true
+				case &quot;alpha&quot; : bdTypesUsed(1) = true
+				case &quot;beta&quot; : bdTypesUsed(2) = true
+				case &quot;n-PP&quot; : bdTypesUsed(3) = true
+				case &quot;n-MD&quot; : bdTypesUsed(4) = true
+				case &quot;gamma-Gy&quot; : bdTypesUsed(5) = true
+				case &quot;gamma007&quot; : bdTypesUsed(6) = true
+			end select
+			
 			bd = BDList.item(i)
 			
 			&apos;Если альтернативные, то контрольные точеи приравниваем альтернативным (! bd.pointList.item(i) = bd.getAltList.item(i) НЕ работает в этом тупом языке !)
@@ -531,13 +549,21 @@ sub insertDataToTemplate
 			else
 				Overall.insertToTemplateStep(i)
 			end if	
+			
 		else
 			Overall.deleteTable(&quot;tlim&quot; + (i-1))
 			Overall.deleteTable(&quot;tp&quot; + (i))
-			Overall.deleteTable(&quot;t&quot; + i)	
+			Overall.deleteTable(&quot;t&quot; + i)
+			&apos;DeleteTableByIndex(i)
 		end if
+		&apos;ThisComponent.unlockControllers()
 	next i	
-
+	
+	&apos;удалить ненужные формулы
+	if bdTypesUsed(0)=false AND bdTypesUsed(4)=false AND bdTypesUsed(5)=false AND bdTypesUsed(6)=false then Overall.deleteTable(&quot;f1&quot;)
+	if bdTypesUsed(2)=false AND bdTypesUsed(3)=false then Overall.deleteTable(&quot;f2&quot;)
+	if bdTypesUsed(3)=false AND bdTypesUsed(4)=false then Overall.deleteTable(&quot;f3&quot;)
+		
 	&apos;удалить ненужные поверочные установки-----------------------
 	dim f2() as boolean
 	f2 = facilities.FacTypeArray
@@ -612,4 +638,92 @@ end function
 
 
 
+
+
+
+
+
+
+
+&apos;---------------------------------------------------------------------------------------------------------
+&apos;---------------------------------------------------------------------------------------------------------
+&apos;---------------------------------------------------------------------------------------------------------
+
+Dim Tables1(29) As Object
+Dim Tables2(29) As Object
+Dim Tables3(29) As Object
+&apos; =====================================================
+&apos; Инициализация: вручную заполните этот метод — 
+&apos; присвойте каждому элементу массива нужную таблицу
+&apos; =====================================================
+Sub FillTables()
+    Dim oDoc As Object
+    oDoc = ThisComponent
+
+	for i=1 to BDList.count
+		Set Tables1(i) = FindTableByName(oDoc, &quot;tlim&quot; + (i-1))
+		Set Tables2(i) = FindTableByName(oDoc, &quot;tp&quot; + (i))
+		Set Tables3(i) = FindTableByName(oDoc, &quot;t&quot; + (i))
+	next i
+End Sub
+
+
+&apos; =====================================================
+&apos; Delete table by index (0..29)
+&apos; =====================================================
+Sub DeleteTableByIndex(nIndex As Integer)
+    Dim oTable1 As Object
+    Dim oTable2 As Object
+    Dim oTable3 As Object
+    oTable1 = Tables1(nIndex)
+    oTable2 = Tables2(nIndex)
+    oTable3 = Tables3(nIndex)
+
+    &apos; Remove table from document
+    oTable1.Text.removeTextContent(oTable1)
+    oTable2.Text.removeTextContent(oTable2)
+    oTable3.Text.removeTextContent(oTable3)
+
+    &apos; Optional: clear reference to avoid accidental reuse
+    &apos;Set Tables1(nIndex) = Nothing
+    &apos;Set Tables2(nIndex) = Nothing
+    &apos;Set Tables3(nIndex) = Nothing
+End Sub
+
+&apos; =====================================================
+&apos; Helper: find table by &quot;TableName&quot; attribute
+&apos; =====================================================
+Function FindTableByName(oDoc As Object, sName As String) As Object
+    Dim oTables As Object
+    Dim i As Integer
+    Dim oTable As Object
+    Dim oAttrs As Object
+
+    oTables = oDoc.TextTables
+
+    For i = 0 To oTables.Count - 1
+    	&apos;if oTables.hasByName(sName) then
+    	&apos;	oTable = oTables(i)
+     	&apos;	FindTableByName = oTable
+     	&apos;	msgbox 
+     	&apos;end if	
+        
+        &apos;oTable = oTables(i)
+        &apos;oAttrs = oTable.UserDefinedAttributes
+        &apos;If oAttrs.hasByName(&quot;TableName&quot;) Then
+        &apos;    If oAttrs.getByName(&quot;TableName&quot;).Value = sName Then
+        &apos;        Set FindTableByName = oTable
+        &apos;        Exit Function
+        &apos;    End If
+        &apos;End If
+        
+        oTable = oTables(i)
+        If oTable.Name = sName Then
+            Set FindTableByNativeName = oTable
+            Exit Function
+        End If
+    Next i
+
+    Set FindTableByName = Nothing
+End Function
 </script:module>
