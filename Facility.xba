@@ -13,8 +13,8 @@ private _minLimit(5) as double
 private _isPrintableF(5) as boolean
 private _isPrintableR(5) as boolean
 
-REM --- CONSTRUCTORS / DESTRUCTORS                                                                    
-Private Sub Class_Initialize()
+&apos;Private Sub Class_Initialize() так при каждом вызове класса (Facility.getPercent например) будет сбрасывать значения ВО ВСЕХ ОБЪЕКТАХ КЛАССА!
+sub init
 	dim i as integer
 	for i=0 to 5
 		_isPrintableF(i) = false
@@ -23,11 +23,6 @@ Private Sub Class_Initialize()
 		_maxLimit(i) = 0
 	next i
 End Sub
-&apos;-------------------------------------------------------------
-Private Sub Class_Terminate()
-end sub
-&apos;-------------------------------------------------------------
-REM --- CLASS METHODS
 
 &apos;------------------------------------------------------------------------------------------------------------------------
 function getPercent(stype as string)
@@ -97,8 +92,6 @@ public function addTypeAndLimits(bdType as string, min as double, max as double)
 		_isPrintableR(5) = true
 		if _minLimit(5)=0 or min&lt;_minLimit(5) then _minLimit(5)=min
 		if _maxLimit(5)=0 or max&gt;_maxLimit(5) then _maxLimit(5)=max
-		
-		
 	end select
 end function
 &apos;-------------------------------------------------------------
@@ -127,6 +120,7 @@ public function FacTypeArray as variant
 	_isPrintableF(1) = is130necessary
 	FacTypeArray = _isPrintableF
 end function
+
 &apos;-------------------------------------------------------------« »
 &apos;stroke = &quot; образцовая дозиметрическая поверочная установка УДГ-АТ110 №013 с источниками 2-го разряда из радионуклида цезий-137 и с погрешностью аттестации 5%, св. № 210/1426-2018 от 22.10.2018. ФГУП «ВНИИМ им. Д.И. Менделеева»&quot;
 &apos;stroke = &quot; образцовая дозиметрическая поверочная установка УДГ-АТ130 №015 с источниками 1-го разряда из радионуклида цезий-137 и с погрешностью аттестации 4 %, св. № 210/ 1427-2018 от 23.10.2018. ФГУП «ВНИИМ им. Д.И. Менделеева»&quot;

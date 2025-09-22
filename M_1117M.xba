@@ -41,7 +41,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.29 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.30 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -490,8 +490,10 @@ sub insertDataToTemplate
 	dim point as double
 	
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
+	facilities.init
 	MyFormat = &quot;0.0&quot;
 	OpenTemplate(sertPath &amp; path)
+
 
 	&apos;ThisComponent.lockControllers()
 
