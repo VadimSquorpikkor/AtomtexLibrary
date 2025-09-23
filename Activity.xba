@@ -173,22 +173,8 @@ end sub
 &apos;	╚═══════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-public const ALPHA_2131 as double = 846 &apos;Бк
+
 &apos;-------------------------------------------------------------
-&apos; альфа, плотность потока частиц, част/(см^2*мин)
-&apos; бдпс-02 и альфа-01
-public const ALPHA_0645 as double = 62.7
-public const ALPHA_0646 as double = 681
-public const ALPHA_0773 as double = 8655
-public const ALPHA_0648 as double = 61800
-public const ALPHA_0774 as double = 201000 &apos;только бдпс-02
-&apos; альфа-02
-public const ALPHA_0651 as double = 73.2
-public const ALPHA_0652 as double = 624
-public const ALPHA_0653 as double = 5136
-public const ALPHA_0655 as double = 36120
-
-
 &apos;№0645, ПП=61,65, А=85,8
 &apos;№0577, ПП=612, А=2150 
 &apos;№0773, ПП=8655, А=12100
@@ -197,10 +183,41 @@ public const ALPHA_0655 as double = 36120
 &apos;-------------------------------------------------------------
 function get_activity_alpha(srcName as string)
 	select case srcName
-		case &quot;2131&quot;: get_activity_alpha = ALPHA_2131
+		&apos;активность альфа для 1125 ————————————————
+		case &quot;2131&quot;: get_activity_alpha = 846 &apos;Бк
+		&apos; —————————————————————————————————————————
+		case &quot;0645&quot;: get_activity_alpha = 61.65
+		case &quot;0577&quot;: get_activity_alpha = 612
+		case &quot;0773&quot;: get_activity_alpha = 8655
+		case &quot;0648&quot;: get_activity_alpha = 61350
+		&apos;——————————————————————————————————————————
+		case &quot;0651&quot;: get_activity_alpha = 73.2
+		case &quot;0652&quot;: get_activity_alpha = 624
+		case &quot;0653&quot;: get_activity_alpha = 5136
+		case &quot;0655&quot;: get_activity_alpha = 36120
+		case &quot;0773&quot;: get_activity_alpha = 8655
+		case &quot;0774&quot;: get_activity_alpha = 201000
+		&apos;——————————————————————————————————————————
+		case &quot;0646&quot;: get_activity_alpha = 681&apos;не используется
+		&apos;пересчет пп для альфа-03 —————————————————
+		case &quot;0651/S&quot;: get_activity_alpha = 26.3
+		case &quot;0652/S&quot;: get_activity_alpha = 223
+		case &quot;0653/S&quot;: get_activity_alpha = 1816
+		case &quot;0655/S&quot;: get_activity_alpha = 12579
 		case else:   get_activity_alpha = 0.0
 	end select
 end function
+&apos;-------------------------------------------------------------
+&apos;Получение массива значений пп для альфа по массиву имен источников: Array(&quot;0651&quot;, &quot;0652&quot;, &quot;0653&quot;, &quot;0655&quot;) -&gt; Array(73.2, 624, 5136, 36120)
+Function getAlphaArray(strs As Variant)
+    Dim result() As Double
+    Dim i As Long
+    ReDim result(0 To UBound(strs()))
+    For i = 0 To UBound(strs()
+        result(i) = get_activity_alpha(CStr(strs(i))) &apos; на всякий случай приводим к String
+    Next i
+    getAlphaArray = result
+End Function
 
 &apos; 	╔═══════════════════════════════╗
 &apos;	║							    ║█
@@ -247,6 +264,17 @@ end function
 &apos;-------------------------------------------------------------
 public const BETA_BG as double    = 11.9
 &apos;-------------------------------------------------------------
+&apos;Получение массива значений для беты по массиву имен источников: Array(&quot;0651&quot;, &quot;0652&quot;, &quot;0653&quot;, &quot;0655&quot;) -&gt; Array(73.2, 624, 5136, 36120)
+Function getBetaArray(strs As Variant, nowDate)
+    Dim result() As Double
+    Dim i As Long
+    ReDim result(0 To UBound(strs()))
+    For i = 0 To UBound(strs()
+        result(i) = get_activity_Sr(CStr(strs(i)), nowDate) &apos; на всякий случай приводим к String
+    Next i
+    getBetaArray = result
+End Function
+
 
 &apos; 	╔═══════════════════════════════╗
 &apos;	║							    ║█

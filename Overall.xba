@@ -432,6 +432,7 @@ sub insertToTemplateStepVariation(i)&apos; todo для отклика и вар�
 	&apos;templateStep(i, &quot;.&quot;)
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;несмотря на название этот метод только для альфа 6131. Общий для альфа см. insertBetaToTemplateStep
 sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList as Collection, alphaValueList as Collection, sign as String)
 	dim bd as new DUnit 
 	bd = _BDList.item(i)
@@ -478,6 +479,7 @@ end sub
 const THREE_POINTS as integer = 3
 const FIVE_POINTS as integer = 5
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;несмотря на название этот метод и для альфа и для бета
 sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String, point_count as integer)
 	dim bd as new DUnit 
 	bd = _BDList.item(i)
@@ -494,6 +496,7 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		dim srcName as string
 		srcName = betaSourcesList.item(j+1)
 		srcName = Replace (srcName,&quot;Bq&quot;,&quot;&quot;)
+		srcName = Replace (srcName,&quot;/S&quot;,&quot;&quot;)
 		findAndRename((sign + i + &quot;-3&quot; + j), srcName) rem название источника
 	
 		if cont_point&lt;500  then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
@@ -682,7 +685,9 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_alpha&quot;, Facility.getFacilityText(&quot;alpha&quot;))
 	findAndRename(&quot;$facility_beta&quot;, Facility.getFacilityText(&quot;beta&quot;))
 	
+	findAndRename(&quot;$facility_pp_6130_beta&quot;, Facility.getFacilityText(&quot;betaPP6130&quot;))
 	findAndRename(&quot;$facility_pp_beta&quot;, Facility.getFacilityText(&quot;betaPP&quot;))
+	findAndRename(&quot;$facility_pp_6131_alpha&quot;, Facility.getFacilityText(&quot;alphaPP6131&quot;))
 	findAndRename(&quot;$facility_pp_alpha&quot;, Facility.getFacilityText(&quot;alphaPP&quot;))
 	findAndRename(&quot;$facility_pp_110&quot;, Facility.getFacilityText(&quot;110PP&quot;))
 	findAndRename(&quot;$facility_pp_130&quot;, Facility.getFacilityText(&quot;130PP&quot;))

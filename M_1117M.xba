@@ -41,7 +41,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.30 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.31 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -80,6 +80,34 @@ End Sub
 &apos;В методе &quot;initialize1117&quot; новые методы добавляются после всех остальных
 &apos;так как: номер в названии чекбокса(&quot;CheckBox26&quot;) равен порядковому номеру соответствующего БД в коллекции BDList, оно же - порядковый номер в методе initialize1117
 sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md neutron / pp neutron
+
+	dim alpha_01_src, alpha_02_src, alpha_03_src as object
+	alpha_01_src = Array(&quot;0645&quot;, &quot;0577&quot;, &quot;0773&quot;, &quot;0648&quot;)
+	alpha_02_src = Array(&quot;0651&quot;, &quot;0652&quot;, &quot;0653&quot;, &quot;0655&quot;)
+	alpha_03_src = Array(&quot;0651/S&quot;, &quot;0652/S&quot;, &quot;0653/S&quot;, &quot;0655/S&quot;)
+	dim alpha_01_data, alpha_02_data, alpha_03_data as object
+	alpha_01_data = Activity.getAlphaArray(alpha_01_src)
+	alpha_02_data = Activity.getAlphaArray(alpha_02_src)
+	alpha_03_data = Activity.getAlphaArray(alpha_03_src)
+	
+	dim beta_01_src, beta_02_src, beta_03_src as object
+	beta_01_src = Array(&quot;0660&quot;, &quot;0578&quot;, &quot;0661&quot;, &quot;0662&quot;, &quot;0580&quot;)
+	beta_02_src = Array(&quot;2129&quot;, &quot;0664&quot;, &quot;0665&quot;, &quot;0666&quot;, &quot;0667&quot;)
+	beta_03_src = Array(&quot;2129/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;)
+	dim beta_01_data, beta_02_data, beta_03_data as object
+	beta_01_data = Activity.getBetaArray(beta_01_src, oDateFieldModel)
+	beta_02_data = Activity.getBetaArray(beta_02_src, oDateFieldModel)
+	beta_03_data = Activity.getBetaArray(beta_03_src, oDateFieldModel)
+	
+	dim bdps_alpha_src, bdps_beta_src as object
+	bdps_alpha_src = Array(&quot;0645&quot;, &quot;0577&quot;, &quot;0773&quot;, &quot;0648&quot;, &quot;0774&quot;)
+	bdps_beta_src = Array(&quot;0660&quot;, &quot;0578&quot;, &quot;0661&quot;, &quot;0662&quot;, &quot;0580&quot;)
+	dim bdps_alpha_data, bdps_beta_data as object
+	bdps_alpha_data = Activity.getAlphaArray(bdps_alpha_src)
+	bdps_beta_data = Activity.getBetaArray(bdps_beta_src, oDateFieldModel)
+	
+
+
 	addBDtoCollection(&quot;БДКГ-01&quot;,	&quot;BDKG-01&quot;,	&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 		&quot;gamma&quot;,	Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКГ-03&quot;,	&quot;BDKG-03&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,240), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, 	Array(0.03,0.3),	20)
 	addBDtoCollection(&quot;БДКГ-04&quot;,	&quot;BDKG-04&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.05,10000),	20)
@@ -93,10 +121,10 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;BDPA-01&quot;,	&quot;&quot;,		Array(62.7, 681, 8655, 61800),			emptyArray,										&quot;alpha&quot;,	Array(0.1,10),		20)	&apos;№12
-	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;BDPA-02&quot;,	&quot;&quot;,		Array(73.2, 624, 5136, 36120),			emptyArray,										&quot;alpha&quot;,	Array(0.05,5),		20)
-	addBDtoCollection(&quot;БДПБ-01&quot;,	&quot;BDPB-01&quot;,	&quot;&quot;,		Array(96,228,5591,51010,370350),		Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;0580&quot;),		&quot;beta&quot;,		Array(1,50),		20)  &apos; для беты 	Array(96,228,5591,51010,370350) -- НЕ ИСПОЛЬЗУЕТСЯ
-	addBDtoCollection(&quot;БДПБ-02&quot;,	&quot;BDPB-02&quot;,	&quot;&quot;,		Array(14.2,74.4,514,6290,56800),		Array(&quot;2129&quot;,&quot;0664&quot;,&quot;0665&quot;,&quot;0666&quot;,&quot;0667&quot;),		&quot;beta&quot;,		Array(0.5,15),		20)
+	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;BDPA-01&quot;,	&quot;&quot;,		alpha_01_data,							alpha_01_src,									&quot;alpha&quot;,	Array(0.1,10),		20)	&apos;№12
+	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;BDPA-02&quot;,	&quot;&quot;,		alpha_02_data,							alpha_02_src,									&quot;alpha&quot;,	Array(0.05,5),		20)
+	addBDtoCollection(&quot;БДПБ-01&quot;,	&quot;BDPB-01&quot;,	&quot;&quot;,		beta_01_data,							beta_01_src,									&quot;beta&quot;,		Array(1,50),		20)
+	addBDtoCollection(&quot;БДПБ-02&quot;,	&quot;BDPB-02&quot;,	&quot;&quot;,		beta_02_data,							beta_02_src,									&quot;beta&quot;,		Array(0.5,15),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БОИ-1 си-19&quot;,&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7),					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)	&apos;№16  	&apos;раньше были для серии, теперь для си-19
 	addBDtoCollection(&quot;БОИ-2 си-19&quot;,&quot;PU-2 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)			&apos;раньше были для серии, теперь для си-19
@@ -104,19 +132,17 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКР-01&quot;,	&quot;BDKR-01&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma007&quot;,	Array(0.05,0.1),	20) &apos;ТИП БД -- НАПРАВЛЕННЫЙ ЭКВИВАЛЕНТ
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		Array(62.7, 681, 8655, 61800, 201000),	emptyArray,										&quot;alpha&quot;,	Array(2.4,100),		20)
-	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;BDPS-02 β&quot;,&quot;&quot;,		Array(97,232,5700,52000,377100),		Array(&quot;0660&quot;,&quot;0578&quot;,&quot;0661&quot;,&quot;0662&quot;,&quot;0580&quot;),		&quot;beta&quot;,		Array(6,100),		20)
+	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		bdps_alpha_data,						bdps_alpha_src,									&quot;alpha&quot;,	Array(2.4,100),		20)
+	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;BDPS-02 β&quot;,&quot;&quot;,		bdps_beta_data,							bdps_beta_src,									&quot;beta&quot;,		Array(6,100),		20)
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;BDPS-02 γ&quot;,&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,20),				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),				&quot;gamma&quot;,	Array(0.1,30),		20)
 	&apos;-------старые БОИ с сбм--------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БОИ-1&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
 	addBDtoCollection(&quot;БОИ-2&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
 	
-	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;BDPA-03&quot;,	&quot;&quot;,		Array(26.3,222.6,1816,12579),			emptyArray,										&quot;alpha&quot;,	Array(0.05,2),		20)
-	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;BDPB-03&quot;,	&quot;&quot;,		Array(4.6,24,165,2022,18259),			Array(&quot;2129/S&quot;,&quot;0664/S&quot;,&quot;0665/S&quot;,&quot;0666/S&quot;,&quot;0667/S&quot;),		&quot;beta&quot;,		Array(0.5,5),	20)
-	&apos;addBDtoCollection(&quot;БДКН-05&quot;,	&quot;&quot;,					Array(0.16, 250, 3090),					Array(&quot; с/сч фон&quot;,&quot; п/п фон&quot;,&quot; п/п&quot;),			&quot;n-PP&quot;,		Array(0.1,0.2))
+	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;BDPA-03&quot;,	&quot;&quot;,		alpha_03_data,							alpha_03_src,									&quot;alpha&quot;,	Array(0.05,2),		20)
+	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;BDPB-03&quot;,	&quot;&quot;,		beta_03_data,							beta_03_src,									&quot;beta&quot;,		Array(0.5,5),		20)
 	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,		Array(2.1, 11.60, 91.0, 261, 913),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,0.2),		20)
-	&apos;addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
-	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.647,9.92, 86.7, 321, 1296),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20) &apos;ТОЧКИ НЕПРАВИЛЬНЫЕ, ТОЛЬКО ДЛЯ ПРОВЕРКИ!!
+	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.647,9.92, 86.7, 321, 1296),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20)
 	addBDtoCollection(&quot;БОИ-5&quot;,	&quot;PU-5 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20)
 	
 	&apos;FillTables()&apos; не работает
@@ -127,6 +153,25 @@ sub addBDtoCollection(ByVal bname as string, ByVal bnameEn as string, ByVal meas
 	dim bd as new DUnit
 	bd.addData2(bname, bnameEn, measUnit, pointValue, pointText, BDType, measLimit, relLimit)
 	BDList.add(bd)
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub makeAlphaLayout(bd as new DUnit)
+	dim i as integer
+	dim point, nStep, value as double
+	dim MyFormat as string
+	for i=1 to bd.valueList.count rem ЗДЕСЬ ИМЕННО VALUE А НЕ POINT -- ТАК НЕ НАДО БУДЕТ ДУМАТЬ КАК СОХРАНИТЬ ЗНАЧЕНИЯ ИЛИ КАК ПРОВЕРЯТЬ -1 ИЛИ НОВОЕ ЗНАЧЕНИЕ 
+		point = bd.pointList.item(i)
+		nStep = Overall.rightStep(point)
+		value = bd.valueList.item(i)
+		MyFormat = Overall.getRightFormat(value)
+	
+		oDialog1117.Model.getByName(&quot;ValueField&quot; + i).textColor = RGB(0, 0, 0)
+		oDialog1117.Model.getByName(&quot;ValueField&quot; + i).backgroundColor = RGB(255, 255, 255)
+		oDialog1117.getControl(&quot;ValueField&quot; + i).Text = Format(value, MyFormat)
+		oDialog1117.Model.getByName(&quot;ValueField&quot; + i).valueStep = nStep
+		oDialog1117.Model.getByName(&quot;ValueField&quot; + i).DecimalAccuracy = Overall.rightDecimalAccuracy(MyFormat)
+		oDialog1117.getControl(&quot;Label&quot; + i).Text = &quot; &quot; + Format(point, Overall.getRightFormat(point))&apos; + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
+	next i
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
 sub makeBetaLayout(bd as new DUnit)
@@ -185,7 +230,8 @@ end sub
 sub dataChanged
 	&apos;ЕСЛИ ТЕКУЩИЙ ВЫБРАННЫЙ БД (ЕСЛИ ВООБЩЕ ЕСТЬ КАКОЙ-НИБУДЬ БД) ЭТО БЕТА, ТОГДА ПРИ СМЕНЕ ДАТЫ ПЕРЕСЧИТЫВАЕТСЯ АКТИВНОСТЬ ДЛЯ БЕТЫ И ПЕРЕРИСОВЫВАЕТСЯ ЛЭЙАУТ
 	if layoutPosition&lt;&gt;0 then 
-		if BDList.item(layoutPosition).getType = &quot;beta&quot; then makeBetaLayout(BDList.item(layoutPosition))
+		&apos;if BDList.item(layoutPosition).getType = &quot;alpha&quot; then makeAlphaLayout(BDList.item(layoutPosition))
+		if BDList.item(layoutPosition).getType = &quot;beta&quot;  then makeBetaLayout(BDList.item(layoutPosition))
 	end if	
 end sub
 &apos;---------------------------------------------------------------------------------------------------------
@@ -201,6 +247,8 @@ function makeLayout(bd as new DUnit)
 	end if	
  	if bd.getType = &quot;beta&quot; then
  		makeBetaLayout(bd)
+ 	elseif bd.getType = &quot;alpha&quot; then
+	 	makeAlphaLayout(bd)
  	else
  		Overall.makeSimpleLayoutFromBD(bd, &quot;ValueField&quot;, &quot;Label&quot;)
 		oDialog1117.getControl(&quot;typeLabel&quot;).text = bd.getName
@@ -545,7 +593,7 @@ sub insertDataToTemplate
 			if bd.BdName=&quot;БДКН-05&quot; then	neutron(i,bd,NEUTRON_05)
 			if bd.BdName=&quot;БДКН-06&quot; then	neutron(i,bd,NEUTRON_06)
 			
-			if BDList.item(i).getType = &quot;beta&quot; then				
+			if BDList.item(i).getType = &quot;beta&quot; OR BDList.item(i).getType = &quot;alpha&quot; then				
 				&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
 				Overall.insertBetaToTemplateStep(i, bd.getPointTextList, bd.getPointList, bd.getValueList, &quot;$&quot;, THREE_POINTS)
 			else
