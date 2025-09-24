@@ -107,16 +107,16 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	bdps_beta_data = Activity.getBetaArray(bdps_beta_src, oDateFieldModel)
 	
 
-
+	&apos;																																						от мкЗв, до мЗв
 	addBDtoCollection(&quot;БДКГ-01&quot;,	&quot;BDKG-01&quot;,	&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 		&quot;gamma&quot;,	Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКГ-03&quot;,	&quot;BDKG-03&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,240), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, 	Array(0.03,0.3),	20)
 	addBDtoCollection(&quot;БДКГ-04&quot;,	&quot;BDKG-04&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.05,10000),	20)
 	addBDtoCollection(&quot;БДКГ-05&quot;,	&quot;BDKG-05&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70,240), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, 	Array(0.03,0.3),	20)
-	addBDtoCollection(&quot;БДКГ-11&quot;,	&quot;BDKG-11&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 					&quot;gamma&quot;, 	Array(0.01,0.1),	20)
+	addBDtoCollection(&quot;БДКГ-11&quot;,	&quot;BDKG-11&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 					&quot;gamma&quot;, 	Array(0.03,0.1),	20)
 	addBDtoCollection(&quot;БДКГ-17&quot;,	&quot;BDKG-17&quot;, 	&quot;Зв/ч&quot;,	Array(7,70,0.7,7,40), 					Array(&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;gamma&quot;,	Array(1000,100000),	20)
-	addBDtoCollection(&quot;БДКГ-24&quot;,	&quot;BDKG-24&quot;, 	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.02,1000),	20)
-	addBDtoCollection(&quot;БДКГ-30&quot;,	&quot;BDKG-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.02,1),		20)
-	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;BDKG-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.4),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.02,500),	20)
+	addBDtoCollection(&quot;БДКГ-24&quot;,	&quot;BDKG-24&quot;, 	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.03,1000),	20)
+	addBDtoCollection(&quot;БДКГ-30&quot;,	&quot;BDKG-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.03,1000),	20)
+	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;BDKG-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.4),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.03,500),	20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)
@@ -128,16 +128,16 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БОИ-1 си-19&quot;,&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7),					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)	&apos;№16  	&apos;раньше были для серии, теперь для си-19
 	addBDtoCollection(&quot;БОИ-2 си-19&quot;,&quot;PU-2 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)			&apos;раньше были для серии, теперь для си-19
-	addBDtoCollection(&quot;БОИ-4&quot;,		&quot;PU-4 detector&quot;,&quot;Зв/ч&quot;,	Array(70,0.7,7,70), 				Array(&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(0.3,100),		20)
+	addBDtoCollection(&quot;БОИ-4&quot;,		&quot;PU-4 detector&quot;,&quot;Зв/ч&quot;,	Array(7,70,0.7,7,70), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(0.3,100),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКР-01&quot;,	&quot;BDKR-01&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma007&quot;,	Array(0.05,0.1),	20) &apos;ТИП БД -- НАПРАВЛЕННЫЙ ЭКВИВАЛЕНТ
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		bdps_alpha_data,						bdps_alpha_src,									&quot;alpha&quot;,	Array(2.4,100),		20)
+	addBDtoCollection(&quot;БДПС-02 α&quot;,	&quot;BDPS-02 α&quot;,&quot;&quot;,		bdps_alpha_data,						bdps_alpha_src,									&quot;alpha&quot;,	Array(30,100),		20) &apos;(2.4, 100) для 30%
 	addBDtoCollection(&quot;БДПС-02 β&quot;,	&quot;BDPS-02 β&quot;,&quot;&quot;,		bdps_beta_data,							bdps_beta_src,									&quot;beta&quot;,		Array(6,100),		20)
 	addBDtoCollection(&quot;БДПС-02 γ&quot;,	&quot;BDPS-02 γ&quot;,&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,20),				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),				&quot;gamma&quot;,	Array(0.1,30),		20)
 	&apos;-------старые БОИ с сбм--------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БОИ-1&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
-	addBDtoCollection(&quot;БОИ-2&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
+	addBDtoCollection(&quot;БОИ-1&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(7,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
+	addBDtoCollection(&quot;БОИ-2&quot;,	&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(7,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20) &apos;раньше были для сбм, теперь и для сбм и для серии
 	
 	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;BDPA-03&quot;,	&quot;&quot;,		alpha_03_data,							alpha_03_src,									&quot;alpha&quot;,	Array(0.05,2),		20)
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;BDPB-03&quot;,	&quot;&quot;,		beta_03_data,							beta_03_src,									&quot;beta&quot;,		Array(0.5,5),		20)
@@ -542,9 +542,6 @@ sub insertDataToTemplate
 	MyFormat = &quot;0.0&quot;
 	OpenTemplate(sertPath &amp; path)
 
-
-	&apos;ThisComponent.lockControllers()
-
 	findAndRename(&quot;$bground&quot;, Format(oDialog1117.getControl(&quot;bgField&quot;).value, &quot;0.0&quot;))
 	findAndRename(&quot;$temp&quot;, Format(oDialog1117.getControl(&quot;tempField&quot;).value, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(oDialog1117.getControl(&quot;vlaghField&quot;).value, &quot;0.0&quot;))
@@ -557,11 +554,9 @@ sub insertDataToTemplate
 	findAndRename(&quot;$b_bg&quot;, Format(Math.randValue(13, 2), &quot;0.0&quot;))
 	findAndRename(&quot;$s_bg&quot;, Format(Math.randValue(0.005, 0.005), &quot;0.00&quot;))
 	findAndRename(&quot;$b2_bg&quot;, Format(Math.randValue(17, 2), &quot;0.0&quot;))
-			
+	
 	for i=1 to BDList.count
-		&apos;ThisComponent.lockControllers()
 		if BDList.item(i).isPrintable then
-		
 			select case BDList.item(i).getType
 				case &quot;gamma&quot; : bdTypesUsed(0) = true
 				case &quot;alpha&quot; : bdTypesUsed(1) = true
@@ -606,13 +601,15 @@ sub insertDataToTemplate
 			Overall.deleteTable(&quot;t&quot; + i)
 			&apos;DeleteTableByIndex(i)
 		end if
-		&apos;ThisComponent.unlockControllers()
 	next i	
 	
 	&apos;удалить ненужные формулы
-	if bdTypesUsed(0)=false AND bdTypesUsed(4)=false AND bdTypesUsed(5)=false AND bdTypesUsed(6)=false then Overall.deleteTable(&quot;f1&quot;)
-	if bdTypesUsed(2)=false AND bdTypesUsed(3)=false then Overall.deleteTable(&quot;f2&quot;)
-	if bdTypesUsed(3)=false AND bdTypesUsed(4)=false then Overall.deleteTable(&quot;f3&quot;)
+	if bdTypesUsed(0)=false then Overall.deleteTable(&quot;f0&quot;)
+	if bdTypesUsed(1)=false AND bdTypesUsed(2)=false then Overall.deleteTable(&quot;f1&quot;)
+	if bdTypesUsed(3)=false then Overall.deleteTable(&quot;f3&quot;)
+	if bdTypesUsed(4)=false then Overall.deleteTable(&quot;f4&quot;)
+	if bdTypesUsed(5)=false then Overall.deleteTable(&quot;f5&quot;)
+	if bdTypesUsed(6)=false then Overall.deleteTable(&quot;f6&quot;)
 		
 	&apos;удалить ненужные поверочные установки-----------------------
 	dim f2() as boolean

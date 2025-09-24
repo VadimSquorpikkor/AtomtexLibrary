@@ -439,18 +439,9 @@ sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList
 	dim j as integer
 	for j=0 to alphaValueList.count-1
 		m_point = alphaValueList.item(j+1)
-		
-		&apos;if bd.isAlternativePoints then
-		&apos;	cont_point = bd.getAltList.item(j+1)
-		&apos;else
-			cont_point = alphaPointsList.item(j+1)
-		&apos;end if	
-			
-		
+		cont_point = alphaPointsList.item(j+1)
 		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)&apos;TODO процент
-		
-		&apos;findAndRename((sign + i + &quot;-3&quot; + j), betaSourcesList.item(j+1)) rem название источника
-	
+
 		if cont_point&lt;500  then findAndRename((sign + i + &quot;-0&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
 		if cont_point&gt;=500 then findAndRename((sign + i + &quot;-0&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
 				
@@ -461,12 +452,7 @@ sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList
 		findAndRename((sign + i + &quot;-1&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
 		findAndRename((sign + i + &quot;-2&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
 		findAndRename((sign + i + &quot;-3&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
-				
 		findAndRename((sign + i + &quot;-4&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
-				
-		dim percent as double
-		percent = 6
-			
 
 		dim epsilon  as double
 		epsilon = m_point/cont_point
@@ -499,8 +485,14 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		srcName = Replace (srcName,&quot;/S&quot;,&quot;&quot;)
 		findAndRename((sign + i + &quot;-3&quot; + j), srcName) rem название источника
 	
-		if cont_point&lt;500  then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0.0&quot;)) rem активность источника
-		if cont_point&gt;=500 then findAndRename((sign + i + &quot;-9&quot; + j), Format(cont_point, &quot;0&quot;))   rem активность источника
+		dim cont_point_formatted as double
+		&apos;ВАЖНО. округляю значение контрольной точки альфа или бета, и только после этого вывожу значение в таблицу и вычисляю погрешность. 
+		&apos;До этого округлялось только при выводе, расчет погрешности производился с полным несокращенным значением. В результате в таблице 
+		&apos;могло быть при совпадении контрольной точки и измеренного значения погрешность не равная 0 (например было число 1.2345, а вывилось 1.2, а погрешность для этих двух чисел уже не будет равна 0)
+		if cont_point&lt;500  then cont_point_formatted = Format(cont_point, &quot;0.0&quot;) rem активность источника
+		if cont_point&gt;=500 then cont_point_formatted = Format(cont_point, &quot;0&quot;)   rem активность источника
+		findAndRename((sign + i + &quot;-9&quot; + j), cont_point_formatted) rem активность источника
+		findAndRename((sign + i + &quot;-9&quot; + j), cont_point_formatted) rem активность источника
 				
 		rem TODO сделать через select case
 		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
@@ -527,17 +519,13 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		end if
 				
 		findAndRename((sign + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
-				
-		dim percent as double
-		percent = 6
 
 		dim pogr_point as double
-		&apos;msgbox m_point +&quot; &quot;+cont_point
-		pogr_point = Math.RelativeError(m_point, cont_point)
+		pogr_point = Math.RelativeError(m_point, cont_point_formatted)
 		MyFormat = &quot;0.00&quot;
 		
 		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
-		findAndRename((sign + i + &quot;-2&quot; + j), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
+		findAndRename((sign + i + &quot;-2&quot; + j), Format(Math.ConfidenceLimit(Facility.getPercent(&quot;PERCENT_BETA&quot;), pogr_point), MyFormat))
 	next j
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
