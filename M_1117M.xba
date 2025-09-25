@@ -26,6 +26,8 @@ dim checkedCount as integer
 
 dim layoutPosition as integer &apos;в отличии от других классов, здесь layoutPosition -- это фиксированная позиция каждого блока, совпадает с номером соответствующего чекбокса (т.е. при выборе только бдкг-11 layoutPosition будет равен 5 (только один номер позиции))
 
+dim Math as new AtomMath
+
 &apos; Пользовательские значения для контрольных точек (для альфа и бета) -- при сохранении лэйаута БЕТА метод Overall.saveCurentBDValue проверяет, если стоит флаг isAlternative, 
 &apos; то считывает данные из altField и сохраняет в коллекцию контрольных точек БД (.setAltList)
 &apos; При постройке лэйаута (при переходе между БД и возврате к бета БД с альтернативными контрю точками), проверяется флаг isAlternative, если true, данные из altList записываются в Label
@@ -537,6 +539,8 @@ sub insertDataToTemplate
 	path = Overall.PathForProtocol(&quot;1117\1117&quot;)
 	dim point as double
 	
+	dim usedBDList as new Collection
+		
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	facilities.init
 	MyFormat = &quot;0.0&quot;
@@ -556,7 +560,11 @@ sub insertDataToTemplate
 	findAndRename(&quot;$b2_bg&quot;, Format(Math.randValue(17, 2), &quot;0.0&quot;))
 	
 	for i=1 to BDList.count
-		if BDList.item(i).isPrintable then
+		bd = BDList.item(i)
+	
+		if bd.isPrintable then
+			usedBDList.add(bd.getName)
+		
 			select case BDList.item(i).getType
 				case &quot;gamma&quot; : bdTypesUsed(0) = true
 				case &quot;alpha&quot; : bdTypesUsed(1) = true
@@ -566,8 +574,6 @@ sub insertDataToTemplate
 				case &quot;gamma-Gy&quot; : bdTypesUsed(5) = true
 				case &quot;gamma007&quot; : bdTypesUsed(6) = true
 			end select
-			
-			bd = BDList.item(i)
 			
 			&apos;Если альтернативные, то контрольные точеи приравниваем альтернативным (! bd.pointList.item(i) = bd.getAltList.item(i) НЕ работает в этом тупом языке !)
 			if bd.isAlternativePoints then 
@@ -601,7 +607,33 @@ sub insertDataToTemplate
 			Overall.deleteTable(&quot;t&quot; + i)
 			&apos;DeleteTableByIndex(i)
 		end if
-	next i	
+	next i
+	
+	&apos;список БД входящих в состав 1117М----------------------------
+	Dim strings(usedBDList.count-1) As String
+	for n=1 to usedBDList.count
+		strings(n-1)=usedBDList.item(n)
+	next n
+	Math.SortStringArray(strings)&apos;
+	
+	&apos;for n=0 to UBound(strings)
+	&apos;	msgbox strings(n)
+	&apos;next n
+	
+	dim strDU, unit as string
+	strDU = &quot;&quot;
+	&apos;for n=1 to usedBDList.count
+		&apos;unit = usedBDList.item(n)
+	for n=0 to UBound(strings)
+		unit = strings(n)
+		if unit = &quot;БДПС-02 α&quot;   then unit = &quot;БДПС-02&quot;
+		if unit = &quot;БОИ-1 си-19&quot; then unit = &quot;БОИ-1&quot;
+		if unit = &quot;БОИ-2 си-19&quot; then unit = &quot;БОИ-2&quot;
+		if unit &lt;&gt; &quot;БДПС-02 β&quot; AND unit &lt;&gt; &quot;БДПС-02 γ&quot; then
+			if strDU = &quot;&quot; then strDU = unit else strDU = strDU+&quot;, &quot;+unit
+		endif	
+	next n
+	findAndRename(&quot;$used_units$&quot;, strDU)
 	
 	&apos;удалить ненужные формулы
 	if bdTypesUsed(0)=false then Overall.deleteTable(&quot;f0&quot;)
