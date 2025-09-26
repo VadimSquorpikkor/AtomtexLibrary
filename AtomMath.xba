@@ -312,40 +312,4 @@ end function
 
 
 
-
-
-&apos;------------------------------------------------------------------------------------------------------------------------
-Sub ExampleSortStrings()
-    Dim strings(3) As String
-    strings(0) = &quot;banana&quot;
-    strings(1) = &quot;apple&quot;
-    strings(2) = &quot;cherry&quot;
-    strings(3) = &quot;date&quot;
-    
-    SortStringArray(strings)
-    
-    &apos; Вывод результата
-    Dim i As Integer
-    For i = 0 To UBound(strings)
-        MsgBox strings(i)
-    Next i
-End Sub
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;сортировка пузырьком
-Sub SortStringArray(arr As Variant)
-    Dim i As Integer, j As Integer
-    Dim temp As String
-    Dim n As Integer
-    n = UBound(arr)
-    
-    For i = 0 To n - 1
-        For j = i + 1 To n
-            If StrComp(arr(i), arr(j), 0) &gt; 0 Then
-                temp = arr(i)
-                arr(i) = arr(j)
-                arr(j) = temp
-            End If
-        Next j
-    Next i
-End Sub
 </script:module>

@@ -13,6 +13,7 @@ private _minLimit(5) as double
 private _isPrintableF(5) as boolean
 private _isPrintableR(5) as boolean
 
+private SourceInfoCollection as new Collection
 &apos;Private Sub Class_Initialize() так при каждом вызове класса (Facility.getPercent например) будет сбрасывать значения ВО ВСЕХ ОБЪЕКТАХ КЛАССА!
 sub init
 	dim i as integer
@@ -22,8 +23,77 @@ sub init
 		_minLimit(i) = 0
 		_maxLimit(i) = 0
 	next i
+	initSourceInfo
 End Sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+type sourceInfo
+	sname as string
+	stype as string
+	snum as string
+	sdate as string
+end type
+&apos;------------------------------------------------------------------------------------------------------------------------
+function newSourceInfo(_sname as string, _stype as string, _snum as string, _sdate as string)
+	dim s as sourceInfo
+	s.sname = _sname
+	s.stype = _stype
+	s.snum = _snum
+	s.sdate = _sdate
+	newSourceInfo = s
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+sub initSourceInfo
+	dim col as new collection
+	col.add(newSourceInfo(&quot;0577&quot;, &quot;5П9&quot;, &quot;0008489-4825-В&quot;, &quot;23.01.25&quot;), &quot;0577&quot;)
+	col.add(newSourceInfo(&quot;0645&quot;, &quot;4П9&quot;, &quot;0008481-4825&quot;,   &quot;23.01.25&quot;), &quot;0645&quot;)
+	col.add(newSourceInfo(&quot;0648&quot;, &quot;4П9&quot;, &quot;0008483-4825&quot;,   &quot;23.01.25&quot;), &quot;0648&quot;)
+	col.add(newSourceInfo(&quot;0651&quot;, &quot;5П9&quot;, &quot;0008484-4825-В&quot;, &quot;23.01.25&quot;), &quot;0651&quot;)
+	col.add(newSourceInfo(&quot;0652&quot;, &quot;5П9&quot;, &quot;0018333-4825-В&quot;, &quot;07.04.25&quot;), &quot;0652&quot;)
+	col.add(newSourceInfo(&quot;0653&quot;, &quot;5П9&quot;, &quot;0008485-4825-В&quot;, &quot;23.01.25&quot;), &quot;0653&quot;)
+	col.add(newSourceInfo(&quot;0655&quot;, &quot;5П9&quot;, &quot;0008486-4825-В&quot;, &quot;23.01.25&quot;), &quot;0655&quot;)
+	col.add(newSourceInfo(&quot;0773&quot;, &quot;4П9&quot;, &quot;C-CE/06-10-2023/284848529&quot;, &quot;06.10.23&quot;), &quot;0773&quot;)
+	col.add(newSourceInfo(&quot;0774&quot;, &quot;4П9&quot;, &quot;C-CE/06-10-2023/284848527&quot;, &quot;06.10.23&quot;), &quot;0774&quot;)
 
+	col.add(newSourceInfo(&quot;0578&quot;, &quot;4С0&quot;, &quot;0008495-4825-B&quot;, &quot;29.01.25&quot;), &quot;0578&quot;)
+	col.add(newSourceInfo(&quot;0580&quot;, &quot;4С0&quot;, &quot;0008497-4825-B&quot;, &quot;29.01.25&quot;), &quot;0580&quot;)
+	col.add(newSourceInfo(&quot;2129&quot;, &quot;5С0&quot;, &quot;0008500-4825-B&quot;, &quot;29.01.25&quot;), &quot;2129&quot;)
+	col.add(newSourceInfo(&quot;0660&quot;, &quot;4С0&quot;, &quot;0018602-4825-B&quot;, &quot;22.07.25&quot;), &quot;0660&quot;)
+	col.add(newSourceInfo(&quot;0661&quot;, &quot;4С0&quot;, &quot;0018603-4825-B&quot;, &quot;22.07.25&quot;), &quot;0661&quot;)
+	col.add(newSourceInfo(&quot;0662&quot;, &quot;4С0&quot;, &quot;0018604-4825-B&quot;, &quot;22.07.25&quot;), &quot;0662&quot;)
+	col.add(newSourceInfo(&quot;0664&quot;, &quot;5С0&quot;, &quot;0006332-4824&quot;,   &quot;30.07.24&quot;), &quot;0664&quot;)
+	col.add(newSourceInfo(&quot;0665&quot;, &quot;5С0&quot;, &quot;0031512-4823&quot;,   &quot;19.09.23&quot;), &quot;0665&quot;)
+	col.add(newSourceInfo(&quot;0666&quot;, &quot;5С0&quot;, &quot;0008489-4825-B&quot;, &quot;29.01.25&quot;), &quot;0666&quot;)
+	col.add(newSourceInfo(&quot;0667&quot;, &quot;5С0&quot;, &quot;0031513-4823-B&quot;, &quot;14.09.23&quot;), &quot;0667&quot;)
+	SourceInfoCollection = col
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getAlphaTextBySourceArray(col as collection)
+	dim stroke as string
+	stroke = &quot;&quot;
+	dim i as integer
+	dim info as sourceInfo
+    For i = 1 To col.Count
+    	info = SourceInfoCollection(col(i))
+        if stroke = &quot;&quot; then stroke = &quot;по образцовым источникам α-излучения из радионуклида $sup239$Pu &quot; else stroke = stroke+&quot;, &quot;
+        stroke = stroke + &quot;типа &quot; + info.stype + &quot; зав. №&quot; + info.sname + &quot; (св. №&quot; + info.snum + &quot; от &quot; + info.sdate + &quot; г.)&quot;
+    Next i
+    stroke = stroke + &quot; с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
+    getAlphaTextBySourceArray = stroke
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getBetaTextBySourceArray(col as collection)
+	dim stroke as string
+	stroke = &quot;&quot;
+	dim i as integer
+	dim info as sourceInfo
+    For i = 1 To col.Count
+    	info = SourceInfoCollection(col(i))
+        if stroke = &quot;&quot; then stroke = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y &quot; else stroke = stroke+&quot;, &quot;
+        stroke = stroke + &quot;типа &quot; + info.stype + &quot; зав. №&quot; + info.sname + &quot; (св. №&quot; + info.snum + &quot; от &quot; + info.sdate + &quot; г.)&quot;
+    Next i
+    stroke = stroke + &quot; с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
+    getBetaTextBySourceArray = stroke
+end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function getPercent(stype as string)
 	select case stype
@@ -132,11 +202,11 @@ const RUS_BETA as string = &quot; образцовые бета-источник
 &apos;-------------------------------------------------------------
 &apos;для новых протоколов поверки (которые по типу Белгимовских)
 const RUS_ALPHA_6131_NEW_PP = &quot;по образцовому источнику α-излучения из радионуклида $sup239$Pu типа 1П9 зав. №2131.1П9-103.15 (св. №0008477-4825-В от 23.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95`&quot;
-&apos;все альфа источники для 1117М
+&apos;все альфа источники для 1117М -- НЕ ИСПОЛЬЗУЕТСЯ
 const RUS_ALPHA_NEW_PP = &quot;по образцовым источникам α-излучения из радионуклида $sup239$Pu типа 4П9 зав. №0645.4П9-102.11 (св. №0008481-4825-В от 23.01.2025 г.), зав. №0773 и рег. №61304-15 (№С-СЕ/06-10-2023/284848529 от 06.10.2023 г.), зав. №0648.4П9-105.11 (св. №0008483-4825-В от 23.01.2025 г.), зав. №0774 и рег. №61304-15 (№C-CE/06-10-2023-284848527 от 16.10.2023), типа 5П9-253 зав. №74041.0577.5П9-253.21 (св. №0008489-4825-В от 23.01.2025), зав. №0652.5П9-253.11 (св. №00018333-4825-В от 07.04.2025 г.), типа 5П9 зав. №0651.5П9-252.11 (св. №0008484-4825-В от 23.01.2025 г.), зав. №0653.5П9-254.11 (св. №0008485-4825-В от 23.01.2025 г.), зав. №0655.5П9-165.11 (св. №0008486-4825-В от 23.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
 &apos;это для варианта источников 0660 0661 0578 для 6130/6131
 const RUS_BETA_6130_NEW_PP as string = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y типа 4СО зав. №660 (св. №0018602-4825-B от 22.07.2025 г.) и зав. №661 (св. №0018603-4825-B от 22.07.2025 г.), типа 4СО-532 зав. №74041.0578 (св. №0008495-4825-В от 29.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95.&quot;
-&apos;все бета источники для 1117М
+&apos;все бета источники для 1117М -- НЕ ИСПОЛЬЗУЕТСЯ
 const RUS_BETA_NEW_PP as string = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y типа 4СО зав. №660 (св. №0018602-4825-B от 22.07.2025 г.), зав. №661 (св. №0018603-4825-B от 22.07.2025 г.), зав. №662 (св. №0018604-4825-В от 22.07.2025 г.), типа 4СО-532 зав. №74041.0578 (св. №0008495-4825-В от 29.01.2025 г.), типа 4СО-805 зав. №74041.0580.4СО-805.21 (св. №0008497-4825-В от 29.01.2025 г.), типа 4СО-325 зав. №74041.0579.4СО-325.21 (св. №0008496-4825-В от 29.01.2025 г.), типа 5CO зав. №2129.5СО-801.15 (св. № 0008500-4825-В от 29.01.2025 г.), зав. №0664 (св. №0006332-4824 от 30.07.2024 г.), зав. №0666.5СО-324.11 (св. №0008499-4825-В от 29.01.2025 г.), типа 5CO-323 зав. №0665 (св. №0031512-4823 от 14.09.2023 г.), типа 5CO-325 зав. №0667 (св. №0031513-4823 от 14.09.2023 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
 const RUS_110_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
 const RUS_130_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ130 №015 рег. №44761-10 (свидетельство о поверке №С-В/26-11-2024/407130134 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева») в составе с источниками из радионуклида $sup137$Cs типа ИГИ-Ц-9-1 зав. №163, ИГИ-Ц-5-2 зав. №043, ИГИ-Ц-3-20 зав. №08Т, ИГИ-Ц-3-13 зав. №7АТ; ИГИ-Ц-3-5 зав. №07Т, источником из радионуклида $sup60$Co типа ГИК-2-12 зав. №6К8, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;

@@ -43,7 +43,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.32 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.33 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -130,7 +130,7 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БОИ-1 си-19&quot;,&quot;PU detector&quot;,	&quot;Зв/ч&quot;,	Array(20,70,0.7,7),					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)	&apos;№16  	&apos;раньше были для серии, теперь для си-19
 	addBDtoCollection(&quot;БОИ-2 си-19&quot;,&quot;PU-2 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;),						&quot;gamma&quot;,	Array(1,10),		20)			&apos;раньше были для серии, теперь для си-19
-	addBDtoCollection(&quot;БОИ-4&quot;,		&quot;PU-4 detector&quot;,&quot;Зв/ч&quot;,	Array(7,70,0.7,7,70), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(0.3,100),		20)
+	addBDtoCollection(&quot;БОИ-4&quot;,		&quot;PU-4 detector&quot;,&quot;Зв/ч&quot;,	Array(7,70,0.7,7,70), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(0.1,100),		20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДКР-01&quot;,	&quot;BDKR-01&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),						&quot;gamma007&quot;,	Array(0.05,0.1),	20) &apos;ТИП БД -- НАПРАВЛЕННЫЙ ЭКВИВАЛЕНТ
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -559,13 +559,28 @@ sub insertDataToTemplate
 	findAndRename(&quot;$s_bg&quot;, Format(Math.randValue(0.005, 0.005), &quot;0.00&quot;))
 	findAndRename(&quot;$b2_bg&quot;, Format(Math.randValue(17, 2), &quot;0.0&quot;))
 	
+	dim usedAlphaSourcs as new Collection
+	dim usedBetaSourcs as new Collection
+	
 	for i=1 to BDList.count
 		bd = BDList.item(i)
+		
 	
 		if bd.isPrintable then
 			usedBDList.add(bd.getName)
-		
-			select case BDList.item(i).getType
+				
+			if bd.getType = &quot;alpha&quot; then 
+				for n=1 to bd.pointTextList.count
+					AddUniqueString(usedAlphaSourcs, Replace(bd.pointTextList.item(n), &quot;/S&quot;, &quot;&quot;)
+				next n
+			endif
+			if bd.getType = &quot;beta&quot; then 
+				for n=1 to bd.pointTextList.count
+					AddUniqueString(usedBetaSourcs, Replace(bd.pointTextList.item(n), &quot;/S&quot;, &quot;&quot;)
+				next n
+			endif
+
+			select case bd.getType
 				case &quot;gamma&quot; : bdTypesUsed(0) = true
 				case &quot;alpha&quot; : bdTypesUsed(1) = true
 				case &quot;beta&quot; : bdTypesUsed(2) = true
@@ -576,7 +591,7 @@ sub insertDataToTemplate
 			end select
 			
 			&apos;Если альтернативные, то контрольные точеи приравниваем альтернативным (! bd.pointList.item(i) = bd.getAltList.item(i) НЕ работает в этом тупом языке !)
-			if bd.isAlternativePoints then 
+			if bd.isAlternativePoints then
 				dim newValues as new Collection
 				dim k as integer
 				for k=1 to bd.getAltList.count
@@ -614,16 +629,18 @@ sub insertDataToTemplate
 	for n=1 to usedBDList.count
 		strings(n-1)=usedBDList.item(n)
 	next n
-	Math.SortStringArray(strings)&apos;
+	SortStringArray(strings)
 	
-	&apos;for n=0 to UBound(strings)
-	&apos;	msgbox strings(n)
-	&apos;next n
+	&apos;SortStringArray(usedAlphaSourcs)
+	&apos;SortStringArray(usedBetaSourcs)
+	&apos;вывод списка источников в шапке: теперь динамически, в зависимости от включенных в состав 1117М БД
+	findAndRename(&quot;$facility_din_alpha$&quot;, facilities.getAlphaTextBySourceArray(usedAlphaSourcs)
+	findAndRename(&quot;$facility_din_beta$&quot;,  facilities.getBetaTextBySourceArray(usedBetaSourcs)
+	Overall.findAndReplaceAllSuperscript()
+	Overall.findAndReplaceAllSubscript()
 	
 	dim strDU, unit as string
 	strDU = &quot;&quot;
-	&apos;for n=1 to usedBDList.count
-		&apos;unit = usedBDList.item(n)
 	for n=0 to UBound(strings)
 		unit = strings(n)
 		if unit = &quot;БДПС-02 α&quot;   then unit = &quot;БДПС-02&quot;

@@ -7,7 +7,62 @@ rem ╔╗╚╝║═▄▌▀▌    αβγ   μ
 &apos;  ▀▀▀
 rem----------------------------------------------------------------
 rem			ВСЯКИЕ МЕТОДЫ БУДУТ ХРАНИТЬСЯ ЗДЕСЬ
-&apos;---------------------------------------------------------------------------------------------------------
+&apos;---------------------------------------
+Sub SafeAddToCollection(col As Object, item As Object, key As String)
+    On Error GoTo ErrorHandler
+    &apos; Попытка получить элемент по ключу — если нет ошибки, значит ключ уже существует
+    Dim dummy As Object
+    Set dummy = col(key)
+    &apos; Если дошли сюда — ключ уже есть, ничего не делаем
+    Exit Sub
+
+ErrorHandler:
+    &apos; Если возникла ошибка — ключа нет, можно добавлять
+    col.Add item, key
+End Sub
+
+Sub SafeAddToCollection2(col As Object, item As Object)
+    On Error GoTo ErrorHandler
+    &apos; Попытка получить элемент по ключу — если нет ошибки, значит ключ уже существует
+    Dim dummy As Object
+    Set dummy = col(key)
+    &apos; Если дошли сюда — ключ уже есть, ничего не делаем
+    Exit Sub
+
+	ErrorHandler:
+    &apos; Если возникла ошибка — ключа нет, можно добавлять
+    col.Add item, key
+End Sub
+
+Sub AddUniqueString(col as Collection, item As string)
+	Dim i As Integer
+    For i = 1 To col.Count
+        If col(i) = item Then
+            Exit Sub &apos; Значение уже есть — выходим
+        End If
+    Next i
+    &apos; Если дошли сюда — значения нет, добавляем
+    col.Add item
+End Sub
+&apos;------------------------------------------------------------------
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;сортировка пузырьком
+Sub SortStringArray(arr As Variant)
+    Dim i As Integer, j As Integer
+    Dim temp As String
+    Dim n As Integer
+    n = UBound(arr)
+    
+    For i = 0 To n - 1
+        For j = i + 1 To n
+            If StrComp(arr(i), arr(j), 0) &gt; 0 Then
+                temp = arr(i)
+                arr(i) = arr(j)
+                arr(j) = temp
+            End If
+        Next j
+    Next i
+End Sub
 rem -------------------------------------------------------------------------------------------
 Sub OpenTemplate(documentURL)
 	On Error Goto ErrorHandler
