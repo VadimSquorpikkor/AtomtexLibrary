@@ -60,7 +60,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.36 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.37 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -314,24 +314,32 @@ sub insertRecordsToTemplate
 	else
 		Overall.deleteTable(&quot;tgradtitle&quot;)
 		Overall.deleteTable(&quot;tgradhead&quot;)
+		Overall.deleteTable(&quot;t_src_cs_rus&quot;)
 		for k=(0) to maxBDCount
 			Overall.deleteTable(&quot;tgrad&quot; + (k))
 		next k
 	endif
-		
-	
-	
 	
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
+	
+	dim allSerial as string
+	allSerial = &quot;&quot;		
 		
 	for i=1 to BDList.count
 		bd = BDList.item(i)
 		findAndRename(&quot;$grad&quot; + i + &quot;$&quot;, bd.getGradValue)
 		findAndRename(&quot;$bd_num_g&quot; + i + &quot;$&quot;, bd.getSerial)
-		Overall.insertToTemplateStepDoted(i)
+		if allSerial=&quot;&quot; then allSerial = bd.getName + &quot; (&quot; + bd.getSerial else allSerial = allSerial + &quot;, &quot; + bd.getSerial
+		
+		if oOptionBDMG.state then
+			Overall.insertToTemplateStepDoted(i)&apos;для БДМГ
+		else
+			Overall.insertToTemplateStep(i)
+		endif	
 	next i
+	allSerial = allSerial+&quot;)&quot;
 	
 	if oOptionBDMG.state then
 		dim bgFormat as string
@@ -348,6 +356,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$activity&quot;, oDialogG02N.getControl(&quot;ActivityField&quot;).text)
 	findAndRename(&quot;$source&quot;, Replace (oDialogG02N.getControl(&quot;ActivityCombo&quot;).text, &quot;№&quot;, &quot;&quot;))
 	findAndRename(&quot;$serial&quot;, oDialogG02N.getControl(&quot;FULL_NUMBER&quot;).text)
+	findAndRename(&quot;$allSerial&quot;, allSerial)
 
 	Overall.setClipboardWithType(&quot;$serial&quot;)
 	msgbox &quot;Готово!&quot;

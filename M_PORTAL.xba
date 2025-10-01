@@ -31,7 +31,7 @@ Sub Portal_Dialog_Show
 	oListBox = oDialogPortal.getControl(&quot;ListBoxBD&quot;)
 	
 	oActivityCombo = oDialogPortal.getControl(&quot;SourceCombo&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.15 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogPortal, oDateFieldModel, &quot;Версия 1.16 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.initializeActivityCombo(oActivityCombo)
 	
@@ -263,8 +263,12 @@ sub insertRecordsToTemplate
 		Overall.deleteTable(&quot;t&quot; + (k))
 	next k
 		
+	dim allSerial as string
+	allSerial = &quot;&quot;
+		
 	for i=1 to BDList.count
 		bd = BDList.item(i)
+		if allSerial=&quot;&quot; then allSerial = bd.getType + &quot; (&quot; + bd.getSerial else allSerial = allSerial + &quot;, &quot; + bd.getSerial
 		findAndRename(&quot;$type&quot; + i, bd.getType)
 		for j=1 to bd.getBGList.count
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), bd.getBGList.item(j))
@@ -276,6 +280,7 @@ sub insertRecordsToTemplate
 		findAndRename(&quot;$pogr&quot; + i, Format(bd.getDelta - bd.getSensitivity(activity), &quot;0.00&quot;))
 		findAndRename(&quot;$sence&quot; + i, Format(bd.getSensitivity(activity), &quot;0.00&quot;))  &apos;Расчетное значение чувствительности БД
 	next i
+	allSerial = allSerial+&quot;)&quot;
 
 	&apos;общие для всех блоков в протоколе
 	findAndRename(&quot;$delt&quot;, BDList.item(1).getDelta)	&apos;(таблица &quot;Абсолютная погрешность чувствительности БД...&quot; ==&gt; Чувствительность СРК-АТ2327 к гамма-излучению 137CS типа ОСГИ-3
@@ -286,6 +291,7 @@ sub insertRecordsToTemplate
 	findAndRename(&quot;$activity&quot;, Format(activity, &quot;0.00&quot;))
 	findAndRename(&quot;$source&quot;, Replace (oActivityCombo.text,&quot;№&quot;,&quot;&quot;))
 	findAndRename(&quot;$srk_serial&quot;, srk_serial)
+	findAndRename(&quot;$allSerial&quot;, allSerial)
 	findAndRename(&quot;$pogdelta&quot;, bd.getPogDelta)
 
 	&apos;если это БД в контейнере, то писать, что в контейнере, если нет — не надо

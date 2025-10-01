@@ -17,7 +17,7 @@ Sub MRP920_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogMRP = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_MRP_N )
 	
-	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.11 &quot;, Overall.NULL, 0)
+	Overall.dialogShowInitialize(0, oDialogMRP, oDateFieldModel, &quot;Версия 2.12 &quot;, Overall.NULL, 0)
 	Overall.initializeParameters(0, BDList, isComboCollection)
 	
 	oDialogMRP.Model.getByName(&quot;mrpImage&quot;).ImageURL = sertPath &amp; &quot;mrp\mrp.png&quot;

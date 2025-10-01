@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.13 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.14 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -74,8 +74,7 @@ sub addNewBD
 	n_04(4)=NEUTRON_04.fio(3)
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
-	&apos;if oOption02.state then bd.addData2(&quot;БДКН-02&quot;,	&quot;BDKN-02&quot;,	&quot;&quot;,	Array(0.5,5.9, 57, 235, 1019),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000),	20)
-	&apos;if oOption04.state then bd.addData2(&quot;БДКН-04&quot;,	&quot;BDKN-04&quot;,	&quot;&quot;,	Array(0.5,8.3, 80, 331, 1434),	Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10),		20)
+
 	if oOption02.state then bd.addData2(&quot;БДКН-02&quot;,	&quot;BDKN-02&quot;,	&quot;&quot;,	n_02,							Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000),	20)
 	if oOption04.state then bd.addData2(&quot;БДКН-04&quot;,	&quot;BDKN-04&quot;,	&quot;&quot;,	n_04,							Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-MD&quot;,		Array(0.1,10),		20)
 	if oOption05.state then bd.addData2(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,	Array(0.16, 250, 3090),			Array(&quot;(ск. счета фона) &quot;,&quot;(п. потока фон) &quot;,&quot;(п. потока 2.5-500) &quot;),	&quot;n-PP&quot;,		Array(0.1,0.2),		20)
@@ -172,9 +171,13 @@ sub insertRecordsToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
 	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;tf1&quot;, &quot;bd_num_n&quot;, &quot;bd_num&quot;, &quot;$f&quot;)
 	
+	dim allSerial as string
+	allSerial = &quot;&quot;
+	
 	for i=1 to BDList.count
 		bd = BDList.item(i)
 		strokeForSaving = strokeForSaving &amp; BDList.item(i).getSerial &amp; &quot; &quot;
+		if allSerial=&quot;&quot; then allSerial = bd.getName + &quot; (&quot; + bd.getSerial else allSerial = allSerial + &quot;, &quot; + bd.getSerial
 		
 		if bd.BdName=&quot;БДКН-02&quot; then	bdkn.neutronToTemplateStep(i, bd, NEUTRON_02)
 		if bd.BdName=&quot;БДКН-04&quot; then	bdkn.neutronToTemplateStep(i, bd, NEUTRON_04)	
@@ -182,8 +185,10 @@ sub insertRecordsToTemplate
 		
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 	next i
+	allSerial = allSerial+&quot;)&quot;
 	
 	findAndRename(&quot;$serial&quot;, oDialogBDKN.getControl(&quot;fullNum&quot;).text)
+	findAndRename(&quot;$allSerial&quot;, allSerial)
 	Overall.setSerialWithStroke(&quot;$serial&quot;, strokeForSaving)
 	msgbox &quot;Готово!&quot;
 end sub
