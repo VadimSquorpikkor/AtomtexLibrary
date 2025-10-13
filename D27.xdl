@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D27" dlg:left="160" dlg:top="135" dlg:width="172" dlg:height="96" dlg:closeable="true" dlg:moveable="true" dlg:title="Протокол поверки БДКГ-27">
+ <dlg:styles>
+  <dlg:style dlg:style-id="0" dlg:font-height="8"/>
+  <dlg:style dlg:style-id="1" dlg:font-height="13"/>
+ </dlg:styles>
+ <dlg:bulletinboard>
+  <dlg:datefield dlg:id="DateField1" dlg:tab-index="0" dlg:left="25" dlg:top="59" dlg:width="49" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
+  <dlg:text dlg:id="Label1" dlg:tab-index="1" dlg:left="76" dlg:top="61" dlg:width="38" dlg:height="8" dlg:value="Дата поверки"/>
+  <dlg:text dlg:id="Label2" dlg:tab-index="3" dlg:left="77" dlg:top="32" dlg:width="35" dlg:height="8" dlg:value="Номер СРК"/>
+  <dlg:text dlg:id="Label3" dlg:tab-index="5" dlg:left="77" dlg:top="46" dlg:width="35" dlg:height="8" dlg:value="Номер БД"/>
+  <dlg:button dlg:id="CommandButton1" dlg:tab-index="6" dlg:left="46" dlg:top="77" dlg:width="81" dlg:height="14" dlg:value="Вывести протокол">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G27.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:text dlg:style-id="0" dlg:id="versionLabel" dlg:tab-index="7" dlg:left="130" dlg:top="2" dlg:width="39" dlg:height="8" dlg:value="версия" dlg:align="right"/>
+  <dlg:text dlg:style-id="1" dlg:id="text" dlg:tab-index="8" dlg:left="17" dlg:top="11" dlg:width="138" dlg:height="16" dlg:value="Label4" dlg:align="center"/>
+  <dlg:button dlg:id="CommandButton2" dlg:tab-index="9" dlg:left="116" dlg:top="31" dlg:width="30" dlg:height="36" dlg:image-src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/down_arr.png">
+   <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_G27.insertClipboardToData?language=Basic&amp;location=application" script:language="Script"/>
+  </dlg:button>
+  <dlg:textfield dlg:id="srktext" dlg:tab-index="2" dlg:left="25" dlg:top="31" dlg:width="47" dlg:height="12" dlg:value="000.000"/>
+  <dlg:textfield dlg:id="bdtext" dlg:tab-index="4" dlg:left="25" dlg:top="45" dlg:width="47" dlg:height="12" dlg:value="000.000"/>
+ </dlg:bulletinboard>
+</dlg:window>

@@ -222,6 +222,9 @@ const EN_ALPHA as string = &quot; alpha radiation source of Pu-239: 4П9, 5П9, 
 const EN_BETA as string = &quot; beta radiation source of  Sr-90+Y-90: 4С0, 5С0, 6С0, the certificate N 1-0057836-4822; N 0031509-4823 issued by BelGIM, Minsk, the Republic of Belarus&quot;	
 const EN_SOURCE_CS as string = &quot; OSGI series reference gamma radiation source Cs-137 with $activity kBq activity, s/n $source&quot;
 const EN_ETHALON as string = &quot;The instrument is calibrated on&quot;
+&apos;-------------------------------------------------------------
+const RUS_BDKG_27_RES as string = &quot;с применением меры электрического сопротивления типа P40107 с зав. №2281 (св. №1-0230126-4225 от 25.07.2025 г.) с относительной погрешностью θ$sub0R$ = ±0,02% при доверительной вероятности Р = 0,95&quot;
+const RUS_BDKG_27_VOL as string = &quot;с применением вольтметра типа В7-77 с зав. №553 (св. №1-0507221-4224 от 20.11.2024 г.) с относительной погрешностью θ$sub0U$ = ±0,09% при доверительной вероятности Р = 0,95&quot;
 
 public function getFacilityText(id as string) as string
 	dim stroke as string
@@ -244,6 +247,9 @@ public function getFacilityText(id as string) as string
 	case &quot;130+110&quot;:  stroke = RUS_ETHALON+&quot;;&quot;+RUS_110+&quot;;&quot;+RUS_130
 	case &quot;6130_130+110+beta&quot;: stroke = RUS_ETHALON+RUS_110+&quot;;&quot;+RUS_130+&quot;;&quot;+RUS_BETA
 	case &quot;sourse_cs_rus&quot;: stroke = RUS_SOURCE_CS
+	
+	case &quot;bdkg27_resistor&quot;: stroke = RUS_BDKG_27_RES
+	case &quot;bdkg27_voltmeter&quot;: stroke = RUS_BDKG_27_VOL
 		
 	&apos;--------------АНГЛИЙСКИЙ--------------------------
 	

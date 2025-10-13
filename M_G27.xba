@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="M_G27" script:language="StarBasic">&apos;  *****  BASIC  *****
+&apos;	 	╔══════════════════════════════════════════╗
+&apos;		║	Класс для БДКГ-27		               ║█
+&apos;		╚══════════════════════════════════════════╝█
+&apos;		  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀	
+&apos;---------------------------------------------------------------------------------------------------------
+dim Overall as new Overall
+dim oDialogG27 as object
+dim oDateFieldModel as object
+dim data as new Collection
+&apos;---------------------------------------------------------------------------------------------------------
+Sub G27_Dialog_Show
+	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
+	oDialogG27 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D27 )
+	Overall.initializeDateField(oDateFieldModel, oDialogG27)	
+	oDialogG27.getControl(&quot;versionLabel&quot;).text = &quot;1.00 &quot;
+	oDialogG27.getControl(&quot;srktext&quot;).text = &quot;132.000&quot;
+	oDialogG27.getControl(&quot;bdtext&quot;).text = &quot;132.002&quot;
+	insertClipboardToData
+	oDialogMain.endexecute()   
+	oDialogG27.Execute()
+End Sub
+&apos;--------------------------------------------------------------------------------------------------------- 
+
+&apos;transferData.push(a1, a2, a3, b1, b2, b3, c1, c2, c3);
+&apos;transferData.push(u_70, u_700, u_3000);
+&apos;transferData.push(h_1, h_2, h_3);
+&apos;transferData.push(g1, g2, g3)
+&apos;короче, там для 27 в расчетах надо добавить погрешность с учетом доп оборудования: 1,1*sqrt[(погрешность при измерении %)^2 + (0.02%)^2 + (0.09%)^2]
+
+&apos;--------------------------------------------------------------------------------------------------------- 
+sub insertRecordsToTemplate
+	dim strokeForSaving, path as string
+	strokeForSaving = &quot;&quot;
+	path = &quot;&quot;
+	path = Overall.getPathAndSetName(&quot;bdkg27\bdkg27&quot;, &quot;БДКГ-27&quot;)
+
+	OpenTemplate(sertPath &amp; path)
+	Overall.insertFacilitiesText
+	Overall.insertParametersToTemplate
+
+	dim points2(2) as integer
+	points2 = Array(70,700,3000)
+	
+	dim bd as new DUnit
+	bd.addData2(&quot;БДКГ-27&quot;, &quot;BDKG-25&quot;, &quot;Зв/ч&quot;, Array(0.07,0.7,7), Array(&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma&quot;, Array(0,0), 30) rem TODO уточнить границы
+	bd.setSerial(oDialogG27.getControl(&quot;bdtext&quot;).text)
+	dim BDList as new Collection
+	BDList.add(bd)
+	Overall._BDList = BDList
+	
+	dim sum, avg, pogr, delta as double
+	for i=0 to 2
+		findAndRename(&quot;$2-0&quot;+i, Format(data.item(i+10), &quot;0.00&quot;)
+		sum = 0
+		for j=1 to 3
+			findAndRename(&quot;$2-&quot;+j+i, data.item((i*3)+j))
+			sum = sum + data.item((i*3)+j)
+		next j
+		avg = sum/3
+		findAndRename(&quot;$2-4&quot;+i, Format(avg, &quot;0.00&quot;)
+		pogr = (avg-points2(i)) / points2(i) * 100&apos;(avg-points2(i))/point2(i)*100
+		findAndRename(&quot;$2-5&quot;+i, Format(pogr, &quot;0.00&quot;)
+		delta = 1.1 * sqr(pogr*pogr + 0.02*0.02 + 0.09*0.09)
+		findAndRename(&quot;$2-6&quot;+i, Format(delta, &quot;0.00&quot;)
+	next i
+	
+	dim points as new Collection
+	points.add(data.item(16))
+	points.add(data.item(17))
+	points.add(data.item(18))
+	bd.setValueList(points)
+	
+	Overall.insertToTemplateStep(1)
+	
+	strokeForSaving = strokeForSaving &amp; bd.getSerial &amp; &quot; &quot;
+		
+	findAndRename(&quot;$serial&quot;, oDialogG27.getControl(&quot;srktext&quot;).text)
+	findAndRename(&quot;$allSerial&quot;, &quot;БДКГ-27 (&quot; + bd.getSerial + &quot;)&quot;)
+	findAndRename(&quot;$bd_num1$&quot;, oDialogG27.getControl(&quot;bdtext&quot;).text)
+	
+	Overall.setClipboardWithType(&quot;$serial&quot;)
+	msgbox &quot;Готово!&quot;
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub insertClipboardToData
+	data = Overall.getCollectionFromClipBoard
+	if data.count = 18 then
+		oDialogG27.getControl(&quot;text&quot;).text = &quot;Данные успешно получены&quot;
+		oDialogG27.getControl(&quot;CommandButton1&quot;).setEnable(true)
+	else
+		oDialogG27.getControl(&quot;text&quot;).text = &quot;Ошибка при получении данных!&quot;
+		oDialogG27.getControl(&quot;CommandButton1&quot;).setEnable(false)
+	endif	
+end sub
+</script:module>

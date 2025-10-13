@@ -17,6 +17,53 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	p3 = bd.valueList.item(3)
 
 	dim s as double &apos;Чувствительность
+	dim K as double &apos;коэффициент
+	dim Ncp as double
+	dim Nf as double
+	dim Br as double
+	dim F0 as double
+
+	Ncp = p3
+	Br = NEUTRON_05.br(2) &apos;0.866
+	F0 = NEUTRON_05.fio(2) &apos;222
+	K = 0.743
+	Nf = p2
+	
+	&apos;Расчет чувствительности
+	s = (Ncp - Nf)/ F0 * Br * K
+	
+	msgbox s
+	
+	&apos;Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
+	threePointArray_1 = Math.avaragePointsRndArray(p1, 25)
+	threePointArray_2 = Math.avaragePointsRndArray(p2, 10)
+	threePointArray_3 = Math.avaragePointsRndArray(p3, 3)
+	
+	for j=0 to bd.getPointList.count-1
+		findAndRename((&quot;$f&quot; + i + &quot;-1&quot; + j), Format(threePointArray_1(j), &quot;0.00&quot;)) rem рандом 1
+		findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j), Format(threePointArray_2(j), &quot;0&quot;)) rem рандом 2
+		findAndRename((&quot;$&quot; + i + &quot;-5&quot; + j), Format(threePointArray_3(j), &quot;0&quot;)) rem рандом 3
+	next j		
+	
+	findAndRename((&quot;$f&quot; + i + &quot;-20&quot;), Format(p1, &quot;0.00&quot;)) rem среднее по трем измерениям 1
+	findAndRename((&quot;$&quot; + i + &quot;-40&quot;), Format(p2, &quot;0&quot;)) rem среднее по трем измерениям 2
+	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
+	findAndRename((&quot;$&quot; + i + &quot;-70&quot;), Format(s,  &quot;0.00&quot;)) 
+	
+	findAndRename(&quot;$f0$&quot;, F0) 
+	findAndRename(&quot;$br$&quot;, Br)
+	findAndRename(&quot;$Koef$&quot;, K)
+end sub
+&apos;---------------------------------------------------------------------------------------------------------
+sub neutron_05_ToTemplateStep_OLD(i as integer, bd as BUnit)
+	dim threePointArray_1(2), threePointArray_2(2), threePointArray_3(2) as double
+	dim m_point, p1, p2, p3 as double
+	dim j as integer
+	p1 = bd.valueList.item(1)
+	p2 = bd.valueList.item(2)
+	p3 = bd.valueList.item(3)
+
+	dim s as double &apos;Чувствительность
 	dim N as double &apos;
 	dim f as double &apos;
 	dim k as double &apos;коэффициент
@@ -44,7 +91,7 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	findAndRename((&quot;$&quot; + i + &quot;-60&quot;), Format(p3, &quot;0&quot;)) rem среднее по трем измерениям 3
 	findAndRename((&quot;$&quot; + i + &quot;-70&quot;), Format(s,  &quot;0.00&quot;)) 
 end sub
-rem---------------------------------------------------------------------------------------------------------
+&apos;---------------------------------------------------------------------------------------------------------
 sub neutronToTemplateStep(i as integer, bd as BUnit, nData as NeutronData)
 	dim point_br_array(3) as double
 	dim point_fio_array(3) as double

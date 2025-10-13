@@ -286,40 +286,37 @@ sub makeSimpleLayoutFromBD(bd as new DUnit, valueField as string, labelField as 
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 function PathForProtocol(bdName as string)
-	if _oOptionButtonPr.State then
+	if isNull(_oOptionButtonPr) then
 		_stringTypeForCertificate = &quot;поверка&quot;
 		PathForProtocol = bdName &amp; &quot;.odt&quot;
-	end if
-	if _oOptionButtonSr.State then
+	elseif _oOptionButtonPr.State then
+		_stringTypeForCertificate = &quot;поверка&quot;
+		PathForProtocol = bdName &amp; &quot;.odt&quot;
+	elseif _oOptionButtonSr.State then
 		_stringTypeForCertificate = &quot;проверка&quot;
 		calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 		techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 		PathForProtocol = bdName &amp; &quot;_sr.odt&quot;
-	end if
-	if _oOptionButtonSe.State then
+	elseif _oOptionButtonSe.State then
 		_stringTypeForCertificate = &quot;сертификат&quot;
 		calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 		techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 		PathForProtocol = bdName &amp; &quot;_se.odt&quot;
-	end if
-	
-	if NOT isNull(_oOptionButtonPrNew) then
+	elseif NOT isNull(_oOptionButtonPrNew) then
 		if _oOptionButtonPrNew.State then
 			_stringTypeForCertificate = &quot;поверка&quot;
 			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 			PathForProtocol = bdName &amp; &quot;_n.odt&quot;
 		end if	
-	end if
-	if NOT isNull(_oOptionButtonSrNew) then
+	elseif NOT isNull(_oOptionButtonSrNew) then
 		if _oOptionButtonSrNew.State then
 			_stringTypeForCertificate = &quot;проверка&quot;
 			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
 			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
 			PathForProtocol = bdName &amp; &quot;_sr_n.odt&quot;
 		end if	
-	end if
-	if NOT isNull(_oOptionButtonSeNew) then
+	elseif NOT isNull(_oOptionButtonSeNew) then
 		if _oOptionButtonSeNew.State then
 			_stringTypeForCertificate = &quot;сертификат&quot;
 			calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
@@ -336,7 +333,8 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$rem_bground&quot;, Format(bgValue/10, &quot;0.0&quot;))&apos;фон для ремов: значение делю на 10 (а не умножаю на 100), так как меняю в протоколе ещё и единицы с нано на микро (100nSv = 10urem)
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, &quot;0.0&quot;))
-	findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
+	&apos;findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
+	findAndRename(&quot;$date&quot;, getDate(_oDateFieldModel))
 	findAndRename(&quot;$calibratedBy&quot;, calibName)
 	findAndRename(&quot;$controlledBy&quot;, techName)
 	bg007 = Format(Math.randValue(11, 0.5), &quot;0.0&quot;) &apos;ФОН ДЛЯ НАПРАВЛЕННОГО ЭКВИВАЛЕНТА
@@ -695,6 +693,9 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_140&quot;, f.getFacilityText(&quot;140_eng&quot;))
 	findAndRename(&quot;$eng_facility_alpha&quot;, f.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, f.getFacilityText(&quot;beta_eng&quot;))
+	
+	findAndRename(&quot;$bdkg27_resistor$&quot;, f.getFacilityText(&quot;bdkg27_resistor&quot;))
+	findAndRename(&quot;$bdkg27_voltmeter$&quot;, f.getFacilityText(&quot;bdkg27_voltmeter&quot;))
 
 	findAndReplaceAllSuperscript()
 	findAndReplaceAllSubscript()
