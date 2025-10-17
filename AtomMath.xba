@@ -6,8 +6,61 @@ Option Compatible
 Option ClassModule
 Option Explicit
 
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos; ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ θ или δ
+&apos;	╔════════════════════════════╗
+&apos;	║		  H - H0             ║█
+&apos;	║  θ = ————————————  * 100   ║█
+&apos;	║          H0                ║█
+&apos;	╚════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+&apos; H - измеренное значение
+&apos; H0 - контрольная точка
+function RelativeError(meas as double, contr_point as double)
+	RelativeError = ((meas - contr_point) / contr_point) * 100
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ПОГРЕШНОСТИ ИЗМЕРЕНИЯ Δпр
+&apos;	╔══════════════════════════════╗
+&apos;	║	            ____________   ║█
+&apos;	║  Δпр = 1.1 * √ δ^2 + θ0^2    ║█
+&apos;	╚══════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+&apos;  δ - относительная погрешность измерения
+&apos;  θ0 - погрешность установки
+function ConfidenceLimit(pogr as double, percent as double)
+	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
+end function
+
+rem---------------------------------------------------------------------------------------------------------
+&apos;СРЕДНЕЕ АРИФМЕТИЧЕСКОЕ (для массивов)
+&apos;	╔═════════════════════╗
+&apos;	║		  Σ ni        ║█
+&apos;	║  А = —————————      ║█
+&apos;	║          i          ║█
+&apos;	╚═════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+function avg(ar as variant)
+	dim sum as double
+	dim i as integer
+	sum = 0
+	for i=0 to uBound(ar)
+		sum = sum + ar(i)
+	next i
+	avg = sum/(uBound(ar)+1)
+end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+&apos;	╔═══════════════════════════════════════════════╗
+&apos;	║	                 _________________          ║█
+&apos;	║		  1		    / Σ (Hi - Hср)^2            ║█
+&apos;	║  S = ————————— * √ ————————————————— * 100    ║█
+&apos;	║        Hср.            n(n-1)                 ║█
+&apos;	╚═══════════════════════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+&apos;  Hi - i-е измерение (с вычитом фона)
+&apos;  Hср - среднее измеренных значений
+&apos;  n - кол-во элементов массива
 function avgSqrt(Array as variant, avg as double)
 	dim i as integer
 	dim nValue as integer
@@ -28,7 +81,26 @@ function avgSqrt(Array as variant, avg as double)
 	avgSqrt = 1/average*sqr(sum/n)*100
 end function
 rem---------------------------------------------------------------------------------------------------------
+&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+&apos;	╔═══════════════════╗
+&apos;	║  δпр = K * SΣ     ║█
+&apos;	╚═══════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+function ConfLimit(koef as double, sSigmaRes as double)
+	ConfLimit = koef * sSigmaRes
+end function
+rem---------------------------------------------------------------------------------------------------------
 &apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+&apos;	╔═══════════════════════════════════╗
+&apos;	║	      _______________________   ║█
+&apos;	║		 /       θпр^2     θ0^2     ║█
+&apos;	║  SΣ = √ S^2 + ——————— + —————     ║█
+&apos;	║                 3         3       ║█
+&apos;	╚═══════════════════════════════════╝█
+&apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+&apos;  S - относительное среднеквадратическое отклонение
+&apos;  θпр - относительная погрешность измерения
+&apos;  θ0 - погрешность установки
 function sSigma(avgSqrtRes as double, facilityPercent as double, relativeErr as double)
 	sSigma = sqr(avgSqrtRes*avgSqrtRes + facilityPercent*facilityPercent/3 + relativeErr*relativeErr/3)
 end function
@@ -69,11 +141,6 @@ function VariationsCoefficient(o_Array as variant, o_avg as double)
 	VariationsCoefficient = 100/o_avg*(sqr(1/(uBound(o_Array))*sum))
 end function
 rem---------------------------------------------------------------------------------------------------------
-&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-function ConfLimit(koef as double, sSigmaRes as double)
-	ConfLimit = koef * sSigmaRes
-end function
-rem---------------------------------------------------------------------------------------------------------
 function roundOneDigitAfterDot(num as double)&apos;!!!@DEPRECATED!!!
 	&apos;ОКРУГЛЯЕТ ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ОДНОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
 	&apos;2.69 -&gt; 2.7
@@ -88,6 +155,11 @@ rem-----------------------------------------------------------------------------
 &apos;рандом от числа -- до числа
 function randValueFromTo(fromNum as double, toNum as double)
 	randValueFromTo = fromNum + rnd()*(toNum-fromNum)
+end function
+rem---------------------------------------------------------------------------------------------------------
+&apos;рандом от числа -- до числа
+function randValueFromToRounded(fromNum as double, toNum as double, num as integer)
+	randValueFromToRounded = round( randValueFromTo(fromNum, toNum), num)
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;ОКРУГЛЯЕТ ДАННОЕ ЧИСЛО ПО ПРАВИЛАМ МАТЕМАТИКИ ДО ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ, ОБРЕЗАЕТ ЧАСТЬ ЧИСЛА ПОСЛЕ ВЫБРАННОГО ЗНАКА ПОСЛЕ ЗАПЯТОЙ
@@ -266,23 +338,6 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	ar(1) = p2
 	ar(2) = p3
 	avaragePointsRndArray = ar	
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos; доверительная граница погрешности измерения
-function dov_granica(pogr as double, percent as double)
-	dov_granica = 1.1 * sqr(percent*percent + pogr*pogr)
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos; относительная погрешность измерения
-function RelativeError(meas as double, contr_point as double)
-	&apos;msgbox &quot;relative error = &quot;+ (((meas - contr_point) / contr_point) * 100)
-	RelativeError = ((meas - contr_point) / contr_point) * 100
-end function
-&apos;------------------------------------------------------------------------------------------------------------------------
-&apos;доверительная граница погрешности измерения
-function ConfidenceLimit(pogr as double, percent as double)
-	&apos;msgbox &quot;процент = &quot;+percent+&quot;, погрешность = &quot;+pogr	+&quot; &quot;+(pogr*pogr)
-	ConfidenceLimit = 1.1 * sqr(percent*percent + pogr*pogr)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function randValue(num as double, otklonenie as double) as double

@@ -45,7 +45,7 @@ dim to3 as object
 dim bgList(7)  as double &apos;сгенерированные значения фона
 dim devList(7) as double &apos;показания прибора (с фоном)
 dim resList(7) as double &apos;результаты измерения с учетом вычета фона
-dim sum1, sum2, sum3 as double
+dim avg1, avg2, avg3 as double
 
 dim fromNum1, fromNum2, fromNum3, toNum1, toNum2, toNum3 as double
 
@@ -319,33 +319,24 @@ sub startGenerator()
 	k = 0
 	dim isDone as boolean
 	isDone = false
-	dim result(8) as double
 	
 	do 
-		sum1 = 0
-		sum2 = 0
-		sum3 = 0
-		dim value1, value2, value3 as double
-		
 		for i=0 to 7
-			value1 = randValueFromTo(fromNum1, toNum1)
-			bgList(i) = value1
-			sum1 = sum1 + value1
-		
-			value2 = randValueFromTo(fromNum2, toNum2)
-			devList(i) = value2
-			sum2 = sum2 + value2
-			result(i) = value2
+			bgList(i) = Math.randValueFromToRounded(fromNum1, toNum1, 2)
+			devList(i) = Math.randValueFromToRounded(fromNum2, toNum2, 2)
 		next i
-
+		
+		avg1 = Math.avg(bglist)
+		avg2 = Math.avg(devlist)
+		
 		for i=0 to 7
-			value3 = result(i) - sum1/8
-			resList(i) = value3
-			sum3 = sum3 + value3
+			resList(i) = devList(i) - avg1
 		next i
 	
+		avg3 = Math.avg(reslist)
+	
 		k = k + 1
-		if sum3/8 &gt;= fromNum3 AND sum3/8 &lt;= toNum3 then isDone = true
+		if avg3 &gt;= fromNum3 AND avg3 &lt;= toNum3 then isDone = true
 	loop while NOT isDone
 	
 	oDialog3509.getControl(&quot;count&quot;).text = k
@@ -363,15 +354,13 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
-	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(avg1, &quot;0.00&quot;))
+	findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(avg2, &quot;0.00&quot;))
 	
 	for k = 0 to 7
 		findAndRename((&quot;$&quot; + i + &quot;-bg&quot; + k + strokeEnd), Format(bgList(k), &quot;0.00&quot;))
 		findAndRename((&quot;$&quot; + i + &quot;-m0&quot; + k + strokeEnd), Format(devList(k), &quot;0.00&quot;))
 	next k	
-	&apos;findAndRename((&quot;$&quot; + i + &quot;-av-bg&quot; + strokeEnd), Format(sum1/8, &quot;0.00&quot;))
-	&apos;findAndRename((&quot;$&quot; + i + &quot;-av0&quot; + strokeEnd), Format(sum2/8, &quot;0.00&quot;))
 		
 	&apos;этих точек нет в загруженном БД (они генерируются), а значит нет и источников для них -- поэтому добавляю их не через цикл (в цикле только точки, которые есть в объекте БД класса)	
 	findAndRename((&quot;$&quot; + i + &quot;-n&quot; + 0 + strokeEnd), sourceDistanceArray(0.8, &quot;мк&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
@@ -398,31 +387,30 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 	findAndRename((&quot;$&quot; + i + &quot;-dn&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType, oDateFieldModel)(0)) rem название источника
 	findAndRename((&quot;$&quot; + i + &quot;-dd&quot; + strokeEnd), sourceDistanceArray(80, &quot;м&quot;, bd.bdType, oDateFieldModel)(1)) rem расстояние до источника
 
-		&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
-		relativeErr = Math.RelativeError(sum3/8, 0.8)
-		findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
+	&apos;ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ
+	relativeErr = Math.RelativeError(avg3, 0.8)
+	findAndRename((&quot;$&quot; + i + &quot;-o&quot; + 0 + strokeEnd), Format(relativeErr, &quot;0.00&quot;))
 		
-		&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
-		avgSqrtRes = Math.avgSqrt(resList, sum3/8)
-		findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
+	&apos;ОТНОСИТЕЛЬНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ S
+	avgSqrtRes = Math.avgSqrt(resList, avg3)
+	findAndRename((&quot;$&quot; + i + &quot;-q&quot; + 0 + strokeEnd), Format(avgSqrtRes, &quot;0.00&quot;))
 
-		&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
-		facilityPercent = Facility.getError(0.8, BDType, &quot;мк&quot;)
+	&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
+	facilityPercent = Facility.getError(0.8, BDType, &quot;мк&quot;)
 		
-		&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
-		sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
-		&apos;msgbox &quot;sSigmaRes - &quot; + sSigmaRes
+	&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
+	sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
 		
-		&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
-		dovGranica = Math.ConfLimit(2, sSigmaRes)
-		findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
+	&apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)
+	dovGranica = Math.ConfLimit(2, sSigmaRes)
+	findAndRename((&quot;$&quot; + i + &quot;-do&quot; + 0 + strokeEnd), Format(dovGranica, &quot;0.00&quot;))
 	
 	for j=1 to bd.getPointList.count &apos;ПЕРЕБОР СТРОК ТАБЛИЦЫ. Начинаю с 1 (со второго), так как первую строку заполняю не из цикла -- в ней даные сгенерированны и их 8 шт
 		
 		&apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
 		
 		&apos;insertDose(дозиметр, номер_в_списке, постфикс_для_таблицы, номер_в_списке_значения_в_контрольной_точке, на_что_делим_чтобы_перевести_из_МД_в_дозу, начальная_доза)
-		
+				
 		&apos;Вторая строка дозы 4 мкЗв Нр(0.07) считается от точки 20 мкЗв
 		if is3509B.state then insertDose(bd, i, &quot;_2&quot;, 3, 5, bd.getDoseArray()(1))
 		if is3509C.state then insertDose(bd, i, &quot;_2&quot;, 4, 5, bd.getDoseArray()(1))&apos; 5 -- это 1 / (360/3600) * 2 -- перевод из мэд в дозу за 180 сек /10
@@ -494,15 +482,21 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 end sub
 &apos;-----------------ЗАПОЛНЕНИЕ ТАБЛИЦЫ НАКОПЛЕННОЙ ДОЗЫ--------------------------------------------
 sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number as integer, time as double, doseValue as double)
-
+		
+		&apos;КОД ЗАПОЛНЯЕТ В ТАБЛИЦЕ ДОЗУ ДО, ПОСЛЕ И ИТОГОВУЮ (ПОСЛЕ минус ДО). В НОВОМ ПРОТОКОЛЕ ПОВЕРКИ В ТАБЛИЦЕ ЕСТЬ ТОЛЬКО ИТОГОВАЯ ДОЗА. 
+		&apos;доза до и после оставлена только для сертификатов (но возможно потом и там не будет) и так на всякий, пусть считает, может потом понадобится
+		
 		dim deviceCountZero as double
 		dim deviceCountDone as double
 		dim deviceCountRes  as double
+		dim percent4mk as double
 	
 		deviceCountZero = doseValue &apos;oDialog3509.getControl(&quot;devCountZero&quot;).value
 		findAndRename((&quot;$&quot; + i + &quot;-d_dev&quot; + strokeEnd), Format(deviceCountZero, &quot;0.00&quot;))
 		
 		if oDialog3509.getControl(&quot;isSinglePoint&quot;).state = 1 then
+			&apos;msgbox &quot;time = &quot;+time
+			&apos;msgbox &quot;bd.getMultiValueList.item(point_number).item(1) = &quot;+bd.getMultiValueList.item(point_number).item(1)
 			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1)) / time + deviceCountZero
 		else	
 			deviceCountDone = (bd.getMultiValueList.item(point_number).item(1) + bd.getMultiValueList.item(point_number).item(2) + bd.getMultiValueList.item(point_number).item(3)) / 3 / time + deviceCountZero 
@@ -512,16 +506,22 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 		deviceCountDone = Math.round(deviceCountDone,1)
 		findAndRename((&quot;$&quot; + i + &quot;-dose&quot; + strokeEnd), Format(deviceCountDone, &quot;0.00&quot;))
 		deviceCountRes = deviceCountDone - deviceCountZero
+		&apos;msgbox &quot;deviceCountRes = &quot;+deviceCountRes+&quot; deviceCountDone = &quot;+deviceCountDone+&quot; deviceCountZero = &quot;+deviceCountZero
 		findAndRename((&quot;$&quot; + i + &quot;-d_res&quot; + strokeEnd), Format(deviceCountRes, &quot;0.00&quot;))
-	
+		
 		&apos;относительная погрешность измерения
 		dim otnosit as double
+		
 		otnosit = Math.RelativeError(deviceCountRes, 4)
+				
 		findAndRename((&quot;$&quot; + i + &quot;-o_pog&quot; + strokeEnd), Format(otnosit, &quot;0.00&quot;))
+
+		&apos;процент для точки 4мкЗв. Для 4 мЗв не считаю, потом сделаю как-нибудь, использую один и тот же процент для обоих точек (сейчас и для 110 и для 130 оди вобщем то одинаковый)
+		percent4mk = Facility.getError(4, &quot;gammaHp10&quot;, &quot;мк&quot;)
 	
 		&apos;доверительная граница
 		dim dov_gr as double
-		dov_gr = Math.ConfidenceLimit(otnosit, 4)
+		dov_gr = Math.ConfidenceLimit(otnosit, percent4mk)
 		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
 end sub
 </script:module>

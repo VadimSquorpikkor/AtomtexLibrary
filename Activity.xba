@@ -384,7 +384,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 0.5 	then ar = dynDistanceAr(&quot;39T&quot;, 81.679,  koefCs)
 				if point = 0.7 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072,  koefCs)
 				&apos;----------------- УДГ-130 -----------------------------------
-				if point = 4 	then ar = dynDistanceAr(&quot;08T&quot;, 78.604,  koefCs)&apos;&quot;043&quot; 453.144
+				if point = 4 	then ar = dynDistanceAr(&quot;043&quot;, 453.144, koefCs)&apos;&quot;043&quot; 453.144 &apos;&quot;08T&quot;, 78.604
 				if point = 7 	then ar = dynDistanceAr(&quot;043&quot;, 342.625, koefCs)
 				if point = 20 	then ar = dynDistanceAr(&quot;043&quot;, 204.139, koefCs)
 				if point = 70 	then ar = dynDistanceAr(&quot;043&quot;, 109.907, koefCs)

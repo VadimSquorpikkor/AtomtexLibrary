@@ -115,6 +115,8 @@ function getError(point as double, BDType as string, prefix as string)
 	select case BDType
 	&apos;амбиентный эквивалент ————————————————————————————————
 	case &quot;gamma&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_MAED_110&quot;) else getError = getPercent(&quot;PERCENT_MAED_130&quot;)
+	&apos;индивидуальная доза ——————————————————————————————————
+	case &quot;gammaHp10&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_MAED_110&quot;) else getError = getPercent(&quot;PERCENT_MAED_130&quot;)
 	&apos;направленный эквивалент ——————————————————————————————
 	case &quot;gamma007&quot;: if AbsoluteValue(point, prefix)&lt;1 then getError = getPercent(&quot;PERCENT_EQV_110&quot;) else getError = getPercent(&quot;PERCENT_EQV_130&quot;)
 	&apos;Керма ————————————————————————————————————————————————
