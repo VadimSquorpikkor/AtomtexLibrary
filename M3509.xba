@@ -68,7 +68,7 @@ Sub G3509_Dialog_Show
 	
 	oDialog3509.Model.getByName(&quot;Image&quot;).ImageURL = sertPath &amp; &quot;3509\3509.png&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.14 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialog3509, oDateFieldModel, &quot;Версия 1.15 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -344,13 +344,12 @@ end sub
 rem---------------------------------------------------------------------------------------------------------
 sub templateMultiStep(i as integer, strokeEnd as string)
 	dim src_name as string
-	dim relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
+	dim facilityPercent, relativeErr, avgSqrtRes, sSigmaRes, dovGranica as double
 	dim bd as new DUnit
 	dim BDtype as string 
 	bd = BDList.item(i)
 	BDtype = bd.getType
 	dim j as integer
-	dim facilityPercent as integer
 
 	&apos;-----------------ГЕНЕРАЦИЯ ФОНА И ТОЧКИ 0.8 ЗВ/Ч И ЗАПОЛНЕНИЕ ТАБЛИЦЫ--------------------------------- 
 	startGenerator
@@ -397,6 +396,10 @@ sub templateMultiStep(i as integer, strokeEnd as string)
 
 	&apos;ПО ЗНАЧЕНИЮ ТОЧКИ И ТИПУ ИЗЛУЧЕНИЯ СМОТРИМ, НА КАКОЙ УСТАНОВКЕ КАЛИБРУЕТСЯ ТОЧКА (НА 110, 130, 140 И Т.Д.), А ЗНАЧИТ, КАКОЙ ПРОЦЕНТ ПОГРЕШНОСТИ УСТАНОВКИ		
 	facilityPercent = Facility.getError(0.8, BDType, &quot;мк&quot;)
+		
+	&apos;msgbox 	&quot;relativeErr = &quot;+relativeErr
+	&apos;msgbox &quot;avgSqrtRes = &quot;+avgSqrtRes
+	&apos;msgbox &quot;facilityPercent = &quot;+facilityPercent
 		
 	&apos;СУММАРНОЕ СРЕДНЕ КВАДРАТИЧЕСКОЕ ОТКЛОНЕНИЕ SΣ
 	sSigmaRes = Math.sSigma(avgSqrtRes, facilityPercent, relativeErr)
