@@ -7,6 +7,20 @@ Option ClassModule
 Option Explicit
 
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Возвращает число, к которому добавлено или отнято отклонение, где отклонение — это рандом от 0 до параметра otklonenie
+&apos;Обратить внимание: параметр отклонение — это абсолютная величина. Например: Math.randValue(100, 2) вернёт рандомное число от 98 до 102
+function randValue(num as double, otklonenie as double) as double
+	randValue = (num - otklonenie) + rnd()*otklonenie*2
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Возвращает число, к которому добавлено или отнято отклонение, где отклонение — это рандом от 0% до percent% от числа
+&apos;Например Math.randValue(10, 10) вернёт рандомное число от 9 до 11
+function randValuePercent(num as double, percent as double) as double
+	dim otklonenie as double
+	otklonenie = num*percent/100
+	randValuePercent = randValue(num, otklonenie)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos; ОТНОСИТЕЛЬНАЯ ПОГРЕШНОСТЬ ИЗМЕРЕНИЯ θ или δ
 &apos;	╔════════════════════════════╗
 &apos;	║		  H - H0             ║█
@@ -135,9 +149,7 @@ function VariationsCoefficient(o_Array as variant, o_avg as double)
 	sum = 0
 	for j=0 to uBound(o_Array)
 		sum = sum + (o_Array(j)-o_avg)*(o_Array(j)-o_avg)
-		&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot; &quot; + sum
 	next j
-	&apos;msgbox &quot;size = &quot; + (uBound(o_Array)+1) + &quot;, sum = &quot; + sum + &quot;, Arr(0) = &quot; + o_Array(0) + &quot;, Arr(1) = &quot; + o_Array(1) + &quot;, Arr(2) = &quot; + o_Array(2) + &quot;, Arr(3) = &quot; + o_Array(3) + &quot; AVG = &quot; + o_avg
 	VariationsCoefficient = 100/o_avg*(sqr(1/(uBound(o_Array))*sum))
 end function
 rem---------------------------------------------------------------------------------------------------------
@@ -323,25 +335,40 @@ function avaragePointsRndTenArray(point as double, o_percent as double)
 	avaragePointsRndTenArray = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод получает значение point и формирует массив из 3 значений, где каждое значение — это point с рандомно смещенным значением +- некоторый процент. 
+&apos;напрмер если подать 0.70 , то получится массив: [0.709766...., 0.6992661....., 0.6909673146.....]
 function avaragePointsRndArray(point as double, o_percent as double)
 	rem TODO сделать по Гауссу!!!
-	dim deviation as double
-	dim p1 as double
-	dim p2 as double
-	dim p3 as double
 	dim ar(2) as double 
-	deviation = o_percent/100*point
-	p1 = Math.randValue(point, deviation)
-	p2 = Math.randValue(point, deviation)
-	p3 = point*3 - p1 - p2
-	ar(0) = p1
-	ar(1) = p2
-	ar(2) = p3
-	avaragePointsRndArray = ar	
+	ar(0) = Math.randValuePercent(point, o_percent)
+	ar(1) = Math.randValuePercent(point, o_percent)
+	ar(2) = point*3 - ar(0) - ar(1)
+	avaragePointsRndArray = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
-function randValue(num as double, otklonenie as double) as double
-	randValue = (num - otklonenie) + rnd()*otklonenie*2
+&apos;Метод получает значение point и формирует массив из 3 значений, где каждое значение — это point с рандомно смещенным значением +- некоторый процент. 
+&apos;напрмер если подать 6.96 , то получится массив: [6.85, 6.76, 7.27]
+&apos;В отличии от avaragePointsRndArray полученные значения округлены по formatString. Обычно вызывается как:
+&apos;	threePointArray = Math.avaragePointsRndArrayFormatted(m_point, percentOtk, getRightFormat(m_point))
+function avaragePointsRndArrayFormatted(point as double, o_percent as double, formatString as string)
+	rem TODO сделать по Гауссу!!!
+	dim ar(2) as double 
+	ar(0) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(1) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(2) = point*3 - ar(0) - ar(1)
+	avaragePointsRndArrayFormatted = ar	
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Метод получает значение point и формирует массив из 3 значений, где каждое значение — это point с рандомно смещенным значением +- некоторый процент.
+&apos;В отличии от avaragePointsRndArrayFormatted этот метод рандомит все 3 значения, а также возвращает в [3] среднее арифметическое
+function avaragePointsRndArrayDispersed(point as double, o_percent as double, formatString as string)
+	rem TODO сделать по Гауссу!!!
+	dim ar(3) as double 
+	ar(0) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(1) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(2) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(3) = (ar(0)+ar(1)+ar(2))/3
+	avaragePointsRndArrayDispersed = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos; проверяет, входит ли измеренное значение (meas) в точке (point) в заданную (percent) погрешность измерения

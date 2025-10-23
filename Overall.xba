@@ -351,10 +351,31 @@ sub templateStep(i as integer, strokeEnd as string)
 		for j=0 to bd.getPointList.count-1
 			src_name = bd.getPointTextList.item(j+1)
 			m_point = bd.valueList.item(j+1)
+			
+
 
 			cont_point = bd.pointList.item(j+1)
 			prefix =  bd.pointTextList.item(j+1)
-			threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
+			
+			&apos;-------------------------------------------------------------------------------
+			&apos;Вариант №1: 2 точки рандомятся, 3-я — это среднее минус 1-я минус 2-я точка
+			&apos;threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
+			
+			&apos;Вариант №2: 2 точки рандомятся, 3-я — это среднее минус 1-я минус 2-я точка. Но каждая полученная точка уже форматирована (округлена).
+			&apos;Для этого варианта также сначала m_point (среднее) немного изменяется (рандомится +- процент). Т.е. если подать массив точек с одними &quot;семерками&quot;, 
+			&apos;на выходе получится немного смещенные значения. Недостаток: никогда не получаться резултаты типа [0.70 0.70 0.69] т.е. когда среднее получается не равное округленному среднему
+			&apos;m_point = Math.randValuePercent(m_point, 1)
+			&apos;m_point = rightFormatValue(m_point)
+			&apos;threePointArray = Math.avaragePointsRndArrayFormatted(m_point, percentOtk, getRightFormat(m_point))
+			
+			&apos;Вариант №3: рандомяться все 3 точки. Соответственно теперь среднее пересчитывается заново.
+			&apos;Важно помнить: в отличии от №1 и №2 в таблице может получиться такой вариант, когда среднее = 0.70 (как контрольная), но при этом погрешность будет не нулевая. 
+			&apos;ЭТО НОРМАЛЬНО и с реальными измерениями так и получилось бы, вот в чём дело: если точки такие: [0.70 0.70 0.69], то среднее будет равно 0.69(6), и при выводе в таблицу будет округлено до 0.7. 
+			&apos;Но погрешность будет считаться от 0.69666..., поэтому и не будет нулевой. И ТАК И ДОЛЖНО БЫТЬ, и если японец всё руками пересчитает, у него так и получится НЕНУЛЕВАЯ погрешность
+			threePointArray = Math.avaragePointsRndArrayDispersed(m_point, percentOtk, getRightFormat(m_point))
+			m_point = threePointArray(3)
+			&apos;-------------------------------------------------------------------------------
+			
 			
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(1)) rem расстояние до источника
@@ -399,7 +420,7 @@ sub templateStep(i as integer, strokeEnd as string)
 				end if
 			end if
 				
-			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point))) rem среднее по трем измерениям
+			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j + strokeEnd), Format(m_point, getRightFormat(m_point)+&quot;0&quot;)) &apos; среднее по трем измерениям +&quot;0&quot; — это я просто добавил 1 разряд
 		
 			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j + strokeEnd), Format(cont_point, getRightFormat(cont_point))) rem активность источника
 			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j + strokeEnd), src_name) rem название источника
@@ -970,6 +991,15 @@ function formatList(list as Collection)
 		list_result.add(CDbl(preformatted))
 	next i
 	formatList = list_result
+end function 
+&apos;------------------------------------------------------------------------------------------------------------------------
+function rightFormatValue(d as double)
+	dim MyFormat as string
+	dim preformatted as string
+	dim value as double
+	MyFormat = getRightFormat(d)
+	preformatted = Format(d, MyFormat)
+	rightFormatValue = (CDbl(preformatted))
 end function 
 &apos;------------------------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList2503(value_list as Collection)
