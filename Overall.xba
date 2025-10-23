@@ -348,6 +348,13 @@ sub templateStep(i as integer, strokeEnd as string)
 		BDtype = bd.BDType
 		dim j, k as integer
 				
+		findAndRename(&quot;$bg1$&quot;, Format(0.10, &quot;0.00&quot;))
+		findAndRename(&quot;$bg2$&quot;, Format(0.10, &quot;0.00&quot;))
+		findAndRename(&quot;$bg3$&quot;, Format(0.10, &quot;0.00&quot;))
+		findAndRename(&quot;$bg4$&quot;, Format(0.10, &quot;0.00&quot;))
+		findAndRename(&quot;$bg5$&quot;, Format(0.10, &quot;0.00&quot;))
+		findAndRename(&quot;$bgavg$&quot;, Format(0.10, &quot;0.000&quot;))
+				
 		for j=0 to bd.getPointList.count-1
 			src_name = bd.getPointTextList.item(j+1)
 			m_point = bd.valueList.item(j+1)
