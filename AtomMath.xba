@@ -76,23 +76,16 @@ rem-----------------------------------------------------------------------------
 &apos;  Hср - среднее измеренных значений
 &apos;  n - кол-во элементов массива
 function avgSqrt(Array as variant, avg as double)
-	dim i as integer
-	dim nValue as integer
-	dim arr(0) as double
-	dim average as double
-	nValue = uBound(Array) + 1 
-	average = avg
+	dim i, n as integer
+	n = uBound(Array) + 1 
 	dim sum as double
 	sum = 0
 		
-	for i=0 to nValue - 1
-		sum = sum + (Array(i) - average)*(Array(i) - average)
+	for i=0 to n - 1
+		sum = sum + (Array(i) - avg)*(Array(i) - avg)
 	next i
-	
-	dim n as integer
-	n = nValue * (nValue - 1)
-	
-	avgSqrt = 1/average*sqr(sum/n)*100
+	n = n * (n - 1)
+	avgSqrt = 1/avg*sqr(sum/n)*100
 end function
 rem---------------------------------------------------------------------------------------------------------
 &apos;ДОВЕРИТЕЛЬНАЯ ГРАНИЦА ОСНОВНОЙ ОТНОСИТЕЛЬНОЙ ПОГРЕШНОСТИ ДОЗИМЕТРА δ (δ = K * SΣ)

@@ -52,9 +52,6 @@ Sub MainDialog_Show
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
-
-
-
 	userName = &quot;Неизвестный&quot;
 	sertPath = &quot;&quot;
 	i=0
@@ -87,6 +84,7 @@ End sub
 sub startMacro(sertPath as String)
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	
+	&apos;msgbox &quot;&quot;+GetUserProfilePath
 	
 	On Error Goto ErrorHandler
 	Sensor.setValues
@@ -95,7 +93,7 @@ sub startMacro(sertPath as String)
 	bgValue = Sensor.getBackground
 	tempValue = Sensor.getTemperature
 	vlaghValue = Sensor.getHumidity
-			
+				
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
 	&apos;oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия &quot; &amp; Format(currentVersion, &quot;0.00&quot;)
 	oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия &quot; &amp; currentVersionToString(currentVersion)

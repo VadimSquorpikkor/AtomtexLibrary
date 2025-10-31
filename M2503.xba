@@ -106,7 +106,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.21 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.22 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -372,7 +372,16 @@ sub insertRecordsToTemplate
 	OpenTemplate(sertPath &amp; path)
 	Overall.insertFacilitiesText
 	Overall.insertParametersToTemplate
-	Overall.CreatePairedTablesFromTemplate(BDList.count)
+	
+	if Overall._stringTypeForCertificate = &quot;поверка&quot; then
+		&apos;ТАК ДЛЯ НОВЫХ протоколов поверки
+		Overall.CreateTablesFromTemplate(BDList.count)
+		Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;s1&quot;, &quot;bd_num_d&quot;, &quot;bd_num&quot;, &quot;##&quot;)
+		findAndRename(&quot;##&quot;, &quot;$&quot;)
+	else
+		&apos;ТАК БЫЛО ДЛЯ СТАРЫХ ПРОТОКОЛОВ ПОВЕРКИ и для сертификатов, там две таблицы шли попарно, сейчас — по группам (сразу все МД, потом все дозы)
+		Overall.CreatePairedTablesFromTemplate(BDList.count)
+	endif	
 	
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; divider &amp; BDList.item(i).getSerial
