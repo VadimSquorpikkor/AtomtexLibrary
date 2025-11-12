@@ -115,6 +115,9 @@ Sub AT6130_Dialog_Show
 	
 	oDialog6130.getControl(&quot;AttentionLabel&quot;).visible = false
 			
+		
+	&apos;msgbox Overall.setRightPoint(&quot;3,3&quot;)		
+			
 	oDialogMain.endexecute()   
 	oDialog6130.Execute()
 End Sub

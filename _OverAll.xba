@@ -63,6 +63,14 @@ Sub SortStringArray(arr As Variant)
         Next j
     Next i
 End Sub
+
+function contains(myString as string, searchChar as string)
+	If InStr(myString, searchChar) &gt; 0 Then
+    	contains = true
+    else
+    	contains = false	
+	End If
+end function	
 rem -------------------------------------------------------------------------------------------
 Sub OpenTemplate(documentURL)
 	On Error Goto ErrorHandler

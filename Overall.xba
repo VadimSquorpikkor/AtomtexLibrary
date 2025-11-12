@@ -654,7 +654,7 @@ sub saveCurentBDBetaValues(num as integer)
 	dim newValues as new Collection
 	dim i as integer
 	for i=1 to _BDList.item(num).getBetaValues.count
-		newValues.add(_oDialog.getControl(&quot;betaField&quot; + i).Value)
+		newValues.add(setRightPoint(_oDialog.getControl(&quot;betaField&quot; + i).Value))
 	next i
 	_BDList.item(num).setBetaValues(newValues)
 end sub
@@ -1138,6 +1138,15 @@ function get_2nd_ListSizeAs_1st_ListSize(list_1 as Collection, list_2 as Collect
 	get_2nd_ListSizeAs_1st_ListSize = er_list
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function setRightPoint(s as string)
+	if CDbl(&quot;3,3&quot;) = 3.3 then
+    	s = Replace (s,&quot;.&quot;,&quot;,&quot;)
+    else
+    	s = Replace (s,&quot;,&quot;,&quot;.&quot;)
+    end if
+    setRightPoint = s
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Метод возвращает коллекцию значений из буфера обмена
 &apos;удаляет символы перевода на другую строку, если есть запятые, заменяет их точками
 function getCollectionFromClipBoard()
@@ -1401,5 +1410,28 @@ Sub CopyTableRowAndPasteAfter(sName As String, oldName as String, newName as Str
 	oVCursor.godown(1,false)
 	oDispatcher.executeDispatch(oFrame, &quot;.uno:Paste&quot;, &quot;&quot;, 0, Array())
 End Sub
-    
+
+
+&apos;не нужно и не работает    
+Sub NormalizeDecimalSeparator(oEvent As Object)
+    Dim oField As Object
+    Dim sInput As String
+    Dim sDecimal As String
+    Dim sNormalized As String
+
+    oField = oEvent.Source
+    sInput = oField.Text
+    If sInput = &quot;&quot; Then Exit Sub
+
+	if CDbl(&quot;3,3&quot;) = 3.3 then
+		if NOT contains(sInput, &quot;.&quot;) then Exit Sub
+    	sInput = Replace (sInput,&quot;.&quot;,&quot;,&quot;)
+    else
+    	msgbox sInput
+    	if NOT contains(sInput, &quot;,&quot;) then Exit Sub
+    	sInput = Replace (sInput,&quot;,&quot;,&quot;.&quot;)
+    end if
+    msgbox sInput
+	oField.Text = sInput
+End Sub    
 </script:module>
