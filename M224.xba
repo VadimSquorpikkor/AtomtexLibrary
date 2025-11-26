@@ -28,7 +28,7 @@ Sub G224_Dialog_Show
 	oDialogG224 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D224 )
 	oListBox = oDialogG224.getControl(&quot;bdListBox&quot;)
 
-	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.19 &quot;, oListBox, 8)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG224, oDateFieldModel, &quot;Версия 1.20 &quot;, oListBox, 8)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	
 	oOptionBDKG224 = oDialogG224.getControl(&quot;isBDKG224&quot;)
