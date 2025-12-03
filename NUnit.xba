@@ -32,8 +32,6 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	&apos;Расчет чувствительности
 	s = (Ncp - Nf)/ F0 * Br * K
 	
-	msgbox s
-	
 	&apos;Процент отклонения здесь свой, так как он сильно отличается от процента в других приборах (7%) -- от 3% до 25% 
 	threePointArray_1 = Math.avaragePointsRndArray(p1, 25)
 	threePointArray_2 = Math.avaragePointsRndArray(p2, 10)

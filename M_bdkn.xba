@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.14 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -171,6 +171,7 @@ sub insertRecordsToTemplate
 	Overall.insertParametersToTemplate
 	Overall.CreateTablesFromTemplate(BDList.count)
 	Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;tf1&quot;, &quot;bd_num_n&quot;, &quot;bd_num&quot;, &quot;$f&quot;)
+	
 	
 	dim allSerial as string
 	allSerial = &quot;&quot;
