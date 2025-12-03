@@ -15,6 +15,7 @@ dim oOptionButtonSr as object
 dim oOptionButtonSe as object
 
 dim oOptionBDKG02 as object
+dim oOptionBDKG04 as object
 dim oOptionBDKG204 as object
 dim oOptionBDMG as object
 dim oOptionBDKG11 as object
@@ -60,7 +61,7 @@ Sub G02N_Dialog_Show
 	oListBox = oDialogG02N.getControl(&quot;ListBoxBD&quot;)
 	oComboBox = oDialogG02N.getControl(&quot;ActivityCombo&quot;)
 	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.37 &quot;, oListBox, 11)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG02N, oDateFieldModel, &quot;Версия 3.38 &quot;, oListBox, 11)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	Overall.initializeActivityCombo(oComboBox)
@@ -80,11 +81,13 @@ Sub G02N_Dialog_Show
 	oDialogG02N.getControl(&quot;ActivityAll&quot;).setEnable(false)
 	
 	oOptionBDKG02  = oDialogG02N.getControl(&quot;isBDKG-02&quot;)
+	oOptionBDKG04  = oDialogG02N.getControl(&quot;isBDKG-04&quot;)
 	oOptionBDKG204 = oDialogG02N.getControl(&quot;isBDKG-204&quot;)
 	oOptionBDMG    = oDialogG02N.getControl(&quot;isBDMG&quot;)
 	oOptionBDKG11  = oDialogG02N.getControl(&quot;isBDKG-11&quot;)
 	oOptionBDKG02.State  = 1
 	isComboCollection.add(oOptionBDKG02)
+	isComboCollection.add(oOptionBDKG04)
 	isComboCollection.add(oOptionBDKG204)
 	isComboCollection.add(oOptionBDMG)
 	isComboCollection.add(oOptionBDKG11)
@@ -171,7 +174,7 @@ sub addNewBD
 	
 	if layoutPosition = 0 then
 			
-		if oOptionBDKG204.state then
+		if oOptionBDKG204.state OR oOptionBDKG04.state then
 			oDialogG02N.getControl(&quot;dragonLogo&quot;).visible = true
 			enableBDMG(false)
 			enableLastTreeFields(true, false, false, true)
@@ -211,6 +214,7 @@ sub addNewBD
 	if oOptionBDKG02.state  then bd.addData2(&quot;БДКГ-02&quot;,	 &quot;BDKG-02&quot;,	 &quot;Зв/ч&quot;, Array(0.7,7,70,0.7,7,70,0.7,7),	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),		&quot;gamma&quot;, Array(0.1,10000), 15) rem TODO уточнить границы
 	&apos;if oOptionBDKG02.state  then bd = DU.getDU(&quot;БДКГ-02&quot;)
 	if oOptionBDKG204.state then bd.addData2(&quot;БДКГ-204&quot;, &quot;BDKG-204&quot;, &quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),	&quot;gamma&quot;, Array(0.1,10000), 20) rem TODO уточнить границы
+	if oOptionBDKG04.state  then bd.addData2(&quot;БДКГ-04&quot;,  &quot;BDKG-04&quot;,  &quot;Зв/ч&quot;, Array(0.07,0.7,7,70,0.7,7,70,0.7,7), Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;),	&quot;gamma&quot;, Array(0.1,10000), 20) rem TODO уточнить границы
 	if oOptionBDMG.state 	then bd.addData2(&quot;БДМГ-2343&quot;,&quot;BDMG-2343&quot;,&quot;Гр/ч&quot;, Array(75,0.75,7.5,75,0.5,0.75,7.5,75,200,0.75,7.5), Array(&quot;н&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), &quot;gamma-Gy&quot;, Array(0.1,10000), 15) rem TODO уточнить границы
 	if oOptionBDKG11.state  then bd.addData2(&quot;БДКГ-11&quot;,  &quot;BDKG-11&quot;,	 &quot;Зв/ч&quot;, Array(0.07,0.7,7,70),			  	  Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;),					&quot;gamma&quot;, Array(0.03, 0.1), 20) 
 	oDialogG02N.getControl(&quot;typeLabel&quot;).text = bd.getName
@@ -299,6 +303,7 @@ sub insertRecordsToTemplate
 	
 	if oOptionBDKG02.state   then path = Overall.getPathAndSetName(&quot;bdkg02\bdkg02&quot;, &quot;БДКГ-02&quot;)
 	if oOptionBDKG204.state  then path = Overall.getPathAndSetName(&quot;bdkg204\bdkg204&quot;, &quot;БДКГ-204&quot;)
+	if oOptionBDKG04.state   then path = Overall.getPathAndSetName(&quot;bdkg04\bdkg04&quot;, &quot;БДКГ-04&quot;)
 	if oOptionBDMG.state     then path = Overall.getPathAndSetName(&quot;bdmg2343\bdmg2343&quot;, &quot;БДМГ-2343&quot;)
 	if oOptionBDKG11.state   then path = Overall.getPathAndSetName(&quot;bdkg11\bdkg11&quot;, &quot;БДКГ-11&quot;)
 	
