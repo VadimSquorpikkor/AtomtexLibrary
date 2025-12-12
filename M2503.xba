@@ -106,7 +106,7 @@ Sub G2503_Dialog_Show
 	oDialog2503.Model.getByName(&quot;flag_by&quot;).ImageURL = sertPath &amp; &quot;2503\flag_by.jpg&quot;
 	oDialog2503.Model.getByName(&quot;flag_ru&quot;).ImageURL = sertPath &amp; &quot;2503\flag_ru.jpg&quot;
 
-	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.23 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialog2503, oDateFieldModel, &quot;Версия 1.24 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	dim i as integer
@@ -680,10 +680,11 @@ sub insertDose(bd as new DUnit, i as integer, strokeEnd as string, point_number 
 		if oDialog2503.Model.getByName(&quot;isSertificateEng&quot;).state then findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(koefVar, &quot;0.00&quot;))
 		
 		&apos;-------------------------------------------------
+		percent4mk = Facility.getError(4, &quot;gammaHp10&quot;, &quot;мк&quot;)
 	
 		&apos;доверительная граница
 		dim dov_gr as double
-		dov_gr = Math.ConfidenceLimit(otnosit, 4)
+		dov_gr = Math.ConfidenceLimit(otnosit, percent4mk)
 		findAndRename((&quot;$&quot; + i + &quot;-d_gran&quot; + strokeEnd), Format(dov_gr, &quot;0.00&quot;))
 end sub
 
