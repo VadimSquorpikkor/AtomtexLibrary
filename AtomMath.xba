@@ -339,6 +339,15 @@ function avaragePointsRndArray(point as double, o_percent as double)
 	avaragePointsRndArray = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function avaragePointsRndArray_4(point as double, o_percent as double)
+	dim ar(3) as double 
+	ar(0) = Math.randValuePercent(point, o_percent)
+	ar(1) = Math.randValuePercent(point, o_percent)
+	ar(2) = Math.randValuePercent(point, o_percent)
+	ar(3) = point*4 - ar(0) - ar(1) - ar(2)
+	avaragePointsRndArray_4 = ar
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Метод получает значение point и формирует массив из 3 значений, где каждое значение — это point с рандомно смещенным значением +- некоторый процент. 
 &apos;напрмер если подать 6.96 , то получится массив: [6.85, 6.76, 7.27]
 &apos;В отличии от avaragePointsRndArray полученные значения округлены по formatString. Обычно вызывается как:
@@ -364,6 +373,19 @@ function avaragePointsRndArrayDispersed(point as double, o_percent as double, fo
 	avaragePointsRndArrayDispersed = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;то же что и avaragePointsRndArrayDispersed только для 4-х точек. Вообще потом надо сделать общий метод, где будет параметром кол-во точек (там легко, просто сейчас нет времени)
+function avaragePointsRndArrayDispersed_4(point as double, o_percent as double, formatString as string)
+	rem TODO сделать по Гауссу!!!
+	dim ar(4) as double 
+	ar(0) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(1) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(2) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(3) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(4) = (ar(0)+ar(1)+ar(2)+ar(3))/4
+	avaragePointsRndArrayDispersed_4 = ar
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
+
 &apos; проверяет, входит ли измеренное значение (meas) в точке (point) в заданную (percent) погрешность измерения
 function isInLimits(point as double, meas as double, percent as double) as boolean
 	dim rel as double

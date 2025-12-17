@@ -88,6 +88,7 @@ sub integerTo3String(value as integer) as string
 	integerTo3String = inc
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;НЕ ИСПОЛЬЗУЕТСЯ
 sub initializeActivityCombo(oActivityCombo as object)
 	REM first remove all old items from the list
 	dim nCount as integer
@@ -95,9 +96,9 @@ sub initializeActivityCombo(oActivityCombo as object)
 	nCount = oActivityCombo.getItemCount()
 	oActivityCombo.removeItems( 0, nCount )
 	REM add new items to the list
-	sItems = Array( &quot;№595&quot;, &quot;№516&quot;, &quot;№517&quot;, &quot;№518&quot;, &quot;№519&quot;, &quot;№520&quot;, &quot;№521&quot;, &quot;№2910&quot;)
+	sItems = Array( &quot;№831&quot;, &quot;№516&quot;, &quot;№517&quot;, &quot;№518&quot;, &quot;№519&quot;, &quot;№520&quot;, &quot;№521&quot;, &quot;№2910&quot;)
 	oActivityCombo.addItems( sItems, 0 )
-	oActivityCombo.text = &quot;№595&quot;
+	oActivityCombo.text = &quot;№831&quot;
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
@@ -456,6 +457,60 @@ sub templateStep(i as integer, strokeEnd as string)
 		divider = &quot;; &quot;
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;только для таблицы активности для 1125. Там 4 измерения, да ещё контрольная точка по хитрому: Наташа вводит активность (столбец A*k), из него находится удельная активность (/1.75), 
+&apos;далее из этой УА рандомятся 4 точки 
+&apos;(без дисперсии, как в других! нужно чтобы данные совпадали с полученными Наташей, там нет значений как в гамме: 0.70, 70.0 и т.д., поэтому нужно среднее получать точно такое же как и введенное среднее)
+&apos;по сути алгоритм считает из конца в начало (в реальности считается наоборот: сначало получаются 4 измерения (удельной активности), находится среднее, затем умножается на 1.75 и получается активность)
+sub templateStep1125Activity(i as integer)
+		dim src_name as string
+		dim bd as new DUnit
+		dim BDtype as string 
+		bd = _BDList.item(i)
+		BDtype = bd.BDType
+		dim j, k as integer
+		
+		dim m_point_4_s as double
+		
+		for j=0 to bd.getPointList.count-1
+			src_name = bd.getPointTextList.item(j+1)
+			m_point = bd.valueList.item(j+1)
+			m_point_4_s = m_point/1.75
+
+			cont_point = bd.pointList.item(j+1)
+			prefix =  bd.pointTextList.item(j+1)
+			
+			dim fourPointArray(3) as double
+			fourPointArray = Math.avaragePointsRndArray_4(m_point_4_s, 3)
+			findAndRename((&quot;$&quot; + i + &quot;-B&quot; + j), Format(fourPointArray(0),  getRightFormat(fourPointArray(0))))
+			findAndRename((&quot;$&quot; + i + &quot;-C&quot; + j), Format(fourPointArray(1),  getRightFormat(fourPointArray(1))))
+			findAndRename((&quot;$&quot; + i + &quot;-D&quot; + j), Format(fourPointArray(2),  getRightFormat(fourPointArray(2))))
+			findAndRename((&quot;$&quot; + i + &quot;-E&quot; + j), Format(fourPointArray(3),  getRightFormat(fourPointArray(3))))
+			
+			&apos;-------------------------------------------------------------------------------------------------
+			&apos;эта часть исключительно для сертификатов где старый расчет активности по 3-м точкам и без удельной активности (только полной, без k=1.75)
+			dim threePointArray(2) as double
+			threePointArray = Math.avaragePointsRndArray(m_point, 3)
+			findAndRename((&quot;$&quot; + i + &quot;-6&quot; + j), Format(threePointArray(0),  getRightFormat(threePointArray(0))))
+			findAndRename((&quot;$&quot; + i + &quot;-7&quot; + j), Format(threePointArray(1),  getRightFormat(threePointArray(1))))
+			findAndRename((&quot;$&quot; + i + &quot;-8&quot; + j), Format(threePointArray(2),  getRightFormat(threePointArray(2))))
+			&apos;-------------------------------------------------------------------------------------------------
+			
+			findAndRename((&quot;$&quot; + i + &quot;-F&quot; + j), Format(m_point_4_s, getRightFormat(m_point_4_s)+&quot;0&quot;)) &apos; среднее по 4-м  измерениям +&quot;0&quot; — это я просто добавил 1 разряд	
+			findAndRename((&quot;$&quot; + i + &quot;-0&quot; + j), Format(m_point,   getRightFormat(m_point)  +&quot;0&quot;)) &apos; среднее по трем измерениям +&quot;0&quot; — это я просто добавил 1 разряд
+			findAndRename((&quot;$&quot; + i + &quot;-9&quot; + j), Format(cont_point, getRightFormat(cont_point))) rem активность источника
+			findAndRename((&quot;$&quot; + i + &quot;-A&quot; + j), src_name) rem название источника
+			dim percent as double
+			percent = Facility.getError(m_point, BDType, prefix)
+
+			dim pogr_point as double
+			pogr_point   = Math.RelativeError(m_point, cont_point)
+			MyFormat = &quot;0.00&quot;
+
+			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
+			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
+		next j
+end sub
+&apos;------------------------------------------------------------------------------------------------------------------------
 sub insertToTemplateStep(i)
 	templateStep(i, &quot;&quot;)
 end sub
@@ -734,6 +789,9 @@ sub insertFacilitiesText
 	
 	findAndRename(&quot;$bdkg27_resistor$&quot;, f.getFacilityText(&quot;bdkg27_resistor&quot;))
 	findAndRename(&quot;$bdkg27_voltmeter$&quot;, f.getFacilityText(&quot;bdkg27_voltmeter&quot;))
+	
+	findAndRename(&quot;$facility_pp_1125bz&quot;, f.getFacilityText(&quot;facility_pp_1125bz&quot;))
+	findAndRename(&quot;$facility_pp_1125mar&quot;, f.getFacilityText(&quot;facility_pp_1125mar&quot;))
 
 	findAndReplaceAllSuperscript()
 	findAndReplaceAllSubscript()

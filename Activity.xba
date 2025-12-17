@@ -99,6 +99,7 @@ dim GAMMA_483 as new RASrc
 dim GAMMA_93 as new RASrc
 dim GAMMA_3668 as new RASrc
 dim GAMMA_832 as new RASrc
+dim GAMMA_831 as new RASrc
 
 sub initSources()
 	CS_137 = newElement(&quot;Cs-137&quot;, CS_137_HALF_LIFE)
@@ -136,6 +137,7 @@ sub initSources()
 	GAMMA_93.initGamma  (&quot;93&quot;,    &quot;2021.10.13&quot;, CS_137, 880)
 	GAMMA_3668.initGamma(&quot;3669&quot;,  &quot;2021.10.13&quot;, CS_137, 7932)
 	GAMMA_832.initGamma (&quot;832&quot;,   &quot;2021.10.13&quot;, CS_137, 9494)
+	GAMMA_831.initGamma (&quot;831&quot;,   &quot;2021.10.13&quot;, CS_137, 96500)&apos;данные не верные, от балды. используется только в 1125
 	
 	betaSrcMap.add(BETA_0660, &quot;0660&quot;)
 	betaSrcMap.add(BETA_0661, &quot;0661&quot;)
@@ -326,6 +328,8 @@ function get_activity_Cs(src as string, nowDate)
 		case &quot;3668&quot;:  get_activity_Cs = GAMMA_3668.getActivity(nowDate)
 		case &quot;516&quot;:   get_activity_Cs = GAMMA_516.getActivity(nowDate)
 		case &quot;832&quot;:   get_activity_Cs = GAMMA_832.getActivity(nowDate)
+		case &quot;831&quot;:   get_activity_Cs = GAMMA_831.getActivity(nowDate)
+		case &quot;№831&quot;:   get_activity_Cs = GAMMA_831.getActivity(nowDate)
 		case &quot;all&quot;:   get_activity_Cs = GAMMA_ALL.getActivity(nowDate)
 	&apos;—————————————————————————————————————————————————————————————————		
 		case else: get_activity_Cs = 0.0
