@@ -14,6 +14,9 @@ dim BDList as new Collection
 dim layoutPosition as integer
 dim maxBDCount as integer
 dim path, calibName, techName as string
+
+dim energyCollection as new Collection
+dim en1, en2, en3, en4 as object
 rem---------------------------------------------------------------------------------------------------------
 Sub AT1121_Dialog_Show
 	maxBDCount = 50
@@ -21,7 +24,7 @@ Sub AT1121_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialog1121 = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_1121 )
 	oListBox = oDialog1121.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.24 &quot;, oListBox, 9)
+	Overall.dialogShowInitialize(maxBDCount, oDialog1121, oDateFieldModel, &quot;Версия 2.26 &quot;, oListBox, 9)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
 
@@ -36,6 +39,15 @@ Sub AT1121_Dialog_Show
 
 	oOption1103.state = 1
 	setButtonEnabled
+	
+	en1 = oDialog1121.getControl(&quot;energy1&quot;)
+	en2 = oDialog1121.getControl(&quot;energy2&quot;)
+	en3 = oDialog1121.getControl(&quot;energy3&quot;)
+	en4 = oDialog1121.getControl(&quot;energy4&quot;)
+	
+	for i=0 to 8
+		oDialog1121.getControl(&quot;energy&quot;+i).visible = false
+	next i
 
 	oDialogMain.endexecute()   
 	oDialog1121.Execute()
@@ -43,6 +55,7 @@ End Sub
 rem---------------------------------------------------------------------------------------------------------
 sub setButtonEnabled
 	oDialog1121.getControl(&quot;addButton&quot;).setEnable(true)
+	dim state as boolean
 	if oOption1103.state then
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1103_bg.png&quot;
 	else
@@ -61,6 +74,8 @@ sub addNewBD
 	dim bdName as string
 	dim nCount as integer
 	dim bd as new DUnit
+	
+	saveEnergies(layoutPosition)
 
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 	if oOption1103.state then bd.addData2(&quot;AT1103M&quot;,	&quot;AT1103M&quot;,	&quot;Зв/ч&quot;, Array(0.07,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;)	,					&quot;gamma007&quot;,	Array(0.05,0.1),	15)
@@ -71,7 +86,7 @@ sub addNewBD
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1103_bg.png&quot;
 	else
 		oDialog1121.Model.getByName(&quot;1121Logo&quot;).ImageURL = sertPath &amp; &quot;1121\1121_bg.png&quot;
-	end if	
+	endif
 
 	oDialog1121.getControl(&quot;removeButton&quot;).setEnable(true)
 	bd.setSerial(oDialog1121.getControl(&quot;bdSerial&quot;).text)
@@ -85,34 +100,176 @@ sub addNewBD
 	Overall.makeLayoutFromBD(BDList.item(layoutPosition))
 	
 	Overall.setButtonVisibility(layoutPosition)
+	energyCollection.add(newEnergyDep())
+	&apos;msgbox energyCollection.item(1).cd
+	updateEnergyView()
+	
 end sub
 rem---------------------------------------------------------------------------------------------------------
+sub updateEnergyView()
+	if oOption1103.state AND oListBox.getItemCount &gt; 0 then
+		state = true
+	else
+		state = false
+	endif
+	for i=0 to 8
+		oDialog1121.getControl(&quot;energy&quot;+i).visible = state
+	next i
+	loadEnergies(layoutPosition)
+end sub	
+rem---------------------------------------------------------------------------------------------------------
 sub removeLastBD
+	energyCollection.remove(layoutPosition)
 	Overall.removeLastBD(layoutPosition)
+	updateEnergyView()
 end Sub
 rem---------------------------------------------------------------------------------------------------------
 function listBoxListener
+	saveEnergies(layoutPosition)
 	Overall.listBoxListener(layoutPosition)
+	loadEnergies(layoutPosition)
+end function
+rem---------------------------------------------------------------------------------------------------------
+function saveEnergies(layoutPosition as integer)
+	if layoutPosition &gt;0 then
+		energyCollection.item(layoutPosition).cd0 = en3.value
+		energyCollection.item(layoutPosition).cd  = en4.value
+		energyCollection.item(layoutPosition).fe0 = en1.value
+		energyCollection.item(layoutPosition).fe  = en2.value
+	endif	
+end function
+rem---------------------------------------------------------------------------------------------------------
+function loadEnergies(layoutPosition as integer)
+	en3.value = energyCollection.item(layoutPosition).cd0
+	en4.value = energyCollection.item(layoutPosition).cd
+	en1.value = energyCollection.item(layoutPosition).fe0
+	en2.value = energyCollection.item(layoutPosition).fe
 end function
 rem---------------------------------------------------------------------------------------------------------
 sub showNextBD
+	saveEnergies(layoutPosition)
 	Overall.showNextBD(layoutPosition)
+	loadEnergies(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub showPrevBD
+	saveEnergies(layoutPosition)
 	Overall.showPrevBD(layoutPosition)
+	loadEnergies(layoutPosition)
 end sub
 rem---------------------------------------------------------------------------------------------------------
 sub insertRecordsToTemplate
+	if NOT oOption1103.state then Overall.deleteTable(&quot;energy&quot;)
 	if oOption1103.state  then path = Overall.getPathAndSetName(&quot;1121\1103&quot;, &quot;AT1103M&quot;)
 	if oOption1121.state  then path = Overall.getPathAndSetName(&quot;1121\1121&quot;, &quot;AT1121&quot;)
 	if oOption1123.state  then path = Overall.getPathAndSetName(&quot;1121\1121&quot;, &quot;AT1123&quot;)
-	Overall.createCertificate(layoutPosition, path)
+	
+	if NOT oOption1103.state then 
+		Overall.createCertificate(layoutPosition, path)
+	else
+		saveEnergies(layoutPosition)
+		Overall.saveCurentBDValue(layoutPosition)
+		OpenTemplate(sertPath &amp; path)
+		Overall.insertFacilitiesText
+		Overall.insertParametersToTemplate
+		Overall.CreateTablesFromTemplate(BDList.count)
+		Overall.CreateTablesFromTemplateCustom(BDList.count, &quot;s1&quot;, &quot;bd_num_d&quot;, &quot;bd_num&quot;, &quot;##&quot;)
+		
+		dim i as integer
+		for i=1 to BDList.count
+			Overall.insertToTemplateStep(i)
+			insertEnergies(i)
+		next i
+	
+		findAndRename(&quot;$type&quot;, BDList.item(1).getName)
+		Overall.setSerial(&quot;$allSerial&quot;)
+		msgbox &quot;Готово!&quot;
+	endif	
 end sub
+rem---------------------------------------------------------------------------------------------------------
+function insertEnergies(pos as integer)
+	findAndRename(&quot;##&quot;+pos+&quot;-00&quot;, Format(energyCollection.item(pos).am0, &quot;0.0&quot;))
+	findAndRename(&quot;##&quot;+pos+&quot;-01&quot;, Format(energyCollection.item(pos).cd0, &quot;0.0&quot;))
+	findAndRename(&quot;##&quot;+pos+&quot;-02&quot;, Format(energyCollection.item(pos).fe0, &quot;0.000&quot;))
+	findAndRename(&quot;##&quot;+pos+&quot;-10&quot;, Format(energyCollection.item(pos).am, &quot;0.00&quot;))
+	findAndRename(&quot;##&quot;+pos+&quot;-11&quot;, Format(energyCollection.item(pos).cd, &quot;0.0&quot;))
+	findAndRename(&quot;##&quot;+pos+&quot;-12&quot;, Format(energyCollection.item(pos).fe, &quot;0.000&quot;))
+	dim kcd, kfe, dcd, dfe as double
+	kcd = energyCollection.item(pos).cd / energyCollection.item(pos).cd0
+	kfe = energyCollection.item(pos).fe / energyCollection.item(pos).fe0
+	kam = energyCollection.item(pos).am / energyCollection.item(pos).am0
+	findAndRename(&quot;##&quot;+pos+&quot;-20&quot;, Format(kam, &quot;0.00&quot;)
+	findAndRename(&quot;##&quot;+pos+&quot;-21&quot;, Format(kcd, &quot;0.00&quot;)
+	findAndRename(&quot;##&quot;+pos+&quot;-22&quot;, Format(kfe, &quot;0.00&quot;)
+	dcd = (kcd-kam)/kam*100
+	dfe = (kfe-kam)/kam*100
+	findAndRename(&quot;##&quot;+pos+&quot;-31&quot;, Format(dcd, &quot;0.0&quot;)
+	findAndRename(&quot;##&quot;+pos+&quot;-32&quot;, Format(dfe, &quot;0.0&quot;)
+end function
 rem---------------------------------------------------------------------------------------------------------
 function insertClipBoardToBDValueList()
 	Overall.insertClipBoardToBDValueList(BDList.item(layoutPosition).getValueList)
 	Overall.checkValueForRelativeErrorLimits(BDList.item(layoutPosition).getPointList, BDList.item(layoutPosition).getRelLimit)
+	if oOption1103.state then insertClipBoardToEnergy()
 end function
+rem---------------------------------------------------------------------------------------------------------
+function insertClipBoardToEnergy()
+	dim i as integer
+	dim list as new Collection
+	list = Overall.get_2nd_ListSizeAs_1st_ListSize(10, Overall.getCollectionFromClipBoard)
+
+	oDialog1121.getControl(&quot;bdSerial&quot;).value = list.item(1)
+	for i=3 to 6
+		oDialog1121.Model.getByName(&quot;energy&quot; + (i-2)).value = CDbl(list.item(i))
+	next i
+end function
+
+rem---------------------------------------------------------------------------------------------------------
+&apos;класс энергетической зависимости
+Type EnergyDep
+	am0 as double
+	am as double
+	cd0 as double
+	cd as double
+	fe0 as double
+	fe as double
+	k as double
+end type
+&apos; Конструктор
+Function newEnergyDep() as EnergyDep
+    Dim e As EnergyDep
+    e.am0 = 7.0
+    e.am = 7.36
+    e.cd0 = 11.2
+    e.cd = 11.2
+    e.fe0 = 0.581
+    e.fe = 0.581
+    newEnergyDep = e
+End Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </script:module>

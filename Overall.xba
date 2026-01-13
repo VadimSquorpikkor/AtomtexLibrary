@@ -769,6 +769,7 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_pp_6131_alpha&quot;, f.getFacilityText(&quot;alphaPP6131&quot;))
 	findAndRename(&quot;$facility_pp_alpha&quot;, f.getFacilityText(&quot;alphaPP&quot;))
 	findAndRename(&quot;$facility_pp_110&quot;, f.getFacilityText(&quot;110PP&quot;))
+	findAndRename(&quot;$facility_pp_007_110&quot;, f.getFacilityText(&quot;110PP007&quot;))
 	findAndRename(&quot;$facility_pp_130&quot;, f.getFacilityText(&quot;130PP&quot;))
 	findAndRename(&quot;$facility_pp_140&quot;, f.getFacilityText(&quot;140PP&quot;))
 	
@@ -1021,7 +1022,7 @@ end sub
 function insertClipBoardToBDValueList(value_list as Collection)
 	dim i as integer
 	dim list as new Collection
-	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	list = get_2nd_ListSizeAs_1st_ListSize(value_list.count, getCollectionFromClipBoard)
 	
 	list = formatList(list)
 
@@ -1080,7 +1081,7 @@ end function
 function insertClipBoardToBDValueList2503(value_list as Collection)
 	dim i as integer
 	dim list as new Collection
-	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	list = get_2nd_ListSizeAs_1st_ListSize(value_list.count, getCollectionFromClipBoard)
 	
 	list = formatList(list)
 	
@@ -1100,7 +1101,7 @@ end function
 function insertClipBoardToBDValueListBDMG(value_list as Collection)
 	dim i as integer
 	dim list as new Collection
-	list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	list = get_2nd_ListSizeAs_1st_ListSize(value_list.count, getCollectionFromClipBoard)
 	
 	list = formatList(list)
 	
@@ -1123,7 +1124,7 @@ end function
 function insertClipBoardToBDValueListAlphaBeta(point_list as Collection, value_list as Collection, bd_type as integer)
 	dim i as integer
 	dim list as new Collection
-	&apos;list = get_2nd_ListSizeAs_1st_ListSize(value_list, getCollectionFromClipBoard)
+	&apos;list = get_2nd_ListSizeAs_1st_ListSize(value_list.count, getCollectionFromClipBoard)
 	list = getCollectionFromClipBoard
 	
 	list = formatList(list)
@@ -1168,14 +1169,14 @@ end function
 &apos;если list_2 больше, удаляются лишние элементы С НАЧАЛА коллекции list_2
 &apos;если размер list_2 меньше, недостающие элементы будут добавлены В НАЧАЛО коллекции со значением 0
 &apos;если в строке были буквы или ещё по какой причине не удалось преобразовать строку в double, будет показано соответствующее сообщение, а макрос продолжит работать (можно попробовать скопировать еще раз не перезапуская макрос)
-function get_2nd_ListSizeAs_1st_ListSize(list_1 as Collection, list_2 as Collection)
+function get_2nd_ListSizeAs_1st_ListSize(count as integer, list_2 as Collection)
 	On Error Goto ErrorHandler
 	dim list_result as new Collection
 	dim k as integer
 	dim a as integer	
-	a = list_2.count - list_1.count 	
+	a = list_2.count - count
 
-	for k=1 to list_1.count
+	for k=1 to count
 		if (k+a) &lt;= 0 then
 			list_result.add(0)
 		else
@@ -1190,7 +1191,7 @@ function get_2nd_ListSizeAs_1st_ListSize(list_1 as Collection, list_2 as Collect
 	msgbox &quot;Неправильные данные.&quot; + Chr(10) + &quot;Возможно вместе с цифрами были скопированы буквы.&quot; + Chr(10) + &quot;Попробуйте ещё раз&quot;
 	dim er_list as new Collection
 	dim m as integer
-	for m=1 to list_1.count
+	for m=1 to count
 		er_list.add(0)	
 	next m
 	get_2nd_ListSizeAs_1st_ListSize = er_list
@@ -1418,6 +1419,7 @@ sub createCertificate(position, path)
 	insertFacilitiesText
 	insertParametersToTemplate
 	CreateTablesFromTemplate(_BDList.count)
+	CreateTablesFromTemplateCustom(_BDList.count, &quot;s1&quot;, &quot;bd_num_d&quot;, &quot;bd_num&quot;, &quot;##&quot;)
 	
 	dim i as integer
 	for i=1 to _BDList.count

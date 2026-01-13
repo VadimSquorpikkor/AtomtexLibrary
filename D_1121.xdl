@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dlg:window PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "dialog.dtd">
-<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D_1121" dlg:left="27" dlg:top="12" dlg:width="298" dlg:height="188" dlg:closeable="true" dlg:moveable="true" dlg:title="1103М / 1121 / 1123 - Протокол поверки и сертификат">
+<dlg:window xmlns:dlg="http://openoffice.org/2000/dialog" xmlns:script="http://openoffice.org/2000/script" dlg:id="D_1121" dlg:left="27" dlg:top="12" dlg:width="291" dlg:height="188" dlg:closeable="true" dlg:moveable="true" dlg:title="1103М / 1121 / 1123 - Протокол поверки и сертификат">
  <dlg:styles>
   <dlg:style dlg:style-id="0" dlg:font-height="11"/>
   <dlg:style dlg:style-id="1" dlg:font-height="12"/>
@@ -8,10 +8,11 @@
   <dlg:style dlg:style-id="3" dlg:font-height="8"/>
   <dlg:style dlg:style-id="4" dlg:text-color="0x1c479d" dlg:border="none"/>
   <dlg:style dlg:style-id="5" dlg:font-height="16"/>
+  <dlg:style dlg:style-id="6" dlg:font-height="9"/>
  </dlg:styles>
  <dlg:bulletinboard>
   <dlg:datefield dlg:id="DateField1" dlg:tab-index="19" dlg:left="11" dlg:top="69" dlg:width="48" dlg:height="12" dlg:hide-inactive-selection="false" dlg:dropdown="true"/>
-  <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="40" dlg:left="185" dlg:top="6" dlg:width="104" dlg:height="178"/>
+  <dlg:titledbox dlg:id="FrameControl1" dlg:tab-index="40" dlg:left="184" dlg:top="6" dlg:width="104" dlg:height="178"/>
   <dlg:titledbox dlg:id="FrameControl2" dlg:tab-index="41" dlg:left="2" dlg:top="6" dlg:width="102" dlg:height="178"/>
   <dlg:titledbox dlg:id="FrameControl3" dlg:tab-index="42" dlg:left="107" dlg:top="6" dlg:width="75" dlg:height="178"/>
   <dlg:radiogroup>
@@ -36,8 +37,8 @@
    <script:event script:event-name="on-keydown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M1121.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
    <script:event script:event-name="on-mousedown" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M1121.listBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:menulist>
-  <dlg:text dlg:style-id="1" dlg:id="typeLabel" dlg:tab-index="6" dlg:left="200" dlg:top="17" dlg:width="66" dlg:height="10" dlg:value="TYPE" dlg:align="center"/>
-  <dlg:text dlg:style-id="2" dlg:id="serialLabel" dlg:tab-index="20" dlg:left="196" dlg:top="29" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
+  <dlg:text dlg:style-id="1" dlg:id="typeLabel" dlg:tab-index="6" dlg:left="200" dlg:top="15" dlg:width="66" dlg:height="10" dlg:value="TYPE" dlg:align="center"/>
+  <dlg:text dlg:style-id="2" dlg:id="serialLabel" dlg:tab-index="20" dlg:left="196" dlg:top="27" dlg:width="75" dlg:height="22" dlg:value="123" dlg:align="center"/>
   <dlg:numericfield dlg:id="ValueField1" dlg:tab-index="7" dlg:left="228" dlg:top="55" dlg:width="25" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField2" dlg:tab-index="8" dlg:left="228" dlg:top="66" dlg:width="25" dlg:height="12" dlg:value="7" dlg:spin="true"/>
   <dlg:numericfield dlg:id="ValueField3" dlg:tab-index="9" dlg:left="228" dlg:top="77" dlg:width="25" dlg:height="12" dlg:value="70" dlg:spin="true"/>
@@ -59,16 +60,16 @@
   <dlg:text dlg:id="Label4" dlg:tab-index="32" dlg:left="191" dlg:top="90" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label3" dlg:tab-index="31" dlg:left="191" dlg:top="79" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
   <dlg:text dlg:id="Label2" dlg:tab-index="30" dlg:left="191" dlg:top="68" dlg:width="33" dlg:height="8" dlg:align="right" dlg:tabstop="true"/>
-  <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="39" dlg:left="243" dlg:top="6" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
+  <dlg:text dlg:style-id="3" dlg:id="versionLabel" dlg:tab-index="39" dlg:left="248" dlg:top="8" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
   <dlg:combobox dlg:id="provCombo" dlg:tab-index="24" dlg:left="17" dlg:top="142" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
   <dlg:combobox dlg:id="techCombo" dlg:tab-index="26" dlg:left="17" dlg:top="165" dlg:width="71" dlg:height="12" dlg:help-text="Только для сертификатов" dlg:spin="true"/>
-  <dlg:button dlg:id="prevButton" dlg:tab-index="21" dlg:left="192" dlg:top="160" dlg:width="30" dlg:height="14" dlg:value="Назад">
+  <dlg:button dlg:id="prevButton" dlg:tab-index="21" dlg:left="192" dlg:top="166" dlg:width="30" dlg:height="14" dlg:value="Назад">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M1121.showPrevBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="nextButton" dlg:tab-index="22" dlg:left="222" dlg:top="160" dlg:width="30" dlg:height="14" dlg:value="Вперед">
+  <dlg:button dlg:id="nextButton" dlg:tab-index="22" dlg:left="222" dlg:top="166" dlg:width="30" dlg:height="14" dlg:value="Вперед">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M1121.showNextBD?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
-  <dlg:button dlg:id="doneButton" dlg:tab-index="23" dlg:left="252" dlg:top="160" dlg:width="30" dlg:height="14" dlg:value="Готово">
+  <dlg:button dlg:id="doneButton" dlg:tab-index="23" dlg:left="252" dlg:top="166" dlg:width="30" dlg:height="14" dlg:value="Готово">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M1121.insertRecordsToTemplate?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:button>
   <dlg:img dlg:style-id="4" dlg:id="1121Logo" dlg:tab-index="43" dlg:left="47" dlg:top="8" dlg:width="51" dlg:height="57"/>
@@ -85,5 +86,14 @@
   <dlg:radiogroup>
    <dlg:radio dlg:style-id="4" dlg:id="isSertificateEngNew" dlg:tab-index="38" dlg:left="13" dlg:top="119" dlg:width="85" dlg:height="10" dlg:value="Calibration Sertificate Новый"/>
   </dlg:radiogroup>
+  <dlg:numericfield dlg:id="energy1" dlg:tab-index="47" dlg:left="241" dlg:top="116" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="3" dlg:value="0.581" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="energy2" dlg:tab-index="48" dlg:left="241" dlg:top="127" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="3" dlg:value="0.581" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="energy3" dlg:tab-index="49" dlg:left="241" dlg:top="138" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="11.2" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="energy4" dlg:tab-index="50" dlg:left="241" dlg:top="149" dlg:width="25" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="11.2" dlg:spin="true"/>
+  <dlg:text dlg:style-id="6" dlg:id="energy0" dlg:tab-index="55" dlg:left="198" dlg:top="103" dlg:width="83" dlg:height="20" dlg:value="Энергетическая зависимость" dlg:align="center" dlg:multiline="true"/>
+  <dlg:text dlg:id="energy5" dlg:tab-index="51" dlg:left="204" dlg:top="118" dlg:width="33" dlg:height="8" dlg:value="Fe эталон" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="energy6" dlg:tab-index="52" dlg:left="204" dlg:top="129" dlg:width="33" dlg:height="8" dlg:value="Fe изм" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="energy7" dlg:tab-index="53" dlg:left="204" dlg:top="140" dlg:width="33" dlg:height="8" dlg:value="Cd эталон" dlg:align="right" dlg:tabstop="true"/>
+  <dlg:text dlg:id="energy8" dlg:tab-index="54" dlg:left="204" dlg:top="151" dlg:width="33" dlg:height="8" dlg:value="Cd изм" dlg:align="right" dlg:tabstop="true"/>
  </dlg:bulletinboard>
 </dlg:window>
