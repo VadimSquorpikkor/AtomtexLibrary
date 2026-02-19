@@ -448,6 +448,7 @@ sub templateStep(i as integer, strokeEnd as string)
 				
 			dim pogr_point as double
 			pogr_point = Math.RelativeError(m_point, cont_point)
+			msgbox percent
 			MyFormat = &quot;0.00&quot;
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
@@ -783,6 +784,8 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_6130e_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
 	
 	findAndRename(&quot;$eng_facility_110&quot;, f.getFacilityText(&quot;110_eng&quot;))
+	findAndRename(&quot;$eng_facility_007_110&quot;, f.getFacilityText(&quot;110_007_eng&quot;))
+	
 	findAndRename(&quot;$eng_facility_130&quot;, f.getFacilityText(&quot;130_eng&quot;))
 	findAndRename(&quot;$eng_facility_140&quot;, f.getFacilityText(&quot;140_eng&quot;))
 	findAndRename(&quot;$eng_facility_alpha&quot;, f.getFacilityText(&quot;alpha_eng&quot;))

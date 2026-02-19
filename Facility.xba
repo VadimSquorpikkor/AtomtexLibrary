@@ -222,6 +222,7 @@ const RUS_ETHALON as string = &quot;Эталонные средства изме
 &apos;-------------------------------------------------------------
 &apos; скорее всего правильнее будет: The instrument is calibrated using the standard facility.
 const EN_110 as string = &quot; the standard dosimetry facility AT110, № 013 reg. №40425-09, uncertainty ±2.9% (the Calibration Certificate №С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia)&quot;
+const EN_110_007 as string = &quot; the standard dosimetry facility AT110, № 013 reg. №40425-09, uncertainty ±5% (the Calibration Certificate №С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia);&quot;
 const EN_130 as string = &quot; the standard dosimetry facility AT130, № 015 reg. №44761-10, uncertainty ±2.9% (the Calibration Certificate №С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia)&quot;
 const EN_140 as string = &quot; the standard neutron facility UPN-AT140 N 01, reg. N 63548-16, the Certificate of Compliance С-В/19-12-2023/303689471 on 19.12.2023 issued by FGUP «D.I.Mendeleyev VNIIM», St. Petersburg, Russia)&quot;
 const EN_ALPHA as string = &quot; alpha radiation source of Pu-239: 4П9, 5П9, 6П9, the certificate N 1-0057839-4822, N 1-0063126-4822 issued by BelGIM, Minsk, the Republic of Belarus&quot;
@@ -263,12 +264,13 @@ public function getFacilityText(id as string) as string
 		
 	&apos;--------------АНГЛИЙСКИЙ--------------------------
 	
-	case &quot;110_eng&quot;:    stroke = EN_110
-	case &quot;130_eng&quot;:    stroke = EN_130
-	case &quot;140_eng&quot;:    stroke = EN_140
-	case &quot;alpha_eng&quot;:  stroke = EN_ALPHA
-	case &quot;beta_eng&quot;:   stroke = EN_BETA
-	case &quot;130+110eng&quot;: stroke = EN_ETHALON+&quot;:&quot;+EN_110+&quot;;&quot;+EN_130
+	case &quot;110_eng&quot;:     stroke = EN_110
+	case &quot;110_007_eng&quot;: stroke = EN_110_007
+	case &quot;130_eng&quot;:     stroke = EN_130
+	case &quot;140_eng&quot;:     stroke = EN_140
+	case &quot;alpha_eng&quot;:   stroke = EN_ALPHA
+	case &quot;beta_eng&quot;:    stroke = EN_BETA
+	case &quot;130+110eng&quot;:  stroke = EN_ETHALON+&quot;:&quot;+EN_110+&quot;;&quot;+EN_130
 	case &quot;6130_130+110+beta_eng&quot;: stroke = EN_ETHALON+&quot;:&quot;+EN_110+&quot;;&quot;+EN_130+&quot;;&quot;+EN_BETA
 	case &quot;sourse_cs_eng&quot;: stroke = EN_SOURCE_CS
 	end select
