@@ -8,16 +8,16 @@ Option Explicit
 
 REM --- Internal Variables                                                                           
 private _Fname As String
-private _maxLimit(5) as double
-private _minLimit(5) as double
-private _isPrintableF(5) as boolean
-private _isPrintableR(5) as boolean
+private _maxLimit(6) as double
+private _minLimit(6) as double
+private _isPrintableF(6) as boolean
+private _isPrintableR(6) as boolean
 
 private SourceInfoCollection as new Collection
 &apos;Private Sub Class_Initialize() так при каждом вызове класса (Facility.getPercent например) будет сбрасывать значения ВО ВСЕХ ОБЪЕКТАХ КЛАССА!
 sub init
 	dim i as integer
-	for i=0 to 5
+	for i=0 to 6
 		_isPrintableF(i) = false
 		_isPrintableR(i) = false
 		_minLimit(i) = 0
@@ -135,35 +135,29 @@ function getError(point as double, BDType as string, prefix as string)
 end function
 &apos;-------------------------------------------------------------
 public function addTypeAndLimits(bdType as string, min as double, max as double)
+	dim i as integer
 	select case bdType
-	case &quot;gamma&quot; 
-		_isPrintableR(0) = true
-		if _minLimit(0)=0 or min&lt;_minLimit(0) then _minLimit(0)=min
-		if _maxLimit(0)=0 or max&gt;_maxLimit(0) then _maxLimit(0)=max
-	case &quot;alpha&quot;
-		_isPrintableR(1) = true
-		if _minLimit(1)=0 or min&lt;_minLimit(1) then _minLimit(1)=min
-		if _maxLimit(1)=0 or max&gt;_maxLimit(1) then _maxLimit(1)=max
-		_isPrintableF(3) = true
-	case &quot;beta&quot;
-		_isPrintableR(2) = true
-		if _minLimit(2)=0 or min&lt;_minLimit(2) then _minLimit(2)=min
-		if _maxLimit(2)=0 or max&gt;_maxLimit(2) then _maxLimit(2)=max
-		_isPrintableF(4) = true
-	case &quot;n-MD&quot;
-		_isPrintableR(3) = true
-		if _minLimit(3)=0 or min&lt;_minLimit(3) then _minLimit(3)=min
-		if _maxLimit(3)=0 or max&gt;_maxLimit(3) then _maxLimit(3)=max
-		_isPrintableF(2) = true
-	case &quot;n-PP&quot;
-		_isPrintableR(4) = true
-		if _minLimit(4)=0 or min&lt;_minLimit(4) then _minLimit(4)=min
-		if _maxLimit(4)=0 or max&gt;_maxLimit(4) then _maxLimit(4)=max
-		_isPrintableF(2) = true
-	case &quot;gamma-Gy&quot;
-		_isPrintableR(5) = true
-		if _minLimit(5)=0 or min&lt;_minLimit(5) then _minLimit(5)=min
-		if _maxLimit(5)=0 or max&gt;_maxLimit(5) then _maxLimit(5)=max
+	case &quot;gamma&quot;	:i=0
+	case &quot;alpha&quot;	:i=1
+	case &quot;beta&quot;		:i=2
+	case &quot;n-MD&quot;		:i=3
+	case &quot;n-PP&quot;		:i=4
+	case &quot;gamma-Gy&quot; :i=5
+	case &quot;gamma007&quot; :i=6
+	end select
+		
+	_isPrintableR(i) = true
+	if _minLimit(i)=0 or min&lt;_minLimit(i) then _minLimit(i)=min
+	if _maxLimit(i)=0 or max&gt;_maxLimit(i) then _maxLimit(i)=max
+	
+	select case bdType
+	case &quot;gamma&quot;, &quot;gamma-Gy&quot;
+		                 _isPrintableF(0) = is110necessary(i)
+		                 _isPrintableF(1) = is130necessary(i)
+	case &quot;alpha&quot;:        _isPrintableF(3) = true
+	case &quot;beta&quot;:         _isPrintableF(4) = true
+	case &quot;n-MD&quot;, &quot;n-PP&quot;: _isPrintableF(2) = true
+	case &quot;gamma007&quot;:     _isPrintableF(5) = true
 	end select
 end function
 &apos;-------------------------------------------------------------
@@ -171,29 +165,18 @@ public function RadTypeArray as variant
 	RadTypeArray = _isPrintableR
 end function
 &apos;-------------------------------------------------------------
-public function is130necessary as boolean
-	if _maxLimit(5) &gt;= 1 OR _maxLimit(0) &gt;= 1 then 
-		is130necessary = true
-	else		
-		is130necessary = false
-	end if	
+public function is130necessary(num as integer) as boolean
+	is130necessary = _maxLimit(num) &gt;= 1
 end function
 &apos;-------------------------------------------------------------
-public function is110necessary as boolean
-	if (_minLimit(5) &lt; 1000 and _minLimit(5)&lt;&gt;0) OR (_minLimit(0) &lt; 1000 and _minLimit(0)&lt;&gt;0) then
-		is110necessary = true
-	else	
-		is110necessary = false
-	end if	
+public function is110necessary(num as integer) as boolean
+	is110necessary = _minLimit(num) &lt; 1000 and _minLimit(num)&lt;&gt;0
+
 end function
 &apos;-------------------------------------------------------------
 public function FacTypeArray as variant
-	_isPrintableF(0) = is110necessary
-	_isPrintableF(1) = is130necessary
 	FacTypeArray = _isPrintableF
 end function
-
-
 
 &apos;-------------------------------------------------------------« »
 const RUS_110 as string = &quot; установка дозиметрическая гамма-излучения УДГ-АТ110 №013, рег. № 40425-09, св. № С-В/26-11-2024/409219101 от 26.11.2024. ФГУП «ВНИИМ им. Д.И. Менделеева». В составе: источник из радионуклида Cs-137 типа ГЦК-2 зав. №К/9ХК, источник из радионуклида Cs-137 типа ГЦК-1 зав. №К/0НА, источник из радионуклида Cs-137 типа ГЦК-1 зав. №К/262, источник из радионуклида Co-60 типа К/ГИК-1-2 зав. №К/555; источник из радионуклида Am-241 типа ИГИА-3м  зав. №430&quot;

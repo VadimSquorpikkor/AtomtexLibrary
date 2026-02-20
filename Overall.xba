@@ -448,7 +448,7 @@ sub templateStep(i as integer, strokeEnd as string)
 				
 			dim pogr_point as double
 			pogr_point = Math.RelativeError(m_point, cont_point)
-			msgbox percent
+			&apos;msgbox percent
 			MyFormat = &quot;0.00&quot;
 			findAndRename((&quot;$&quot; + i + &quot;-1&quot; + j + strokeEnd), Format(pogr_point, MyFormat))
 			findAndRename((&quot;$&quot; + i + &quot;-2&quot; + j + strokeEnd), Format(Math.ConfidenceLimit(percent, pogr_point), MyFormat))
