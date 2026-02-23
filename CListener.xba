@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script:module PUBLIC "-//OpenOffice.org//DTD OfficeDocument 1.0//EN" "module.dtd">
+<script:module xmlns:script="http://openoffice.org/2000/script" script:name="CListener" script:language="StarBasic">REM  *****  BASIC  *****
+
+dim Overall as new Overall
+&apos; Единственный глобальный обработчик для всех кнопок
+Sub SertificateSelectListener_actionPerformed(oEvent As Object)
+    &apos; Получаем диалог
+    Dim oDialog As Object
+    oDialog = oEvent.Source.Context
+    
+    &apos; Получаем имя кнопки
+    Dim sButtonName As String
+    sButtonName = oEvent.Source.Model.Name
+    
+    &apos;msgbox sButtonName
+    &apos; В зависимости от имени кнопки выполняем разные действия
+    Select Case sButtonName
+        Case &quot;isProtocol&quot;: Overall.setTechControlNames(0)
+        Case &quot;isSertificateRus&quot;: Overall.setTechControlNames(1)
+        Case &quot;isSertificateEng&quot;: Overall.setTechControlNames(2)
+        Case Else: MsgBox &quot;Нажата неизвестная кнопка: &quot; &amp; sButtonName
+    End Select
+End Sub
+
+&apos; И соответствующий disposing (обязательно)
+Sub SertificateSelectListener_disposing(oEvent As Object)
+	&apos; Обычно оставляют пустым, но можно добавить код очистки при необходимости
+End Sub
+&apos;------------------------------------------------------------------------------------------------------------------------
+Private pButtonListener As Object &apos; переменная для хранения слушателя
+&apos; Метод для создания и привязки слушателя к кнопке
+Sub addListener(oDialog As Object, sButtonName As String)
+    &apos; Получаем кнопку по имени
+    Dim oButton As Object
+    oButton = oDialog.getControl(sButtonName)
+    if NOT isNull(_oOptionButtonPr) then
+    
+    &apos; Создаём слушатель с префиксом &quot;SertificateSelectListener_&quot;
+    pButtonListener = CreateUnoListener(&quot;SertificateSelectListener_&quot;, &quot;com.sun.star.awt.XActionListener&quot;)
+    
+    &apos; Привязываем слушатель к кнопке
+    oButton.addActionListener(pButtonListener)
+    
+    endif
+End Sub
+
+</script:module>

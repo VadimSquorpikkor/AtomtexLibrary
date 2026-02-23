@@ -23,7 +23,6 @@ dim oOptionBDKG11 as object
 dim BDList as new Collection
 dim mainCount as integer
 dim layoutPosition as integer
-&apos;dim rusItems1, engItems1, rusItems2, engItems2 as variant
 dim maxBDCount as integer
 dim oComboBox, oComboBox1, oComboBox2 as object
 

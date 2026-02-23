@@ -16,8 +16,6 @@ Option ClassModule
 Option Explicit
 dim atomMath as new AtomMath
 
-dim rusItems1, engItems1, rusItems2, engItems2 as variant
-
 dim _oDialog as object
 dim _oListBox as object
 dim _BDList as Collection
@@ -101,20 +99,23 @@ sub initializeActivityCombo(oActivityCombo as object)
 	oActivityCombo.text = &quot;№831&quot;
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
-sub initializeSertificateCombo(oComboBox1 as object, oComboBox2 as object)
-	if NOT isNull(oComboBox1) then
-  		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
-  		rusItems1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
-  		engItems1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
-  		oComboBox1.addItems( rusItems1, 0 )
-		oComboBox1.text = rusItems1(0)
-	end if	
-	if NOT isNull(oComboBox2) then
-		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )  	
-  		rusItems2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
-  		engItems2 = Array( &quot;N. Kurbatova&quot;, &quot;A. Rusakevich&quot;, &quot;P. Feklenkova&quot; )
-  		oComboBox2.addItems( rusItems2, 0 )
-		oComboBox2.text = rusItems2(0)
+&apos;Переключение текста в спиннере &quot;Технический контроль&quot;
+sub setTechControlNames(lan as integer)
+	if NOT isNull(oComboBox1) AND NOT isNull(oComboBox2) then
+		oComboBox2.removeItems( 0, oComboBox2.getItemCount() )
+		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
+		dim items1, items2 as variant
+		if lan = 0 OR lan = 1 then
+			items1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
+			items2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
+		else
+			items1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
+			items2 = Array( &quot;V. Guzov&quot; )
+		endif	
+		oComboBox1.addItems( items1, 0 )
+		oComboBox2.addItems( items2, 0 )
+		oComboBox1.text = items1(0)
+		oComboBox2.text = items2(0)
 	end if	
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
@@ -154,7 +155,8 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	oComboBox1 = _oDialog.getControl(&quot;provCombo&quot;)
 	oComboBox2 = _oDialog.getControl(&quot;techCombo&quot;)
 
-	initializeSertificateCombo(oComboBox1, oComboBox2)
+	&apos;initializeSertificateCombo(oComboBox1, oComboBox2)
+	setTechControlNames(0)
 
 	if _oDialog.Model.hasByName(&quot;addButton&quot;) 	then _oDialog.getControl(&quot;addButton&quot;).setEnable(false)	
 	if _oDialog.Model.hasByName(&quot;removeButton&quot;) then _oDialog.getControl(&quot;removeButton&quot;).setEnable(false)
@@ -180,6 +182,10 @@ sub dialogShowInitialize(maxBDCount as integer, oDialog as object, oDateFieldMod
 	end if	
 		
 	if NOT isNull(oListBox) then _oListBox.setEnable(false)
+    
+    addListener(_oDialog, &quot;isSertificateRus&quot;)
+    addListener(_oDialog, &quot;isSertificateEng&quot;)
+    addListener(_oDialog, &quot;isProtocol&quot;)
 end sub
 &apos;-------метод из 1117_N--------------------------------------------------------------------------------------------------
 function rightStep(d as double) rem расчет правильного Step-а 
@@ -295,33 +301,35 @@ function PathForProtocol(bdName as string)
 		PathForProtocol = bdName &amp; &quot;.odt&quot;
 	elseif _oOptionButtonSr.State then
 		_stringTypeForCertificate = &quot;проверка&quot;
-		calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
-		techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+		&apos;calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
+		&apos;techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+		calibName = oComboBox1.text
+		techName  = oComboBox2.text
 		PathForProtocol = bdName &amp; &quot;_sr.odt&quot;
 	elseif _oOptionButtonSe.State then
 		_stringTypeForCertificate = &quot;сертификат&quot;
-		calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
-		techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+		calibName = oComboBox1.text
+		techName  = oComboBox2.text
 		PathForProtocol = bdName &amp; &quot;_se.odt&quot;
 	elseif NOT isNull(_oOptionButtonPrNew) then
 		if _oOptionButtonPrNew.State then
 			_stringTypeForCertificate = &quot;поверка&quot;
-			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
-			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			calibName = oComboBox1.text
+			techName  = oComboBox2.text
 			PathForProtocol = bdName &amp; &quot;_n.odt&quot;
 		end if	
 	elseif NOT isNull(_oOptionButtonSrNew) then
 		if _oOptionButtonSrNew.State then
 			_stringTypeForCertificate = &quot;проверка&quot;
-			calibName = rusItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
-			techName  = rusItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			calibName = oComboBox1.text
+			techName  = oComboBox2.text
 			PathForProtocol = bdName &amp; &quot;_sr_n.odt&quot;
 		end if	
 	elseif NOT isNull(_oOptionButtonSeNew) then
 		if _oOptionButtonSeNew.State then
 			_stringTypeForCertificate = &quot;сертификат&quot;
-			calibName = engItems1(ComboItemPosition(_oDialog.getControl(&quot;provCombo&quot;)))
-			techName  = engItems2(ComboItemPosition(_oDialog.getControl(&quot;techCombo&quot;)))
+			calibName = oComboBox1.text
+			techName  = oComboBox2.text
 			PathForProtocol = bdName &amp; &quot;_se_n.odt&quot;
 		end if	
 	end if
