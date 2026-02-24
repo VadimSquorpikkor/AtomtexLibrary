@@ -110,7 +110,7 @@ sub setTechControlNames(lan as integer)
 			items2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
 		else
 			items1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
-			items2 = Array( &quot;V. Guzov&quot; )
+			items2 = Array( &quot;V. Guzov&quot;, &quot;Y. Sivtsevich&quot;)&apos;Sivtsevich Y.P.
 		endif	
 		oComboBox1.addItems( items1, 0 )
 		oComboBox2.addItems( items2, 0 )
@@ -341,6 +341,7 @@ sub insertParametersToTemplate&apos;(bdName as string)
 	findAndRename(&quot;$bground&quot;, Format(bgValue, &quot;0.0&quot;))
 	findAndRename(&quot;$rem_bground&quot;, Format(bgValue/10, &quot;0.0&quot;))&apos;фон для ремов: значение делю на 10 (а не умножаю на 100), так как меняю в протоколе ещё и единицы с нано на микро (100nSv = 10urem)
 	findAndRename(&quot;$temp&quot;, Format(tempValue, &quot;0.0&quot;))
+	findAndRename(&quot;$preasure&quot;, Format(preasure, &quot;0.0&quot;))
 	findAndRename(&quot;$vlag&quot;, Format(vlaghValue, &quot;0.0&quot;))
 	&apos;findAndRename(&quot;$date&quot;, getDate(_oDialog.Model.getByName(&quot;DateField1&quot;)))
 	findAndRename(&quot;$date&quot;, getDate(_oDateFieldModel))
@@ -778,8 +779,10 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_pp_6131_alpha&quot;, f.getFacilityText(&quot;alphaPP6131&quot;))
 	findAndRename(&quot;$facility_pp_alpha&quot;, f.getFacilityText(&quot;alphaPP&quot;))
 	findAndRename(&quot;$facility_pp_110&quot;, f.getFacilityText(&quot;110PP&quot;))
+	findAndRename(&quot;$facility_pp_k_110$&quot;, f.getFacilityText(&quot;110PPk&quot;))
 	findAndRename(&quot;$facility_pp_007_110&quot;, f.getFacilityText(&quot;110PP007&quot;))
 	findAndRename(&quot;$facility_pp_130&quot;, f.getFacilityText(&quot;130PP&quot;))
+	findAndRename(&quot;$facility_pp_k_130$&quot;, f.getFacilityText(&quot;130PPk&quot;))
 	findAndRename(&quot;$facility_pp_140&quot;, f.getFacilityText(&quot;140PP&quot;))
 	
 	findAndRename(&quot;$facility_13+11rus&quot;, f.getFacilityText(&quot;130+110&quot;))
@@ -790,11 +793,15 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_6130beta&quot;, f.getFacilityText(&quot;beta6130&quot;))
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta&quot;))
 	findAndRename(&quot;$facility_6130e_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
+
+	&apos;новые английские --------------------
+	findAndRename(&quot;$eng_facility_110$&quot;, f.getFacilityText(&quot;110_eng&quot;))
+	findAndRename(&quot;$eng_facility_k_110$&quot;, f.getFacilityText(&quot;110_eng_k&quot;))
+	findAndRename(&quot;$eng_facility_130$&quot;, f.getFacilityText(&quot;130_eng&quot;))
+	findAndRename(&quot;$eng_facility_k_130$&quot;, f.getFacilityText(&quot;130_eng_k&quot;))
+	&apos;-------------------------------------
 	
-	findAndRename(&quot;$eng_facility_110&quot;, f.getFacilityText(&quot;110_eng&quot;))
 	findAndRename(&quot;$eng_facility_007_110&quot;, f.getFacilityText(&quot;110_007_eng&quot;))
-	
-	findAndRename(&quot;$eng_facility_130&quot;, f.getFacilityText(&quot;130_eng&quot;))
 	findAndRename(&quot;$eng_facility_140&quot;, f.getFacilityText(&quot;140_eng&quot;))
 	findAndRename(&quot;$eng_facility_alpha&quot;, f.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, f.getFacilityText(&quot;beta_eng&quot;))

@@ -21,6 +21,7 @@ Option Explicit
 dim background as double
 dim temperature as double
 dim humidity as double
+dim preasure as double
 dim avalableVersion as double
 
 dim sensors as new collection
@@ -34,6 +35,9 @@ const TEMP_SHIFT as double = 2
 
 const HUM_AVG as double = 70
 const HUM_SHIFT as double = 5
+
+const PRS_AVG as double = 98.5
+const PRS_SHIFT as double = 2
 
 const DATA_FILE as string = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\data.txt&quot;
 const SETTINGS_FILE as string = &quot;\\Fileserver\Manufacture\Uchastok.RIR\База настроек\Instruction\_Макрос для протоколов\settings.cfg&quot;
@@ -98,6 +102,7 @@ function setSensorsRandomly
 	background  = Math.randValue(BG_AVG, BG_SHIFT) 
 	temperature = Math.randValue(TEMP_AVG, TEMP_SHIFT)
 	humidity    = Math.randValue(HUM_AVG, HUM_SHIFT)
+	preasure    = Math.randValue(PRS_AVG, PRS_SHIFT)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function sensorsToFile
@@ -111,7 +116,8 @@ function sensorsToFile
 	Print #FileNo, background   &apos; Save line 
 	Print #FileNo, temperature   &apos; Save line 
 	Print #FileNo, humidity   &apos; Save line 
-	Close #FileNo                  &apos; Close file
+	Print #FileNo, preasure   &apos; Save line 
+	Close #FileNo             &apos; Close file
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;Присваивает переменным из макроса значения из коллекции
@@ -120,6 +126,7 @@ function setSensors(data as Collection)
 	background 	= getRightValue(data.item(2), BG_AVG, 	BG_SHIFT)
 	temperature = getRightValue(data.item(3), TEMP_AVG, TEMP_SHIFT)
 	humidity 	= getRightValue(data.item(4), HUM_AVG, 	HUM_SHIFT)
+	preasure 	= getRightValue(data.item(5), PRS_AVG, 	PRS_SHIFT)
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function DataFromFile(data_file as String) as Collection
@@ -158,6 +165,10 @@ end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function getAvalableVersion
 	getAvalableVersion = avalableVersion
+end function	
+&apos;------------------------------------------------------------------------------------------------------------------------
+function getPreasure
+	getPreasure = preasure
 end function	
 
 

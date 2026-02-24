@@ -9,6 +9,7 @@ global sertPath as String
 global bgValue as double
 global tempValue as double
 global vlaghValue as double
+global preasure as double
 dim userName as String
 dim currentVersion as double
 const XPPath as string= &quot;file:///C:\Users\Public\Documents\AtomtexLibrary\sert_template\&quot;
@@ -33,7 +34,7 @@ Sub MainDialog_Show
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 &apos;	там внизу ещё в setUserName добавить надо						║█
 																&apos;	║█
-	currentVersion = 4.38 										&apos;	║█
+	currentVersion = 4.39 										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -93,6 +94,7 @@ sub startMacro(sertPath as String)
 	bgValue = Sensor.getBackground
 	tempValue = Sensor.getTemperature
 	vlaghValue = Sensor.getHumidity
+	preasure = Sensor.getPreasure
 				
 	oDialogMain = CreateUnoDialog( DialogLibraries.AtomtexLibrary.DialogMain )
 	&apos;oDialogMain.getControl(&quot;versionLabel&quot;).text = &quot;Версия &quot; &amp; Format(currentVersion, &quot;0.00&quot;)
