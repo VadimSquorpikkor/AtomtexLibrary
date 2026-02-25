@@ -112,6 +112,47 @@ sub insertRecordsToTemplate
 	
 	dim ar(9) as double
 	for i=1 to BDList.count
+		ar = Math.avaragePointsRndArrayDispersed_10(0.5, 4, &quot;0.00&quot;)	
+		findAndRename(&quot;$&quot;+i+&quot;-bga&quot;, ar(0))
+		findAndRename(&quot;$&quot;+i+&quot;-bgb&quot;, ar(1))
+		findAndRename(&quot;$&quot;+i+&quot;-bgc&quot;, ar(2))
+		findAndRename(&quot;$&quot;+i+&quot;-bgd&quot;, ar(3))
+		findAndRename(&quot;$&quot;+i+&quot;-bge&quot;, ar(4))
+		findAndRename(&quot;$&quot;+i+&quot;-bgf&quot;, ar(5))
+		findAndRename(&quot;$&quot;+i+&quot;-bgg&quot;, ar(6))
+		findAndRename(&quot;$&quot;+i+&quot;-bgh&quot;, ar(7))
+		findAndRename(&quot;$&quot;+i+&quot;-bgi&quot;, ar(8))
+		findAndRename(&quot;$&quot;+i+&quot;-bgj&quot;, ar(9))
+		findAndRename(&quot;$&quot;+i+&quot;-bgavg&quot;, Format(ar(10), &quot;0.000&quot;)
+	next i
+	
+	&apos;for i=1 to BDList.count
+	&apos;    Dim newVal As New Collection
+	&apos;    Dim newPnt As New Collection
+	&apos;    Dim newTxt As New Collection
+   &apos; 	For k = 1 To BDList.item(i).getValueList.Count
+   &apos; 		if k = 4 then
+&apos;  &apos;  			msgbox &quot;point = &quot;+BDList.item(i).getValueList.Item(k)
+ &apos; &apos;  			msgbox BDList.item(i).getPointTextList.Item(k)
+   &apos; 			
+   &apos; 			newVal.Add(BDList.item(i).getValueList.Item(k)/1000)
+   &apos; 			newPnt.Add(BDList.item(i).getPointList.Item(k)/1000)
+   &apos; 			newTxt.add(&quot;м&quot;)
+   &apos; 		else
+   &apos; 			newVal.Add(BDList.item(i).getValueList.Item(k))
+   &apos; 			newPnt.Add(BDList.item(i).getPointList.Item(k))
+   &apos; 			newTxt.Add(BDList.item(i).getPointTextList.Item(k))
+   &apos; 		endif
+&apos;	    Next k
+&apos;	    BDList.item(i).setValueList(newVal)
+&apos;	    BDList.item(i).setPointList(newPnt)
+&apos;	    BDList.item(i).setPointTextList(newTxt)
+	    
+	    &apos;msgbox &quot;point res = &quot;+BDList.item(i).getValueList.Item(4)
+		&apos;msgbox &quot;prefix res = &quot;+BDList.item(i).getPointTextList.Item(4)
+	&apos;next i
+		
+	for i=1 to BDList.count
 		ar = Math.avaragePointsRndTenArray(BDList.item(i).valueList.item(1), Overall.percentOTK)	
 		findAndRename(&quot;$&quot;+i+&quot;-6a&quot;, ar(0))
 		findAndRename(&quot;$&quot;+i+&quot;-6b&quot;, ar(1))
@@ -153,4 +194,5 @@ sub makeSimpleLayoutFromBD_2140(bd as new DUnit)
 		oDialogAT2140.getControl(&quot;Label&quot; + i).Text = &quot; &quot; + Format(point, Overall.getRightFormat(point)) + &quot; &quot; + bd.pointTextList.item(i) + bd.measUnit(i)
 	next i
 end sub
+
 </script:module>

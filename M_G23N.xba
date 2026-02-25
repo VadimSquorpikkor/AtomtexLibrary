@@ -24,7 +24,7 @@ Sub G23N_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogG23N = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_G23N )
 	oListBox = oDialogG23N.getControl(&quot;bdListBox&quot;)	
-	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.09 &quot;, oListBox, maxPointCount)
+	Overall.dialogShowInitialize(maxBDCount, oDialogG23N, oDateFieldModel, &quot;Версия 3.11 &quot;, oListBox, maxPointCount)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 	Overall.setButtonVisibility(layoutPosition)
 	

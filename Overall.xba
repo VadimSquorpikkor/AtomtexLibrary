@@ -403,7 +403,8 @@ sub templateStep(i as integer, strokeEnd as string)
 			m_point = threePointArray(3)
 			&apos;-------------------------------------------------------------------------------
 			
-			
+			&apos;if j=3 then	msgbox &quot;template step: cont_point = &quot;+cont_point+&quot; prefix = &quot;+prefix
+			&apos;msgbox j
 			findAndRename((&quot;$&quot; + i + &quot;-3&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(0)) rem название источника
 			findAndRename((&quot;$&quot; + i + &quot;-4&quot; + j + strokeEnd), sourceDistanceArray(cont_point, prefix, bd.bdType, _oDateFieldModel)(1)) rem расстояние до источника
 
@@ -464,7 +465,7 @@ sub templateStep(i as integer, strokeEnd as string)
 		next j
 		findAndRename(&quot;$bd_num&quot; + i + &quot;$&quot;, bd.getSerial)
 		strokeForSaving = strokeForSaving &amp; divider &amp; bd.getSerial
-		divider = &quot;; &quot;
+		divider = &quot;, &quot;
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
 &apos;только для таблицы активности для 1125. Там 4 измерения, да ещё контрольная точка по хитрому: Наташа вводит активность (столбец A*k), из него находится удельная активность (/1.75), 
@@ -799,9 +800,9 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_k_110$&quot;, f.getFacilityText(&quot;110_eng_k&quot;))
 	findAndRename(&quot;$eng_facility_130$&quot;, f.getFacilityText(&quot;130_eng&quot;))
 	findAndRename(&quot;$eng_facility_k_130$&quot;, f.getFacilityText(&quot;130_eng_k&quot;))
+	findAndRename(&quot;$eng_facility_007_110$&quot;, f.getFacilityText(&quot;110_007_eng&quot;))
 	&apos;-------------------------------------
-	
-	findAndRename(&quot;$eng_facility_007_110&quot;, f.getFacilityText(&quot;110_007_eng&quot;))
+		
 	findAndRename(&quot;$eng_facility_140&quot;, f.getFacilityText(&quot;140_eng&quot;))
 	findAndRename(&quot;$eng_facility_alpha&quot;, f.getFacilityText(&quot;alpha_eng&quot;))
 	findAndRename(&quot;$eng_facility_beta&quot;, f.getFacilityText(&quot;beta_eng&quot;))

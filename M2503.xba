@@ -386,7 +386,7 @@ sub insertRecordsToTemplate
 	for i=1 to BDList.count
 		strokeForSaving = strokeForSaving &amp; divider &amp; BDList.item(i).getSerial
 		templateMultiStep(i, &quot;&quot;)
-		divider = &quot;; &quot;
+		divider = &quot;,, &quot;
 	next i
 	
 	findAndRename(&quot;$allSerial&quot;, strokeForSaving)

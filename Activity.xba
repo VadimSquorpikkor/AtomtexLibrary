@@ -329,7 +329,7 @@ function get_activity_Cs(src as string, nowDate)
 		case &quot;516&quot;:   get_activity_Cs = GAMMA_516.getActivity(nowDate)
 		case &quot;832&quot;:   get_activity_Cs = GAMMA_832.getActivity(nowDate)
 		case &quot;831&quot;:   get_activity_Cs = GAMMA_831.getActivity(nowDate)
-		case &quot;№831&quot;:   get_activity_Cs = GAMMA_831.getActivity(nowDate)
+		case &quot;№831&quot;:  get_activity_Cs = GAMMA_831.getActivity(nowDate)
 		case &quot;all&quot;:   get_activity_Cs = GAMMA_ALL.getActivity(nowDate)
 	&apos;—————————————————————————————————————————————————————————————————		
 		case else: get_activity_Cs = 0.0
@@ -339,6 +339,8 @@ end function
 &apos;Источники 110: 28C, 39T, 2AA, 430(Am)
 &apos;Источники 130: 7AT 07T 043 08T 163
 function sourceDistanceArray(point as double, prefix as string, bdType as string, mDate)
+	&apos;msgbox prefix + &quot; &quot; + point
+	&apos;msgbox &quot;sourceDistanceArray:point = &quot;+point+&quot; prefix = &quot;+prefix
 	dim koef as double
 	koefCs = getDistanceKoef(mDate, CS_137_HALF_LIFE)&apos;коэффициент для источников с Цезием-137
 	koefAm = getDistanceKoef(mDate, AM_241_HALF_LIFE)&apos;коэффициент для источников с Америцием-241
@@ -385,6 +387,7 @@ function sourceDistanceArray(point as double, prefix as string, bdType as string
 				if point = 240 	then ar = dynDistanceAr(&quot;39T&quot;, 117.15,  koefCs)
 				if point = 700 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072,  koefCs)
 		case &quot;м&quot;
+				&apos;if point = 0.7 	then msgbox &quot;point = 0.7&quot;
 				if point = 0.5 	then ar = dynDistanceAr(&quot;39T&quot;, 81.679,  koefCs)
 				if point = 0.7 	then ar = dynDistanceAr(&quot;39T&quot;, 69.072,  koefCs)
 				&apos;----------------- УДГ-130 -----------------------------------
