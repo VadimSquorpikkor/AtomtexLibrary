@@ -43,7 +43,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.37 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.38 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -108,8 +108,18 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	bdps_alpha_data = Activity.getAlphaArray(bdps_alpha_src)
 	bdps_beta_data = Activity.getBetaArray(bdps_beta_src, oDateFieldModel)
 	
-
-	&apos;																																						от мкЗв, до мЗв
+	dim n_01_data(4), n_03_data(4), n_05_data(4), n_06_data(4) as double
+	n_01_data(0) = 2.35
+	n_03_data(0) = 0.45
+	n_05_data(0) = 2.1
+	n_06_data(0) = 0.647
+	for i=1 to 4
+		n_01_data(i) = NEUTRON_01.fio(i-1)/NEUTRON_01.br(i-1)+n_01_data(0)
+		n_03_data(i) = NEUTRON_03.fio(i-1)/NEUTRON_03.br(i-1)+n_03_data(0)
+		n_05_data(i) = NEUTRON_05.fio(i-1)/NEUTRON_05.br(i-1)+n_05_data(0)
+		n_06_data(i) = NEUTRON_06.fio(i-1)/NEUTRON_06.br(i-1)+n_06_data(0)
+	next i
+	&apos;------------------------------------------------------------------------------------------------------------------------------------------------------- от мкЗв, до мЗв
 	addBDtoCollection(&quot;БДКГ-01&quot;,	&quot;BDKG-01&quot;,	&quot;Зв/ч&quot;,	Array(0.7,7,70,0.7,7,70,0.7,7),			Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 		&quot;gamma&quot;,	Array(0.1,10000),	20)
 	addBDtoCollection(&quot;БДКГ-03&quot;,	&quot;BDKG-03&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,240), 				Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;), 				&quot;gamma&quot;, 	Array(0.03,0.3),	20)
 	addBDtoCollection(&quot;БДКГ-04&quot;,	&quot;BDKG-04&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7,7),	Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;,&quot;&quot;), 	&quot;gamma&quot;, 	Array(0.05,10000),	20)
@@ -120,8 +130,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	addBDtoCollection(&quot;БДКГ-30&quot;,	&quot;BDKG-30&quot;, 	&quot;Гр/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.7), 		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma-Gy&quot;,	Array(0.03,1000),	20)
 	addBDtoCollection(&quot;БДКГ-32&quot;,	&quot;BDKG-32&quot;,	&quot;Зв/ч&quot;,	Array(0.07,0.7,7,70,0.7,7,70,0.4),		Array(&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;,&quot;&quot;),		&quot;gamma&quot;,	Array(0.03,500),	20)
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
-	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		Array(2.35,11.5,88,250,1040),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)
-	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		Array(0.45,9.5, 88, 330, 1350),			Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)
+	addBDtoCollection(&quot;БДКН-01&quot;,	&quot;BDKN-01&quot;,	&quot;&quot;,		n_01_data,								Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,10000),	20)&apos;Array(2.35,11.5,88,250,1040),
+	addBDtoCollection(&quot;БДКН-03&quot;,	&quot;BDKN-03&quot;,	&quot;&quot;,		n_03_data,								Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,10),		20)&apos;Array(0.45,9.5, 88, 330, 1350),
 	&apos;-------------------------------------------------------------------------------------------------------------------------------------------------------------
 	addBDtoCollection(&quot;БДПА-01&quot;,	&quot;BDPA-01&quot;,	&quot;&quot;,		alpha_01_data,							alpha_01_src,									&quot;alpha&quot;,	Array(0.1,10),		20)	&apos;№12
 	addBDtoCollection(&quot;БДПА-02&quot;,	&quot;BDPA-02&quot;,	&quot;&quot;,		alpha_02_data,							alpha_02_src,									&quot;alpha&quot;,	Array(0.05,5),		20)
@@ -143,8 +153,8 @@ sub initialize1117							&apos; 	gamma мк-м / alpha 1-10^4 / beta 1-10^4 / md
 	
 	addBDtoCollection(&quot;БДПА-03&quot;,	&quot;BDPA-03&quot;,	&quot;&quot;,		alpha_03_data,							alpha_03_src,									&quot;alpha&quot;,	Array(0.05,2),		20)
 	addBDtoCollection(&quot;БДПБ-03&quot;,	&quot;BDPB-03&quot;,	&quot;&quot;,		beta_03_data,							beta_03_src,									&quot;beta&quot;,		Array(0.5,5),		20)
-	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,		Array(2.1, 11.60, 91.0, 261, 913),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,0.2),		20)
-	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		Array(0.647,9.92, 86.7, 321, 1296),		Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20)
+	addBDtoCollection(&quot;БДКН-05&quot;,	&quot;BDKN-05&quot;,	&quot;&quot;,		n_05_data,								Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-PP&quot;,		Array(0.1,0.2),		20)&apos;Array(2.1, 11.60, 91.0, 261, 913),
+	addBDtoCollection(&quot;БДКН-06&quot;,	&quot;BDKN-06&quot;,	&quot;&quot;,		n_06_data,								Array(&quot;(фон)&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),						&quot;n-MD&quot;,		Array(0.1,30),		20)&apos;Array(0.647,9.92, 86.7, 321, 1296),
 	addBDtoCollection(&quot;БОИ-5&quot;,	&quot;PU-5 detector&quot;,&quot;Зв/ч&quot;,	Array(20,70,0.7,7,70), 					Array(&quot;мк&quot;,&quot;мк&quot;,&quot;м&quot;,&quot;м&quot;,&quot;м&quot;),					&quot;gamma&quot;,	Array(1,100),		20)
 	
 	&apos;FillTables()&apos; не работает
@@ -695,7 +705,9 @@ sub neutron(i as integer, bd as BUnit, nData as NeutronData)
 	
 	for n = 1 to 4
 		point = bd.valueList.item(n+1)
+		msgbox &quot;point = &quot;+point
 		p1 = (point-fon)*point_br_array(n-1)
+		msgbox &quot;p1 = &quot;+p1
 		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))

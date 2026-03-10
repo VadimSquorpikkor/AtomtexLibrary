@@ -126,7 +126,11 @@ function setSensors(data as Collection)
 	background 	= getRightValue(data.item(2), BG_AVG, 	BG_SHIFT)
 	temperature = getRightValue(data.item(3), TEMP_AVG, TEMP_SHIFT)
 	humidity 	= getRightValue(data.item(4), HUM_AVG, 	HUM_SHIFT)
-	preasure 	= getRightValue(data.item(5), PRS_AVG, 	PRS_SHIFT)
+	if data.count&gt;4 then &apos;проверка нужна только на момент когда одновременно работали версии с сохранением давления в файл и без сохранения
+		preasure = getRightValue(data.item(5), PRS_AVG, 	PRS_SHIFT)
+	else
+		preasure = 98.7
+	endif		
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
 function DataFromFile(data_file as String) as Collection
