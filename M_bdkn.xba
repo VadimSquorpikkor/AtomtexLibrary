@@ -24,7 +24,7 @@ Sub BDKN_Dialog_Show
 	DialogLibraries.LoadLibrary( &quot;AtomtexLibrary&quot; )
 	oDialogBDKN = CreateUnoDialog( DialogLibraries.AtomtexLibrary.D_BDKN )
 	oListBox = oDialogBDKN.getControl(&quot;bdListBox&quot;)
-	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.15 &quot;, oListBox, 5)
+	Overall.dialogShowInitialize(maxBDCount, oDialogBDKN, oDateFieldModel, &quot;Версия 2.16 &quot;, oListBox, 5)
 	Overall.initializeParameters(layoutPosition, BDList, isComboCollection)
 
 	oOption02 = oDialogBDKN.getControl(&quot;is02&quot;)
@@ -60,19 +60,14 @@ sub addNewBD
 	dim nCount as integer
 	dim bd as new DUnit
 
-	dim n_02(4) as double
+	dim n_02(4), n_04(4) as double
 	n_02(0)=0.5
-	n_02(1)=NEUTRON_02.fio(0)
-	n_02(2)=NEUTRON_02.fio(1)
-	n_02(3)=NEUTRON_02.fio(2)
-	n_02(4)=NEUTRON_02.fio(3)
-	dim n_04(4) as double
 	n_04(0)=0.5
-	n_04(1)=NEUTRON_04.fio(0)
-	n_04(2)=NEUTRON_04.fio(1)
-	n_04(3)=NEUTRON_04.fio(2)
-	n_04(4)=NEUTRON_04.fio(3)
-
+	for i=1 to 4
+		n_02(i) = NEUTRON_02.fio(i-1)/NEUTRON_02.br(i-1)+n_02(0)
+		n_04(i) = NEUTRON_04.fio(i-1)/NEUTRON_04.br(i-1)+n_04(0)
+	next i
+	
 	if layoutPosition&lt;&gt;0 then Overall.saveCurentBDValue(layoutPosition) rem когда выбран layout, изменить значения, и нажать добавить БД, БЕЗ этой строчки значения не сохраняться (перезапишуться дефолтными)
 
 	if oOption02.state then bd.addData2(&quot;БДКН-02&quot;,	&quot;BDKN-02&quot;,	&quot;&quot;,	n_02,							Array(&quot;(фон) &quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;),											&quot;n-PP&quot;,		Array(0.1,10000),	20)

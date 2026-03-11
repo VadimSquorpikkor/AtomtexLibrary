@@ -787,25 +787,22 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_pp_140&quot;, f.getFacilityText(&quot;140PP&quot;))
 	
 	findAndRename(&quot;$facility_13+11rus&quot;, f.getFacilityText(&quot;130+110&quot;))
-	findAndRename(&quot;$facility_13+11eng&quot;, f.getFacilityText(&quot;130+110eng&quot;))
 	findAndRename(&quot;$facility_src_cs_rus&quot;, f.getFacilityText(&quot;sourse_cs_rus&quot;))
-	findAndRename(&quot;$facility_src_cs_eng&quot;, f.getFacilityText(&quot;sourse_cs_eng&quot;))
-	
+		
 	findAndRename(&quot;$facility_6130beta&quot;, f.getFacilityText(&quot;beta6130&quot;))
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta&quot;))
-	findAndRename(&quot;$facility_6130e_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta_eng&quot;))
 
 	&apos;новые английские --------------------
-	findAndRename(&quot;$eng_facility_110$&quot;, f.getFacilityText(&quot;110_eng&quot;))
-	findAndRename(&quot;$eng_facility_k_110$&quot;, f.getFacilityText(&quot;110_eng_k&quot;))
-	findAndRename(&quot;$eng_facility_130$&quot;, f.getFacilityText(&quot;130_eng&quot;))
-	findAndRename(&quot;$eng_facility_k_130$&quot;, f.getFacilityText(&quot;130_eng_k&quot;))
-	findAndRename(&quot;$eng_facility_007_110$&quot;, f.getFacilityText(&quot;110_007_eng&quot;))
+	findAndRename(&quot;$eng_facility_110$&quot;,     f.getFacilityText(&quot;EN_110&quot;))
+	findAndRename(&quot;$eng_facility_k_110$&quot;,   f.getFacilityText(&quot;EN_110_KERMA&quot;))
+	findAndRename(&quot;$eng_facility_130$&quot;,     f.getFacilityText(&quot;EN_130&quot;))
+	findAndRename(&quot;$eng_facility_k_130$&quot;,   f.getFacilityText(&quot;EN_130_KERMA&quot;))
+	findAndRename(&quot;$eng_facility_007_110$&quot;, f.getFacilityText(&quot;EN_110_007&quot;))
+	findAndRename(&quot;$eng_facility_140$&quot;, 	f.getFacilityText(&quot;EN_140&quot;))
+	findAndRename(&quot;$eng_facility_alpha$&quot;, 	f.getFacilityText(&quot;EN_ALPHA&quot;))
+	findAndRename(&quot;$eng_facility_beta$&quot;, 	f.getFacilityText(&quot;EN_BETA&quot;))
+	findAndRename(&quot;$facility_src_cs_eng$&quot;, 	f.getFacilityText(&quot;EN_SOURCE_CS&quot;))
 	&apos;-------------------------------------
-		
-	findAndRename(&quot;$eng_facility_140&quot;, f.getFacilityText(&quot;140_eng&quot;))
-	findAndRename(&quot;$eng_facility_alpha&quot;, f.getFacilityText(&quot;alpha_eng&quot;))
-	findAndRename(&quot;$eng_facility_beta&quot;, f.getFacilityText(&quot;beta_eng&quot;))
 	
 	findAndRename(&quot;$bdkg27_resistor$&quot;, f.getFacilityText(&quot;bdkg27_resistor&quot;))
 	findAndRename(&quot;$bdkg27_voltmeter$&quot;, f.getFacilityText(&quot;bdkg27_voltmeter&quot;))

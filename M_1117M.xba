@@ -705,9 +705,7 @@ sub neutron(i as integer, bd as BUnit, nData as NeutronData)
 	
 	for n = 1 to 4
 		point = bd.valueList.item(n+1)
-		msgbox &quot;point = &quot;+point
 		p1 = (point-fon)*point_br_array(n-1)
-		msgbox &quot;p1 = &quot;+p1
 		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
