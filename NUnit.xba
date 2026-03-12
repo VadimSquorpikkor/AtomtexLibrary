@@ -26,7 +26,7 @@ sub neutron_05_ToTemplateStep(i as integer, bd as BUnit)
 	Ncp = p3
 	Br = NEUTRON_05.br(2) &apos;0.866
 	F0 = NEUTRON_05.fio(2) &apos;222
-	K = 0.7996&apos;0.743
+	K = NEUTRON_5_KOEF
 	Nf = p2
 	
 	&apos;Расчет чувствительности

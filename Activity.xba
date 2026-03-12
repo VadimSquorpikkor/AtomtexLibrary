@@ -66,6 +66,7 @@ dim NEUTRON_03 as NeutronData
 dim NEUTRON_04 as NeutronData
 dim NEUTRON_05 as NeutronData
 dim NEUTRON_06 as NeutronData
+dim NEUTRON_5_KOEF as double
 
 dim BETA_0660 as new RASrc
 dim BETA_0661 as new RASrc
@@ -159,12 +160,14 @@ sub initSources()
 	betaSrcMap.add(BETA_0581, &quot;0581&quot;)
 	
 	dim f as new Facility
-	NEUTRON_01 = newNeutronData(Array(0.507, 0.507, 0.812, 0.965),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
-	NEUTRON_02 = newNeutronData(Array(0.507, 0.507, 0.812, 0.965),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
-	NEUTRON_03 = newNeutronData(Array(0.891, 0.891, 0.971, 0.995),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
-	NEUTRON_04 = newNeutronData(Array(0.891, 0.891, 0.971, 0.995),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
-	NEUTRON_05 = newNeutronData(Array(0.515, 0.515, 0.816, 0.966),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
-	NEUTRON_06 = newNeutronData(Array(0.912, 0.912, 0.976, 0.996),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_01 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_02 = newNeutronData(Array(0.600, 0.600, 0.863, 0.965),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_03 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_04 = newNeutronData(Array(0.922, 0.922, 0.980, 0.995),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_05 = newNeutronData(Array(0.607, 0.607, 0.866, 0.966),	Array(5.9, 54, 225, 956), 	f.getPercent(&quot;PERCENT_NEUTRON_PP&quot;))
+	NEUTRON_06 = newNeutronData(Array(0.937, 0.937, 0.983, 0.996),	Array(8.3, 77, 317, 1345), 	f.getPercent(&quot;PERCENT_NEUTRON_MD&quot;))
+	NEUTRON_5_KOEF = 0.78695 &apos;0.7996&apos;0.743
+	
 end sub
 
 &apos;0577 5П9 0008489-4825-В 23.01.25
