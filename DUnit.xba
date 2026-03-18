@@ -298,6 +298,10 @@ Public Function getName As string &apos;то же самое, но с норма
    getName = _BDName
 End Function
 
+Public Function getNameEn As string &apos;то же самое, но с нормальным именем
+   getNameEn = _BDNameEn
+End Function
+
 Public Function getSerial As string
    getSerial = _serial
 End Function

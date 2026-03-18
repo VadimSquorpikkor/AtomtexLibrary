@@ -550,6 +550,7 @@ sub insertDataToTemplate
 	dim point as double
 	
 	dim usedBDList as new Collection
+	dim usedBDListEn as new Collection
 		
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	facilities.init
@@ -578,6 +579,7 @@ sub insertDataToTemplate
 	
 		if bd.isPrintable then
 			usedBDList.add(bd.getName)
+			usedBDListEn.add(bd.getNameEn)
 				
 			if bd.getType = &quot;alpha&quot; then 
 				for n=1 to bd.pointTextList.count
@@ -636,10 +638,15 @@ sub insertDataToTemplate
 	
 	&apos;список БД входящих в состав 1117М----------------------------
 	Dim strings(usedBDList.count-1) As String
+	&apos;список БД входящих в состав 1117М (на английском)------------
+	Dim stringsEn(usedBDListEn.count-1) As String
 	for n=1 to usedBDList.count
 		strings(n-1)=usedBDList.item(n)
+		stringsEn(n-1)=usedBDListEn.item(n)
 	next n
 	SortStringArray(strings)
+	SortStringArray(stringsEn)
+	
 	
 	&apos;SortStringArray(usedAlphaSourcs)
 	&apos;SortStringArray(usedBetaSourcs)
@@ -661,6 +668,19 @@ sub insertDataToTemplate
 		endif	
 	next n
 	findAndRename(&quot;$used_units$&quot;, strDU)
+	
+	dim strDUEn, unitEn as string
+	strDUEn = &quot;&quot;
+	for n=0 to UBound(stringsEn)
+		unitEn = stringsEn(n)
+		if unitEn = &quot;BDPS-02 α&quot;   then unitEn = &quot;BDPS-02&quot;
+		if unitEn = &quot;PU-1 detector&quot; then unitEn = &quot;PU-1&quot;
+		if unitEn = &quot;PU-2 detector&quot; then unitEn = &quot;PU-2&quot;
+		if unitEn &lt;&gt; &quot;BDPS-02 β&quot; AND unitEn &lt;&gt; &quot;BDPS-02 γ&quot; then
+			if strDUEn = &quot;&quot; then strDUEn = unitEn else strDUEn = strDUEn+&quot;, &quot;+unitEn
+		endif	
+	next n
+	findAndRename(&quot;$used_units_en$&quot;, strDUEn)
 	
 	&apos;удалить ненужные формулы
 	if bdTypesUsed(0)=false then Overall.deleteTable(&quot;f0&quot;)

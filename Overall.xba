@@ -802,6 +802,8 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_alpha$&quot;, 	f.getFacilityText(&quot;EN_ALPHA&quot;))
 	findAndRename(&quot;$eng_facility_beta$&quot;, 	f.getFacilityText(&quot;EN_BETA&quot;))
 	findAndRename(&quot;$facility_src_cs_eng$&quot;, 	f.getFacilityText(&quot;EN_SOURCE_CS&quot;))
+	
+	findAndRename(&quot;$eng_certificate_text$&quot;,	f.getFacilityText(&quot;EN_CERTIFICATE_TEXT&quot;))
 	&apos;-------------------------------------
 	
 	findAndRename(&quot;$bdkg27_resistor$&quot;, f.getFacilityText(&quot;bdkg27_resistor&quot;))
