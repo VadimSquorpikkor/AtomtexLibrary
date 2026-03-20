@@ -399,8 +399,16 @@ sub templateStep(i as integer, strokeEnd as string)
 			&apos;Важно помнить: в отличии от №1 и №2 в таблице может получиться такой вариант, когда среднее = 0.70 (как контрольная), но при этом погрешность будет не нулевая. 
 			&apos;ЭТО НОРМАЛЬНО и с реальными измерениями так и получилось бы, вот в чём дело: если точки такие: [0.70 0.70 0.69], то среднее будет равно 0.69(6), и при выводе в таблицу будет округлено до 0.7. 
 			&apos;Но погрешность будет считаться от 0.69666..., поэтому и не будет нулевой. И ТАК И ДОЛЖНО БЫТЬ, и если японец всё руками пересчитает, у него так и получится НЕНУЛЕВАЯ погрешность
-			threePointArray = Math.avaragePointsRndArrayDispersed(m_point, percentOtk, getRightFormat(m_point))
-			m_point = threePointArray(3)
+
+			&apos;для нейтронников нельзя использовать Вариант №3, так как после этого варианта среднее немного изменяется, а для нейтронников дальше ещё считаются значения в других методах, а там берется среднее, 
+			&apos;которое было до использования Вариант №3, а значит будет расхождение в таблице (3 точки и среднее одно, а дальнейшие расчеты и погрешности от другого среднего). Поэтому здесь применяется вариант1, 
+			&apos;где среднее не изменяется. Вариант №3 сработал бы если бы можно было передать в массив значений новое расчитанное среднее, но в этом языке нельзя изменить уже проинициализированный массив, только создать новый. Поэтому пока для нейтронников так
+			if bd.getType = &quot;n-PP&quot; OR bd.getType = &quot;n-MD&quot; then
+				threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
+			else
+				threePointArray = Math.avaragePointsRndArrayDispersed(m_point, percentOtk, getRightFormat(m_point))
+				m_point = threePointArray(3)
+			endif	
 			&apos;-------------------------------------------------------------------------------
 			
 			&apos;if j=3 then	msgbox &quot;template step: cont_point = &quot;+cont_point+&quot; prefix = &quot;+prefix
@@ -792,6 +800,9 @@ sub insertFacilitiesText
 	findAndRename(&quot;$facility_6130beta&quot;, f.getFacilityText(&quot;beta6130&quot;))
 	findAndRename(&quot;$facility_6130r_13+11+b&quot;, f.getFacilityText(&quot;6130_130+110+beta&quot;))
 
+	findAndRename(&quot;$ru_facility_110_1117m$&quot;, f.getFacilityText(&quot;RU_110_1117M&quot;))
+	findAndRename(&quot;$ru_facility_130_1117m$&quot;, f.getFacilityText(&quot;RU_130_1117M&quot;))
+
 	&apos;новые английские --------------------
 	findAndRename(&quot;$eng_facility_110$&quot;,     f.getFacilityText(&quot;EN_110&quot;))
 	findAndRename(&quot;$eng_facility_k_110$&quot;,   f.getFacilityText(&quot;EN_110_KERMA&quot;))
@@ -802,6 +813,9 @@ sub insertFacilitiesText
 	findAndRename(&quot;$eng_facility_alpha$&quot;, 	f.getFacilityText(&quot;EN_ALPHA&quot;))
 	findAndRename(&quot;$eng_facility_beta$&quot;, 	f.getFacilityText(&quot;EN_BETA&quot;))
 	findAndRename(&quot;$facility_src_cs_eng$&quot;, 	f.getFacilityText(&quot;EN_SOURCE_CS&quot;))
+	
+	findAndRename(&quot;$eng_facility_110_1117m$&quot;, f.getFacilityText(&quot;EN_110_1117M&quot;))
+	findAndRename(&quot;$eng_facility_130_1117m$&quot;, f.getFacilityText(&quot;EN_130_1117M&quot;))
 	
 	findAndRename(&quot;$eng_certificate_text$&quot;,	f.getFacilityText(&quot;EN_CERTIFICATE_TEXT&quot;))
 	&apos;-------------------------------------

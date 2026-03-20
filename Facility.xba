@@ -111,6 +111,10 @@ function getPercent(stype as string)
 	end select 
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function getStringPercent(stype as string)
+	getStringPercent = Format(getPercent(stype), &quot;0.0&quot;)
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 function getError(point as double, BDType as string, prefix as string)
 	select case BDType
 	&apos;амбиентный эквивалент ————————————————————————————————
@@ -134,6 +138,7 @@ function getError(point as double, BDType as string, prefix as string)
 	end select
 end function
 &apos;-------------------------------------------------------------
+&apos;используется только в 1117М
 public function addTypeAndLimits(bdType as string, min as double, max as double)
 	dim i as integer
 	select case bdType
@@ -151,13 +156,13 @@ public function addTypeAndLimits(bdType as string, min as double, max as double)
 	if _maxLimit(i)=0 or max&gt;_maxLimit(i) then _maxLimit(i)=max
 	
 	select case bdType
-	case &quot;gamma&quot;, &quot;gamma-Gy&quot;
+	case &quot;gamma&quot;, &quot;gamma-Gy&quot;, &quot;gamma007&quot;
 		                 _isPrintableF(0) = is110necessary(i)
 		                 _isPrintableF(1) = is130necessary(i)
 	case &quot;alpha&quot;:        _isPrintableF(3) = true
 	case &quot;beta&quot;:         _isPrintableF(4) = true
 	case &quot;n-MD&quot;, &quot;n-PP&quot;: _isPrintableF(2) = true
-	case &quot;gamma007&quot;:     _isPrintableF(5) = true
+	&apos;case &quot;gamma007&quot;:     _isPrintableF(5) = true
 	end select
 end function
 &apos;-------------------------------------------------------------
@@ -195,7 +200,7 @@ const RUS_ALPHA_NEW_PP = &quot;по образцовым источникам α
 const RUS_BETA_6130_NEW_PP as string = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y типа 4СО зав. №660 (св. №0018602-4825-B от 22.07.2025 г.) и зав. №661 (св. №0018603-4825-B от 22.07.2025 г.), типа 4СО-532 зав. №74041.0578 (св. №0008495-4825-В от 29.01.2025 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
 &apos;все бета источники для 1117М -- НЕ ИСПОЛЬЗУЕТСЯ
 const RUS_BETA_NEW_PP as string = &quot;по образцовым источникам β-излучения из радионуклида $sup90$Sr+$sup90$Y типа 4СО зав. №660 (св. №0018602-4825-B от 22.07.2025 г.), зав. №661 (св. №0018603-4825-B от 22.07.2025 г.), зав. №662 (св. №0018604-4825-В от 22.07.2025 г.), типа 4СО-532 зав. №74041.0578 (св. №0008495-4825-В от 29.01.2025 г.), типа 4СО-805 зав. №74041.0580.4СО-805.21 (св. №0008497-4825-В от 29.01.2025 г.), типа 4СО-325 зав. №74041.0579.4СО-325.21 (св. №0008496-4825-В от 29.01.2025 г.), типа 5CO зав. №2129.5СО-801.15 (св. № 0008500-4825-В от 29.01.2025 г.), зав. №0664 (св. №0006332-4824 от 30.07.2024 г.), зав. №0666.5СО-324.11 (св. №0008499-4825-В от 29.01.2025 г.), типа 5CO-323 зав. №0665 (св. №0031512-4823 от 14.09.2023 г.), типа 5CO-325 зав. №0667 (св. №0031513-4823 от 14.09.2023 г.) с относительной погрешностью θ$sub0$ = ±6% при доверительной вероятности P = 0,95&quot;
-const RUS_110_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
+const RUS_110_NEW_PP =       &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
 const RUS_110_NEW_PP_KERMA = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±2% при доверительной вероятности Р = 0,95&quot;
 const RUS_110_NEW_PP_007 = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ = ±5% при доверительной вероятности Р = 0,95&quot;
 const RUS_130_NEW_PP = &quot;на дозиметрической установке γ-излучения УДГ-АТ130 №015 рег. №44761-10 (свидетельство о поверке №С-В/26-11-2024/407130134 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева») в составе с источниками из радионуклида $sup137$Cs типа ИГИ-Ц-9-1 зав. №163, ИГИ-Ц-5-2 зав. №043, ИГИ-Ц-3-20 зав. №08Т, ИГИ-Ц-3-13 зав. №7АТ; ИГИ-Ц-3-5 зав. №07Т, источником из радионуклида $sup60$Co типа ГИК-2-12 зав. №6К8, с относительной погрешностью θ$sub0$ = ±2,9% при доверительной вероятности Р = 0,95&quot;
@@ -207,7 +212,7 @@ const RUS_ETHALON as string = &quot;Эталонные средства изме
 &apos;-------------------------------------------------------------
 const RUS_BDKG_27_RES as string = &quot;с применением меры электрического сопротивления типа P40107 с зав. №2281 (св. №1-0230126-4225 от 25.07.2025 г.) с относительной погрешностью θ$sub0R$ = ±0,02% при доверительной вероятности Р = 0,95&quot;
 const RUS_BDKG_27_VOL as string = &quot;с применением вольтметра типа В7-77 с зав. №553 (св. №1-0507221-4224 от 20.11.2024 г.) с относительной погрешностью θ$sub0U$ = ±0,09% при доверительной вероятности Р = 0,95&quot;
-
+&apos;-------------------------------------------------------------
 public function getFacilityText(id as string) as string
 	select case id
 	case &quot;110&quot;:	 	 getFacilityText = RUS_110
@@ -237,23 +242,27 @@ public function getFacilityText(id as string) as string
 	
 	case &quot;facility_pp_1125bz&quot;: getFacilityText = RUS_1125_BZ
 	case &quot;facility_pp_1125mar&quot;: getFacilityText = RUS_1125_MAR
+	
+	case &quot;RU_110_1117M&quot;: getFacilityText = &quot;на дозиметрической установке γ-излучения УДГ-АТ110 №013 рег. №40425-09  (свидетельство о поверке №С-В/26-11-2024/409219101 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева) в составе с источником из радионуклида $sup241$Am типа ИГИА-3м. зав. №430, источниками из радионуклида $sup137$Cs типа ИГИ-Ц-3-12 зав. №39Т, ИГИ-Ц-3-1 зав. №2АА, ИГИ-Ц-3-4 зав. №28С, источником из радионуклида $sup60$Co типа К/ГИК-1-2 зав. №К/555, источником из радионуклида $sup109$Cd типа XCd9.06 зав. №2464.24, с относительной погрешностью θ$sub0$ Ḣ(10) = ±&quot;+getStringPercent(&quot;PERCENT_MAED_110&quot;)+&quot;%, Ka = ±&quot;+getStringPercent(&quot;PERCENT_KERMA_110&quot;)+&quot;%; Ḣ&apos;(0.07) = ±&quot;+getStringPercent(&quot;PERCENT_EQV_110&quot;)+&quot;% при доверительной вероятности Р = 0,95&quot;
+	case &quot;RU_130_1117M&quot;: getFacilityText = &quot;на дозиметрической установке γ-излучения УДГ-АТ130 №015 рег. №44761-10 (свидетельство о поверке №С-В/26-11-2024/407130134 от 26.11.2024 г. ФГУП «ВНИИМ им. Д.И. Менделеева») в составе с источниками из радионуклида $sup137$Cs типа ИГИ-Ц-9-1 зав. №163, ИГИ-Ц-5-2 зав. №043, ИГИ-Ц-3-20 зав. №08Т, ИГИ-Ц-3-13 зав. №7АТ; ИГИ-Ц-3-5 зав. №07Т, источником из радионуклида $sup60$Co типа ГИК-2-12 зав. №6К8, с относительной погрешностью θ$sub0$ Ḣ(10) = ±&quot;+getStringPercent(&quot;PERCENT_MAED_130&quot;)+&quot;%, Ka ±&quot;+getStringPercent(&quot;PERCENT_KERMA_130&quot;)+&quot;% при доверительной вероятности Р = 0,95&quot;
 		
 	&apos;--------------АНГЛИЙСКИЙ--------------------------
-						 &apos;скорее всего правильнее будет: The instrument is calibrated using the standard facility.
-	case &quot;EN_110&quot;:       getFacilityText = &quot;the standard dosimetry facility AT110, № 013 reg. №40425-09, the Calibration Certificate №С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±2.9%&quot;
-	case &quot;EN_110_KERMA&quot;: getFacilityText = &quot;the standard dosimetry facility AT110, № 013 reg. №40425-09, the Calibration Certificate №С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±2.0%&quot;
-	case &quot;EN_110_007&quot;: 	 getFacilityText = &quot;the standard dosimetry facility AT110, № 013 reg. №40425-09, the Calibration Certificate №С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±5%&quot;
-	case &quot;EN_130&quot;:     	 getFacilityText = &quot;the standard dosimetry facility AT130, № 015 reg. №44761-10, the Calibration Certificate №С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±2.9%&quot;
-	case &quot;EN_130_KERMA&quot;: getFacilityText = &quot;the standard dosimetry facility AT130, № 015 reg. №44761-10, the Calibration Certificate №С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±2.0%&quot;
-	case &quot;EN_140&quot;:       getFacilityText = &quot;the standard neutron facility UPN-AT140 N 01, reg. N 63548-16, the Certificate of Compliance С-В/03-02-2026/502403062 on 03.02.2026 issued by FGUP «D.I.Mendeleyev VNIIM», St. Petersburg, Russia, uncertainty ±4.0%&quot;
-	case &quot;EN_ALPHA&quot;:   	 getFacilityText = &quot;alpha radiation source of Pu-239: 4П9, 5П9, 6П9, the certificate N 1-0057839-4822, N 1-0063126-4822 issued by BelGIM, Minsk, the Republic of Belarus&quot;
-	case &quot;EN_BETA&quot;:    	 getFacilityText = &quot;beta radiation source of  Sr-90+Y-90: 4С0, 5С0, 6С0, the certificate N 1-0057836-4822; N 0031509-4823 issued by BelGIM, Minsk, the Republic of Belarus&quot;	
+	case &quot;EN_110&quot;:       getFacilityText = &quot;the standard dosimetry facility AT110, No. 013 reg. No. 40425-09, the Calibration Certificate No. С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_MAED_110&quot;)+&quot;%&quot;
+	case &quot;EN_110_KERMA&quot;: getFacilityText = &quot;the standard dosimetry facility AT110, No. 013 reg. No. 40425-09, the Calibration Certificate No. С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_KERMA_110&quot;)+&quot;%&quot;
+	case &quot;EN_110_007&quot;: 	 getFacilityText = &quot;the standard dosimetry facility AT110, No. 013 reg. No. 40425-09, the Calibration Certificate No. С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_EQV_110&quot;)+&quot;%&quot;
+	case &quot;EN_130&quot;:     	 getFacilityText = &quot;the standard dosimetry facility AT130, No. 015 reg. No. 44761-10, the Calibration Certificate No. С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_MAED_130&quot;)+&quot;%&quot;
+	case &quot;EN_130_KERMA&quot;: getFacilityText = &quot;the standard dosimetry facility AT130, No. 015 reg. No. 44761-10, the Calibration Certificate No. С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_KERMA_130&quot;)+&quot;%&quot;
+	case &quot;EN_140&quot;:       getFacilityText = &quot;the standard neutron facility UPN-AT140 No. 01, reg. No. 63548-16, the Certificate of Compliance No. С-В/03-02-2026/502403062 on 03.02.2026 issued by FGUP «D.I.Mendeleyev VNIIM», St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_NEUTRON_MD&quot;)+&quot;%&quot;
+	case &quot;EN_ALPHA&quot;:   	 getFacilityText = &quot;alpha radiation source of Pu-239: 4П9, 5П9, the certificates issued by BelGIM, Minsk, the Republic of Belarus, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_ALPHA&quot;)+&quot;%&quot;  
+	case &quot;EN_BETA&quot;:    	 getFacilityText = &quot;beta radiation source of  Sr-90+Y-90: 4СO, 5СO, the certificates issued by BelGIM, Minsk, the Republic of Belarus, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_BETA&quot;)+&quot;%&quot;
 	case &quot;EN_SOURCE_CS&quot;: getFacilityText = &quot;OSGI series reference gamma radiation source Cs-137 with $activity kBq activity, s/n $source&quot;
+						 &apos;для 1117М выводится текст сразу для МАЭД, направленного экв. и кермы (для 130 только МАЭД и керма):
+	case &quot;EN_110_1117M&quot;: getFacilityText = &quot;the standard dosimetry facility AT110, No. 013 reg. No. 40425-09, the Calibration Certificate No. С-В/26-11-2024/409219101 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, Ḣ(10) uncertainty: ±&quot;+getStringPercent(&quot;PERCENT_MAED_110&quot;)+&quot;%, Ka uncertainty: ±&quot;+getStringPercent(&quot;PERCENT_KERMA_110&quot;)+&quot;%; Ḣ&apos;(0.07) uncertainty: ±&quot;+getStringPercent(&quot;PERCENT_EQV_110&quot;)+&quot;%&quot;
+	case &quot;EN_130_1117M&quot;: getFacilityText = &quot;the standard dosimetry facility AT130, No. 015 reg. No. 44761-10, the Calibration Certificate No. С-В/26-11-2024/407130134 on 26 November 2024 issued by The D.I. Mendeleev All-Russian Institute for Metrology (VNIIM), St. Petersburg, Russia, uncertainty ±&quot;+getStringPercent(&quot;PERCENT_MAED_130&quot;)+&quot;%, Ka uncertainty: ±&quot;+getStringPercent(&quot;PERCENT_KERMA_130&quot;)+&quot;%&quot;
 	
 	case &quot;EN_CERTIFICATE_TEXT&quot;: getFacilityText = &quot;The instrument complies with the measurement specifications stated in the current document&quot;
 	
 	end select
 end function
 &apos;-------------------------------------------------------------
-
 </script:module>

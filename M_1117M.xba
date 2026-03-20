@@ -43,7 +43,7 @@ Sub at1117m_Dialog_Show
 	oDialog1117.Model.getByName(&quot;elka&quot;).ImageURL = sertPath &amp; &quot;elkaHalf.png&quot;
 	
 	&apos;Overall.dialogSimpleInitialize(oDialog1117, oDateFieldModel, &quot;Версия 3.15 &quot;, isComboCollection, BDList)
-	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.38 &quot;, Overall.NULL, 0)
+	 Overall.dialogShowInitialize(0, oDialog1117, oDateFieldModel, &quot;Версия 3.39 &quot;, Overall.NULL, 0)
 	 Overall.initializeParameters(0, BDList, isComboCollection)
 	 	
 	initialize1117 &apos;ЗАГРУЗКА БД
@@ -550,7 +550,6 @@ sub insertDataToTemplate
 	dim point as double
 	
 	dim usedBDList as new Collection
-	dim usedBDListEn as new Collection
 		
 	dim facilities as new Facility &apos;ссылка локальная, так при создании нового протокола не нужно будет обнулять лимиты и списки установок
 	facilities.init
@@ -579,7 +578,6 @@ sub insertDataToTemplate
 	
 		if bd.isPrintable then
 			usedBDList.add(bd.getName)
-			usedBDListEn.add(bd.getNameEn)
 				
 			if bd.getType = &quot;alpha&quot; then 
 				for n=1 to bd.pointTextList.count
@@ -616,10 +614,7 @@ sub insertDataToTemplate
 			strokeForSaving = strokeForSaving &amp; bd.BDName &amp; &quot; &quot;
 			facilities.addTypeAndLimits(bd.BDType, bd.minLimit, bd.maxLimit)		
 			
-			if bd.BdName=&quot;БДКН-01&quot; then	neutron(i,bd,NEUTRON_01)
-			if bd.BdName=&quot;БДКН-03&quot; then	neutron(i,bd,NEUTRON_03)
-			if bd.BdName=&quot;БДКН-05&quot; then	neutron(i,bd,NEUTRON_05)
-			if bd.BdName=&quot;БДКН-06&quot; then	neutron(i,bd,NEUTRON_06)
+			
 			
 			if BDList.item(i).getType = &quot;beta&quot; OR BDList.item(i).getType = &quot;alpha&quot; then				
 				&apos;Overall.insertBetaToTemplateStep(i, oDateFieldModel, bd.getPointTextList, bd.getValueList, &quot;$&quot;)
@@ -627,6 +622,11 @@ sub insertDataToTemplate
 			else
 				Overall.insertToTemplateStep(i)
 			end if	
+			
+			if bd.BdName=&quot;БДКН-01&quot; then	neutron(i,bd,NEUTRON_01)
+			if bd.BdName=&quot;БДКН-03&quot; then	neutron(i,bd,NEUTRON_03)
+			if bd.BdName=&quot;БДКН-05&quot; then	neutron(i,bd,NEUTRON_05)
+			if bd.BdName=&quot;БДКН-06&quot; then	neutron(i,bd,NEUTRON_06)
 			
 		else
 			Overall.deleteTable(&quot;tlim&quot; + (i-1))
@@ -638,14 +638,10 @@ sub insertDataToTemplate
 	
 	&apos;список БД входящих в состав 1117М----------------------------
 	Dim strings(usedBDList.count-1) As String
-	&apos;список БД входящих в состав 1117М (на английском)------------
-	Dim stringsEn(usedBDListEn.count-1) As String
 	for n=1 to usedBDList.count
 		strings(n-1)=usedBDList.item(n)
-		stringsEn(n-1)=usedBDListEn.item(n)
 	next n
 	SortStringArray(strings)
-	SortStringArray(stringsEn)
 	
 	
 	&apos;SortStringArray(usedAlphaSourcs)
@@ -669,19 +665,6 @@ sub insertDataToTemplate
 	next n
 	findAndRename(&quot;$used_units$&quot;, strDU)
 	
-	dim strDUEn, unitEn as string
-	strDUEn = &quot;&quot;
-	for n=0 to UBound(stringsEn)
-		unitEn = stringsEn(n)
-		if unitEn = &quot;BDPS-02 α&quot;   then unitEn = &quot;BDPS-02&quot;
-		if unitEn = &quot;PU-1 detector&quot; then unitEn = &quot;PU-1&quot;
-		if unitEn = &quot;PU-2 detector&quot; then unitEn = &quot;PU-2&quot;
-		if unitEn &lt;&gt; &quot;BDPS-02 β&quot; AND unitEn &lt;&gt; &quot;BDPS-02 γ&quot; then
-			if strDUEn = &quot;&quot; then strDUEn = unitEn else strDUEn = strDUEn+&quot;, &quot;+unitEn
-		endif	
-	next n
-	findAndRename(&quot;$used_units_en$&quot;, strDUEn)
-	
 	&apos;удалить ненужные формулы
 	if bdTypesUsed(0)=false then Overall.deleteTable(&quot;f0&quot;)
 	if bdTypesUsed(1)=false AND bdTypesUsed(2)=false then Overall.deleteTable(&quot;f1&quot;)
@@ -698,7 +681,7 @@ sub insertDataToTemplate
 		&apos;msgbox &quot;tf&quot; + i + &quot; = &quot;+f2(i)
 	next i
 	&apos;удалить ненужные пределы измерений--------------------------
-	for i=0 to 6 &apos;нет смысла проверять обе точки, не может одна из точек равняться 0, а другая числу
+	for i=0 to 5 &apos;нет смысла проверять обе точки, не может одна из точек равняться 0, а другая числу
 		if measLimitsArray(i*2)=0 then Overall.deleteTable(&quot;tml&quot; + i)
 	next i
 	&apos;------------------------------------------------------------
@@ -726,6 +709,9 @@ sub neutron(i as integer, bd as BUnit, nData as NeutronData)
 	for n = 1 to 4
 		point = bd.valueList.item(n+1)
 		p1 = (point-fon)*point_br_array(n-1)
+		
+		&apos;msgbox &quot;point = &quot;+point+&quot; fon = &quot;+fon+&quot; br = &quot;+point_br_array(n-1)+&quot; p1 = &quot;+p1
+		
 		findAndRename((&quot;$&quot; + i + &quot;-n2&quot; + &quot;&quot; + n), Format(p1, MyFormat))
 		p2 = (p1 - point_fio_array(n-1))/point_fio_array(n-1)*100
 		findAndRename((&quot;$&quot; + i + &quot;-n3&quot; + &quot;&quot; + n), Format(p2, MyFormat))
