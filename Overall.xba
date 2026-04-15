@@ -110,7 +110,7 @@ sub setTechControlNames(lan as integer)
 			items2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
 		else
 			items1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
-			items2 = Array( &quot;V. Guzov&quot;, &quot;Y. Sivtsevich&quot;)&apos;Sivtsevich Y.P.
+			items2 = Array( &quot;N. Kurbatova&quot;, &quot;V. Guzov&quot;, &quot;Y. Sivtsevich&quot;)&apos;Sivtsevich Y.P.
 		endif	
 		oComboBox1.addItems( items1, 0 )
 		oComboBox2.addItems( items2, 0 )

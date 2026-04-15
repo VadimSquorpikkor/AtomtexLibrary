@@ -133,12 +133,14 @@ sub setButtonEnabled
 		PrSwitch.setEnable(true)
 		SRuSwitch.setEnable(true)
 		PrSwitch.state = 1
+		Overall.setTechControlNames(0)
 		altCheckBox.visible = false
 	end if
 	if oOption6130d.state then
 		PrSwitch.setEnable(true)
 		SRuSwitch.setEnable(true)
 		PrSwitch.state = 1
+		Overall.setTechControlNames(0)
 		altCheckBox.visible = false
 	end if
 	if oOption6130c.State = true then
@@ -146,6 +148,7 @@ sub setButtonEnabled
 		PrSwitch.setEnable(true)
 		SRuSwitch.setEnable(true)
 		PrSwitch.state = 1
+		Overall.setTechControlNames(0)
 		altCheckBox.visible = false
 	end if	
 	if oOption6130c.State = false then image6130.ImageURL = sertPath &amp; &quot;6130\6130.png&quot;
@@ -153,24 +156,29 @@ sub setButtonEnabled
 		PrSwitch.setEnable(true)
 		SRuSwitch.setEnable(true)
 		PrSwitch.state = 1
+		Overall.setTechControlNames(0)
 		altCheckBox.visible = true
+		
 	end if
 	if oOption6130cps.state then
 		PrSwitch.setEnable(false)
 		SRuSwitch.setEnable(false)
 		SEnSwitch.state = 1
+		Overall.setTechControlNames(2)
 		altCheckBox.visible = true
 	end if
 	if oOption6130bq.state then
 		PrSwitch.setEnable(false)
 		SRuSwitch.setEnable(false)
 		SEnSwitch.state = 1
+		Overall.setTechControlNames(2)
 		altCheckBox.visible = true
 	end if
 	if oOption6130japan.state then
 		PrSwitch.setEnable(false)
 		SRuSwitch.setEnable(false)
 		SEnSwitch.state = 1
+		Overall.setTechControlNames(2)
 		altCheckBox.visible = true
 	end if
 end sub
