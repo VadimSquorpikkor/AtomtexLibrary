@@ -183,6 +183,18 @@ function isWorkingDay(myDate as Date)
 	nonWorkingDays.add(DateSerial (2025, 12, 25))
 	nonWorkingDays.add(DateSerial (2025, 12, 26))
 	
+	
+	nonWorkingDays.add(DateSerial (2026, 1, 1))
+	nonWorkingDays.add(DateSerial (2026, 1, 2))
+	nonWorkingDays.add(DateSerial (2026, 1, 7))
+	nonWorkingDays.add(DateSerial (2026, 4, 20))
+	nonWorkingDays.add(DateSerial (2026, 4, 21))
+	workingWeekend.add(DateSerial (2026, 4, 25))
+	nonWorkingDays.add(DateSerial (2026, 5, 1))
+	nonWorkingDays.add(DateSerial (2026, 7, 3))
+	nonWorkingDays.add(DateSerial (2026, 12, 25))
+	
+	
 	&apos;------------------------------------------
 	dim i as integer
 	dim state as boolean
