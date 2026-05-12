@@ -106,11 +106,11 @@ sub setTechControlNames(lan as integer)
 		oComboBox1.removeItems( 0, oComboBox1.getItemCount() )
 		dim items1, items2 as variant
 		if lan = 0 OR lan = 1 then
-			items1 = Array( &quot;В. Писаренко&quot;, &quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot; )
-			items2 = Array( &quot;Н. Курбатова&quot;, &quot;А. Русакевич&quot;, &quot;П. Фекленкова&quot; )
+			items1 = Array( &quot;В. Писаренко&quot;, &quot;И. Германенко&quot;, &quot;П. Фекленкова&quot;, &quot;Д. Петкун&quot;)&apos;&quot;С. Кульчинский&quot;, &quot;Д. Кульчинский&quot;, 
+			items2 = Array( &quot;Н. Курбатова&quot;, &quot;П. Фекленкова&quot; )&apos;, &quot;А. Русакевич&quot;
 		else
-			items1 = Array( &quot;V. Pisarenko&quot;, &quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot; )
-			items2 = Array( &quot;N. Kurbatova&quot;, &quot;V. Guzov&quot;, &quot;Y. Sivtsevich&quot;)&apos;Sivtsevich Y.P.
+			items1 = Array( &quot;V. Pisarenko&quot;, &quot;I. Germanenko&quot;, &quot;P. Feklenkova&quot;, &quot;D. Petkun&quot; )&apos;&quot;S. Kulchinsky&quot;, &quot;D. Kulchinsky&quot;, 
+			items2 = Array( &quot;N. Kurbatova&quot;, &quot;P. Feklenkova&quot;, &quot;V. Guzov&quot;, &quot;Y. Sivtsevich&quot;)
 		endif	
 		oComboBox1.addItems( items1, 0 )
 		oComboBox2.addItems( items2, 0 )
