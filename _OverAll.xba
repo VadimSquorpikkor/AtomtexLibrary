@@ -8,6 +8,17 @@ rem ╔╗╚╝║═▄▌▀▌    αβγ   μ
 rem----------------------------------------------------------------
 rem			ВСЯКИЕ МЕТОДЫ БУДУТ ХРАНИТЬСЯ ЗДЕСЬ
 &apos;---------------------------------------
+function toDouble(s as string)
+	dim d as double
+	if CDbl(&quot;3,3&quot;) = 3.3 then
+   		s = Replace (s,&quot;.&quot;,&quot;,&quot;)
+ 	else
+   		s = Replace (s,&quot;,&quot;,&quot;.&quot;)
+    end if
+	d = cdbl(s)
+	toDouble = d
+end function
+
 Sub SafeAddToCollection(col As Object, item As Object, key As String)
     On Error GoTo ErrorHandler
     &apos; Попытка получить элемент по ключу — если нет ошибки, значит ключ уже существует

@@ -39,7 +39,7 @@ dim _separateBGround as boolean
 dim _stringTypeForCertificate as String &apos;поверка проверка сертификат&apos;
 &apos;------------------------------------------------------------------------------------------------------------------------
 dim m_point, cont_point as double 
-dim prefix, MyFormat as string
+dim prefix as string
 dim threePointArray(2) as double
 dim fivePointArray(4) as double
 
@@ -361,6 +361,7 @@ end sub
 &apos;	╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════╝█
 &apos;	  ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 sub templateStep(i as integer, strokeEnd as string)
+		dim MyFormat as string
 		dim src_name as string
 		dim bd as new DUnit
 		dim BDtype as string 
@@ -404,8 +405,10 @@ sub templateStep(i as integer, strokeEnd as string)
 			&apos;которое было до использования Вариант №3, а значит будет расхождение в таблице (3 точки и среднее одно, а дальнейшие расчеты и погрешности от другого среднего). Поэтому здесь применяется вариант1, 
 			&apos;где среднее не изменяется. Вариант №3 сработал бы если бы можно было передать в массив значений новое расчитанное среднее, но в этом языке нельзя изменить уже проинициализированный массив, только создать новый. Поэтому пока для нейтронников так
 			if bd.getType = &quot;n-PP&quot; OR bd.getType = &quot;n-MD&quot; then
+				&apos;для нейтронников рандомим 1-е и 2-е значение, 3-е — это m_point*3-p1-p2
 				threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)
 			else
+				&apos;для всех остальных рандомятся все 3 точки. Среднее пересчитывается заново (будет немного отличаться от исходного)
 				threePointArray = Math.avaragePointsRndArrayDispersed(m_point, percentOtk, getRightFormat(m_point))
 				m_point = threePointArray(3)
 			endif	
@@ -482,6 +485,7 @@ end sub
 &apos;по сути алгоритм считает из конца в начало (в реальности считается наоборот: сначало получаются 4 измерения (удельной активности), находится среднее, затем умножается на 1.75 и получается активность)
 sub templateStep1125Activity(i as integer)
 		dim src_name as string
+		dim MyFormat as string
 		dim bd as new DUnit
 		dim BDtype as string 
 		bd = _BDList.item(i)
@@ -545,6 +549,7 @@ end sub
 &apos;несмотря на название этот метод только для альфа 6131. Общий для альфа см. insertBetaToTemplateStep
 sub insertAlphaToTemplateStep(i, alphaSourcesList as Collection, alphaPointsList as Collection, alphaValueList as Collection, sign as String)
 	dim bd as new DUnit 
+	dim MyFormat as string
 	bd = _BDList.item(i)
 	dim j as integer
 	for j=0 to alphaValueList.count-1
@@ -575,14 +580,24 @@ end sub
 const THREE_POINTS as integer = 3
 const FIVE_POINTS as integer = 5
 &apos;------------------------------------------------------------------------------------------------------------------------
+&apos;Переводит string в double
+&apos;s - число в стринге &quot;1.25&quot; может быть с точкой или с запятой 
+&apos;f - формат например &quot;0.00&quot;
+function stringToDouble(s as string, f as string)
+	stringToDouble = cdbl(setRightPoint(Format(s, f)))
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 &apos;несмотря на название этот метод и для альфа и для бета
 sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as Collection, betaValueList as Collection, sign as String, point_count as integer)
 	dim bd as new DUnit 
+	dim MyFormat as string
+	dim meas_point as double
+	dim threePointArray(2) as double
 	bd = _BDList.item(i)
 	dim j as integer
 	for j=0 to betaValueList.count-1
-		m_point = betaValueList.item(j+1)
-		
+		meas_point = betaValueList.item(j+1)
+				
 		if bd.isAlternativePoints then
 			cont_point = bd.getAltList.item(j+1)
 		else
@@ -599,17 +614,20 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 		&apos;ВАЖНО. округляю значение контрольной точки альфа или бета, и только после этого вывожу значение в таблицу и вычисляю погрешность. 
 		&apos;До этого округлялось только при выводе, расчет погрешности производился с полным несокращенным значением. В результате в таблице 
 		&apos;могло быть при совпадении контрольной точки и измеренного значения погрешность не равная 0 (например было число 1.2345, а вывилось 1.2, а погрешность для этих двух чисел уже не будет равна 0)
-		if cont_point&lt;500  then cont_point_formatted = Format(cont_point, &quot;0.0&quot;) rem активность источника
-		if cont_point&gt;=500 then cont_point_formatted = Format(cont_point, &quot;0&quot;)   rem активность источника
+		if cont_point&lt;10  then cont_point_formatted = stringToDouble(cont_point, &quot;0.00&quot;) rem активность источника
+		if cont_point&lt;500 and cont_point&gt;=10 then cont_point_formatted = stringToDouble(cont_point, &quot;0.0&quot;) rem активность источника
+		if cont_point&gt;=500 then cont_point_formatted = stringToDouble(cont_point, &quot;0&quot;)   rem активность источника
+		
 		findAndRename((sign + i + &quot;-9&quot; + j), cont_point_formatted) rem активность источника
 		findAndRename((sign + i + &quot;-9&quot; + j), cont_point_formatted) rem активность источника
 				
 		rem TODO сделать через select case
-		if m_point &lt; 200 and m_point &gt; 0  then MyFormat = &quot;0.0&quot;
-		if m_point &gt;= 200 				  then MyFormat = &quot;0&quot;
+		if meas_point &lt; 10 and meas_point &gt; 0  then MyFormat = &quot;0.00&quot;
+		if meas_point &lt; 500 and meas_point &gt;= 10  then MyFormat = &quot;0.0&quot;
+		if meas_point &gt;= 500 				    then MyFormat = &quot;0&quot;
 
 		if j=0 then
-			fivePointArray = Math.avaragePointsRndFiveArray(m_point, percentOtk)
+			fivePointArray = Math.avaragePointsRndFiveArray(meas_point, percentOtk)
 			findAndRename((sign + i + &quot;-i1&quot; + j), Format(fivePointArray(0), MyFormat)) rem измерение 1
 			findAndRename((sign + i + &quot;-i2&quot; + j), Format(fivePointArray(1), MyFormat)) rem измерение 2
 			findAndRename((sign + i + &quot;-i3&quot; + j), Format(fivePointArray(2), MyFormat)) rem измерение 3
@@ -617,21 +635,32 @@ sub insertBetaToTemplateStep(i, betaSourcesList as Collection, betaPointsList as
 			findAndRename((sign + i + &quot;-i5&quot; + j), Format(fivePointArray(4), MyFormat)) rem измерение 5
 		endif				
 		
-		threePointArray = Math.avaragePointsRndArray(m_point, percentOtk)		
-		findAndRename((sign + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
-		findAndRename((sign + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
-		findAndRename((sign + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+		
+		
+		&apos;threePointArray = Math.avaragePointsRndArray(meas_point, percentOtk)		
+		threePointArray = Math.avaragePointsRndArrayDispersed(meas_point, 2, MyFormat)&apos;percentOtk
+		meas_point = threePointArray(3)
+		
+		&apos;findAndRename((sign + i + &quot;-6&quot; + j), Format(threePointArray(0), MyFormat)) rem измерение 1
+		&apos;findAndRename((sign + i + &quot;-7&quot; + j), Format(threePointArray(1), MyFormat)) rem измерение 2
+		&apos;findAndRename((sign + i + &quot;-8&quot; + j), Format(threePointArray(2), MyFormat)) rem измерение 3
+		
+		findAndRename((sign + i + &quot;-6&quot; + j), threePointArray(0)) rem измерение 1
+		findAndRename((sign + i + &quot;-7&quot; + j), threePointArray(1)) rem измерение 2
+		findAndRename((sign + i + &quot;-8&quot; + j), threePointArray(2)) rem измерение 3
 						
 		if cont_point&lt;150 then 
 			findAndRename((sign + i + &quot;-5&quot; + j), Activity.BETA_BG) rem фон
 		else	
 			findAndRename((sign + i + &quot;-5&quot; + j), &quot;---&quot;) 
 		end if
-				
-		findAndRename((sign + i + &quot;-0&quot; + j), Format(m_point, MyFormat)) rem среднее по трем измерениям
+		
+		findAndRename((sign + i + &quot;-0&quot; + j), Format(meas_point, MyFormat)) rem среднее по трем измерениям
 
+		&apos;msgbox &quot;meas_point - &quot;+meas_point+&quot;, cont_point_formatted - &quot;+cont_point_formatted
 		dim pogr_point as double
-		pogr_point = Math.RelativeError(m_point, cont_point_formatted)
+		pogr_point = Math.RelativeError(meas_point, cont_point_formatted)
+		&apos;msgbox pogr_point
 		MyFormat = &quot;0.00&quot;
 		
 		findAndRename((sign + i + &quot;-1&quot; + j), Format(pogr_point, MyFormat))
@@ -728,7 +757,9 @@ sub saveCurentBDBetaValues(num as integer)
 	dim newValues as new Collection
 	dim i as integer
 	for i=1 to _BDList.item(num).getBetaValues.count
-		newValues.add(setRightPoint(_oDialog.getControl(&quot;betaField&quot; + i).Value))
+		&apos;newValues.add(setRightPoint(_oDialog.getControl(&quot;betaField&quot; + i).Value))
+		newValues.add(_oDialog.getControl(&quot;betaField&quot; + i).Value)
+		&apos;msgbox &quot;newvalues = &quot;+newValues(i)
 	next i
 	_BDList.item(num).setBetaValues(newValues)
 end sub

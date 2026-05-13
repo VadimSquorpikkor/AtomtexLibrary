@@ -385,6 +385,18 @@ function avaragePointsRndArrayDispersed_4(point as double, o_percent as double, 
 	avaragePointsRndArrayDispersed_4 = ar
 end function
 &apos;------------------------------------------------------------------------------------------------------------------------
+function avaragePointsRndArrayDispersed_5(point as double, o_percent as double, formatString as string)
+	rem TODO сделать по Гауссу!!!
+	dim ar(5) as double 
+	ar(0) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(1) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(2) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(3) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(4) = CDbl(Format(Math.randValuePercent(point, o_percent), formatString))
+	ar(5) = (ar(0)+ar(1)+ar(2)+ar(3)+ar(4))/5
+	avaragePointsRndArrayDispersed_5 = ar
+end function
+&apos;------------------------------------------------------------------------------------------------------------------------
 function avaragePointsRndArrayDispersed_10(point as double, o_percent as double, formatString as string)
 	rem TODO сделать по Гауссу!!!
 	dim ar(10) as double 

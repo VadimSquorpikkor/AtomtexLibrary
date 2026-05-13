@@ -29,7 +29,7 @@
   <dlg:text dlg:id="betaLabel1" dlg:tab-index="14" dlg:left="213" dlg:top="141" dlg:width="36" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="betaLabel2" dlg:tab-index="15" dlg:left="213" dlg:top="152" dlg:width="36" dlg:height="8" dlg:align="right"/>
   <dlg:text dlg:id="betaLabel3" dlg:tab-index="31" dlg:left="213" dlg:top="163" dlg:width="36" dlg:height="8" dlg:align="right"/>
-  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="10" dlg:left="251" dlg:top="139" dlg:width="33" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="betaField1" dlg:tab-index="10" dlg:left="251" dlg:top="138" dlg:width="33" dlg:height="12" dlg:value="0.7" dlg:spin="true"/>
   <dlg:numericfield dlg:id="betaField2" dlg:tab-index="11" dlg:left="251" dlg:top="150" dlg:width="33" dlg:height="12" dlg:value="7" dlg:spin="true"/>
   <dlg:numericfield dlg:id="betaField3" dlg:tab-index="30" dlg:left="251" dlg:top="161" dlg:width="33" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="40" dlg:spin="true"/>
   <dlg:text dlg:style-id="0" dlg:id="versionLabel" dlg:tab-index="35" dlg:left="273" dlg:top="2" dlg:width="36" dlg:height="8" dlg:value="версия" dlg:align="right"/>
@@ -104,10 +104,10 @@
   <dlg:checkbox dlg:id="altCheckBox" dlg:tab-index="58" dlg:left="226" dlg:top="129" dlg:width="72" dlg:height="10" dlg:value="Свои значения для α, β" dlg:checked="false">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.altCheckBoxListener?language=Basic&amp;location=application" script:language="Script"/>
   </dlg:checkbox>
-  <dlg:numericfield dlg:id="altField1" dlg:tab-index="59" dlg:left="220" dlg:top="139" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altField2" dlg:tab-index="60" dlg:left="220" dlg:top="150" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altField3" dlg:tab-index="61" dlg:left="220" dlg:top="161" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
-  <dlg:numericfield dlg:id="altField4" dlg:tab-index="62" dlg:left="220" dlg:top="172" dlg:width="29" dlg:height="12" dlg:decimal-accuracy="1" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField1" dlg:tab-index="59" dlg:left="220" dlg:top="139" dlg:width="29" dlg:height="12" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField2" dlg:tab-index="60" dlg:left="220" dlg:top="150" dlg:width="29" dlg:height="12" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField3" dlg:tab-index="61" dlg:left="220" dlg:top="161" dlg:width="29" dlg:height="12" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
+  <dlg:numericfield dlg:id="altField4" dlg:tab-index="62" dlg:left="220" dlg:top="172" dlg:width="29" dlg:height="12" dlg:value="1" dlg:value-min="1" dlg:spin="true"/>
   <dlg:text dlg:style-id="8" dlg:id="AttentionLabel" dlg:tab-index="54" dlg:left="57" dlg:top="1" dlg:width="211" dlg:height="12" dlg:value="Для β 6130cps: Акт = ПОВЕРХНОСТНАЯ активность * 1.426 " dlg:align="right"/>
   <dlg:button dlg:id="insertButton" dlg:tab-index="63" dlg:left="276" dlg:top="60" dlg:width="30" dlg:height="36" dlg:image-src="file:///C:/Users/Serikov_VA/AppData/Roaming/OpenOffice/4/user/basic/AtomtexLibrary/sert_template/imgs/down_arr.png">
    <script:event script:event-name="on-performaction" script:macro-name="vnd.sun.star.script:AtomtexLibrary.M_6130.insertClipBoardToBDValueList?language=Basic&amp;location=application" script:language="Script"/>
