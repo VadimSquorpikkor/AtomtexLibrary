@@ -34,7 +34,7 @@ Sub MainDialog_Show
 &apos;	просто добавить строчку users.add(&quot;ИМЯ_ПОЛЬЗОВАТЕЛЯ&quot;)			║█
 &apos;	там внизу ещё в setUserName добавить надо						║█
 																&apos;	║█
-	currentVersion = 4.52 										&apos;	║█
+	currentVersion = 4.53 										&apos;	║█
 																&apos;	║█
 	users.add(&quot;Serikov_VA&quot;)										&apos;	║█
 	users.add(&quot;Squorpikkor&quot;)									&apos;	║█
@@ -50,6 +50,7 @@ Sub MainDialog_Show
 	users.add(&quot;Bohush_SG&quot;)   									&apos;	║█
 	users.add(&quot;Vialutsich_ES&quot;) 									&apos;	║█
 	users.add(&quot;Sidorenko_AA&quot;)  									&apos;	║█
+	users.add(&quot;Yarinskiy_GA&quot;)  									&apos;	║█
 &apos;═══════════════════════════════════════════════════════════════════╝█
 &apos;▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
 
@@ -167,6 +168,8 @@ sub setUserName(label as String)
 		userName = &quot;Велютич Егор&quot;	
 	case &quot;Sidorenko_AA&quot;
 		userName = &quot;Сидоренко Артем&quot;		
+	case &quot;Yarinskiy_GA&quot;
+		userName = &quot;Яринский Глеб&quot;	
 	end select
 end sub
 &apos;------------------------------------------------------------------------------------------------------------------------
